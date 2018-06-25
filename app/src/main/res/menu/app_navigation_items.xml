@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bottom_nav_read"
+        android:icon="@drawable/ic_assignment_black_24dp"
+        android:title="@string/read" />
+
+    <item
+        android:id="@+id/bottom_nav_discovery"
+        android:icon="@drawable/ic_assignment_black_24dp"
+        android:title="@string/discovery" />
+
+    <item
+        android:id="@+id/bottom_nav_service"
+        android:icon="@drawable/ic_assignment_black_24dp"
+        android:title="@string/service" />
+
+    <item
+        android:id="@+id/bottom_nav_mine"
+        android:icon="@drawable/ic_assignment_black_24dp"
+        android:title="@string/mine" />
+</menu>
