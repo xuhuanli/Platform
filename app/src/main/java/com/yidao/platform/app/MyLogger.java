@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
-import com.yidao.platform.app.Constant;
 
 /**
  * The type My logger.

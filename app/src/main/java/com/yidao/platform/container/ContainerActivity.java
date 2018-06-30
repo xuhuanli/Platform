@@ -4,12 +4,13 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 
 import com.yidao.platform.R;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.discovery.DiscoveryFragment;
+import com.yidao.platform.info.view.MyInfoFragment;
 import com.yidao.platform.read.view.ReadFragment;
+import com.yidao.platform.service.ServiceFragment;
 
 import java.util.ArrayList;
 
@@ -43,18 +44,19 @@ public class ContainerActivity extends BaseActivity {
         ArrayList<Fragment> list = new ArrayList<>();
         list.add(new ReadFragment());
         list.add(new DiscoveryFragment());
-        list.add(new ReadFragment());
-        list.add(new ReadFragment());
+        list.add(new ServiceFragment());
+        list.add(new MyInfoFragment());
         mViewPager.setAdapter(new ViewpagerAdapter(getSupportFragmentManager(), list));
         mViewPager.setOffscreenPageLimit(1);
-        mViewPager.setCurrentItem(0, true);
+        //smoothScroll  true:在点击tablayout时，vp会有滑动效果 false : 取消平滑效果
+        mViewPager.setCurrentItem(0, false);
     }
 
     private void loadTabData() {
         mTabLayout.setupWithViewPager(mViewPager, true);
-        for (int i = 0; i < ViewpagerAdapter.DRAWABLERESIDS.length; i++) {
-            mTabLayout.getTabAt(i).setText(ViewpagerAdapter.TABNAMES[i]);
-            mTabLayout.getTabAt(i).setIcon(ViewpagerAdapter.DRAWABLERESIDS[i]);
+        for (int i = 0; i < ViewpagerAdapter.DRAWABLE_RES_IDS.length; i++) {
+            mTabLayout.getTabAt(i).setText(ViewpagerAdapter.TAB_NAMES[i]);
+            mTabLayout.getTabAt(i).setIcon(ViewpagerAdapter.DRAWABLE_RES_IDS[i]);
         }
     }
 }

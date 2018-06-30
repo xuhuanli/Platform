@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/size_24dp">
+
+    <EditText
+        android:id="@+id/et_service_information"
+        android:background="@null"
+        android:drawableLeft="@drawable/ic_assignment_black_24dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:hint="@string/app_name"
+        android:ems="10"
+        android:inputType="textPersonName"
+        tools:text="@string/app_name" />
+</android.support.constraint.ConstraintLayout>

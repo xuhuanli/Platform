@@ -15,6 +15,10 @@ import com.yidao.platform.app.ThreadPoolManager;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.container.ContainerActivity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import butterknife.BindView;
 import io.reactivex.functions.Consumer;
 
@@ -51,7 +55,7 @@ public class SplashActivity extends BaseActivity {
                         .subscribe(new Consumer<Object>() {
                             @Override
                             public void accept(Object o) throws Exception {
-                                    startActivity(ContainerActivity.class);
+                                    startActivity(LoginClassificationActivity.class);
                             }
                         }));
             }

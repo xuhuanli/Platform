@@ -39,9 +39,9 @@ public class ReadAdapter extends RecyclerView.Adapter<ReadAdapter.ReadViewHolder
             @Override
             public void onClick(View v) {
                 //通过getAdapterPosition获取到的position有点问题 -1后显示正确
-                int position = viewHolder.getAdapterPosition()-1;
+                int position = viewHolder.getAdapterPosition() - 1;
                 String s = dataList.get(position);
-                ToastUtil.showShort(v.getContext(),s);
+                ToastUtil.showShort(v.getContext(), s);
                 Intent intent = new Intent(v.getContext(), ReadContentActivity.class);
                 v.getContext().startActivity(intent);
             }

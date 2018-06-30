@@ -11,7 +11,7 @@ import com.yidao.platform.read.adapter.ReadContentAdapter;
 
 import butterknife.BindView;
 
-public class ReadContentActivity extends BaseActivity implements IDataCompleted{
+public class ReadContentActivity extends BaseActivity {
 
     @BindView(R.id.rv_read_content)
     RecyclerView mRVContent;

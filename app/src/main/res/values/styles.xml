@@ -17,4 +17,25 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="Style_Bp_EditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/size_40dp</item>
+        <item name="android:background">@null</item>
+        <item name="android:paddingLeft">@dimen/size_8dp</item>
+        <item name="android:paddingBottom">@dimen/size_8dp</item>
+    </style>
+
+    <style name="Style_Info_TextView">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:drawablePadding">@dimen/size_32dp</item>
+        <item name="android:padding">@dimen/size_8dp</item>
+    </style>
+
+    <style name="Style_Settings_TextView">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">@dimen/size_80dp</item>
+        <item name="android:drawablePadding">@dimen/size_32dp</item>
+        <item name="android:padding">@dimen/size_8dp</item>
+    </style>
 </resources>

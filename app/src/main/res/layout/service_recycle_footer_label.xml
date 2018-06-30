@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/size_160dp">
+
+    <CheckBox
+        android:id="@+id/cb_service_protocal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_service_protocal"
+        android:layout_marginLeft="@dimen/size_24dp"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_service_protocal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toEndOf="@+id/cb_service_protocal"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/service_protocal" />
+
+    <Button
+        android:id="@+id/btn_service_protocal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/login_shape_corner"
+        android:layout_marginLeft="@dimen/size_24dp"
+        android:layout_marginRight="@dimen/size_24dp"
+        android:text="@string/commit_apply"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".login.LoginClassificationActivity">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <TextView
+        android:id="@+id/tv_entrepreneur"
+        android:layout_width="@dimen/size_160dp"
+        android:layout_height="@dimen/size_120dp"
+        android:gravity="center"
+        android:background="@drawable/textview_border"
+        android:text="@string/entrepreneur"
+        android:layout_marginBottom="@dimen/size_32dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_investor"
+        android:layout_width="@dimen/size_160dp"
+        android:layout_height="@dimen/size_120dp"
+        android:text="@string/investor"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center"
+        android:background="@drawable/textview_border"
+        app:layout_constraintTop_toBottomOf="@id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/size_32dp"/>
+</android.support.constraint.ConstraintLayout>

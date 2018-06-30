@@ -11,4 +11,24 @@
     <string name="more">更多</string>
     <string name="time">5-20 13:00</string>
     <string name="has_collected_at">本文已被收藏在:</string>
+    <string name="rationable_ask">我需要这个权限来打开相机或相册</string>
+    <string name="perms_denied">权限被拒绝</string>
+    <string name="failed_to_get_image">获取图片失败</string>
+    <string name="error_image">非正常图片，请重新选择或拍照上传</string>
+    <string name="bp_apply">免费BP资格申请</string>
+    <string name="base_info">基本信息</string>
+    <string name="service_protocal">申请即默认同意《BP资格申请协议》</string>
+    <string name="commit_apply">提交申请</string>
+    <string name="login_quick">立即登录</string>
+    <string name="my_notification">我的通知</string>
+    <string name="login_tips">尊享阅读,成为有身份的人</string>
+    <string name="clear_cache">清除缓存</string>
+    <string name="user_callback">用户反馈</string>
+    <string name="about_us">关于我们</string>
+    <string name="sign_up">退出登录</string>
+    <string name="wechat_sigin_in">微信登录</string>
+    <string name="entrepreneur">我是创业者</string>
+    <string name="investor">我是投资者</string>
+    <string name="interesting">感兴趣的行业或者专题</string>
+    <string name="internet_consumption">电商消费</string>
 </resources>
