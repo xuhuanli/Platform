@@ -3,6 +3,7 @@ package com.yidao.platform.container;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.view.ViewGroup;
 
 import com.yidao.platform.R;
 
@@ -27,5 +28,10 @@ public class ViewpagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         return fragmentArrayList.size();
+    }
+
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        //super.destroyItem(container, position, object);
     }
 }

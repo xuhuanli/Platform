@@ -6,9 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.multidex.MultiDex;
-import android.view.ViewGroup;
 
-import com.github.lzyzsd.jsbridge.BridgeWebView;
 import com.squareup.leakcanary.LeakCanary;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
@@ -17,7 +15,6 @@ import com.yidao.platform.container.ContainerActivity;
 
 public class MyApplicationLike extends DefaultApplicationLike {
     public static final String TAG = "Tinker.MyApplicationLike";
-    private static BridgeWebView mWebView;
 
     public MyApplicationLike(Application application, int tinkerFlags,
                              boolean tinkerLoadVerifyFlag, long applicationStartElapsedTime,
@@ -34,7 +31,6 @@ public class MyApplicationLike extends DefaultApplicationLike {
         initBugly();
         initLeakCanary();
         initLogger();
-        initWebView();
     }
 
     private void initBugly() {
@@ -70,13 +66,5 @@ public class MyApplicationLike extends DefaultApplicationLike {
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     public void registerActivityLifecycleCallback(Application.ActivityLifecycleCallbacks callbacks) {
         getApplication().registerActivityLifecycleCallbacks(callbacks);
-    }
-
-    private void initWebView() {
-        mWebView = new BridgeWebView(getApplication());
-    }
-
-    public static BridgeWebView getWebView() {
-        return mWebView;
     }
 }

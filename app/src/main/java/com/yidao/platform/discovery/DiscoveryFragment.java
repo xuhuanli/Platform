@@ -80,12 +80,6 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        clearDisposable();
-    }
-
-    @Override
     public void showImage(Bitmap bitmap, ImageView view) {
         Glide.with(this).load(bitmap).into(view);
     }
@@ -129,7 +123,6 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
                     mPresenter.setImage(bitmap, img);
                     break;
                 case REQUEST_CHOOSE_PICTURE:
-                    // TODO: 2018/6/26 0026 setImage
                     if (data != null) {
                         mPresenter.handleImage(getActivity(), data, img);
                     } else {

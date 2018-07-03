@@ -18,7 +18,7 @@ import com.yidao.platform.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-class ServiceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ServiceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     enum ITEM_TYPE {
         ITEM_TYPE_HEADER,

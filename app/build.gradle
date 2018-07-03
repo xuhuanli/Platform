@@ -31,7 +31,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        vectorDrawables.useSupportLibrary = true
         //是否要分dex
         multiDexEnabled true
 
@@ -114,9 +114,12 @@ dependencies {
     implementation 'pub.devrel:easypermissions:1.2.0'
     //数字进度条 可能会删除
     implementation 'com.daimajia.numberprogressbar:library:1.4@aar'
+
+    //badgeview
+    implementation 'cn.bingoogolapple:bga-badgeview-api:1.1.8'
+    annotationProcessor "cn.bingoogolapple:bga-badgeview-compiler:1.1.8"
     //封装太大提取的library
     implementation project(':httplibrary')
     implementation project(':bannerlibrary')
-    implementation project(':weblibrary')
     implementation project(':xrecyclerview')
 }

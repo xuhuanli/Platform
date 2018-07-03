@@ -83,7 +83,6 @@ public class SettingsActivity extends BaseActivity implements SettingsViewInterf
 
             @Override
             void onClearCacheFinished() {
-                // TODO: 2018/6/29 0029 presenter
                 initCacheTextView();
                 mHandler.postDelayed(new Runnable() {
                     @Override

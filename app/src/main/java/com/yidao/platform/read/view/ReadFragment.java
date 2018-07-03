@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.xuhuanli.androidutils.toast.ToastUtil;
@@ -86,7 +87,8 @@ public class ReadFragment extends BaseFragment {
             public Object instantiateItem(@NonNull ViewGroup container, int position) {
                 View view = LayoutInflater.from(getActivity()).inflate(R.layout.banner_layout, container, false);
                 ImageView imageView = view.findViewById(R.id.imageView);
-                imageView.setImageResource(imgRes[position]);
+                //imageView.setImageResource(imgRes[position]);
+                Glide.with(getActivity()).load(getResources().getDrawable(imgRes[position])).into(imageView);
                 TextView textView = view.findViewById(R.id.textView);
                 textView.setText("放到哈大书法家卡登仕开发和电视");
                 container.addView(view);

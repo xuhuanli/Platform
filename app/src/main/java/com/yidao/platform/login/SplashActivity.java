@@ -3,21 +3,11 @@ package com.yidao.platform.login;
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 
-import com.github.lzyzsd.jsbridge.BridgeWebView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.yidao.platform.R;
-import com.yidao.platform.app.MyApplicationLike;
-import com.yidao.platform.app.MyLogger;
-import com.yidao.platform.app.ThreadPoolManager;
 import com.yidao.platform.app.base.BaseActivity;
-import com.yidao.platform.container.ContainerActivity;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import butterknife.BindView;
 import io.reactivex.functions.Consumer;
@@ -55,7 +45,7 @@ public class SplashActivity extends BaseActivity {
                         .subscribe(new Consumer<Object>() {
                             @Override
                             public void accept(Object o) throws Exception {
-                                    startActivity(LoginClassificationActivity.class);
+                                startActivity(LoginClassificationActivity.class);
                             }
                         }));
             }

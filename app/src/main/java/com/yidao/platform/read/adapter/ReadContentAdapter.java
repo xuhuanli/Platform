@@ -2,21 +2,24 @@ package com.yidao.platform.read.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 
-import com.github.lzyzsd.jsbridge.BridgeWebView;
+import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.yidao.platform.R;
-import com.yidao.platform.app.MyApplicationLike;
+import com.yidao.platform.webview.XHLWebChromeClient;
+import com.yidao.platform.webview.XHLWebView;
+import com.yidao.platform.webview.XHLWebViewClient;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ReadContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
-    private WebView mWebView;
 
     public enum ITEM_TYPE {
         ITEM_TYPE_WEBVIEW,
@@ -28,14 +31,7 @@ public class ReadContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == ITEM_TYPE.ITEM_TYPE_WEBVIEW.ordinal()) { //加载头部webview
-            mWebView = MyApplicationLike.getWebView();
-            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            if(mWebView.getParent()!=null){
-                ((ViewGroup)mWebView.getParent()).removeView(mWebView); // <- fix
-            }
-            mWebView.setLayoutParams(layoutParams);
-            //View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.read_recycle_webview_item, parent, false);
-            return new WebViewViewHolder(mWebView);
+            return new WebViewViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_webview, parent, false));
         } else if (viewType == ITEM_TYPE.ITEM_TYPE_COLLECTION.ordinal()) { //加载收藏分类
             return new CollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.read_recycle_collection_item, parent, false));
         } else { //加载评论列表
@@ -66,29 +62,32 @@ public class ReadContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     class WebViewViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.fl)
+        FrameLayout fl_container;
+        @BindView(R.id.iv_error)
+        ImageView errorImg;
+        @BindView(R.id.number_progress_bar)
+        NumberProgressBar numberProgressBar;
+        @BindView(R.id.webview_detail)
+        XHLWebView webView;
 
         WebViewViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            if (itemView instanceof WebView) {
-                initWebView(itemView);
-            }
+            //initWebView(itemView);
+            initWebView();
         }
 
-        private void initWebView(View itemView) {
-            mWebView = (WebView) itemView;
-            WebSettings mSetting = mWebView.getSettings();
-            mSetting.setJavaScriptEnabled(true);
-            //mWebView.setWebChromeClient(new WebChromeClient());
-            //mWebView.setWebViewClient(new WebViewClient() {
-            //});
-            mWebView.loadUrl("http://news.163.com/18/0629/10/DLFBKJ920001875P.html");
+        private void initWebView() {
+            webView.setWebViewClient(new XHLWebViewClient(webView));
+            webView.setWebChromeClient(new XHLWebChromeClient(webView, numberProgressBar));
+            webView.loadUrl("http://www.edaochina.com/");
         }
     }
 
     class CollectionViewHolder extends RecyclerView.ViewHolder {
 
-        public CollectionViewHolder(View itemView) {
+        CollectionViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
@@ -96,15 +95,9 @@ public class ReadContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     class CommentViewHolder extends RecyclerView.ViewHolder {
 
-        public CommentViewHolder(View itemView) {
+        CommentViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-        }
-    }
-
-    public void removeWebView(){
-        if (mWebView != null) {
-            mWebView = null;
         }
     }
 }

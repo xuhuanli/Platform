@@ -43,10 +43,11 @@
         </activity>
         <activity
             android:name=".read.view.ReadContentActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <activity android:name=".info.view.SettingsActivity" />
         <activity android:name=".login.LoginClassificationActivity" />
-        <activity android:name=".login.LoginInterestingActivity"></activity>
+        <activity android:name=".login.LoginInterestingActivity" />
+        <activity android:name=".webview.PhotoBrowserActivity"/>
     </application>
 
 </manifest>

@@ -18,4 +18,5 @@
     <dimen name="size_64dp">64dp</dimen>
     <dimen name="size_2dp">2dp</dimen>
     <dimen name="text_size_16sp">16sp</dimen>
+    <dimen name="size_4dp">4dp</dimen>
 </resources>

@@ -38,4 +38,17 @@
         <item name="android:drawablePadding">@dimen/size_32dp</item>
         <item name="android:padding">@dimen/size_8dp</item>
     </style>
+
+    <style name="Bottom_Bar_Icon">
+        <item name="android:layout_width">@dimen/size_0dp</item>
+        <item name="android:layout_height">@dimen/size_32dp</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="BottomDialog" parent="@style/AppTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
 </resources>

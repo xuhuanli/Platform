@@ -24,17 +24,19 @@ public class LoginInterestItemAdapter extends RecyclerView.Adapter<LoginInterest
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         mContext = parent.getContext();
         View view = LayoutInflater.from(mContext).inflate(R.layout.login_interest_item, parent, false);
-        return new ItemViewHolder(view);
+        final ItemViewHolder holder = new ItemViewHolder(view);
+        holder.mIvInterestItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = holder.getAdapterPosition();
+                mContext.startActivity(new Intent(mContext, ContainerActivity.class));
+            }
+        });
+        return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-        holder.mIvInterestItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mContext.startActivity(new Intent(mContext, ContainerActivity.class));
-            }
-        });
         holder.mIvInterestItem.setText("hello");
     }
 
