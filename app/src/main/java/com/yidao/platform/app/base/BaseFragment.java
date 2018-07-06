@@ -1,7 +1,5 @@
 package com.yidao.platform.app.base;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.yidao.platform.app.MyLogger;
+import com.yidao.platform.app.utils.MyLogger;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;

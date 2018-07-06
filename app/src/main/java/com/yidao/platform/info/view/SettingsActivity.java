@@ -14,7 +14,7 @@ import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.yidao.platform.R;
 import com.yidao.platform.app.ThreadPoolManager;
-import com.yidao.platform.app.Util;
+import com.yidao.platform.app.utils.FileUtil;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.info.presenter.SettingsPresenter;
 
@@ -57,7 +57,7 @@ public class SettingsActivity extends BaseActivity implements SettingsViewInterf
         ThreadPoolManager.getInstance().addTask(new Runnable() {
             @Override
             public void run() {
-                final double cacheSize = Util.getAppCacheSize(getCacheDir()) + Util.getAppCacheSize(getExternalCacheDir());
+                final double cacheSize = FileUtil.getAppCacheSize(getCacheDir()) + FileUtil.getAppCacheSize(getExternalCacheDir());
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {

@@ -7,15 +7,13 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
-import android.view.View;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ProgressBar;
 
-import com.yidao.platform.app.MyLogger;
+import com.yidao.platform.app.utils.MyLogger;
 
 public class XHLWebViewClient extends WebViewClient {
     private XHLWebView webView;

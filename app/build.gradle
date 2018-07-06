@@ -27,7 +27,7 @@ android {
     defaultConfig {
         applicationId "com.yidao.platform"
         minSdkVersion 19
-        targetSdkVersion 27
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -88,7 +88,7 @@ dependencies {
     implementation 'com.jakewharton.rxbinding2:rxbinding-recyclerview-v7:2.1.1'
     //retrofit包含了okhttp
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.2.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.squareup.retrofit2:converter-scalars:2.2.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
     //    implementation "io.reactivex.rxjava2:rxjava:2.1.14"
@@ -118,6 +118,7 @@ dependencies {
     //badgeview
     implementation 'cn.bingoogolapple:bga-badgeview-api:1.1.8'
     annotationProcessor "cn.bingoogolapple:bga-badgeview-compiler:1.1.8"
+    //implementation 'com.github.lygttpod:RxHttpUtils:2.1.1'
     //封装太大提取的library
     implementation project(':httplibrary')
     implementation project(':bannerlibrary')

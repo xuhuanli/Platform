@@ -1,8 +1,11 @@
-package com.yidao.platform.app;
+package com.yidao.platform.app.utils;
+
+import android.content.Context;
+import android.os.Environment;
 
 import java.io.File;
 
-public class Util {
+public class FileUtil {
 
     /**
      * Gets app cache size,unit (M)
@@ -41,5 +44,24 @@ public class Util {
                 file.delete();
             }
         }
+    }
+
+    /**
+     * Gets disk cache dir.if sdcard existed , return getExternalCacheDir directory
+     * else return getCacheDir directory.
+     *
+     * @param context    the context
+     * @param uniqueName the unique name
+     * @return the disk cache dir
+     */
+    public static File getDiskCacheDir(Context context, String uniqueName) {
+        String cachePath;
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)
+                || !Environment.isExternalStorageRemovable()) {
+            cachePath = context.getExternalCacheDir().getPath();
+        } else {
+            cachePath = context.getCacheDir().getPath();
+        }
+        return new File(cachePath + File.separator + uniqueName);
     }
 }

@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 
-import com.yidao.platform.app.MyLogger;
+import com.yidao.platform.app.utils.MyLogger;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
