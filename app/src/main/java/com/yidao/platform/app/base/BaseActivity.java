@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 
+import com.allen.library.RxHttpUtils;
 import com.yidao.platform.app.utils.MyLogger;
 
 import butterknife.ButterKnife;
@@ -78,6 +79,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         clearDisposable();
+        RxHttpUtils.clearAllCompositeDisposable();
         mUnbinder.unbind();
     }
 

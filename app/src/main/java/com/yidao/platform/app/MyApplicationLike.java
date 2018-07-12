@@ -78,7 +78,7 @@ public class MyApplicationLike extends DefaultApplicationLike {
                 .Builder()
                 //全局的请求头信息
                 //.setHeaders(headerMaps)
-                .setCachePath(FileUtil.getDiskCacheDir(getAppContext(),"http_cache").getPath())
+                .setCachePath(FileUtil.getDiskCacheDir(getAppContext(), "http_cache").getPath())
                 //开启缓存策略(默认false)
                 //1、在有网络的时候，先去读缓存，缓存时间到了，再去访问网络获取数据；
                 //2、在没有网络的时候，去读缓存中的数据。

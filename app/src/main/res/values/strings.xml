@@ -8,7 +8,7 @@
     <string name="special_topic">专题</string>
     <string name="search">搜索</string>
     <string name="settings">设置</string>
-    <string name="more">更多</string>
+    <string name="more">更多...</string>
     <string name="time">5-20 13:00</string>
     <string name="has_collected_at">本文已被收藏在:</string>
     <string name="rationable_ask">我需要这个权限来打开相机或相册</string>
@@ -35,5 +35,13 @@
     <string name="cancel">取消</string>
     <string name="write_comment">写评论</string>
     <string name="send">发送</string>
-    <string name="add_comment">添加评论...</string>
+    <string name="add_comment">添加评论…</string>
+    <string name="tips">发布优质内容，你会发现一群志同道合的朋友</string>
+    <string name="friends_group">好友圈</string>
+    <string name="drifting_bottle">漂流瓶</string>
+    <string name="publish">发布</string>
+    <string name="editor_hint">记录这一刻…</string>
+    <string name="my_collection">我的收藏</string>
+    <string name="my_msg">我的消息</string>
+    <string name="my_publish">我的发布</string>
 </resources>

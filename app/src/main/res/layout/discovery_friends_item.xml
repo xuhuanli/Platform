@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_discovery_icon"
+        android:layout_width="@dimen/size_40dp"
+        android:layout_height="@dimen/dp_40"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/mypic" />
+
+    <TextView
+        android:id="@+id/tv_discovery_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintStart_toEndOf="@+id/iv_discovery_icon"
+        app:layout_constraintTop_toTopOf="@+id/iv_discovery_icon"
+        tools:text="name" />
+
+    <TextView
+        android:id="@+id/tv_discovery_content"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_discovery_icon"
+        tools:text="@string/app_name" />
+    <!---->
+    <!--<ImageView-->
+    <!--android:layout_width=""-->
+    <!--android:layout_height="" />-->
+
+    <ImageView
+        android:id="@+id/tv_discovery_reply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="@string/more"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/npl_item_moment_photos"
+        app:srcCompat="@drawable/ic_mode_comment_black_24dp" />
+
+    <TextView
+        android:id="@+id/tv_discovery_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2018-7-9 20:21"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_discovery_icon"
+        app:layout_constraintStart_toStartOf="@+id/tv_discovery_name" />
+
+    <TextView
+        android:id="@+id/tv_discovery_vote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:drawableRight="@drawable/ic_thumb_up_black_24dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="100999" />
+
+    <cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout
+        android:id="@+id/npl_item_moment_photos"
+        style="@style/MatchWrap"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:bga_npl_itemCornerRadius="0dp"
+        app:bga_npl_itemSpanCount="3"
+        app:bga_npl_itemWhiteSpacing="4dp"
+        app:bga_npl_itemWidth="0dp"
+        app:bga_npl_otherWhiteSpacing="64dp"
+        app:bga_npl_placeholderDrawable="@mipmap/bga_pp_ic_holder_light"
+        app:bga_npl_showAsLargeWhenOnlyOne="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_discovery_content" />
+</android.support.constraint.ConstraintLayout>

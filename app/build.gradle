@@ -118,9 +118,17 @@ dependencies {
     //badgeview
     implementation 'cn.bingoogolapple:bga-badgeview-api:1.1.8'
     annotationProcessor "cn.bingoogolapple:bga-badgeview-compiler:1.1.8"
+
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
+    implementation 'com.github.anzaizai:EasySwipeMenuLayout:1.1.2'
     //implementation 'com.github.lygttpod:RxHttpUtils:2.1.1'
+    implementation 'cn.bingoogolapple:bga-photopicker:1.2.8@aar'
+    implementation 'cn.bingoogolapple:bga-baseadapter:1.2.7@aar'
+    //banner 自己写的效果不怎么好看
+    implementation 'com.youth.banner:banner:1.4.10'  //最新版本
+
     //封装太大提取的library
     implementation project(':httplibrary')
-    implementation project(':bannerlibrary')
     implementation project(':xrecyclerview')
+    implementation 'com.android.support:cardview-v7:27.1.1'
 }

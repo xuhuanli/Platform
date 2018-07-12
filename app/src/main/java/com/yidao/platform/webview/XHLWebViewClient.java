@@ -62,8 +62,8 @@ public class XHLWebViewClient extends WebViewClient {
             view.getSettings().setLoadsImagesAutomatically(true);
         }
         // TODO: 2018/6/30 0030 待网页加载完全后设置图片点击的监听方法
-        view.addJavascriptInterface(new MJavascriptInterface(view.getContext()), "imagelistener");
-        addImageClickListener(view);
+        //view.addJavascriptInterface(new MJavascriptInterface(view.getContext()), "imagelistener");
+        //addImageClickListener(view);
     }
 
     @Override

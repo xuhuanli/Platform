@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.allen.library.utils.ToastUtils;
 import com.bumptech.glide.Glide;
-import com.xuhuanli.androidutils.toast.ToastUtil;
 import com.yidao.platform.R;
 import com.yidao.platform.read.view.ReadContentActivity;
 
@@ -40,8 +40,8 @@ public class ReadAdapter extends RecyclerView.Adapter<ReadAdapter.ReadViewHolder
             public void onClick(View v) {
                 //通过getAdapterPosition获取到的position有点问题 -1后显示正确
                 int position = viewHolder.getAdapterPosition();
-                String s = dataList.get(position-1);
-                ToastUtil.showShort(v.getContext(), s);
+                String s = dataList.get(position - 1);
+                ToastUtils.showToast(s);
                 Intent intent = new Intent(v.getContext(), ReadContentActivity.class);
                 v.getContext().startActivity(intent);
             }

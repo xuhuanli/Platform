@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.allen.library.RxHttpUtils;
 import com.yidao.platform.app.utils.MyLogger;
 
 import butterknife.ButterKnife;
@@ -66,6 +67,7 @@ public abstract class BaseFragment extends Fragment {
         super.onDestroy();
         isViewCreated = isUIVisible = false;
         clearDisposable();
+        RxHttpUtils.clearAllCompositeDisposable();
         mUnbinder.unbind();
     }
 

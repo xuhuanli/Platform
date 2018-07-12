@@ -1,9 +1,11 @@
 package com.yidao.platform.read.view;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,7 +18,11 @@ import android.widget.TextView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.yidao.platform.R;
 import com.yidao.platform.app.base.BaseActivity;
-import com.yidao.platform.read.adapter.ReadContentAdapter;
+import com.yidao.platform.read.adapter.MultipleReadDetailAdapter;
+import com.yidao.platform.read.adapter.ReadNewsDetailBean;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import cn.bingoogolapple.badgeview.BGABadgeImageButton;
@@ -25,7 +31,7 @@ import io.reactivex.functions.Consumer;
 public class ReadContentActivity extends BaseActivity implements View.OnClickListener {
 
     @BindView(R.id.rv_read_content)
-    RecyclerView mRVContent;
+    RecyclerView mRecyclerView;
     @BindView(R.id.tv_comment)
     TextView mTvComment;
     private EditText mEtContent;
@@ -34,11 +40,19 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     private BGABadgeImageButton ib_favorite;
     private BGABadgeImageButton ib__share;
     private BottomSheetDialog mBottomSheetDialog;
+    private MultipleReadDetailAdapter mAdapter;
+    private String url;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initData();
         initView();
+    }
+
+    private void initData() {
+        Intent intent = getIntent();
+        url = intent.getStringExtra("url");
     }
 
     private void initView() {
@@ -51,9 +65,19 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         ib_favorite.setOnClickListener(this);
         ib__share.setOnClickListener(this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        mRVContent.setLayoutManager(layoutManager);
-        ReadContentAdapter mReadContentAdapter = new ReadContentAdapter();
-        mRVContent.setAdapter(mReadContentAdapter);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+//        ReadContentAdapter mReadContentAdapter = new ReadContentAdapter();
+//        mRecyclerView.setAdapter(mReadContentAdapter);
+        List<ReadNewsDetailBean> list = new ArrayList<>();
+        list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_WEBVIEW));
+        list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_COLLECTION));
+        for (int i = 0; i < 10; i++) {
+            list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_COMMENTS));
+        }
+        mAdapter = new MultipleReadDetailAdapter(this,list);
+        mAdapter.setWebViewUrl(url);
+        mRecyclerView.setAdapter(mAdapter);
         addDisposable(RxView.clicks(mTvComment).subscribe(new Consumer<Object>() {
             @Override
             public void accept(Object o) throws Exception {

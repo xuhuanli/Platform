@@ -7,5 +7,6 @@
     <color name="colorBlack">#FF000000</color>
     <color name="colorGray">#FF645e5e</color>
     <color name="transparent">#00000000</color>
+    <color name="half_transparent">#88000000</color>
     <color name="iconCover">#cc979797</color>
 </resources>

@@ -12,14 +12,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@color/colorPrimary" />
+        app:srcCompat="@color/colorWhite" />
 
     <Button
         android:id="@+id/btn_login_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:text="@string/login_quick"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/iv_background_info"
         app:layout_constraintEnd_toEndOf="@+id/iv_background_info"
         app:layout_constraintStart_toStartOf="@+id/iv_background_info"
@@ -27,15 +27,16 @@
 
     <TextView
         android:id="@+id/tv_login_tips_info"
-        android:textSize="@dimen/text_size_16sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/login_tips"
+        android:textSize="@dimen/text_size_16sp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/tv_my_notification_info"
         app:layout_constraintEnd_toEndOf="@+id/btn_login_info"
         app:layout_constraintStart_toStartOf="@+id/btn_login_info"
         app:layout_constraintTop_toBottomOf="@+id/btn_login_info" />
+
     <Button
         android:id="@+id/btn_settings_info"
         android:layout_width="@dimen/size_32dp"
@@ -49,85 +50,169 @@
         android:id="@+id/iv_login_success_info"
         android:layout_width="@dimen/size_80dp"
         android:layout_height="@dimen/size_80dp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_background_info"
-        app:layout_constraintEnd_toEndOf="@+id/iv_background_info"
-        app:layout_constraintStart_toStartOf="@+id/iv_background_info"
-        app:layout_constraintTop_toTopOf="@+id/iv_background_info"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@drawable/a" />
 
     <TextView
         android:id="@+id/tv_login_success_name_info"
-        android:textSize="@dimen/text_size_16sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:text="@string/app_name"
-        app:layout_constraintBottom_toTopOf="@+id/tv_my_notification_info"
-        app:layout_constraintEnd_toEndOf="@+id/iv_login_success_info"
-        app:layout_constraintStart_toStartOf="@+id/iv_login_success_info"
-        app:layout_constraintTop_toBottomOf="@+id/iv_login_success_info" />
+        android:textSize="@dimen/text_size_16sp"
+        app:layout_constraintStart_toEndOf="@+id/iv_login_success_info"
+        app:layout_constraintTop_toTopOf="@+id/iv_login_success_info" />
     <!--以上是头像展示部分-->
 
     <TextView
         android:id="@+id/tv_my_notification_info"
-        android:text="@string/my_notification"
+        style="@style/Style_Info_TextView"
         android:drawableLeft="@drawable/ic_notifications_black_24dp"
         android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
+        android:text="@string/my_notification"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_background_info"
-        style="@style/Style_Info_TextView" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_background_info" />
 
-    <include layout="@layout/layout_item_divide_line"
+    <include
         android:id="@+id/include_line_1"
+        layout="@layout/layout_item_divide_line"
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_2dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_my_notification_info"/>
+        app:layout_constraintTop_toBottomOf="@id/tv_my_notification_info" />
 
     <TextView
         android:id="@+id/tv_my_publish_info"
-        android:text="@string/my_notification"
+        style="@style/Style_Info_TextView"
         android:drawableLeft="@drawable/ic_notifications_black_24dp"
         android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
+        android:text="@string/my_notification"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include_line_1"
-        style="@style/Style_Info_TextView" />
+        app:layout_constraintTop_toBottomOf="@+id/include_line_1" />
 
-    <include layout="@layout/layout_item_divide_line"
+    <include
         android:id="@+id/include_line_2"
+        layout="@layout/layout_item_divide_line"
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_2dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_my_publish_info"/>
+        app:layout_constraintTop_toBottomOf="@id/tv_my_publish_info" />
 
     <TextView
         android:id="@+id/tv_my_collection_info"
-        android:text="@string/my_notification"
+        style="@style/Style_Info_TextView"
         android:drawableLeft="@drawable/ic_notifications_black_24dp"
         android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
+        android:text="@string/my_notification"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include_line_2"
-        style="@style/Style_Info_TextView" />
+        app:layout_constraintTop_toBottomOf="@+id/include_line_2" />
 
-    <include layout="@layout/layout_item_divide_line"
+    <include
         android:id="@+id/include_line_3"
+        layout="@layout/layout_item_divide_line"
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_2dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_my_collection_info"/>
+        app:layout_constraintTop_toBottomOf="@id/tv_my_collection_info" />
+
     <TextView
         android:id="@+id/tv_my_recent_read_info"
-        android:text="@string/my_notification"
+        style="@style/Style_Info_TextView"
         android:drawableLeft="@drawable/ic_notifications_black_24dp"
         android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
+        android:text="@string/my_notification"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include_line_3"
-        style="@style/Style_Info_TextView" />
+        app:layout_constraintTop_toBottomOf="@+id/include_line_3" />
 
-    <include layout="@layout/layout_item_divide_line"
+    <include
         android:id="@+id/include_line_4"
+        layout="@layout/layout_item_divide_line"
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_2dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_my_recent_read_info"/>
+        app:layout_constraintTop_toBottomOf="@+id/tv_my_recent_read_info" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/size_8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/tv_my_notification_info"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/linearLayout2">
+
+        <TextView
+            android:id="@+id/tv_collection_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/size_8dp"
+            android:text="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/my_collection" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toRightOf="@+id/linearLayout1"
+        app:layout_constraintRight_toLeftOf="@+id/linearLayout3"
+        app:layout_constraintTop_toTopOf="@+id/linearLayout1">
+
+        <TextView
+            android:id="@+id/tv_publish_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/size_8dp"
+            android:text="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/my_publish" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toRightOf="@+id/linearLayout2"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/linearLayout2">
+
+        <TextView
+            android:id="@+id/tv_msg_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/size_8dp"
+            android:text="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/my_msg" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_Signature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_login_success_info"
+        app:layout_constraintStart_toStartOf="@+id/tv_login_success_name_info" />
+
 
 </android.support.constraint.ConstraintLayout>

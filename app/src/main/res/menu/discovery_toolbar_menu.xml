@@ -2,13 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/special_topic"
-        android:icon="@drawable/ic_assignment_black_24dp"
-        android:title="@string/special_topic"
-        app:showAsAction="ifRoom"/>
-    <item
-        android:id="@+id/search"
-        android:icon="@drawable/ic_assignment_black_24dp"
-        android:title="@string/search"
+        android:id="@+id/friends_group"
+        android:icon="@drawable/ic_insert_photo_black_24dp"
+        android:title="@string/friends_group"
         app:showAsAction="ifRoom"/>
 </menu>
