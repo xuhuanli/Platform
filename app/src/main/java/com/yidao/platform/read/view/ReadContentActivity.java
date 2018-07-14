@@ -2,6 +2,8 @@ package com.yidao.platform.read.view;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
@@ -16,8 +18,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.view.RxView;
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.yidao.platform.R;
+import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
+import com.yidao.platform.app.utils.BitmapUtil;
 import com.yidao.platform.read.adapter.MultipleReadDetailAdapter;
 import com.yidao.platform.read.adapter.ReadNewsDetailBean;
 
@@ -30,6 +39,7 @@ import io.reactivex.functions.Consumer;
 
 public class ReadContentActivity extends BaseActivity implements View.OnClickListener {
 
+    private static final int THUMB_SIZE = 150;
     @BindView(R.id.rv_read_content)
     RecyclerView mRecyclerView;
     @BindView(R.id.tv_comment)
@@ -39,13 +49,15 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     private BGABadgeImageButton ib_vote;
     private BGABadgeImageButton ib_favorite;
     private BGABadgeImageButton ib__share;
-    private BottomSheetDialog mBottomSheetDialog;
+    private BottomSheetDialog mCommentBottomSheetDialog;
     private MultipleReadDetailAdapter mAdapter;
     private String url;
+    private IWXAPI mWxapi;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        regToWX();
         initData();
         initView();
     }
@@ -66,7 +78,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         ib__share.setOnClickListener(this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 //        ReadContentAdapter mReadContentAdapter = new ReadContentAdapter();
 //        mRecyclerView.setAdapter(mReadContentAdapter);
         List<ReadNewsDetailBean> list = new ArrayList<>();
@@ -75,32 +87,32 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         for (int i = 0; i < 10; i++) {
             list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_COMMENTS));
         }
-        mAdapter = new MultipleReadDetailAdapter(this,list);
+        mAdapter = new MultipleReadDetailAdapter(this, list);
         mAdapter.setWebViewUrl(url);
         mRecyclerView.setAdapter(mAdapter);
         addDisposable(RxView.clicks(mTvComment).subscribe(new Consumer<Object>() {
             @Override
             public void accept(Object o) throws Exception {
-                showBottomSheetDialog();
+                showCommentDialog();
             }
         }));
     }
 
-    private void showBottomSheetDialog() {
-        mBottomSheetDialog = new BottomSheetDialog(this);
-        mBottomSheetDialog.setCanceledOnTouchOutside(false);
+    private void showCommentDialog() {
+        mCommentBottomSheetDialog = new BottomSheetDialog(this);
+        mCommentBottomSheetDialog.setCanceledOnTouchOutside(false);
         View view = LayoutInflater.from(this).inflate(R.layout.layout_comment_fragment_dialog, null);
         mEtContent = view.findViewById(R.id.et_comment_content);
         Button mBtnCancel = view.findViewById(R.id.btn_comment_cancel);
         Button mBtnSend = view.findViewById(R.id.btn_comment_send);
-        mBottomSheetDialog.setContentView(view);
+        mCommentBottomSheetDialog.setContentView(view);
         fillEditText();
-        mBottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-        mBottomSheetDialog.show();
+        mCommentBottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        mCommentBottomSheetDialog.show();
         mBtnCancel.setOnClickListener(this);
         mBtnSend.setOnClickListener(this);
         //when you invoke cancel() , callback to here .So  please use dialog.cancel() but not dialog.dismiss(), unless you setOnDismissListener
-        mBottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+        mCommentBottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 //when dialog cancel state write content into textview.
@@ -108,6 +120,29 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
             }
         });
     }
+
+    private void showShareDialog() {
+        BottomSheetDialog mShareBottomSheetDialog = new BottomSheetDialog(this);
+        mShareBottomSheetDialog.setCanceledOnTouchOutside(true);
+        View view = LayoutInflater.from(this).inflate(R.layout.layout_share_fragment_dialog, null);
+        mShareBottomSheetDialog.setContentView(view);
+        mShareBottomSheetDialog.show();
+        view.findViewById(R.id.iv_share_msg).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //分享到session界面
+                weChatShare(SendMessageToWX.Req.WXSceneSession);
+            }
+        });
+        view.findViewById(R.id.iv_share_group).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //分享到朋友圈
+                weChatShare(SendMessageToWX.Req.WXSceneTimeline);
+            }
+        });
+    }
+
 
     //内容回显
     private void fillEditText() {
@@ -128,6 +163,9 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.iv_back_comment_dialog:
+                finish();
+                break;
             case R.id.ib_comment: //评论icon
                 ib_comment.showTextBadge("100");
                 break;
@@ -137,16 +175,52 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
             case R.id.ib_favorite: //喜欢icon
                 break;
             case R.id.ib__share: //分享icon
+                showShareDialog();
                 break;
             case R.id.btn_comment_cancel: //评论内容cancel按钮
                 mTvComment.setText(mEtContent.getText().toString());
-                mBottomSheetDialog.cancel();
+                mCommentBottomSheetDialog.cancel();
                 break;
             case R.id.btn_comment_send: //评论内容send按钮
                 // TODO: 2018/7/3 0003  当满足发送规则时，进行访问请求if success 清空et else 发送失败 doSomething
                 mEtContent.setText("");
-                mBottomSheetDialog.cancel();
+                mCommentBottomSheetDialog.cancel();
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mCommentBottomSheetDialog != null) {
+            mCommentBottomSheetDialog.cancel();
+        }
+    }
+
+    private void weChatShare(int mTargetScene) {
+        WXWebpageObject webpage = new WXWebpageObject();
+        webpage.webpageUrl = "http://www.baidu.com";
+        WXMediaMessage msg = new WXMediaMessage(webpage);
+        msg.title = "WebPage Title WebPage Title WebPage Title WebPage Title WebPage Title WebPage Title WebPage Title WebPage Title WebPage Title Very Long Very Long Very Long Very Long Very Long Very Long Very Long Very Long Very Long Very Long";
+        msg.description = "WebPage Description WebPage Description WebPage Description WebPage Description WebPage Description WebPage Description WebPage Description WebPage Description WebPage Description Very Long Very Long Very Long Very Long Very Long Very Long Very Long";
+        Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.mypic);
+        Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, THUMB_SIZE, THUMB_SIZE, true);
+        bmp.recycle();
+        msg.thumbData = BitmapUtil.bmpToByteArray(thumbBmp, true);
+
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = buildTransaction("webpage");
+        req.message = msg;
+        req.scene = mTargetScene;
+        mWxapi.sendReq(req);
+    }
+
+    private String buildTransaction(final String type) {
+        return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
+    }
+
+    private void regToWX() {
+        mWxapi = WXAPIFactory.createWXAPI(this, Constant.WX_LOGIN_APP_ID, Constant.IS_DEBUG);
+        mWxapi.registerApp(Constant.WX_LOGIN_APP_ID);
     }
 }

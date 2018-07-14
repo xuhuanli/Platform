@@ -6,9 +6,17 @@ android {
     // 签名配置 放buildTypes上面 放下面会找不到signingConfigs
     signingConfigs {
         debug {
-            storeFile file("C:/Users/Administrator/.android/debug.keystore")
+            //storeFile file("C:/Users/Administrator/.android/debug.keystore")
+            try {
+                storeFile file("C:/Users/Administrator/.android/keystore/yidaotech.keystore")
+                storePassword "yidaotech"
+                keyAlias "yidaotech"
+                keyPassword "yidaotech"
+            } catch (ex) {
+                throw new InvalidUserDataException(ex.toString())
+            }
             v1SigningEnabled true
-            v2SigningEnabled true
+            v2SigningEnabled false
         }
         release {
             try {
@@ -20,7 +28,7 @@ android {
                 throw new InvalidUserDataException(ex.toString())
             }
             v1SigningEnabled true
-            v2SigningEnabled true
+            v2SigningEnabled false
         }
     }
 
@@ -110,6 +118,8 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
     //Glide4自带裁剪圆形function
     //implementation 'jp.wasabeef:glide-transformations:3.3.0'
+    //圆形imageview
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
     //权限
     implementation 'pub.devrel:easypermissions:1.2.0'
     //数字进度条 可能会删除
@@ -127,6 +137,8 @@ dependencies {
     //banner 自己写的效果不怎么好看
     implementation 'com.youth.banner:banner:1.4.10'  //最新版本
 
+    //implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.1.4'
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:1.1.6'
     //封装太大提取的library
     implementation project(':httplibrary')
     implementation project(':xrecyclerview')

@@ -96,7 +96,7 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
         String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
         if (EasyPermissions.hasPermissions(this, perms)) {
             // 拍照后照片的存放目录，改成你自己拍照后要存放照片的目录。如果不传递该参数的话就没有拍照功能
-            File takePhotoDir = new File(Environment.getExternalStorageDirectory(), "com.yidao" + Constant.AppName);
+            File takePhotoDir = new File(Environment.getExternalStorageDirectory(), "com.yidao.platform");
 
             Intent photoPickerIntent = new BGAPhotoPickerActivity.IntentBuilder(this)
                     .cameraFileDir(takePhotoDir) // 拍照后照片的存放目录，改成你自己拍照后要存放照片的目录。如果不传递该参数的话则不开启图库里的拍照功能

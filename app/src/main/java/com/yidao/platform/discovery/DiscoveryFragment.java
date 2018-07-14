@@ -181,7 +181,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
             app_photo.getParentFile().mkdirs();
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            uriForFile = FileProvider.getUriForFile(getActivity(), "com.yidao." + Constant.AppName + ".fileprovider", app_photo);
+            uriForFile = FileProvider.getUriForFile(getActivity(), "com.yidao.platform.fileprovider", app_photo);
         } else {
             uriForFile = Uri.fromFile(app_photo);
         }
@@ -255,10 +255,15 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
         Toast.makeText(getActivity(), "onPermissionsGranted", Toast.LENGTH_SHORT).show();
         switch (requestCode) {
             case PERM_OPEN_ALBUM:
-                mPresenter.openAlbum();
+                if (perms.size() == 2) {
+                    mPresenter.openAlbum();
+                }
                 break;
             case PERM_OPEN_CAMERA:
-                mPresenter.openCamera();
+                //Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA
+                if (perms.size() == 2){
+                    mPresenter.openCamera();
+                }
             case PERM_PREVIEW_PHOTO:
                 photoPreviewWrapper();
                 break;
@@ -306,7 +311,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
         if (mCurrentClickNpl == null) {
             return;
         }
-        File downloadDir = new File(Environment.getExternalStorageDirectory(), "com.yidao" + Constant.AppName);
+        File downloadDir = new File(Environment.getExternalStorageDirectory(), "com.yidao.platform");
         BGAPhotoPreviewActivity.IntentBuilder photoPreviewIntentBuilder = new BGAPhotoPreviewActivity.IntentBuilder(getActivity())
                 .saveImgDir(downloadDir); // 保存图片的目录，如果传 null，则没有保存图片功能
         if (mCurrentClickNpl.getItemCount() == 1) {

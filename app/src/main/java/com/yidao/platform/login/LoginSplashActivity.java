@@ -4,23 +4,35 @@ import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.jakewharton.rxbinding2.view.RxView;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.yidao.platform.R;
+import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
 
 import butterknife.BindView;
 import io.reactivex.functions.Consumer;
 
-public class SplashActivity extends BaseActivity {
+public class LoginSplashActivity extends BaseActivity {
 
     @BindView(R.id.btn_login_by_wechat)
     Button mBtnLogin;
+    private IWXAPI mWxapi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        regToWX();
         loadAnim();
+    }
+
+    private void regToWX() {
+        mWxapi = WXAPIFactory.createWXAPI(this, Constant.WX_LOGIN_APP_ID, Constant.IS_DEBUG);
+        mWxapi.registerApp(Constant.WX_LOGIN_APP_ID);
     }
 
     @Override
@@ -45,7 +57,8 @@ public class SplashActivity extends BaseActivity {
                         .subscribe(new Consumer<Object>() {
                             @Override
                             public void accept(Object o) throws Exception {
-                                startActivity(LoginClassificationActivity.class);
+                                wxLogin();
+                                //startActivity(LoginClassificationActivity.class);
                             }
                         }));
             }
@@ -60,5 +73,16 @@ public class SplashActivity extends BaseActivity {
 
             }
         });
+    }
+
+    private void wxLogin() {
+        if (!mWxapi.isWXAppInstalled()) {
+            Toast.makeText(this, "您还未安装微信客户端", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        final SendAuth.Req req = new SendAuth.Req();
+        req.scope = "snsapi_userinfo";
+        req.state = "diandi_wx_login";
+        mWxapi.sendReq(req);
     }
 }

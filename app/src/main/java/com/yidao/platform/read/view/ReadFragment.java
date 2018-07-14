@@ -2,6 +2,7 @@ package com.yidao.platform.read.view;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -51,6 +52,7 @@ public class ReadFragment extends BaseFragment {
      */
     private int mNextRequestPage = 1;
     private MultipleReadAdapter mAdapter;
+    private BottomSheetDialog mChannelBottomSheetDialog;
 
     @Override
     protected void initView() {
@@ -131,7 +133,7 @@ public class ReadFragment extends BaseFragment {
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.showToast("显示专题");
+                showChannelUI();
             }
         });
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -150,6 +152,11 @@ public class ReadFragment extends BaseFragment {
                 return false;
             }
         });
+    }
+
+    private void showChannelUI() {
+        Intent intent = new Intent(getActivity(), ItemChannelActivity.class);
+        startActivity(intent);
     }
 
     private void initBanner() {
