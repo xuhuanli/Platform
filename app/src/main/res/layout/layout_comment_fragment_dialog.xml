@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -41,6 +40,7 @@
     <EditText
         android:id="@+id/et_comment_content"
         android:layout_width="0dp"
+        android:inputType="none"
         android:layout_height="@dimen/size_80dp"
         android:background="@null"
         android:gravity="top"

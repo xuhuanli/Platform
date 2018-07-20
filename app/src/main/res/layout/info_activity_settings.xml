@@ -18,6 +18,7 @@
         android:id="@+id/rl_settings_cache_item"
         android:layout_width="match_parent"
         android:clickable="true"
+        android:focusable="true"
         android:layout_height="@dimen/size_80dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -92,7 +93,6 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_settings_about_us_item" />
 
     <Button
-        android:id="@+id/tv_settings_sign_up"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"

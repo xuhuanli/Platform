@@ -1,5 +1,6 @@
 package com.yidao.platform.read.view;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
@@ -53,6 +55,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     private MultipleReadDetailAdapter mAdapter;
     private String url;
     private IWXAPI mWxapi;
+    private BottomSheetDialog mShareBottomSheetDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,8 +82,6 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-//        ReadContentAdapter mReadContentAdapter = new ReadContentAdapter();
-//        mRecyclerView.setAdapter(mReadContentAdapter);
         List<ReadNewsDetailBean> list = new ArrayList<>();
         list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_WEBVIEW));
         list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_COLLECTION));
@@ -92,16 +93,26 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         mRecyclerView.setAdapter(mAdapter);
         addDisposable(RxView.clicks(mTvComment).subscribe(new Consumer<Object>() {
             @Override
-            public void accept(Object o) throws Exception {
+            public void accept(Object o) {
                 showCommentDialog();
             }
         }));
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                int itemViewType = adapter.getItemViewType(position);
+                if (itemViewType == ReadNewsDetailBean.ITEM_COMMENTS) {
+                    Intent intent = new Intent(ReadContentActivity.this, ReadCommentsDetailActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     private void showCommentDialog() {
         mCommentBottomSheetDialog = new BottomSheetDialog(this);
         mCommentBottomSheetDialog.setCanceledOnTouchOutside(false);
-        View view = LayoutInflater.from(this).inflate(R.layout.layout_comment_fragment_dialog, null);
+        @SuppressLint("InflateParams") View view = LayoutInflater.from(this).inflate(R.layout.layout_comment_fragment_dialog, null);
         mEtContent = view.findViewById(R.id.et_comment_content);
         Button mBtnCancel = view.findViewById(R.id.btn_comment_cancel);
         Button mBtnSend = view.findViewById(R.id.btn_comment_send);
@@ -122,9 +133,9 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void showShareDialog() {
-        BottomSheetDialog mShareBottomSheetDialog = new BottomSheetDialog(this);
+        mShareBottomSheetDialog = new BottomSheetDialog(this);
         mShareBottomSheetDialog.setCanceledOnTouchOutside(true);
-        View view = LayoutInflater.from(this).inflate(R.layout.layout_share_fragment_dialog, null);
+        @SuppressLint("InflateParams") View view = LayoutInflater.from(this).inflate(R.layout.layout_share_fragment_dialog, null);
         mShareBottomSheetDialog.setContentView(view);
         mShareBottomSheetDialog.show();
         view.findViewById(R.id.iv_share_msg).setOnClickListener(new View.OnClickListener() {
@@ -142,7 +153,6 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
             }
         });
     }
-
 
     //内容回显
     private void fillEditText() {
@@ -194,6 +204,9 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         super.onDestroy();
         if (mCommentBottomSheetDialog != null) {
             mCommentBottomSheetDialog.cancel();
+        }
+        if (mShareBottomSheetDialog != null) {
+            mShareBottomSheetDialog.cancel();
         }
     }
 

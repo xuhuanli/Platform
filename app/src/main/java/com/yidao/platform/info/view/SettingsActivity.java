@@ -14,8 +14,8 @@ import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.yidao.platform.R;
 import com.yidao.platform.app.ThreadPoolManager;
-import com.yidao.platform.app.utils.FileUtil;
 import com.yidao.platform.app.base.BaseActivity;
+import com.yidao.platform.app.utils.FileUtil;
 import com.yidao.platform.info.presenter.SettingsPresenter;
 
 import butterknife.BindView;
@@ -45,12 +45,12 @@ public class SettingsActivity extends BaseActivity implements SettingsViewInterf
     private void initView() {
         initCacheTextView();
         initToolbar();
-        RxView.clicks(mRlcache).subscribe(new Consumer<Object>() {
+        addDisposable(RxView.clicks(mRlcache).subscribe(new Consumer<Object>() {
             @Override
-            public void accept(Object o) throws Exception {
+            public void accept(Object o) {
                 clearAppCache();
             }
-        });
+        }));
     }
 
     private void initCacheTextView() {
@@ -59,6 +59,7 @@ public class SettingsActivity extends BaseActivity implements SettingsViewInterf
             public void run() {
                 final double cacheSize = FileUtil.getAppCacheSize(getCacheDir()) + FileUtil.getAppCacheSize(getExternalCacheDir());
                 mHandler.post(new Runnable() {
+                    @SuppressLint({"DefaultLocale", "SetTextI18n"})
                     @Override
                     public void run() {
                         mTvCache.setText(String.format("%.2f", cacheSize) + "M");
@@ -99,7 +100,7 @@ public class SettingsActivity extends BaseActivity implements SettingsViewInterf
         setSupportActionBar(mToolbar);
         addDisposable(RxToolbar.navigationClicks(mToolbar).subscribe(new Consumer<Object>() {
             @Override
-            public void accept(Object o) throws Exception {
+            public void accept(Object o) {
                 finish();
             }
         }));

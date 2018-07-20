@@ -43,7 +43,7 @@ public class ItemChannelActivity extends BaseActivity {
         mRecyclerView.setAdapter(adapter);
         addDisposable(RxView.clicks(mBackIB).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
             @Override
-            public void accept(Object o) throws Exception {
+            public void accept(Object o) {
                 finish();
             }
         }));

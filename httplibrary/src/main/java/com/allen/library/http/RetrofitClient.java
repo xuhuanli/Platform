@@ -1,7 +1,5 @@
 package com.allen.library.http;
 
-import android.util.Log;
-
 import com.allen.library.config.OkHttpConfig;
 import com.allen.library.gson.GsonAdapter;
 import com.allen.library.interceptor.RxHttpLogger;

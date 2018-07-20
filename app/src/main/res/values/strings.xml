@@ -1,20 +1,14 @@
 <resources>
-    <string name="app_name">Platform</string>
-    <string name="button">button</string>
+    <string name="app_name">驿道</string>
     <string name="read">阅读</string>
     <string name="discovery">发现</string>
-    <string name="service">服务</string>
-    <string name="mine">我的</string>
     <string name="special_topic">专题</string>
     <string name="search">搜索</string>
-    <string name="settings">设置</string>
-    <string name="more">更多...</string>
-    <string name="time">5-20 13:00</string>
+    <string name="more">更多…</string>
+    <string name="time">5–20 13:00</string>
     <string name="has_collected_at">本文已被收藏在:</string>
     <string name="rationable_ask">我需要这个权限来打开相机或相册</string>
-    <string name="perms_denied">权限被拒绝</string>
     <string name="failed_to_get_image">获取图片失败</string>
-    <string name="error_image">非正常图片，请重新选择或拍照上传</string>
     <string name="bp_apply">免费BP资格申请</string>
     <string name="base_info">基本信息</string>
     <string name="service_protocal">申请即默认同意《BP资格申请协议》</string>
@@ -44,4 +38,16 @@
     <string name="my_collection">我的收藏</string>
     <string name="my_msg">我的消息</string>
     <string name="my_publish">我的发布</string>
+    <string name="bottle_content_hint">今天世界发生了哪些变化？你又有了哪些观点？在这里说一说，你可以发现一群志同道合的朋友，也会有不同角度看待的小伙伴参与讨论哦！</string>
+    <string name="string_editor_detail_default_font">0/300</string>
+    <string name="bottle_base_length">/300</string>
+    <string name="want_to_be_looked">希望看到的人</string>
+    <string name="detail">详情</string>
+    <string name="my_bottle">我的瓶子</string>
+    <string name="recent_read">最近阅读</string>
+    <string name="settings">设置</string>
+    <string name="delete">删除</string>
+    <string name="comment_msg">评论消息</string>
+    <string name="bottle_msg">漂流瓶</string>
+    <string name="system_msg">系统消息</string>
 </resources>

@@ -241,6 +241,7 @@ public class ReadFragment extends BaseFragment {
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                v.performClick();
                 return false;
             }
         });

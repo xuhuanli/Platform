@@ -7,7 +7,6 @@ import android.widget.TextView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.yidao.platform.R;
 import com.yidao.platform.app.base.BaseActivity;
-import com.yidao.platform.container.ContainerActivity;
 
 import butterknife.BindView;
 import io.reactivex.functions.Consumer;
@@ -28,13 +27,13 @@ public class LoginClassificationActivity extends BaseActivity {
     private void initView() {
         addDisposable(RxView.clicks(mTvEntrepreneur).subscribe(new Consumer<Object>() {
             @Override
-            public void accept(Object o) throws Exception {
+            public void accept(Object o) {
                 startActivity(LoginInterestingActivity.class);
             }
         }));
         addDisposable(RxView.clicks(mTvInvestor).subscribe(new Consumer<Object>() {
             @Override
-            public void accept(Object o) throws Exception {
+            public void accept(Object o) {
                 startActivity(LoginInterestingActivity.class);
             }
         }));

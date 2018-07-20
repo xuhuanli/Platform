@@ -1,5 +1,7 @@
 package com.yidao.platform.discovery;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -17,12 +19,13 @@ import android.widget.PopupWindow;
 import com.allen.library.RxHttpUtils;
 import com.allen.library.interceptor.Transformer;
 import com.allen.library.observer.CommonObserver;
-import com.allen.library.utils.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.yidao.platform.R;
+import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
+import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.testpackage.bean.ApiService;
 import com.yidao.platform.testpackage.bean.TestBean;
 
@@ -34,6 +37,10 @@ import io.reactivex.functions.Consumer;
 
 public class DiscoveryDriftingBottleActivity extends BaseActivity {
 
+    /**
+     * 打开发布页请求code
+     */
+    private static final int PUSH_BOTTLE_REQUEST = 100;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.iv_discovery_push_bottle)
@@ -60,53 +67,32 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity {
         setSupportActionBar(mToolbar);
         addDisposable(RxToolbar.navigationClicks(mToolbar).subscribe(new Consumer<Object>() {
             @Override
-            public void accept(Object o) throws Exception {
+            public void accept(Object o) {
                 finish();
             }
         }));
         //Glide加载Gif来做漂流瓶动画 快速搞定
         addDisposable(RxView.clicks(mIvPushBottle).throttleFirst(1, TimeUnit.SECONDS).subscribe(new Consumer<Object>() {
             @Override
-            public void accept(Object o) throws Exception {
-                RxHttpUtils.createApi(ApiService.class)
-                        .getGod()
-                        .compose(Transformer.<TestBean>switchSchedulers())
-                        .doOnSubscribe(new Consumer<Disposable>() {
-                            @Override
-                            public void accept(Disposable disposable) throws Exception {
-                                Glide.with(DiscoveryDriftingBottleActivity.this).load(R.drawable.heimao).into(mGif);
-                            }
-                        })
-                        .subscribe(new CommonObserver() {
-                            @Override
-                            protected void onError(String errorMsg) {
-                                mGif.setImageDrawable(null);
-                            }
-
-                            @Override
-                            protected void onSuccess(Object o) {
-                                mGif.setImageDrawable(null);
-                            }
-                        });
-                ToastUtils.showToast("扔一个 clicked");
+            public void accept(Object o) {
+                Intent intent = new Intent(DiscoveryDriftingBottleActivity.this, BottlePushActivity.class);
+                startActivityForResult(intent, PUSH_BOTTLE_REQUEST);
             }
         }));
         addDisposable(RxView.clicks(mIvPullBottle).throttleFirst(1, TimeUnit.SECONDS).subscribe(new Consumer<Object>() {
             @Override
-            public void accept(Object o) throws Exception {
-                //Intent intent = new Intent(DiscoveryDriftingBottleActivity.this, DiscoveryPullBottleActivity.class);
-                //startActivity(intent);
-                //ToastUtil.showShort(DiscoveryDriftingBottleActivity.this, "捡一个 clicked");
+            public void accept(Object o) {
                 mRootView.setVisibility(View.GONE);
                 mToolbar.setVisibility(View.GONE);
-                View view = LayoutInflater.from(DiscoveryDriftingBottleActivity.this).inflate(R.layout.discovery_pull_bottle_popupwindow, null);
+                @SuppressLint("InflateParams") View view = LayoutInflater.from(DiscoveryDriftingBottleActivity.this).inflate(R.layout.discovery_pull_bottle_popupwindow, null);
                 showPopupWindow(view);
             }
         }));
         addDisposable(RxView.clicks(mIvMyBottle).throttleFirst(1, TimeUnit.SECONDS).subscribe(new Consumer<Object>() {
             @Override
-            public void accept(Object o) throws Exception {
-                ToastUtils.showToast("我的瓶子 clicked");
+            public void accept(Object o) {
+                // TODO: 2018/7/18 0018 我的瓶子详情
+                startActivity(DiscoveryMyBottleActivity.class);
             }
         }));
     }
@@ -120,13 +106,21 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity {
         mPopupWindow.setOutsideTouchable(false);
         mPopupWindow.showAtLocation(mHideLine, Gravity.TOP | Gravity.LEFT, 0, 0);
         Button backSea = view.findViewById(R.id.btn_backsea);
-        addDisposable(RxView.clicks(backSea).throttleFirst(1, TimeUnit.SECONDS).subscribe(new Consumer<Object>() {
+        addDisposable(RxView.clicks(backSea).throttleFirst(Constant.THROTTLE_TIME,TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
             @Override
-            public void accept(Object o) throws Exception {
+            public void accept(Object o) {
                 //再次加载动画
                 mRootView.setVisibility(View.VISIBLE);
                 mToolbar.setVisibility(View.VISIBLE);
                 mPopupWindow.dismiss();
+            }
+        }));
+        //回应
+        Button btnReply = view.findViewById(R.id.btn_reply);
+        addDisposable(RxView.clicks(btnReply).throttleFirst(Constant.THROTTLE_TIME,TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(Object o) throws Exception {
+                startActivity(DiscoveryBottleDetailActivity.class);
             }
         }));
     }
@@ -144,4 +138,33 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity {
         return R.layout.discovery_drifting_bottle_activity;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PUSH_BOTTLE_REQUEST && resultCode == BottlePushActivity.PUSH_SUCCESS) {
+            //漂流瓶发布请求中，添加动画效果
+            String bottleData = data.getStringExtra("data");
+            String bottleCode = data.getStringExtra("code");
+            MyLogger.d(bottleData + "  " + bottleCode);
+            RxHttpUtils.createApi(ApiService.class)
+                    .getGod()
+                    .compose(Transformer.<TestBean>switchSchedulers())
+                    .doOnSubscribe(new Consumer<Disposable>() {
+                        @Override
+                        public void accept(Disposable disposable) {
+                            Glide.with(DiscoveryDriftingBottleActivity.this).load(R.drawable.heimao).into(mGif);
+                        }
+                    })
+                    .subscribe(new CommonObserver<TestBean>() {
+                        @Override
+                        protected void onError(String errorMsg) {
+                            mGif.setImageDrawable(null);
+                        }
+
+                        @Override
+                        protected void onSuccess(TestBean testBean) {
+                            mGif.setImageDrawable(null);
+                        }
+                    });
+        }
+    }
 }

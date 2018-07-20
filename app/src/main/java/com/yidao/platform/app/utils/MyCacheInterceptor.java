@@ -1,5 +1,7 @@
 package com.yidao.platform.app.utils;
 
+import android.support.annotation.NonNull;
+
 import com.yidao.platform.app.MyApplicationLike;
 
 import java.io.IOException;
@@ -11,7 +13,7 @@ import okhttp3.Response;
 
 public class MyCacheInterceptor implements Interceptor {
     @Override
-    public Response intercept(Chain chain) throws IOException {
+    public Response intercept(@NonNull Chain chain) throws IOException {
         Request request = chain.request();
         boolean netAvailable = NetWorkUtil.isNetAvailable(MyApplicationLike.getAppContext());
         if (netAvailable) {

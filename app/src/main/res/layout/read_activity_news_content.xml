@@ -20,7 +20,7 @@
 
     <include
         android:id="@+id/comment_dialog"
-        layout="@layout/include_comment_dialog"
+        layout="@layout/include_read_comment_dialog"
         android:layout_width="0dp"
         android:layout_height="@dimen/size_56dp"
         app:layout_constraintBottom_toBottomOf="parent"

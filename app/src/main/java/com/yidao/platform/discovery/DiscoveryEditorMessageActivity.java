@@ -12,7 +12,6 @@ import android.widget.EditText;
 
 import com.allen.library.utils.ToastUtils;
 import com.yidao.platform.R;
-import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
 
 import java.io.File;

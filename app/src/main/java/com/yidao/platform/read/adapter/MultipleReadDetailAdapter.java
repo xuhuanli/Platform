@@ -37,7 +37,7 @@ public class MultipleReadDetailAdapter extends BaseMultiItemQuickAdapter<ReadNew
     protected void convert(BaseViewHolder helper, ReadNewsDetailBean item) {
         switch (item.getItemType()) {
             case ReadNewsDetailBean.ITEM_WEBVIEW:
-                XHLWebView webView = (XHLWebView)helper.getView(R.id.xhlwebview_detail);
+                XHLWebView webView = helper.getView(R.id.xhlwebview_detail);
                 webView.setWebViewClient(new XHLWebViewClient(webView));
                 webView.setWebChromeClient(new XHLWebChromeClient(webView));
                 if (url != null) {

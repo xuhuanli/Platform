@@ -26,25 +26,16 @@
         app:layout_constraintTop_toTopOf="@+id/iv_background_info" />
 
     <TextView
-        android:id="@+id/tv_login_tips_info"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/login_tips"
         android:textSize="@dimen/text_size_16sp"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/tv_my_notification_info"
+        app:layout_constraintBottom_toTopOf="@+id/tv_recent_read"
         app:layout_constraintEnd_toEndOf="@+id/btn_login_info"
         app:layout_constraintStart_toStartOf="@+id/btn_login_info"
         app:layout_constraintTop_toBottomOf="@+id/btn_login_info" />
-
-    <Button
-        android:id="@+id/btn_settings_info"
-        android:layout_width="@dimen/size_32dp"
-        android:layout_height="@dimen/size_32dp"
-        android:layout_margin="@dimen/size_8dp"
-        android:background="@drawable/ic_settings_black_24dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/iv_login_success_info"
@@ -68,11 +59,12 @@
     <!--以上是头像展示部分-->
 
     <TextView
-        android:id="@+id/tv_my_notification_info"
+        android:id="@+id/tv_recent_read"
         style="@style/Style_Info_TextView"
+        android:clickable="true"
         android:drawableLeft="@drawable/ic_notifications_black_24dp"
         android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
-        android:text="@string/my_notification"
+        android:text="@string/recent_read"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_background_info" />
@@ -82,14 +74,15 @@
         layout="@layout/layout_item_divide_line"
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_2dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_my_notification_info" />
+        app:layout_constraintTop_toBottomOf="@id/tv_recent_read" />
 
     <TextView
-        android:id="@+id/tv_my_publish_info"
+        android:id="@+id/tv_settings"
         style="@style/Style_Info_TextView"
         android:drawableLeft="@drawable/ic_notifications_black_24dp"
         android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
-        android:text="@string/my_notification"
+        android:text="@string/settings"
+        android:clickable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include_line_1" />
@@ -99,41 +92,7 @@
         layout="@layout/layout_item_divide_line"
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_2dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_my_publish_info" />
-
-    <TextView
-        android:id="@+id/tv_my_collection_info"
-        style="@style/Style_Info_TextView"
-        android:drawableLeft="@drawable/ic_notifications_black_24dp"
-        android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
-        android:text="@string/my_notification"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include_line_2" />
-
-    <include
-        android:id="@+id/include_line_3"
-        layout="@layout/layout_item_divide_line"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/size_2dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_my_collection_info" />
-
-    <TextView
-        android:id="@+id/tv_my_recent_read_info"
-        style="@style/Style_Info_TextView"
-        android:drawableLeft="@drawable/ic_notifications_black_24dp"
-        android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
-        android:text="@string/my_notification"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include_line_3" />
-
-    <include
-        android:id="@+id/include_line_4"
-        layout="@layout/layout_item_divide_line"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/size_2dp"
-        app:layout_constraintTop_toBottomOf="@+id/tv_my_recent_read_info" />
+        app:layout_constraintTop_toBottomOf="@id/tv_settings" />
 
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -141,7 +100,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/size_8dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/tv_my_notification_info"
+        app:layout_constraintBottom_toTopOf="@+id/tv_recent_read"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/linearLayout2">
@@ -207,7 +166,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/tv_Signature"
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"

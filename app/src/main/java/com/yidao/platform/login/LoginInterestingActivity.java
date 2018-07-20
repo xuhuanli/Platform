@@ -3,7 +3,6 @@ package com.yidao.platform.login;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 
 import com.yidao.platform.R;
 import com.yidao.platform.app.base.BaseActivity;

@@ -44,7 +44,9 @@ public class MyApplicationLike extends DefaultApplicationLike {
     }
 
     private void initBugly() {
-        Bugly.init(getApplication(), "59c35ade6f", Constant.IS_DEBUG);
+        //设置当前apk属于开发设备
+        //Bugly.setIsDevelopmentDevice(getAppContext(),true);
+        Bugly.init(getApplication(), Constant.BUGLY_ID, Constant.IS_DEBUG);
         Beta.canShowUpgradeActs.add(ContainerActivity.class);
     }
 

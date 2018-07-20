@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/drifting_bottle">
@@ -59,7 +58,6 @@
             app:srcCompat="@mipmap/ic_launcher" />
 
         <TextView
-            android:id="@+id/tv_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="扔一个"
@@ -69,7 +67,6 @@
             app:layout_constraintTop_toBottomOf="@+id/iv_discovery_push_bottle" />
 
         <TextView
-            android:id="@+id/tv_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="捡一个"
@@ -79,7 +76,6 @@
             app:layout_constraintTop_toBottomOf="@+id/iv_discovery_pull_bottle" />
 
         <TextView
-            android:id="@+id/tv_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="我的瓶子"

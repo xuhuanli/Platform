@@ -1,7 +1,6 @@
 package com.yidao.platform.info.view;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -11,6 +10,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.yidao.platform.R;
+import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseFragment;
 
 import java.util.concurrent.TimeUnit;
@@ -20,24 +20,29 @@ import io.reactivex.functions.Consumer;
 
 public class MyInfoFragment extends BaseFragment {
 
-    private boolean login_state = true;
-
+    @BindView(R.id.iv_background_info)
+    ImageView ivBackgroundInfo;
+    @BindView(R.id.btn_login_info)
+    Button btnLoginInfo;
+    @BindView(R.id.textView)
+    TextView textView;
     @BindView(R.id.iv_login_success_info)
-    ImageView mCircleImg;
-    @BindView(R.id.btn_settings_info)
-    Button mBtnSettings;
-    @BindView(R.id.linearLayout1)
-    LinearLayout mMyCollection;
-    @BindView(R.id.linearLayout2)
-    LinearLayout mMyPuslish;
-    @BindView(R.id.linearLayout3)
-    LinearLayout mMyMsg;
-    @BindView(R.id.tv_collection_count)
-    TextView tvCollectionCount;
-    @BindView(R.id.tv_publish_count)
-    TextView tvPublishCount;
-    @BindView(R.id.tv_msg_count)
-    TextView tvMsgCount;
+    ImageView ivLoginSuccessInfo;
+    @BindView(R.id.tv_login_success_name_info)
+    TextView tvLoginSuccessNameInfo;
+    @BindView(R.id.tv_recent_read)
+    TextView tvRecentRead;
+    @BindView(R.id.tv_settings)
+    TextView tvSettings;
+    @BindView(R.id.linearLayout1)  //我的收藏
+    LinearLayout mCollectionItem;
+    @BindView(R.id.linearLayout2)  //我的发布
+    LinearLayout mPublishItem;
+    @BindView(R.id.linearLayout3)  //我的消息
+    LinearLayout mMessageItem;
+    @BindView(R.id.textView3)
+    TextView textView3;
+    private boolean login_state = true;
 
     @Override
     protected void initView() {
@@ -45,20 +50,35 @@ public class MyInfoFragment extends BaseFragment {
             Glide.with(this)
                     .load(R.drawable.mypic)
                     .apply(RequestOptions.circleCropTransform())
-                    .into(mCircleImg);
+                    .into(ivLoginSuccessInfo);
         }
-        addDisposable(RxView.clicks(mBtnSettings).subscribe(new Consumer<Object>() {
+        addDisposable(RxView.clicks(tvSettings).subscribe(new Consumer<Object>() {
             @Override
-            public void accept(Object o) throws Exception {
+            public void accept(Object o) {
                 Intent intent = new Intent(getActivity(), SettingsActivity.class);
                 startActivity(intent);
             }
         }));
         //click 我的收藏
-        addDisposable(RxView.clicks(mMyCollection).throttleFirst(500, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
+        addDisposable(RxView.clicks(mCollectionItem).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(Object o) {
+                Intent intent = new Intent(getActivity(), InfoMyCollectionActivity.class);
+                startActivity(intent);
+            }
+        }));
+        //click 我的发布
+        addDisposable(RxView.clicks(mPublishItem).throttleFirst(Constant.THROTTLE_TIME,TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
             @Override
             public void accept(Object o) throws Exception {
-                Intent intent = new Intent(getActivity(),InfoMyCollectionActivity.class);
+                Intent intent = new Intent(getActivity(), InfoMyPublishActivity.class);
+                startActivity(intent);
+            }
+        }));
+        addDisposable(RxView.clicks(mMessageItem).throttleFirst(Constant.THROTTLE_TIME,TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(Object o) throws Exception {
+                Intent intent = new Intent(getActivity(), InfoMyMessageActivity.class);
                 startActivity(intent);
             }
         }));

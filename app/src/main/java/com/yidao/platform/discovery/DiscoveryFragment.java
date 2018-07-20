@@ -24,7 +24,6 @@ import com.allen.library.utils.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.yidao.platform.R;
-import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseFragment;
 import com.yidao.platform.app.utils.MyLogger;
 
@@ -138,7 +137,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
         //拍照function
         addDisposable(RxView.clicks(mBtnPhoto).subscribe(new Consumer<Object>() {
             @Override
-            public void accept(Object o) throws Exception {
+            public void accept(Object o) {
                 String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
                 if (EasyPermissions.hasPermissions(getActivity(), perms)) {
                     mPresenter.openCamera();
@@ -150,7 +149,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
         //相册function
         addDisposable(RxView.clicks(mBtnAlbum).subscribe(new Consumer<Object>() {
             @Override
-            public void accept(Object o) throws Exception {
+            public void accept(Object o) {
                 String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
                 if (EasyPermissions.hasPermissions(getActivity(), perms)) {
                     mPresenter.openAlbum();
@@ -162,7 +161,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
         //漂流瓶function core ，one of the most important functions
         addDisposable(RxView.clicks(mBtnBottle).subscribe(new Consumer<Object>() {
             @Override
-            public void accept(Object o) throws Exception {
+            public void accept(Object o) {
                 startActivity(new Intent(getActivity(), DiscoveryDriftingBottleActivity.class));
             }
         }));
@@ -176,12 +175,11 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     @Override
     public void openCamera() {
         app_photo = new File(Environment.getExternalStorageDirectory(), "/DCIM/Camera/" + System.currentTimeMillis() + ".jpg");
-        //File app_photo = new File(String.valueOf(getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)), System.currentTimeMillis()+".jpg");
         if (!app_photo.getParentFile().exists()) {
             app_photo.getParentFile().mkdirs();
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            uriForFile = FileProvider.getUriForFile(getActivity(), "com.yidao.platform.fileprovider", app_photo);
+            uriForFile = FileProvider.getUriForFile(getActivity(), "com.yidao.platform.file_provider", app_photo);
         } else {
             uriForFile = Uri.fromFile(app_photo);
         }
@@ -195,11 +193,6 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     @Override
     public void openAlbum() {
         choicePhotoWrapper(getActivity());
-        /*Intent openAlbumIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        openAlbumIntent.setType("image/*");
-        if (openAlbumIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            startActivityForResult(openAlbumIntent, REQUEST_CHOOSE_PICTURE);
-        }*/
     }
 
     @Override
@@ -284,7 +277,8 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
 
     @Override
     public void onRVItemClick(ViewGroup parent, View itemView, int position) {
-
+        Intent intent = new Intent(getActivity(), FriendsGroupDetailActivity.class);
+        startActivity(intent);
     }
 
     @Override

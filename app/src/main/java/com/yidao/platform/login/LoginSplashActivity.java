@@ -56,7 +56,7 @@ public class LoginSplashActivity extends BaseActivity {
                 addDisposable(RxView.clicks(mBtnLogin)
                         .subscribe(new Consumer<Object>() {
                             @Override
-                            public void accept(Object o) throws Exception {
+                            public void accept(Object o) {
                                 wxLogin();
                                 //startActivity(LoginClassificationActivity.class);
                             }

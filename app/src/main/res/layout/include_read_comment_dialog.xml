@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/size_56dp">
+
+    <ImageView
+        android:id="@+id/iv_back_comment_dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_comment"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
+
+    <TextView
+        android:id="@+id/tv_comment"
+        android:layout_width="140dp"
+        android:layout_height="36dp"
+        android:background="@drawable/shape_text_view_border"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:ems="10"
+        android:hint="@string/comment_hint"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_comment"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <cn.bingoogolapple.badgeview.BGABadgeImageButton
+        android:id="@+id/ib_comment"
+        style="@style/Bottom_Bar_Icon"
+        android:src="@drawable/loading_11"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline_comment"
+        app:layout_constraintRight_toLeftOf="@+id/ib_vote"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <cn.bingoogolapple.badgeview.BGABadgeImageButton
+        android:id="@+id/ib_vote"
+        style="@style/Bottom_Bar_Icon"
+        android:src="@drawable/loading_11"
+        app:layout_constraintBottom_toBottomOf="@+id/ib_comment"
+        app:layout_constraintLeft_toRightOf="@+id/ib_comment"
+        app:layout_constraintRight_toLeftOf="@+id/ib_favorite" />
+
+    <cn.bingoogolapple.badgeview.BGABadgeImageButton
+        android:id="@+id/ib_favorite"
+        style="@style/Bottom_Bar_Icon"
+        android:src="@drawable/loading_11"
+        app:layout_constraintBottom_toBottomOf="@+id/ib_vote"
+        app:layout_constraintLeft_toRightOf="@+id/ib_vote"
+        app:layout_constraintRight_toLeftOf="@+id/ib__share" />
+
+    <cn.bingoogolapple.badgeview.BGABadgeImageButton
+        android:id="@+id/ib__share"
+        style="@style/Bottom_Bar_Icon"
+        android:src="@drawable/loading_11"
+        app:layout_constraintBottom_toBottomOf="@+id/ib_favorite"
+        app:layout_constraintLeft_toRightOf="@+id/ib_favorite"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+</android.support.constraint.ConstraintLayout>

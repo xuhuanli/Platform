@@ -3,7 +3,6 @@ package com.allen.library.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-
 import com.allen.library.RxHttpUtils;
 
 import java.lang.reflect.InvocationTargetException;

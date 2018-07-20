@@ -26,7 +26,7 @@ public class DiscoveryPresenter {
     }
 
     public void setImage(Bitmap bitmap, ImageView imageView) {
-        view.showImage(bitmap,imageView);
+        view.showImage(bitmap, imageView);
     }
 
     public void openAlbum() {
@@ -56,8 +56,8 @@ public class DiscoveryPresenter {
         }
         if (imagePath != null) {
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-            view.showImage(bitmap,imageView);
-        }else {
+            view.showImage(bitmap, imageView);
+        } else {
             view.showToast(context.getString(R.string.failed_to_get_image));
         }
     }

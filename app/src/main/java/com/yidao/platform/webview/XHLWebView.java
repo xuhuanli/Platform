@@ -3,13 +3,8 @@ package com.yidao.platform.webview;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.ImageView;
-
-import com.daimajia.numberprogressbar.NumberProgressBar;
 
 public class XHLWebView extends WebView {
 
