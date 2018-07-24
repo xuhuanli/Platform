@@ -1,11 +1,17 @@
 package com.yidao.platform.discovery;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +19,10 @@ import android.widget.EditText;
 import com.allen.library.utils.ToastUtils;
 import com.yidao.platform.R;
 import com.yidao.platform.app.base.BaseActivity;
+import com.yidao.platform.app.utils.MyLogger;
+import com.yidao.platform.discovery.presenter.EditorMessagePresenter;
+import com.yidao.platform.discovery.view.DiscoveryEditorMessageInterface;
+import com.yidao.platform.login.view.WaitDialog;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -24,8 +34,10 @@ import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerPreviewActivity;
 import cn.bingoogolapple.photopicker.widget.BGASortableNinePhotoLayout;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
+import top.zibin.luban.Luban;
+import top.zibin.luban.OnCompressListener;
 
-public class DiscoveryEditorMessageActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks, BGASortableNinePhotoLayout.Delegate {
+public class DiscoveryEditorMessageActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks, BGASortableNinePhotoLayout.Delegate, View.OnClickListener, DiscoveryEditorMessageInterface {
 
     @BindView(R.id.btn_cancel)
     Button mBtnCancel;
@@ -40,12 +52,38 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
      * permission
      */
     private static final int PRC_PHOTO_PICKER = 1;
+    private EditorMessagePresenter mPresenter;
+    private ArrayList<String> mUpLoadPicList;
+    private static final int  NEED_COMPRESS_SIZE = 300;
+    private WaitDialog mProgressDialog;
+    private Handler mHandler = new Handler(new Handler.Callback() {
+        int uploadPicCounter = 0;
+
+        @Override
+        public boolean handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    //每上传成功1张，计数+1
+                    uploadPicCounter++;
+            }
+            //当上传成功数 == 选中图片数时，告知服务器上传成功
+            if (mUpLoadPicList.size() == uploadPicCounter) {
+                MyLogger.d("告诉服务器上传成功");
+                //重置数量
+                uploadPicCounter = 0;
+                mProgressDialog.dismiss();
+            }
+            return false;
+        }
+    });
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mPresenter = new EditorMessagePresenter(this);
         mPhotosSnpl = findViewById(R.id.snpl_moment_add_photos);
         mPhotosSnpl.setDelegate(this);
+        initView();
         String takePhotoPath = getIntent().getStringExtra("take_photo_path");
         if (takePhotoPath != null) {
             ArrayList<String> strings = new ArrayList<>();
@@ -56,6 +94,11 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
         if (choose_picture_path != null) {
             mPhotosSnpl.setData(choose_picture_path);
         }
+    }
+
+    private void initView() {
+        mBtnCancel.setOnClickListener(this);
+        mBtnPublish.setOnClickListener(this);
     }
 
     @Override
@@ -135,5 +178,64 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
         } else if (requestCode == RC_PHOTO_PREVIEW) {
             mPhotosSnpl.setData(BGAPhotoPickerPreviewActivity.getSelectedPhotos(data));
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_cancel:
+                finish();
+                break;
+            case R.id.btn_publish:
+                mProgressDialog = new WaitDialog(this);
+                mProgressDialog.setText("图片上传中...");
+                mProgressDialog.show();
+                mUpLoadPicList = mPhotosSnpl.getData();
+                if (mUpLoadPicList.size() >= 1) {
+                    for (String datum : mUpLoadPicList) {
+                        if (!needCompress(NEED_COMPRESS_SIZE, datum)) {
+                            //<300K时，直传
+                            mPresenter.uploadFile(datum, mHandler);
+                        } else {
+                            //>300K时，进行压缩处理
+                            Luban.with(this)
+                                    .load(datum)
+                                    .setTargetDir(getExternalCacheDir().getAbsolutePath())
+                                    .setCompressListener(new OnCompressListener() {
+                                        @Override
+                                        public void onStart() {
+                                        }
+
+                                        @Override
+                                        public void onSuccess(File file) {
+                                            mPresenter.uploadFile(file.getAbsolutePath(), mHandler);
+                                        }
+
+                                        @Override
+                                        public void onError(Throwable e) {
+                                            uploadPicFailed();
+                                            return;
+                                        }
+                                    })
+                                    .launch();
+                        }
+                    }
+                }
+                break;
+        }
+    }
+
+    private boolean needCompress(int leastCompressSize, String path) {
+        if (leastCompressSize > 0) {
+            File source = new File(path);
+            return source.exists() && (source.length() > (leastCompressSize << 10));
+        }
+        return true;
+    }
+
+    @Override
+    public void uploadPicFailed() {
+        mProgressDialog.dismiss();
+        ToastUtils.showToast("图片上传失败,请重试");
     }
 }

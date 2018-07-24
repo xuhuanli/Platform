@@ -50,4 +50,7 @@
     <string name="comment_msg">评论消息</string>
     <string name="bottle_msg">漂流瓶</string>
     <string name="system_msg">系统消息</string>
+    <string name="bind_phone">绑定手机号</string>
+    <string name="logining">登录中…</string>
+    <string name="search_hint">搜个关键词试试</string>
 </resources>

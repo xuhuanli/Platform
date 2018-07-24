@@ -7,6 +7,7 @@
     <color name="colorBlack">#FF000000</color>
     <color name="colorGray">#FF645e5e</color>
     <color name="transparent">#00000000</color>
+    <color name="half_transparent">#60000000</color>
 
     <color name="praise_item_default">#333333</color>
     <color name="praise_item_selector_default">#cccccc</color>

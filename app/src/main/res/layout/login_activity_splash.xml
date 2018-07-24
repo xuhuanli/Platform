@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context=".login.LoginSplashActivity">
+    tools:context=".login.view.LoginSplashActivity">
 
     <Button
         android:id="@+id/btn_login_by_wechat"

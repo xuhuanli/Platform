@@ -25,6 +25,7 @@ import com.bumptech.glide.Glide;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.yidao.platform.R;
 import com.yidao.platform.app.base.BaseFragment;
+import com.yidao.platform.app.utils.FileUtil;
 import com.yidao.platform.app.utils.MyLogger;
 
 import java.io.File;
@@ -174,7 +175,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
 
     @Override
     public void openCamera() {
-        app_photo = new File(Environment.getExternalStorageDirectory(), "/DCIM/Camera/" + System.currentTimeMillis() + ".jpg");
+        app_photo = new File(Environment.getExternalStorageDirectory(), "/DCIM/Camera/" + "IMG_"+ FileUtil.formateTime() + ".jpg");
         if (!app_photo.getParentFile().exists()) {
             app_photo.getParentFile().mkdirs();
         }

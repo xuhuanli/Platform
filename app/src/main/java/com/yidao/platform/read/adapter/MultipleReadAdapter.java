@@ -25,7 +25,8 @@ public class MultipleReadAdapter extends BaseMultiItemQuickAdapter<ReadNewsBean,
         super(data);
         this.data = data;
         this.mContext = context;
-        addItemType(ReadNewsBean.ITEM_ONE, R.layout.read_mainpage_pure_text);
+        //addItemType(ReadNewsBean.ITEM_ONE, R.layout.read_mainpage_pure_text);
+        addItemType(ReadNewsBean.ITEM_ONE, R.layout.read_mainpage_big_image);
         addItemType(ReadNewsBean.ITEM_TWO, R.layout.read_mainpage_text_image);
         addItemType(ReadNewsBean.ITEM_THREE, R.layout.read_mainpage_text_bigimage);
     }
@@ -34,10 +35,9 @@ public class MultipleReadAdapter extends BaseMultiItemQuickAdapter<ReadNewsBean,
     protected void convert(BaseViewHolder helper, ReadNewsBean item) {
         switch (item.getItemType()) {
             case ReadNewsBean.ITEM_ONE:
-                Glide.with(mContext).load(ContextCompat.getDrawable(mContext, R.drawable.mypic)).into((ImageView) helper.getView(R.id.iv_discovery_icon));
-                helper.setText(R.id.tv_discovery_name, "xhl");
-                helper.setText(R.id.tv_discovery_content, "这是内容");
-                helper.addOnClickListener(R.id.tv_discovery_reply);
+                Glide.with(mContext).load(R.drawable.a).into((ImageView) helper.getView(R.id.iv_big_image));
+                helper.setText(R.id.tv_item_name, "xhl");
+                helper.addOnClickListener(R.id.tv_item_more);
                 break;
             case ReadNewsBean.ITEM_TWO:
                 helper.setText(R.id.read_list_content, "这是内容");

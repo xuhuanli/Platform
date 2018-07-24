@@ -1,4 +1,4 @@
-package com.yidao.platform.login;
+package com.yidao.platform.login.view;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
@@ -22,10 +22,12 @@ public class LoginSplashActivity extends BaseActivity {
     @BindView(R.id.btn_login_by_wechat)
     Button mBtnLogin;
     private IWXAPI mWxapi;
+    //private WaitDialog mDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //EventBus.getDefault().register(this);
         regToWX();
         loadAnim();
     }
@@ -58,7 +60,6 @@ public class LoginSplashActivity extends BaseActivity {
                             @Override
                             public void accept(Object o) {
                                 wxLogin();
-                                //startActivity(LoginClassificationActivity.class);
                             }
                         }));
             }
@@ -85,4 +86,30 @@ public class LoginSplashActivity extends BaseActivity {
         req.state = "diandi_wx_login";
         mWxapi.sendReq(req);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //EventBus.getDefault().unregister(this);
+    }
+
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onMessageEvent() {
+//        dismissDialog();
+//    }
+
+//    @Override
+//    public void showDialog() {
+//        mDialog = new WaitDialog(this);
+//        mDialog.setText(getString(R.string.logining));
+//    }
+//
+//    @Override
+//    public void dismissDialog() {
+//        mDialog.dismiss();
+//    }
+
+//    public static class MessageEvent {
+//        //nothing
+//    }
 }

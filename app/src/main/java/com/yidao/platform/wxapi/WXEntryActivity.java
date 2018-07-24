@@ -16,10 +16,14 @@ import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.utils.MyLogger;
+import com.yidao.platform.login.LoginBindingPhoneActivity;
 import com.yidao.platform.login.LoginClassificationActivity;
+import com.yidao.platform.login.view.LoginSplashActivity;
 import com.yidao.platform.testpackage.bean.ApiService;
 import com.yidao.platform.testpackage.bean.UserDataBean;
 import com.yidao.platform.testpackage.bean.WxTokenBean;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
@@ -53,7 +57,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                     case RETURN_MSG_TYPE_LOGIN:
                         //拿到了微信返回的code,立马再去请求access_token
                         String code = ((SendAuth.Resp) baseResp).code;
-                        //就在这个地方，用网络库什么的或者自己封的网络api，发请求去咯，注意是get请求
+                        MyLogger.d("微信Code:  "+code);
                         RxHttpUtils
                                 .getSInstance()
                                 .baseUrl("https://api.weixin.qq.com/")
@@ -78,7 +82,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                                         }
                                     }
                                 });
-                        MyLogger.d(code);
                         break;
                     case RETURN_MSG_TYPE_SHARE:
                         //分享成功后结束掉回调activity
@@ -108,8 +111,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                     @Override
                     protected void onSuccess(UserDataBean userDataBean) {
                         if (userDataBean.getErrmsg() == null) {
-                            MyLogger.d(userDataBean.getHeadimgurl());
-                            Intent intent = new Intent(WXEntryActivity.this, LoginClassificationActivity.class);
+                            Intent intent = new Intent(WXEntryActivity.this, LoginBindingPhoneActivity.class);
                             startActivity(intent);
                         }
                         finish();

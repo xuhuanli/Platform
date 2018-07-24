@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -129,6 +130,7 @@ public class ReadFragment extends BaseFragment {
     }
 
     private void initToolbar() {
+        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
         mToolbar.inflateMenu(R.menu.read_toolbar_menu);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

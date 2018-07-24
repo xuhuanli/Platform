@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Environment;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 
 public class FileUtil {
 
@@ -63,5 +64,10 @@ public class FileUtil {
             cachePath = context.getCacheDir().getPath();
         }
         return new File(cachePath + File.separator + uniqueName);
+    }
+
+    public static String formateTime() {
+        SimpleDateFormat dateformat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        return dateformat.format(System.currentTimeMillis());
     }
 }
