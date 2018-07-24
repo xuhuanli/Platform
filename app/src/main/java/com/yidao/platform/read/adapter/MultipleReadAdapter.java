@@ -1,7 +1,6 @@
 package com.yidao.platform.read.adapter;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -25,10 +24,8 @@ public class MultipleReadAdapter extends BaseMultiItemQuickAdapter<ReadNewsBean,
         super(data);
         this.data = data;
         this.mContext = context;
-        //addItemType(ReadNewsBean.ITEM_ONE, R.layout.read_mainpage_pure_text);
         addItemType(ReadNewsBean.ITEM_ONE, R.layout.read_mainpage_big_image);
         addItemType(ReadNewsBean.ITEM_TWO, R.layout.read_mainpage_text_image);
-        addItemType(ReadNewsBean.ITEM_THREE, R.layout.read_mainpage_text_bigimage);
     }
 
     @Override
@@ -36,17 +33,16 @@ public class MultipleReadAdapter extends BaseMultiItemQuickAdapter<ReadNewsBean,
         switch (item.getItemType()) {
             case ReadNewsBean.ITEM_ONE:
                 Glide.with(mContext).load(R.drawable.a).into((ImageView) helper.getView(R.id.iv_big_image));
-                helper.setText(R.id.tv_item_name, "xhl");
+                Glide.with(mContext).load(R.drawable.fuhua).into((ImageView) helper.getView(R.id.iv_item_name));
+                helper.setText(R.id.tv_item_title,"那么在前面的Fragment中再显示一个子Fragment, 并且又带有一个不一样的Toolbar, 还需要哪些处理呢?\n" +
+                        "首先");
                 helper.addOnClickListener(R.id.tv_item_more);
                 break;
             case ReadNewsBean.ITEM_TWO:
-                helper.setText(R.id.read_list_content, "这是内容");
-                helper.setText(R.id.read_list_sum, "6324");
-                helper.setText(R.id.read_list_time, "2018-7-9");
-                Glide.with(mContext).load(ContextCompat.getDrawable(mContext, R.drawable.a)).into((ImageView) helper.getView(R.id.read_list_image));
-                break;
-            case ReadNewsBean.ITEM_THREE:
-                Glide.with(mContext).load(ContextCompat.getDrawable(mContext, R.drawable.a)).into((ImageView) helper.getView(R.id.iv_big_pic));
+                helper.setText(R.id.read_list_content, "状态栏布局和图标挺像Android,但是这白底黑字Android设计规范里可没有啊，于是我们开发的时候果断忽视这个状态栏了（当时大部分用户")
+                        .setText(R.id.tv_read_count, "12121阅读")
+                        .setText(R.id.tv_news_time, "6小时前");
+                Glide.with(mContext).load(R.drawable.mypic).into((ImageView) helper.getView(R.id.read_list_image));
                 break;
         }
     }

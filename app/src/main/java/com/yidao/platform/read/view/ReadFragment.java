@@ -9,16 +9,16 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.allen.library.RxHttpUtils;
 import com.allen.library.interceptor.Transformer;
 import com.allen.library.observer.CommonObserver;
 import com.allen.library.utils.ToastUtils;
-import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.yidao.platform.R;
+import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseFragment;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.read.adapter.MultipleReadAdapter;
@@ -30,8 +30,10 @@ import com.youth.banner.BannerConfig;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
+import io.reactivex.functions.Consumer;
 
 public class ReadFragment extends BaseFragment {
 
@@ -43,7 +45,10 @@ public class ReadFragment extends BaseFragment {
     RecyclerView mRecyclerView;
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    int[] imgRes = {R.drawable.a, R.drawable.b, R.drawable.c};
+    @BindView(R.id.iv_select_item)
+    ImageView mSelectItem;
+    @BindView(R.id.et_search)
+    EditText mSearchView;
     /**
      * 一页默认的条数
      */
@@ -65,12 +70,8 @@ public class ReadFragment extends BaseFragment {
 
     private void initSwipeRefreshLayout() {
         mSwipeRefreshLayout.setColorSchemeColors(Color.rgb(47, 223, 189));
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refresh();
-            }
-        });
+        mSwipeRefreshLayout.setOnRefreshListener(() -> refresh());
+        //进去的时候就刷新一次
         refresh();
     }
 
@@ -131,29 +132,12 @@ public class ReadFragment extends BaseFragment {
 
     private void initToolbar() {
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
-        mToolbar.inflateMenu(R.menu.read_toolbar_menu);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        addDisposable(RxView.clicks(mSelectItem).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
             @Override
-            public void onClick(View v) {
+            public void accept(Object o) throws Exception {
                 showChannelUI();
             }
-        });
-        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.special_topic:
-                        ToastUtils.showToast("阅读");
-                        break;
-                    case R.id.search:
-                        ToastUtils.showToast("搜索");
-                        break;
-                    default:
-                        break;
-                }
-                return false;
-            }
-        });
+        }));
     }
 
     private void showChannelUI() {
@@ -200,25 +184,24 @@ public class ReadFragment extends BaseFragment {
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         List<ReadNewsBean> list = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 10; i++) {
             list.add(new ReadNewsBean(ReadNewsBean.ITEM_ONE));
             list.add(new ReadNewsBean(ReadNewsBean.ITEM_TWO));
-            list.add(new ReadNewsBean(ReadNewsBean.ITEM_THREE));
         }
         mAdapter = new MultipleReadAdapter(getActivity(), list);
-        mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-            @Override
-            public void onLoadMoreRequested() {
-                loadMore();
+        mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
+        mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+            switch (view.getId()) {
+                case R.id.tv_item_more:
+                    Intent intent = new Intent(getActivity(), ReadItemMoreActivity.class);
+                    startActivity(intent);
+                    break;
             }
-        }, mRecyclerView);
-        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent = new Intent(getActivity(), ReadContentActivity.class);
-                intent.putExtra("url", "http://news.163.com/");
-                startActivity(intent);
-            }
+        });
+        mAdapter.setOnItemClickListener((adapter, view, position) -> {
+            Intent intent = new Intent(getActivity(), ReadContentActivity.class);
+            intent.putExtra("url", "http://news.163.com/");
+            startActivity(intent);
         });
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -237,15 +220,5 @@ public class ReadFragment extends BaseFragment {
 
     private void loadMore() {
         // TODO: 2018/7/9 0009 加载更多
-    }
-
-    private void onTouchViewPager(View view, int position) {
-        view.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                v.performClick();
-                return false;
-            }
-        });
     }
 }

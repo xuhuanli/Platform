@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     android:paddingRight="@dimen/size_16dp"
     android:paddingLeft="@dimen/size_16dp"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context=".container.ContainerActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -29,6 +31,7 @@
 
 
             <ImageView
+                android:id="@+id/iv_select_item"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
@@ -40,6 +43,7 @@
     <EditText
         android:id="@+id/et_search"
         android:layout_width="0dp"
+        android:cursorVisible="false"
         android:layout_height="@dimen/dp_36"
         android:layout_marginTop="@dimen/size_10dp"
         android:hint="@string/search_hint"
@@ -64,6 +68,7 @@
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/size_16dp"
         android:layout_marginBottom="@dimen/app_navigation_height"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -73,7 +78,6 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycleview"
-            android:layout_marginTop="@dimen/size_16dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </android.support.v4.widget.SwipeRefreshLayout>

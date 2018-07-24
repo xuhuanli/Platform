@@ -69,6 +69,7 @@
         <activity android:name=".info.view.InfoMyMessageActivity" />
         <activity android:name=".read.view.ReadCommentsDetailActivity" />
         <activity android:name=".login.LoginBindingPhoneActivity" />
+        <activity android:name=".read.view.ReadItemMoreActivity" />
         <!--<activity android:name=".discovery.DiscoveryPullBottleActivity" />-->
 
         <!--相册的fileProvider-->

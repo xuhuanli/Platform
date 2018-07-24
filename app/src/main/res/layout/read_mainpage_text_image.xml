@@ -3,45 +3,68 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cl_rootview"
-    android:padding="@dimen/size_8dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/read_list_content"
-        android:layout_width="@dimen/size_240dp"
-        android:layout_height="@dimen/size_80dp"
-        android:layout_margin="@dimen/size_8dp"
-        tools:text="@string/app_name"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_width="0dp"
+        android:layout_height="42dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="16dp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        app:layout_constraintEnd_toStartOf="@+id/read_list_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="状态栏布局和图标挺像Android,但是这白底黑字Android设计规范里可没有啊，于是我们开发的时候果断忽视这个状态栏了（当时大部分用户" />
 
     <ImageView
         android:id="@+id/read_list_image"
-        android:layout_width="@dimen/size_80dp"
-        android:layout_height="@dimen/size_80dp"
-        android:layout_marginLeft="@dimen/size_24dp"
-        android:layout_marginTop="@dimen/size_8dp"
-        app:layout_constraintLeft_toRightOf="@+id/read_list_content"
+        android:layout_width="112dp"
+        android:layout_height="112dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/read_list_time"
+    <ImageView
+        android:id="@+id/iv_hot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="@string/time"
-        android:layout_marginTop="@dimen/size_8dp"
-        app:layout_constraintEnd_toEndOf="@+id/read_list_image"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/read_list_image" />
+        app:layout_constraintBottom_toBottomOf="@+id/tv_read_count"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_read_count"
+        app:srcCompat="@drawable/hot" />
 
     <TextView
-        android:id="@+id/read_list_sum"
+        android:id="@+id/tv_read_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/size_8dp"
-        android:drawableLeft="@drawable/ic_assignment_late_black_24dp"
-        app:layout_constraintStart_toStartOf="@+id/read_list_content"
-        app:layout_constraintTop_toBottomOf="@+id/read_list_content"
-        tools:text="1111" />
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_hot"
+        tools:text="321阅" />
+
+    <View
+        android:id="@+id/point"
+        android:layout_width="2dp"
+        android:layout_height="2dp"
+        android:layout_marginLeft="4dp"
+        android:background="@color/colorBlack"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_read_count"
+        app:layout_constraintLeft_toRightOf="@+id/tv_read_count"
+        app:layout_constraintRight_toLeftOf="@+id/tv_news_time"
+        app:layout_constraintTop_toTopOf="@+id/tv_read_count" />
+
+    <TextView
+        android:id="@+id/tv_news_time"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/tv_read_count"
+        app:layout_constraintLeft_toRightOf="@+id/point"
+        tools:text="4小时前" />
+
 </android.support.constraint.ConstraintLayout>
