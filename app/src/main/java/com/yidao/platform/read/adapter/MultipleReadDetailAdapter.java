@@ -2,7 +2,6 @@ package com.yidao.platform.read.adapter;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
-import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
@@ -13,6 +12,8 @@ import com.yidao.platform.webview.XHLWebView;
 import com.yidao.platform.webview.XHLWebViewClient;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MultipleReadDetailAdapter extends BaseMultiItemQuickAdapter<ReadNewsDetailBean, BaseViewHolder> {
 
@@ -29,8 +30,9 @@ public class MultipleReadDetailAdapter extends BaseMultiItemQuickAdapter<ReadNew
         super(data);
         mContext = context;
         addItemType(ReadNewsDetailBean.ITEM_WEBVIEW, R.layout.read_detail_webview_item);
-        addItemType(ReadNewsDetailBean.ITEM_COLLECTION, R.layout.read_detail_collection_item);
+        addItemType(ReadNewsDetailBean.ITEM_HOT_COMMENT, R.layout.read_detail_collection_item);
         addItemType(ReadNewsDetailBean.ITEM_COMMENTS, R.layout.read_detail_comment_item);
+        addItemType(ReadNewsDetailBean.ITEM_BOTTOM, R.layout.read_detail_bottom_item);
     }
 
     @Override
@@ -44,15 +46,14 @@ public class MultipleReadDetailAdapter extends BaseMultiItemQuickAdapter<ReadNew
                     webView.loadUrl(url);
                 }
                 break;
-            case ReadNewsDetailBean.ITEM_COLLECTION:
+            case ReadNewsDetailBean.ITEM_HOT_COMMENT:
                 break;
             case ReadNewsDetailBean.ITEM_COMMENTS:
-                Glide.with(mContext).load(ContextCompat.getDrawable(mContext, R.drawable.mypic)).into((ImageView) helper.getView(R.id.iv_detail_icon));
+                Glide.with(mContext).load(ContextCompat.getDrawable(mContext, R.drawable.mypic)).into((CircleImageView) helper.getView(R.id.iv_detail_icon));
                 helper.setText(R.id.tv_detail_name, "xhl");
                 helper.setText(R.id.tv_detail_comment, "好，支持，威武，有希望了");
                 helper.setText(R.id.tv_detail_vote, "100");
-                helper.setText(R.id.tv_detail_time, "2018-7-9 16:03");
-                helper.setText(R.id.tv_detail_reply, "...");
+                helper.setText(R.id.tv_detail_time, "10分钟前");
                 break;
         }
     }

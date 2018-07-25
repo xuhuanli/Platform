@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.allen.library.utils.ToastUtils;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
@@ -37,7 +38,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import cn.bingoogolapple.badgeview.BGABadgeImageButton;
-import io.reactivex.functions.Consumer;
 
 public class ReadContentActivity extends BaseActivity implements View.OnClickListener {
 
@@ -74,7 +74,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         ib_comment = findViewById(R.id.ib_comment);
         ib_vote = findViewById(R.id.ib_vote);
         ib_favorite = findViewById(R.id.ib_favorite);
-        ib__share = findViewById(R.id.ib__share);
+        ib__share = findViewById(R.id.ib_share);
         ib_comment.setOnClickListener(this);
         ib_vote.setOnClickListener(this);
         ib_favorite.setOnClickListener(this);
@@ -84,29 +84,38 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         List<ReadNewsDetailBean> list = new ArrayList<>();
         list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_WEBVIEW));
-        list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_COLLECTION));
         for (int i = 0; i < 10; i++) {
             list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_COMMENTS));
         }
+        list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_BOTTOM));
         mAdapter = new MultipleReadDetailAdapter(this, list);
         mAdapter.setWebViewUrl(url);
         mRecyclerView.setAdapter(mAdapter);
-        addDisposable(RxView.clicks(mTvComment).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) {
-                showCommentDialog();
-            }
-        }));
-        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                int itemViewType = adapter.getItemViewType(position);
-                if (itemViewType == ReadNewsDetailBean.ITEM_COMMENTS) {
-                    Intent intent = new Intent(ReadContentActivity.this, ReadCommentsDetailActivity.class);
-                    startActivity(intent);
-                }
+        addDisposable(RxView.clicks(mTvComment).subscribe(o -> showCommentDialog()));
+        mAdapter.setOnItemClickListener((adapter, view, position) -> {
+            int itemViewType = adapter.getItemViewType(position);
+            if (itemViewType == ReadNewsDetailBean.ITEM_COMMENTS) {
+                Intent intent = new Intent(ReadContentActivity.this, ReadCommentsDetailActivity.class);
+                startActivity(intent);
             }
         });
+        mAdapter.setOnItemLongClickListener((adapter, view, position) -> {
+            int itemViewType = adapter.getItemViewType(position);
+            // TODO: 2018/7/25 0025 还需要判断是否为本人评论 ignored
+            if (itemViewType == ReadNewsDetailBean.ITEM_COMMENTS) {
+                showAlertDialog(R.string.ensure_delete, (dialog, which) -> ToastUtils.showToast("删除"), (dialog, which) -> dialog.dismiss());
+            }
+            return false;
+        });
+    }
+
+    private void showAlertDialog(int messageId, DialogInterface.OnClickListener positiveListener, DialogInterface.OnClickListener negativeListener) {
+        AlertDialog alertDialog = new AlertDialog.Builder(ReadContentActivity.this)
+                .setMessage(messageId)
+                .setPositiveButton(R.string.ensure, positiveListener)
+                .setNegativeButton(R.string.cancel, negativeListener)
+                .create();
+        alertDialog.show();
     }
 
     private void showCommentDialog() {
@@ -123,12 +132,9 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         mBtnCancel.setOnClickListener(this);
         mBtnSend.setOnClickListener(this);
         //when you invoke cancel() , callback to here .So  please use dialog.cancel() but not dialog.dismiss(), unless you setOnDismissListener
-        mCommentBottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                //when dialog cancel state write content into textview.
-                mTvComment.setText(mEtContent.getText().toString());
-            }
+        mCommentBottomSheetDialog.setOnCancelListener(dialog -> {
+            //when dialog cancel state write content into textview.
+            mTvComment.setText(mEtContent.getText().toString());
         });
     }
 
@@ -138,19 +144,16 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         @SuppressLint("InflateParams") View view = LayoutInflater.from(this).inflate(R.layout.layout_share_fragment_dialog, null);
         mShareBottomSheetDialog.setContentView(view);
         mShareBottomSheetDialog.show();
-        view.findViewById(R.id.iv_share_msg).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //分享到session界面
-                weChatShare(SendMessageToWX.Req.WXSceneSession);
-            }
+        view.findViewById(R.id.iv_share_msg).setOnClickListener(v -> {
+            //分享到session界面
+            weChatShare(SendMessageToWX.Req.WXSceneSession);
         });
-        view.findViewById(R.id.iv_share_group).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //分享到朋友圈
-                weChatShare(SendMessageToWX.Req.WXSceneTimeline);
-            }
+        view.findViewById(R.id.iv_share_group).setOnClickListener(v -> {
+            //分享到朋友圈
+            weChatShare(SendMessageToWX.Req.WXSceneTimeline);
+        });
+        view.findViewById(R.id.tv_cancel).setOnClickListener(v -> {
+            mShareBottomSheetDialog.cancel();
         });
     }
 
@@ -184,7 +187,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.ib_favorite: //喜欢icon
                 break;
-            case R.id.ib__share: //分享icon
+            case R.id.ib_share: //分享icon
                 showShareDialog();
                 break;
             case R.id.btn_comment_cancel: //评论内容cancel按钮

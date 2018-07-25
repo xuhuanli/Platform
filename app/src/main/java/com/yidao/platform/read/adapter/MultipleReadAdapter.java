@@ -32,8 +32,9 @@ public class MultipleReadAdapter extends BaseMultiItemQuickAdapter<ReadNewsBean,
     protected void convert(BaseViewHolder helper, ReadNewsBean item) {
         switch (item.getItemType()) {
             case ReadNewsBean.ITEM_ONE:
+                helper.setImageResource(R.id.iv_item_name,R.drawable.hulianwang);
                 Glide.with(mContext).load(R.drawable.a).into((ImageView) helper.getView(R.id.iv_big_image));
-                Glide.with(mContext).load(R.drawable.fuhua).into((ImageView) helper.getView(R.id.iv_item_name));
+                //Glide.with(mContext).load(R.drawable.fuhua).into((ImageView) helper.getView(R.id.iv_item_name));
                 helper.setText(R.id.tv_item_title,"那么在前面的Fragment中再显示一个子Fragment, 并且又带有一个不一样的Toolbar, 还需要哪些处理呢?\n" +
                         "首先");
                 helper.addOnClickListener(R.id.tv_item_more);

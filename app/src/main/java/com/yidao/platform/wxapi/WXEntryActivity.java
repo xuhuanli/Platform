@@ -58,7 +58,10 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                         //拿到了微信返回的code,立马再去请求access_token
                         String code = ((SendAuth.Resp) baseResp).code;
                         MyLogger.d("微信Code:  "+code);
-                        RxHttpUtils
+                        //test
+                        Intent intent = new Intent(WXEntryActivity.this, LoginBindingPhoneActivity.class);
+                        startActivity(intent);
+                        /*RxHttpUtils
                                 .getSInstance()
                                 .baseUrl("https://api.weixin.qq.com/")
                                 .createSApi(ApiService.class)
@@ -81,7 +84,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                                             requestUserInfo(access_token, openid);
                                         }
                                     }
-                                });
+                                });*/
                         break;
                     case RETURN_MSG_TYPE_SHARE:
                         //分享成功后结束掉回调activity

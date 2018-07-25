@@ -27,6 +27,7 @@
     <string name="internet_consumption">电商消费</string>
     <string name="comment_hint">说点什么吧</string>
     <string name="cancel">取消</string>
+    <string name="ensure">确定</string>
     <string name="write_comment">写评论</string>
     <string name="send">发送</string>
     <string name="add_comment">添加评论…</string>
@@ -53,4 +54,9 @@
     <string name="bind_phone">绑定手机号</string>
     <string name="logining">登录中…</string>
     <string name="search_hint">搜个关键词试试</string>
+    <string name="hot_comments">热门评论</string>
+    <string name="no_more_comments">没有更多留言了</string>
+    <string name="wx_friends">微信好友</string>
+    <string name="wx_pyq">朋友圈</string>
+    <string name="ensure_delete">确定删除?</string>
 </resources>

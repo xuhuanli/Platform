@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_marginTop="16dp"
     android:layout_height="wrap_content">
 
 
@@ -10,7 +11,7 @@
         android:id="@+id/tv_item_more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableRight="@drawable/jiantou_right"
+        android:drawableRight="@drawable/read_more_arrow"
         android:gravity="center"
         android:text="@string/more"
         app:layout_constraintEnd_toEndOf="parent"

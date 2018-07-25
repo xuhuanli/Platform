@@ -183,7 +183,7 @@ dependencies {
 
     //封装太大提取的library
     implementation project(':httplibrary')
-    implementation project(':xrecyclerview')
+    //implementation project(':xrecyclerview')
     implementation 'com.android.support:cardview-v7:27.1.1'
 
     //oss
@@ -193,5 +193,5 @@ dependencies {
     implementation 'top.zibin:Luban:1.1.8'
 
     //状态栏
-    implementation 'com.readystatesoftware.systembartint:systembartint:1.0.3'
+    //implementation 'com.readystatesoftware.systembartint:systembartint:1.0.3'
 }

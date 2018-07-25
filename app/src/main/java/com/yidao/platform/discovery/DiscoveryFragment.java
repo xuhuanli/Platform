@@ -10,11 +10,11 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -42,7 +42,6 @@ import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
 import cn.bingoogolapple.photopicker.imageloader.BGARVOnScrollListener;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
-import io.reactivex.functions.Consumer;
 import pub.devrel.easypermissions.EasyPermissions;
 
 import static android.app.Activity.RESULT_OK;
@@ -79,6 +78,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new MomentAdapter(mRecyclerView);
         setDataToAdapter();
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnRVItemClickListener(this);
         mAdapter.setOnRVItemLongClickListener(this);
@@ -111,20 +111,17 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     private void initToolbar() {
         mToolbar.inflateMenu(R.menu.discovery_toolbar_menu);
         mToolbar.setTitle(R.string.discovery);
-        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.friends_group:
-                        Intent intent = new Intent(getActivity(), DiscoveryEditorMessageActivity.class);
-                        startActivity(intent);
-                        ToastUtils.showToast("好友圈");
-                        break;
-                    default:
-                        break;
-                }
-                return false;
+        mToolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.friends_group:
+                    Intent intent = new Intent(getActivity(), DiscoveryEditorMessageActivity.class);
+                    startActivity(intent);
+                    ToastUtils.showToast("好友圈");
+                    break;
+                default:
+                    break;
             }
+            return false;
         });
     }
 
@@ -136,36 +133,25 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     @Override
     protected void initData() {
         //拍照function
-        addDisposable(RxView.clicks(mBtnPhoto).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) {
-                String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
-                if (EasyPermissions.hasPermissions(getActivity(), perms)) {
-                    mPresenter.openCamera();
-                } else {
-                    EasyPermissions.requestPermissions(DiscoveryFragment.this, getString(R.string.rationable_ask), PERM_OPEN_CAMERA, perms);
-                }
+        addDisposable(RxView.clicks(mBtnPhoto).subscribe(o -> {
+            String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+            if (EasyPermissions.hasPermissions(getActivity(), perms)) {
+                mPresenter.openCamera();
+            } else {
+                EasyPermissions.requestPermissions(DiscoveryFragment.this, getString(R.string.rationable_ask), PERM_OPEN_CAMERA, perms);
             }
         }));
         //相册function
-        addDisposable(RxView.clicks(mBtnAlbum).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) {
-                String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
-                if (EasyPermissions.hasPermissions(getActivity(), perms)) {
-                    mPresenter.openAlbum();
-                } else {
-                    EasyPermissions.requestPermissions(DiscoveryFragment.this, getString(R.string.rationable_ask), PERM_OPEN_ALBUM, perms);
-                }
+        addDisposable(RxView.clicks(mBtnAlbum).subscribe(o -> {
+            String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+            if (EasyPermissions.hasPermissions(getActivity(), perms)) {
+                mPresenter.openAlbum();
+            } else {
+                EasyPermissions.requestPermissions(DiscoveryFragment.this, getString(R.string.rationable_ask), PERM_OPEN_ALBUM, perms);
             }
         }));
         //漂流瓶function core ，one of the most important functions
-        addDisposable(RxView.clicks(mBtnBottle).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) {
-                startActivity(new Intent(getActivity(), DiscoveryDriftingBottleActivity.class));
-            }
-        }));
+        addDisposable(RxView.clicks(mBtnBottle).subscribe(o -> startActivity(new Intent(getActivity(), DiscoveryDriftingBottleActivity.class))));
     }
 
     @Override
@@ -175,7 +161,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
 
     @Override
     public void openCamera() {
-        app_photo = new File(Environment.getExternalStorageDirectory(), "/DCIM/Camera/" + "IMG_"+ FileUtil.formateTime() + ".jpg");
+        app_photo = new File(Environment.getExternalStorageDirectory(), "/DCIM/Camera/" + "IMG_" + FileUtil.formateTime() + ".jpg");
         if (!app_photo.getParentFile().exists()) {
             app_photo.getParentFile().mkdirs();
         }
@@ -255,7 +241,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
                 break;
             case PERM_OPEN_CAMERA:
                 //Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA
-                if (perms.size() == 2){
+                if (perms.size() == 2) {
                     mPresenter.openCamera();
                 }
             case PERM_PREVIEW_PHOTO:
@@ -306,7 +292,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
         if (mCurrentClickNpl == null) {
             return;
         }
-        File downloadDir = new File(Environment.getExternalStorageDirectory(), "com.yidao.platform");
+        File downloadDir = new File(Environment.getExternalStorageDirectory(), "yidao");
         BGAPhotoPreviewActivity.IntentBuilder photoPreviewIntentBuilder = new BGAPhotoPreviewActivity.IntentBuilder(getActivity())
                 .saveImgDir(downloadDir); // 保存图片的目录，如果传 null，则没有保存图片功能
         if (mCurrentClickNpl.getItemCount() == 1) {
@@ -328,6 +314,10 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
 
         @Override
         protected void fillData(BGAViewHolderHelper helper, int position, Moment moment) {
+            helper.setImageResource(R.id.iv_discovery_icon, R.drawable.mypic);
+            helper.setText(R.id.tv_discovery_name,"xhl")
+                    .setText(R.id.tv_discovery_time,"10分钟前")
+                    .setText(R.id.tv_discovery_vote,"1000");
             if (TextUtils.isEmpty(moment.content)) {
                 helper.setVisibility(R.id.tv_discovery_content, View.GONE);
             } else {

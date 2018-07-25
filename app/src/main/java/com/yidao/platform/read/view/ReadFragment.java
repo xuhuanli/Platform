@@ -47,8 +47,6 @@ public class ReadFragment extends BaseFragment {
     SwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.iv_select_item)
     ImageView mSelectItem;
-    @BindView(R.id.et_search)
-    EditText mSearchView;
     /**
      * 一页默认的条数
      */
