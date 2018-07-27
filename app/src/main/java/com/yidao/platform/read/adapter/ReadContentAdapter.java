@@ -2,15 +2,12 @@ package com.yidao.platform.read.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 
-import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.yidao.platform.R;
 import com.yidao.platform.webview.XHLWebChromeClient;
 import com.yidao.platform.webview.XHLWebView;
@@ -31,11 +28,11 @@ public class ReadContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == ITEM_TYPE.ITEM_TYPE_WEBVIEW.ordinal()) { //加载头部webview
-            return new WebViewViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_webview, parent, false));
+            return new WebViewViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.read_detail_webview_item, parent, false));
         } else if (viewType == ITEM_TYPE.ITEM_TYPE_COLLECTION.ordinal()) { //加载收藏分类
-            return new CollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.read_recycle_collection_item, parent, false));
+            return new CollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.read_detail_collection_item, parent, false));
         } else { //加载评论列表
-            return new CommentViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.read_recycle_comment_item, parent, false));
+            return new CommentViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.read_detail_comment_item, parent, false));
         }
     }
 
@@ -66,9 +63,7 @@ public class ReadContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         FrameLayout fl_container;
         @BindView(R.id.iv_error)
         ImageView errorImg;
-        @BindView(R.id.number_progress_bar)
-        NumberProgressBar numberProgressBar;
-        @BindView(R.id.webview_detail)
+        @BindView(R.id.xhlwebview_detail)
         XHLWebView webView;
 
         WebViewViewHolder(View itemView) {
@@ -80,7 +75,7 @@ public class ReadContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         private void initWebView() {
             webView.setWebViewClient(new XHLWebViewClient(webView));
-            webView.setWebChromeClient(new XHLWebChromeClient(webView, numberProgressBar));
+            webView.setWebChromeClient(new XHLWebChromeClient(webView));
             webView.loadUrl("http://www.edaochina.com/");
         }
     }

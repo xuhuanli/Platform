@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MsgText">
+        <attr name="msg_text_category" format="string" />
+        <attr name="msg_text_count" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="PraiseListView">
+        <attr name="item_color" format="color"/>
+        <attr name="item_selector_color" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="ExpandTextView">
+        <attr name="showLines" format="integer"/>
+    </declare-styleable>
+
+    <declare-styleable name="CustomTextView">
+        <attr name="key" format="string"/>
+        <attr name="keySize" format="dimension"/>
+        <attr name="keyColor" format="color"/>
+        <attr name="value" format="string"/>
+        <attr name="valueSize" format="dimension"/>
+        <attr name="valueColor" format="color"/>
+    </declare-styleable>
+</resources>

@@ -19,7 +19,24 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+#bugly
 -dontwarn com.tencent.bugly.**
 -keep public class com.tencent.bugly.**{*;}
 
  -keep class android.support.**{*;}
+
+#bravh
+-keep class com.chad.library.adapter.** {
+*;
+}
+-keep public class * extends com.chad.library.adapter.base.BaseQuickAdapter
+-keep public class * extends com.chad.library.adapter.base.BaseViewHolder
+-keepclassmembers  class **$** extends com.chad.library.adapter.base.BaseViewHolder {
+     <init>(...);
+}
+
+#oss
+-keep class com.alibaba.sdk.android.oss.** { *; }
+-dontwarn okio.**
+-dontwarn org.apache.commons.codec.binary.**

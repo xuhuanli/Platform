@@ -3,14 +3,17 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorWhite</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <!--整体的背景颜色为白色-->
+        <item name="android:windowBackground">@color/colorWhite</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
+    <style name="AppTheme.NoActionBarTransparent">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -25,30 +28,97 @@
         <item name="android:paddingBottom">@dimen/size_8dp</item>
     </style>
 
-    <style name="Style_Info_TextView">
-        <item name="android:layout_width">0dp</item>
+    <style name="Bottom_Bar_Icon">
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="divide_line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/colorLine</item>
+    </style>
+
+    <style name="comment_dialog" parent="android:Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <!-- 显示对话框时当前的屏幕是否变暗 -->
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">34sp</item>
+    </style>
+
+    <style name="Info_Number_Style">
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:drawablePadding">@dimen/size_32dp</item>
-        <item name="android:padding">@dimen/size_8dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_marginBottom">@dimen/size_8dp</item>
+        <item name="android:textColor">@color/FF333333</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="Info_Text_Style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#ff666666</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Info_Line_Style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/colorLine</item>
+    </style>
+
+    <style name="Style_Info_TextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/FF333333</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="Info_Msg_Style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#ff999999</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="ToolBarMenuIcon">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">right</item>
     </style>
 
     <style name="Style_Settings_TextView">
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">@dimen/size_80dp</item>
-        <item name="android:drawablePadding">@dimen/size_32dp</item>
-        <item name="android:padding">@dimen/size_8dp</item>
+        <item name="android:layout_height">44dp</item>
+        <item name="android:background">@color/colorWhite</item>
+        <item name="android:drawableEnd">@drawable/read_more_arrow</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">@dimen/size_16dp</item>
+        <item name="android:paddingRight">@dimen/size_16dp</item>
+        <item name="android:textColor">@color/FF333333</item>
+        <item name="android:textSize">15sp</item>
     </style>
 
-    <style name="Bottom_Bar_Icon">
-        <item name="android:layout_width">@dimen/size_0dp</item>
-        <item name="android:layout_height">@dimen/size_32dp</item>
-        <item name="android:background">@null</item>
-    </style>
-
-    <style name="BottomDialog" parent="@style/AppTheme">
+    <style name="CustomViewStyle">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:layout_height">44dp</item>
+        <item name="android:paddingLeft">@dimen/size_16dp</item>
+        <item name="android:paddingRight">@dimen/size_16dp</item>
+        <item name="android:background">@color/colorWhite</item>
     </style>
+
+
+    <color name="colorLine">#ffeaecf1</color>
 </resources>

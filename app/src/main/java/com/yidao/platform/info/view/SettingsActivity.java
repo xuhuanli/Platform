@@ -14,8 +14,8 @@ import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.yidao.platform.R;
 import com.yidao.platform.app.ThreadPoolManager;
-import com.yidao.platform.app.Util;
 import com.yidao.platform.app.base.BaseActivity;
+import com.yidao.platform.app.utils.FileUtil;
 import com.yidao.platform.info.presenter.SettingsPresenter;
 
 import butterknife.BindView;
@@ -45,26 +45,13 @@ public class SettingsActivity extends BaseActivity implements SettingsViewInterf
     private void initView() {
         initCacheTextView();
         initToolbar();
-        RxView.clicks(mRlcache).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) throws Exception {
-                clearAppCache();
-            }
-        });
+        addDisposable(RxView.clicks(mRlcache).subscribe(o -> clearAppCache()));
     }
 
     private void initCacheTextView() {
-        ThreadPoolManager.getInstance().addTask(new Runnable() {
-            @Override
-            public void run() {
-                final double cacheSize = Util.getAppCacheSize(getCacheDir()) + Util.getAppCacheSize(getExternalCacheDir());
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mTvCache.setText(String.format("%.2f", cacheSize) + "M");
-                    }
-                });
-            }
+        ThreadPoolManager.getInstance().addTask(() -> {
+            final double cacheSize = FileUtil.getAppCacheSize(getCacheDir()) + FileUtil.getAppCacheSize(getExternalCacheDir());
+            mHandler.post(() -> mTvCache.setText(String.format("%.2f", cacheSize) + "M"));
         });
     }
 
@@ -72,37 +59,27 @@ public class SettingsActivity extends BaseActivity implements SettingsViewInterf
         ThreadPoolManager.getInstance().addTask(new ClearCacheRunnable(getCacheDir(), getExternalCacheDir()) {
             @Override
             void onClearCacheStarted() {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mTvCache.setVisibility(View.GONE);
-                        mPresenter.showProgressBar(mProgressBar);
-                    }
+                mHandler.post(() -> {
+                    mTvCache.setVisibility(View.GONE);
+                    mPresenter.showProgressBar(mProgressBar);
                 });
             }
 
             @Override
             void onClearCacheFinished() {
                 initCacheTextView();
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mTvCache.setVisibility(View.VISIBLE);
-                        mPresenter.dismissProgressBar(mProgressBar);
-                    }
+                mHandler.postDelayed(() -> {
+                    mTvCache.setVisibility(View.VISIBLE);
+                    mPresenter.dismissProgressBar(mProgressBar);
                 }, 1000);
             }
         });
     }
 
     private void initToolbar() {
-        setSupportActionBar(mToolbar);
-        addDisposable(RxToolbar.navigationClicks(mToolbar).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) throws Exception {
-                finish();
-            }
-        }));
+        //setSupportActionBar(mToolbar);
+        //getSupportActionBar().setDisplayShowTitleEnabled(false);
+        addDisposable(RxToolbar.navigationClicks(mToolbar).subscribe(o -> finish()));
     }
 
     @Override

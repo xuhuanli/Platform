@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/drifting_bottle">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/transparent"
+        app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        app:title="@string/drifting_bottle" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_rootview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/size_32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_discovery_push_bottle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/size_32dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/iv_discovery_pull_bottle"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@mipmap/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/iv_discovery_pull_bottle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/size_32dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/iv_discovery_push_bottle"
+            app:layout_constraintRight_toLeftOf="@+id/iv_discovery_my_bottle"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@mipmap/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/iv_discovery_my_bottle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/size_32dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/iv_discovery_pull_bottle"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@mipmap/ic_launcher" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="扔一个"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/iv_discovery_push_bottle"
+            app:layout_constraintStart_toStartOf="@+id/iv_discovery_push_bottle"
+            app:layout_constraintTop_toBottomOf="@+id/iv_discovery_push_bottle" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="捡一个"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/iv_discovery_pull_bottle"
+            app:layout_constraintStart_toStartOf="@+id/iv_discovery_pull_bottle"
+            app:layout_constraintTop_toBottomOf="@+id/iv_discovery_pull_bottle" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="我的瓶子"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/iv_discovery_my_bottle"
+            app:layout_constraintStart_toStartOf="@+id/iv_discovery_my_bottle"
+            app:layout_constraintTop_toBottomOf="@+id/iv_discovery_my_bottle" />
+    </android.support.constraint.ConstraintLayout>
+
+    <View
+        android:id="@+id/view_hide_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_gif"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        app:layout_constraintBottom_toTopOf="@+id/cl_rootview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:srcCompat="@drawable/heimao" />
+</android.support.constraint.ConstraintLayout>

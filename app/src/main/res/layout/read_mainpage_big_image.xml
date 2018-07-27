@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_marginTop="16dp"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:id="@+id/tv_item_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableRight="@drawable/read_more_arrow"
+        android:gravity="center"
+        android:text="@string/more"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_item_name"
+        android:layout_width="112dp"
+        android:layout_height="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/fuhua" />
+
+    <ImageView
+        android:id="@+id/iv_big_image"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_item_name"
+        app:srcCompat="@drawable/a" />
+
+    <TextView
+        android:id="@+id/tv_item_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_big_image"
+        tools:text="那么在前面的Fragment中再显示一个子Fragment, 并且又带有一个不一样的Toolbar, 还需要哪些处理呢?
+首先" />
+
+</android.support.constraint.ConstraintLayout>

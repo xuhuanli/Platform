@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.yidao.platform">
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -24,17 +25,19 @@
         android:name=".app.MyApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
+        tools:replace="android:allowBackup"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <!--应用升级activity-->
         <activity
             android:name="com.tencent.bugly.beta.ui.BetaActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|locale"
             android:theme="@android:style/Theme.Translucent" />
         <activity android:name=".container.ContainerActivity" />
-        <activity android:name=".login.SplashActivity">
+        <activity android:name=".login.view.LoginSplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -48,6 +51,53 @@
         <activity android:name=".login.LoginClassificationActivity" />
         <activity android:name=".login.LoginInterestingActivity" />
         <activity android:name=".webview.PhotoBrowserActivity"/>
+        <activity android:name=".discovery.DiscoveryDriftingBottleActivity" />
+        <activity android:name=".discovery.DiscoveryEditorMessageActivity" />
+        <activity android:name=".info.view.InfoMyCollectionActivity" />
+
+        <!--微信登录回调界面-->
+        <activity android:name=".wxapi.WXEntryActivity"
+            android:theme="@style/AppTheme.NoActionBarTransparent"
+            android:label="@string/app_name"
+            android:exported="true"/>
+        <activity android:name=".read.view.ItemChannelActivity" />
+        <activity android:name=".discovery.BottlePushActivity" />
+        <activity android:name=".discovery.FriendsGroupDetailActivity" />
+        <activity android:name=".discovery.DiscoveryMyBottleActivity" />
+        <activity android:name=".discovery.DiscoveryBottleDetailActivity" />
+        <activity android:name=".info.view.InfoMyPublishActivity" />
+        <activity android:name=".info.view.InfoMyMessageActivity" />
+        <activity android:name=".read.view.ReadCommentsDetailActivity" />
+        <activity android:name=".login.LoginBindingPhoneActivity" />
+        <activity android:name=".read.view.ReadItemMoreActivity" />
+        <activity android:name=".info.view.RecentlyReadActivity" />
+        <activity android:name=".read.view.SearchArticleActivity" />
+        <activity android:name=".info.view.PersonInfomationActivity" />
+        <!--<activity android:name=".discovery.DiscoveryPullBottleActivity" />-->
+
+        <!--相册的fileProvider-->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.yidao.platform.file_provider"
+            android:grantUriPermissions="true"
+            android:exported="false" >
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+
+        <!--Bugly的FileProvider-->
+        <provider
+            android:name=".app.utils.BuglyFileProvider"
+            android:authorities="com.yidao.platform.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:replace="name,authorities,exported,grantUriPermissions">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"
+                tools:replace="name,resource"/>
+        </provider>
     </application>
 
 </manifest>

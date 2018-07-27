@@ -5,42 +5,98 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/read_appbarlayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:title="@string/discovery"
+            app:titleTextAppearance="@style/Toolbar.TitleText"
+            app:titleTextColor="@color/colorBlack">
+
+
+            <ImageView
+                android:id="@+id/iv_select_item"
+                android:src="@drawable/discovery_publish"
+                style="@style/ToolBarMenuIcon" />
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <TextView
+        android:id="@+id/tv_discovery_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="@string/tips"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/read_appbarlayout" />
+
+    <ImageButton
         android:id="@+id/btn_take_photo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="44dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="拍摄"
-        app:layout_constraintBottom_toTopOf="@+id/imageView3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="10dp"
+        android:background="@null"
+        android:src="@drawable/mypic"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/btn_album"
+        app:layout_constraintTop_toBottomOf="@+id/tv_discovery_tips" />
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="208dp"
-        android:layout_height="160dp"
-        android:layout_marginBottom="277dp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
+    <ImageButton
         android:id="@+id/btn_album"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:background="@null"
+        android:src="@drawable/mypic"
         android:text="相册"
-        app:layout_constraintBaseline_toBaselineOf="@+id/btn_take_photo"
-        app:layout_constraintStart_toEndOf="@+id/btn_take_photo" />
+        app:layout_constraintBottom_toBottomOf="@+id/btn_take_photo"
+        app:layout_constraintLeft_toRightOf="@id/btn_take_photo"
+        app:layout_constraintRight_toLeftOf="@+id/btn_bottle" />
 
-    <Button
+    <ImageButton
         android:id="@+id/btn_bottle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:background="@null"
+        android:src="@drawable/mypic"
         android:text="漂流瓶"
-        app:layout_constraintBaseline_toBaselineOf="@+id/btn_album"
-        app:layout_constraintStart_toEndOf="@+id/btn_album" />
+        app:layout_constraintBottom_toBottomOf="@+id/btn_album"
+        app:layout_constraintLeft_toRightOf="@id/btn_album"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:paddingLeft="@dimen/size_16dp"
+        android:paddingRight="@dimen/size_16dp"
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/app_navigation_height"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_album">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:descendantFocusability="blocksDescendants"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 </android.support.constraint.ConstraintLayout>

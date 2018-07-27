@@ -9,11 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.jakewharton.rxbinding2.view.RxView;
 import com.yidao.platform.R;
+import com.yidao.platform.app.Constant;
 import com.yidao.platform.container.ContainerActivity;
+
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.functions.Consumer;
 
 public class LoginInterestItemAdapter extends RecyclerView.Adapter<LoginInterestItemAdapter.ItemViewHolder> {
 
@@ -25,9 +30,9 @@ public class LoginInterestItemAdapter extends RecyclerView.Adapter<LoginInterest
         mContext = parent.getContext();
         View view = LayoutInflater.from(mContext).inflate(R.layout.login_interest_item, parent, false);
         final ItemViewHolder holder = new ItemViewHolder(view);
-        holder.mIvInterestItem.setOnClickListener(new View.OnClickListener() {
+        RxView.clicks(holder.mIvInterestItem).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
             @Override
-            public void onClick(View v) {
+            public void accept(Object o) throws Exception {
                 int position = holder.getAdapterPosition();
                 mContext.startActivity(new Intent(mContext, ContainerActivity.class));
             }

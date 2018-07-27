@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#FF3F51B5</color>
-    <color name="colorPrimaryDark">#FF303F9F</color>
+    <color name="colorPrimaryDark">#FF000000</color>
     <color name="colorAccent">#FFFF4081</color>
     <color name="colorWhite" >#FFFFFFFF</color>
     <color name="colorBlack">#FF000000</color>
     <color name="colorGray">#FF645e5e</color>
     <color name="transparent">#00000000</color>
-    <color name="iconCover">#cc979797</color>
+    <color name="half_transparent">#60000000</color>
+
+    <color name="praise_item_default">#333333</color>
+    <color name="praise_item_selector_default">#cccccc</color>
+
+    <color name="default_clickable_color">#cccccc</color>
+    <color name="praise_item">#8290AF</color>
+    <color name="name_selector_color">#cccccc</color>
+    <color name="color_232323">#232323</color>
+    <color name="FF999999">#ff999999</color>
+    <color name="FF333333">#ff333333</color>
 </resources>

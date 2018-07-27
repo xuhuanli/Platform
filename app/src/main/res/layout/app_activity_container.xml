@@ -6,13 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".container.ContainerActivity">
 
-    <include
-        android:id="@+id/include"
-        layout="@layout/container_include_viewpager" />
+    <include layout="@layout/container_include_viewpager" />
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
+        android:background="@color/colorWhite"
         android:layout_height="@dimen/app_navigation_height"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="144dp">
+
+    <LinearLayout
+        android:id="@+id/ll_haoyou"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="12dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_share_msg"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center"
+            android:padding="@dimen/size_8dp"
+            android:scaleType="center"
+            android:src="@drawable/read_share_wx" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wx_friends"
+            android:textColor="@color/FF999999"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_pyq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="38dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toEndOf="@+id/ll_haoyou"
+        app:layout_constraintTop_toTopOf="@+id/ll_haoyou">
+
+        <ImageView
+            android:id="@+id/iv_share_group"
+            android:scaleType="center"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center"
+            android:padding="@dimen/size_8dp"
+            android:src="@drawable/read_share_pyq" />
+
+        <TextView
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wx_pyq"
+            android:textColor="@color/FF999999"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:background="#FFEAECF1"
+        app:layout_constraintBottom_toTopOf="@+id/tv_cancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_pyq" />
+
+    <TextView
+        android:id="@+id/tv_cancel"
+        android:layout_width="36dp"
+        android:layout_height="24dp"
+        android:layout_marginBottom="12dp"
+        android:gravity="center"
+        android:text="@string/cancel"
+        android:textColor="@color/FF999999"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</android.support.constraint.ConstraintLayout>

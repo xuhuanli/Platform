@@ -2,13 +2,12 @@ package com.yidao.platform.app.base;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.WindowManager;
 
-import com.yidao.platform.app.MyLogger;
+import com.allen.library.RxHttpUtils;
+import com.yidao.platform.app.utils.MyLogger;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -54,17 +53,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    private void steepStatusBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            // 透明状态栏
-            getWindow().addFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            // 透明导航栏
-            getWindow().addFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        }
-    }
-
     /**
      * Start activity.
      *
@@ -78,6 +66,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         clearDisposable();
+        RxHttpUtils.clearAllCompositeDisposable();
         mUnbinder.unbind();
     }
 
