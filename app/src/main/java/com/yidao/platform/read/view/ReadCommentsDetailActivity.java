@@ -31,6 +31,8 @@ import butterknife.BindView;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
 import io.reactivex.functions.Consumer;
 
+//这一期不做
+@Deprecated
 public class ReadCommentsDetailActivity extends BaseActivity implements ReadCommentsDetailInterface, View.OnClickListener {
 
     @BindView(R.id.toolbar)
@@ -49,8 +51,6 @@ public class ReadCommentsDetailActivity extends BaseActivity implements ReadComm
     BGANinePhotoLayout nplItemMomentPhotos;
     @BindView(R.id.commentList)
     CommentListView commentList;
-    @BindView(R.id.iv_back_comment_dialog)
-    ImageView ivBackCommentDialog;
     @BindView(R.id.tv_comment)
     TextView tvComment;
     private ReadCommentsDetailPresenter mPresenter;
@@ -71,7 +71,6 @@ public class ReadCommentsDetailActivity extends BaseActivity implements ReadComm
     }
 
     private void initView() {
-        //瓶子不展示点赞和九宫格
         tvDiscoveryVote.setVisibility(View.GONE);
         nplItemMomentPhotos.setVisibility(View.GONE);
         ivDiscoveryIcon.setImageResource(R.drawable.mypic);
@@ -81,36 +80,25 @@ public class ReadCommentsDetailActivity extends BaseActivity implements ReadComm
     private void initData(){
         mDataList = DatasUtil.createCommentItemList();
         commentList.setDatas(mDataList);
-        addDisposable(RxView.clicks(tvComment).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) {
-                showCommentDialog(null);
-            }
-        }));
+        addDisposable(RxView.clicks(tvComment).subscribe(o -> showCommentDialog(null)));
         if (mDataList.size() > 0) {
-            commentList.setOnItemClickListener(new CommentListView.OnItemClickListener() {
-                @Override
-                public void onItemClick(int position) {
-                    CommentItem commentItem = mDataList.get(position);
-                    if (DatasUtil.curUser.getId().equals(commentItem.getUser().getId())) {//复制或者删除自己的评论
-                        // TODO: 2018/7/17 0017 长按
-                        CommentDialog dialog = new CommentDialog(ReadCommentsDetailActivity.this, mPresenter, commentItem);
-                        dialog.show();
-                    } else {  //回复别人
-                        //回复当前条目的人,所以是getUser 不是getToReplyUser
-                        User toReplyUser = commentItem.getUser();
-                        showCommentDialog(toReplyUser);
-                    }
-                }
-            });
-            commentList.setOnItemLongClickListener(new CommentListView.OnItemLongClickListener() {
-                @Override
-                public void onItemLongClick(int position) {
-                    CommentItem commentItem = mDataList.get(position);
-                    //长按进行复制或者删除
+            commentList.setOnItemClickListener(position -> {
+                CommentItem commentItem = mDataList.get(position);
+                if (DatasUtil.curUser.getId().equals(commentItem.getUser().getId())) {//复制或者删除自己的评论
+                    // TODO: 2018/7/17 0017 长按
                     CommentDialog dialog = new CommentDialog(ReadCommentsDetailActivity.this, mPresenter, commentItem);
                     dialog.show();
+                } else {  //回复别人
+                    //回复当前条目的人,所以是getUser 不是getToReplyUser
+                    User toReplyUser = commentItem.getUser();
+                    showCommentDialog(toReplyUser);
                 }
+            });
+            commentList.setOnItemLongClickListener(position -> {
+                CommentItem commentItem = mDataList.get(position);
+                //长按进行复制或者删除
+                CommentDialog dialog = new CommentDialog(ReadCommentsDetailActivity.this, mPresenter, commentItem);
+                dialog.show();
             });
         } else {
             commentList.setVisibility(View.GONE);
@@ -123,21 +111,16 @@ public class ReadCommentsDetailActivity extends BaseActivity implements ReadComm
         mCommentBottomSheetDialog.setCanceledOnTouchOutside(false);
         @SuppressLint("InflateParams") View view = LayoutInflater.from(this).inflate(R.layout.layout_comment_fragment_dialog, null);
         mEtContent = view.findViewById(R.id.et_comment_content);
-        Button mBtnCancel = view.findViewById(R.id.btn_comment_cancel);
         Button mBtnSend = view.findViewById(R.id.btn_comment_send);
         mCommentBottomSheetDialog.setContentView(view);
         fillEditText();
         mCommentBottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         mCommentBottomSheetDialog.show();
-        mBtnCancel.setOnClickListener(this);
         mBtnSend.setOnClickListener(this);
         //when you invoke cancel() , callback to here .So  please use dialog.cancel() but not dialog.dismiss(), unless you setOnDismissListener
-        mCommentBottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                //when dialog cancel state write content into textview.
-                tvComment.setText(mEtContent.getText().toString());
-            }
+        mCommentBottomSheetDialog.setOnCancelListener(dialog -> {
+            //when dialog cancel state write content into textview.
+            tvComment.setText(mEtContent.getText().toString());
         });
     }
 
@@ -165,10 +148,6 @@ public class ReadCommentsDetailActivity extends BaseActivity implements ReadComm
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_comment_cancel: //评论内容cancel按钮
-                tvComment.setText(mEtContent.getText().toString());
-                mCommentBottomSheetDialog.cancel();
-                break;
             case R.id.btn_comment_send: //评论内容send按钮
                 // TODO: 2018/7/3 0003  当满足发送规则时，进行访问请求if success 清空et else 发送失败 doSomething
                 CommentItem item = new CommentItem();

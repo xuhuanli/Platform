@@ -1,55 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:background="#fffcfcfc"
+    android:layout_height="56dp">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="@dimen/size_0dp"
-        android:layout_height="@dimen/size_40dp"
-        android:background="@color/colorGray"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <Button
-            android:id="@+id/btn_comment_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:padding="@dimen/size_8dp"
-            android:text="@string/cancel" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/write_comment" />
-
-        <Button
-            android:id="@+id/btn_comment_send"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:text="@string/send"
-            android:padding="@dimen/size_8dp"/>
-    </LinearLayout>
+    <!--change color 当有内容时候android:textColor="#ff007aff"-->
+    <Button
+        android:id="@+id/btn_comment_send"
+        android:layout_width="34dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="16dp"
+        android:background="@null"
+        android:text="@string/send"
+        android:textColor="@color/FF999999"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/et_comment_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/et_comment_content" />
 
     <EditText
         android:id="@+id/et_comment_content"
         android:layout_width="0dp"
-        android:inputType="none"
-        android:layout_height="@dimen/size_80dp"
-        android:background="@null"
+        android:layout_height="36dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="12dp"
+        android:background="#fff2f4f7"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
         android:gravity="top"
         android:hint="@string/add_comment"
+        android:inputType="none"
         android:padding="@dimen/size_8dp"
         android:textSize="@dimen/text_size_16sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintEnd_toStartOf="@+id/btn_comment_send"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

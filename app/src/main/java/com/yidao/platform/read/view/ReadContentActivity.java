@@ -92,28 +92,22 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         mAdapter.setWebViewUrl(url);
         mRecyclerView.setAdapter(mAdapter);
         addDisposable(RxView.clicks(mTvComment).subscribe(o -> showCommentDialog()));
-        mAdapter.setOnItemClickListener((adapter, view, position) -> {
-            int itemViewType = adapter.getItemViewType(position);
-            if (itemViewType == ReadNewsDetailBean.ITEM_COMMENTS) {
-                Intent intent = new Intent(ReadContentActivity.this, ReadCommentsDetailActivity.class);
-                startActivity(intent);
-            }
-        });
         mAdapter.setOnItemLongClickListener((adapter, view, position) -> {
             int itemViewType = adapter.getItemViewType(position);
             // TODO: 2018/7/25 0025 还需要判断是否为本人评论 ignored
             if (itemViewType == ReadNewsDetailBean.ITEM_COMMENTS) {
-                showAlertDialog(R.string.ensure_delete, (dialog, which) -> ToastUtils.showToast("删除"), (dialog, which) -> dialog.dismiss());
+                showAlertDialog(R.string.ensure_delete, (dialog, which) -> ToastUtils.showToast("删除"));
             }
             return false;
         });
     }
 
-    private void showAlertDialog(int messageId, DialogInterface.OnClickListener positiveListener, DialogInterface.OnClickListener negativeListener) {
+    private void showAlertDialog(int messageId, DialogInterface.OnClickListener positiveListener) {
         AlertDialog alertDialog = new AlertDialog.Builder(ReadContentActivity.this)
                 .setMessage(messageId)
                 .setPositiveButton(R.string.ensure, positiveListener)
-                .setNegativeButton(R.string.cancel, negativeListener)
+                .setNegativeButton(R.string.cancel, (dialog, which) -> {
+                })
                 .create();
         alertDialog.show();
     }
@@ -123,13 +117,11 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         mCommentBottomSheetDialog.setCanceledOnTouchOutside(false);
         @SuppressLint("InflateParams") View view = LayoutInflater.from(this).inflate(R.layout.layout_comment_fragment_dialog, null);
         mEtContent = view.findViewById(R.id.et_comment_content);
-        Button mBtnCancel = view.findViewById(R.id.btn_comment_cancel);
         Button mBtnSend = view.findViewById(R.id.btn_comment_send);
         mCommentBottomSheetDialog.setContentView(view);
         fillEditText();
         mCommentBottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         mCommentBottomSheetDialog.show();
-        mBtnCancel.setOnClickListener(this);
         mBtnSend.setOnClickListener(this);
         //when you invoke cancel() , callback to here .So  please use dialog.cancel() but not dialog.dismiss(), unless you setOnDismissListener
         mCommentBottomSheetDialog.setOnCancelListener(dialog -> {
@@ -189,10 +181,6 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.ib_share: //分享icon
                 showShareDialog();
-                break;
-            case R.id.btn_comment_cancel: //评论内容cancel按钮
-                mTvComment.setText(mEtContent.getText().toString());
-                mCommentBottomSheetDialog.cancel();
                 break;
             case R.id.btn_comment_send: //评论内容send按钮
                 // TODO: 2018/7/3 0003  当满足发送规则时，进行访问请求if success 清空et else 发送失败 doSomething

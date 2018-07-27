@@ -22,7 +22,9 @@ public class ServiceFragment extends BaseFragment {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.service_fragment_bp;
+        //Deprecated 旧版
+        //return R.layout.service_fragment_bp;
+        return R.layout.service_fragment_bp_new;
     }
 
     @Override

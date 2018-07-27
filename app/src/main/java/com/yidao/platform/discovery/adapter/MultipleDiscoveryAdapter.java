@@ -1,4 +1,4 @@
-package com.yidao.platform.discovery;
+package com.yidao.platform.discovery.adapter;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.yidao.platform.R;
+import com.yidao.platform.discovery.bean.FriendsNewsBean;
 
 import java.util.List;
 

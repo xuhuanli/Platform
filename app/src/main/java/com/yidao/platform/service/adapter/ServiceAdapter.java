@@ -1,4 +1,4 @@
-package com.yidao.platform.service;
+package com.yidao.platform.service.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

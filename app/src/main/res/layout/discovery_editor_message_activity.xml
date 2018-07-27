@@ -3,51 +3,53 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:paddingLeft="@dimen/size_16dp"
+    android:paddingRight="@dimen/size_16dp"
     android:layout_height="match_parent">
 
-    <Button
+    <TextView
         android:id="@+id/btn_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@null"
         android:text="@string/cancel"
+        android:textColor="@color/FF333333"
+        android:textSize="17sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <TextView
         android:id="@+id/btn_publish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
-        android:background="@null"
         android:text="@string/publish"
+        android:textColor="#ff3f81ff"
+        android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/et_editor"
         android:layout_width="0dp"
-        android:layout_height="@dimen/size_80dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        tools:text="Name"
+        android:layout_marginTop="32dp"
         android:background="@null"
+        android:gravity="top"
         android:hint="@string/editor_hint"
+        android:inputType="textMultiLine"
+        android:maxHeight="@dimen/size_120dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_cancel" />
 
     <cn.bingoogolapple.photopicker.widget.BGASortableNinePhotoLayout
         android:id="@+id/snpl_moment_add_photos"
-        style="@style/WrapWrap"
-        android:layout_margin="10dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         app:bga_snpl_deleteDrawable="@mipmap/bga_pp_ic_delete"
         app:bga_snpl_deleteDrawableOverlapQuarter="false"
         app:bga_snpl_editable="true"
@@ -61,6 +63,16 @@
         app:bga_snpl_plusDrawable="@mipmap/bga_pp_ic_plus"
         app:bga_snpl_plusEnable="true"
         app:bga_snpl_sortable="true"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/et_editor"
         app:layout_constraintTop_toBottomOf="@+id/et_editor" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="最多添加9张"
+        android:textColor="#ffc4c9ce"
+        android:textSize="17sp"
+        app:layout_constraintStart_toStartOf="@+id/snpl_moment_add_photos"
+        app:layout_constraintTop_toBottomOf="@+id/snpl_moment_add_photos" />
 </android.support.constraint.ConstraintLayout>

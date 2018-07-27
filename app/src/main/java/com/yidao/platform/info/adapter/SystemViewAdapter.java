@@ -16,6 +16,8 @@ public class SystemViewAdapter extends BaseQuickAdapter<String, BaseViewHolder> 
 
     @Override
     protected void convert(BaseViewHolder helper, String item) {
-        helper.setText(R.id.tv_system,"这是系统的消息内容部分");
+        helper.setText(R.id.tv_kind,"这是系统的消息内容部分")
+        .setText(R.id.tv_msg_content,"官方有精美礼品送给您")
+        .setImageResource(R.id.imageView,R.drawable.mypic);
     }
 }

@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,14 +25,18 @@ import com.allen.library.utils.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.yidao.platform.R;
+import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseFragment;
 import com.yidao.platform.app.utils.FileUtil;
 import com.yidao.platform.app.utils.MyLogger;
+import com.yidao.platform.discovery.bean.Moment;
+import com.yidao.platform.discovery.presenter.DiscoveryPresenter;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import cn.bingoogolapple.baseadapter.BGAOnRVItemClickListener;
@@ -42,6 +47,7 @@ import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
 import cn.bingoogolapple.photopicker.imageloader.BGARVOnScrollListener;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
+import io.reactivex.functions.Consumer;
 import pub.devrel.easypermissions.EasyPermissions;
 
 import static android.app.Activity.RESULT_OK;
@@ -65,6 +71,8 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     Toolbar mToolbar;
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
+    @BindView(R.id.iv_select_item)
+    ImageView mIvIcon;
     private DiscoveryPresenter mPresenter;
     private MomentAdapter mAdapter;
     private BGANinePhotoLayout mCurrentClickNpl;
@@ -109,20 +117,14 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     }
 
     private void initToolbar() {
-        mToolbar.inflateMenu(R.menu.discovery_toolbar_menu);
-        mToolbar.setTitle(R.string.discovery);
-        mToolbar.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.friends_group:
-                    Intent intent = new Intent(getActivity(), DiscoveryEditorMessageActivity.class);
-                    startActivity(intent);
-                    ToastUtils.showToast("好友圈");
-                    break;
-                default:
-                    break;
+        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+        addDisposable(RxView.clicks(mIvIcon).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(Object o) throws Exception {
+                Intent intent = new Intent(getActivity(), DiscoveryEditorMessageActivity.class);
+                startActivity(intent);
             }
-            return false;
-        });
+        }));
     }
 
     @Override

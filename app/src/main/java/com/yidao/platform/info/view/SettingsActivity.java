@@ -45,27 +45,13 @@ public class SettingsActivity extends BaseActivity implements SettingsViewInterf
     private void initView() {
         initCacheTextView();
         initToolbar();
-        addDisposable(RxView.clicks(mRlcache).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) {
-                clearAppCache();
-            }
-        }));
+        addDisposable(RxView.clicks(mRlcache).subscribe(o -> clearAppCache()));
     }
 
     private void initCacheTextView() {
-        ThreadPoolManager.getInstance().addTask(new Runnable() {
-            @Override
-            public void run() {
-                final double cacheSize = FileUtil.getAppCacheSize(getCacheDir()) + FileUtil.getAppCacheSize(getExternalCacheDir());
-                mHandler.post(new Runnable() {
-                    @SuppressLint({"DefaultLocale", "SetTextI18n"})
-                    @Override
-                    public void run() {
-                        mTvCache.setText(String.format("%.2f", cacheSize) + "M");
-                    }
-                });
-            }
+        ThreadPoolManager.getInstance().addTask(() -> {
+            final double cacheSize = FileUtil.getAppCacheSize(getCacheDir()) + FileUtil.getAppCacheSize(getExternalCacheDir());
+            mHandler.post(() -> mTvCache.setText(String.format("%.2f", cacheSize) + "M"));
         });
     }
 
@@ -73,37 +59,27 @@ public class SettingsActivity extends BaseActivity implements SettingsViewInterf
         ThreadPoolManager.getInstance().addTask(new ClearCacheRunnable(getCacheDir(), getExternalCacheDir()) {
             @Override
             void onClearCacheStarted() {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mTvCache.setVisibility(View.GONE);
-                        mPresenter.showProgressBar(mProgressBar);
-                    }
+                mHandler.post(() -> {
+                    mTvCache.setVisibility(View.GONE);
+                    mPresenter.showProgressBar(mProgressBar);
                 });
             }
 
             @Override
             void onClearCacheFinished() {
                 initCacheTextView();
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mTvCache.setVisibility(View.VISIBLE);
-                        mPresenter.dismissProgressBar(mProgressBar);
-                    }
+                mHandler.postDelayed(() -> {
+                    mTvCache.setVisibility(View.VISIBLE);
+                    mPresenter.dismissProgressBar(mProgressBar);
                 }, 1000);
             }
         });
     }
 
     private void initToolbar() {
-        setSupportActionBar(mToolbar);
-        addDisposable(RxToolbar.navigationClicks(mToolbar).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) {
-                finish();
-            }
-        }));
+        //setSupportActionBar(mToolbar);
+        //getSupportActionBar().setDisplayShowTitleEnabled(false);
+        addDisposable(RxToolbar.navigationClicks(mToolbar).subscribe(o -> finish()));
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.yidao.platform.info.view;
 
 import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,18 +21,14 @@ import io.reactivex.functions.Consumer;
 
 public class MyInfoFragment extends BaseFragment {
 
-    @BindView(R.id.iv_background_info)
-    ImageView ivBackgroundInfo;
-    @BindView(R.id.btn_login_info)
-    Button btnLoginInfo;
-    @BindView(R.id.textView)
-    TextView textView;
+    @BindView(R.id.info_container)
+    ConstraintLayout cl_container;
     @BindView(R.id.iv_login_success_info)
     ImageView ivLoginSuccessInfo;
     @BindView(R.id.tv_login_success_name_info)
     TextView tvLoginSuccessNameInfo;
     @BindView(R.id.tv_recent_read)
-    TextView tvRecentRead;
+    TextView tvRecentlyRead;
     @BindView(R.id.tv_settings)
     TextView tvSettings;
     @BindView(R.id.linearLayout1)  //我的收藏
@@ -40,8 +37,8 @@ public class MyInfoFragment extends BaseFragment {
     LinearLayout mPublishItem;
     @BindView(R.id.linearLayout3)  //我的消息
     LinearLayout mMessageItem;
-    @BindView(R.id.textView3)
-    TextView textView3;
+    @BindView(R.id.tv_login_hint)
+    TextView tvLoginHint;
     private boolean login_state = true;
 
     @Override
@@ -52,12 +49,23 @@ public class MyInfoFragment extends BaseFragment {
                     .apply(RequestOptions.circleCropTransform())
                     .into(ivLoginSuccessInfo);
         }
-        addDisposable(RxView.clicks(tvSettings).subscribe(new Consumer<Object>() {
+        //click 个人属性
+        addDisposable(RxView.clicks(cl_container).throttleFirst(Constant.THROTTLE_TIME,TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
             @Override
-            public void accept(Object o) {
-                Intent intent = new Intent(getActivity(), SettingsActivity.class);
+            public void accept(Object o) throws Exception {
+                Intent intent = new Intent(getActivity(), PersonInfomationActivity.class);
                 startActivity(intent);
             }
+        }));
+        //click 设置
+        addDisposable(RxView.clicks(tvSettings).throttleFirst(Constant.THROTTLE_TIME,TimeUnit.MILLISECONDS).subscribe(o -> {
+            Intent intent = new Intent(getActivity(), SettingsActivity.class);
+            startActivity(intent);
+        }));
+        //click 最近阅读
+        addDisposable(RxView.clicks(tvRecentlyRead).throttleFirst(Constant.THROTTLE_TIME,TimeUnit.MILLISECONDS).subscribe(o ->{
+            Intent intent = new Intent(getActivity(), RecentlyReadActivity.class);
+            startActivity(intent);
         }));
         //click 我的收藏
         addDisposable(RxView.clicks(mCollectionItem).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
@@ -75,6 +83,7 @@ public class MyInfoFragment extends BaseFragment {
                 startActivity(intent);
             }
         }));
+        //click 我的消息
         addDisposable(RxView.clicks(mMessageItem).throttleFirst(Constant.THROTTLE_TIME,TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
             @Override
             public void accept(Object o) throws Exception {

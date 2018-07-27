@@ -9,13 +9,11 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.allen.library.RxHttpUtils;
 import com.allen.library.interceptor.Transformer;
 import com.allen.library.observer.CommonObserver;
-import com.allen.library.utils.ToastUtils;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
@@ -47,6 +45,8 @@ public class ReadFragment extends BaseFragment {
     SwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.iv_select_item)
     ImageView mSelectItem;
+    @BindView(R.id.iv_search)
+    ImageView mIvSearch;
     /**
      * 一页默认的条数
      */
@@ -66,11 +66,20 @@ public class ReadFragment extends BaseFragment {
         initSwipeRefreshLayout();
     }
 
+    private void initToolbar() {
+        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+        addDisposable(RxView.clicks(mSelectItem).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> showChannelUI()));
+        addDisposable(RxView.clicks(mIvSearch).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
+            Intent intent = new Intent(getActivity(), SearchArticleActivity.class);
+            startActivity(intent);
+        }));
+    }
+
     private void initSwipeRefreshLayout() {
         mSwipeRefreshLayout.setColorSchemeColors(Color.rgb(47, 223, 189));
         mSwipeRefreshLayout.setOnRefreshListener(() -> refresh());
         //进去的时候就刷新一次
-        refresh();
+        //refresh();
     }
 
     private void refresh() {
@@ -126,16 +135,6 @@ public class ReadFragment extends BaseFragment {
     @Override
     protected void initData() {
 
-    }
-
-    private void initToolbar() {
-        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
-        addDisposable(RxView.clicks(mSelectItem).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) throws Exception {
-                showChannelUI();
-            }
-        }));
     }
 
     private void showChannelUI() {

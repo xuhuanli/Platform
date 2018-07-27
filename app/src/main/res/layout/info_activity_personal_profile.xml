@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorLine">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_info"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:navigationIcon="@drawable/jiantou_right"
+        app:popupTheme="@style/AppTheme.PopupOverlay">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/personal_profile"
+            android:textColor="#ff333333"
+            android:textSize="17sp" />
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/rl_head"
+        android:layout_width="match_parent"
+        android:layout_height="74dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorWhite"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingLeft="@dimen/size_16dp"
+        android:paddingRight="@dimen/size_16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_info">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:text="@string/head_portrait"
+            android:textColor="@color/FF333333"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/head_portrait"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="24dp"
+            android:gravity="center_vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageView3"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/head_portrait"
+            android:src="@drawable/read_more_arrow"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <com.yidao.platform.info.view.CustomTextView
+        android:id="@+id/tv_nick_name"
+        android:layout_marginTop="10dp"
+        style="@style/CustomViewStyle"
+        app:key="@string/nick_name"
+        app:keyColor="@color/FF333333"
+        app:keySize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rl_head"
+        app:value="悟空思密达"
+        app:valueColor="@color/FF999999"
+        app:valueSize="15sp" />
+
+    <com.yidao.platform.info.view.CustomTextView
+        android:layout_marginTop="1dp"
+        android:id="@+id/tv_sex"
+        style="@style/CustomViewStyle"
+        app:key="@string/sex"
+        app:keyColor="@color/FF333333"
+        app:keySize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_nick_name"
+        app:value="@string/male"
+        app:valueColor="@color/FF999999"
+        app:valueSize="15sp" />
+
+    <com.yidao.platform.info.view.CustomTextView
+        android:id="@+id/tv_phone_number"
+        android:layout_marginTop="10dp"
+        style="@style/CustomViewStyle"
+        app:key="@string/phone_number"
+        app:keyColor="@color/FF333333"
+        app:keySize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_sex"
+        app:value="@string/has_no_bind"
+        app:valueColor="@color/FF999999"
+        app:valueSize="15sp" />
+
+    <com.yidao.platform.info.view.CustomTextView
+        style="@style/CustomViewStyle"
+        app:key="@string/wx"
+        android:layout_marginTop="1dp"
+        app:keyColor="@color/FF333333"
+        app:keySize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_phone_number"
+        app:value="@string/has_bind"
+        app:valueColor="@color/FF999999"
+        app:valueSize="15sp" />
+</android.support.constraint.ConstraintLayout>

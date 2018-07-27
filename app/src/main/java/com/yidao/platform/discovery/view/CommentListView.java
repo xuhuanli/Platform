@@ -166,11 +166,11 @@ public class CommentListView extends LinearLayout {
         return subjectSpanText;
     }
 
-    public static interface OnItemClickListener {
+    public interface OnItemClickListener {
         public void onItemClick(int position);
     }
 
-    public static interface OnItemLongClickListener {
+    public interface OnItemLongClickListener {
         public void onItemLongClick(int position);
     }
 }

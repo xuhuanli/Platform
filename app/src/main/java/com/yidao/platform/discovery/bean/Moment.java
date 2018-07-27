@@ -1,4 +1,4 @@
-package com.yidao.platform.discovery;
+package com.yidao.platform.discovery.bean;
 
 import android.os.Parcel;
 import android.os.Parcelable;

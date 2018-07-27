@@ -15,6 +15,6 @@ public class CollectionAdapter extends BaseQuickAdapter<String, BaseViewHolder> 
 
     @Override
     protected void convert(BaseViewHolder helper, String item) {
-        helper.setText(R.id.tv_collection_title,"收藏标题");
+        helper.setText(R.id.tv_collection_title,"做有情感关怀的优质AR内容产品，CandyBook完成近千万元 Pre-A 轮融资");
     }
 }

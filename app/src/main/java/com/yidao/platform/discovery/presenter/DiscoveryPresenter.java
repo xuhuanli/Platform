@@ -1,4 +1,4 @@
-package com.yidao.platform.discovery;
+package com.yidao.platform.discovery.presenter;
 
 import android.content.ContentUris;
 import android.content.Context;
@@ -12,12 +12,13 @@ import android.provider.MediaStore;
 import android.widget.ImageView;
 
 import com.yidao.platform.R;
+import com.yidao.platform.discovery.DiscoveryViewInterface;
 
 public class DiscoveryPresenter {
 
     private DiscoveryViewInterface view;
 
-    DiscoveryPresenter(DiscoveryViewInterface fragment) {
+    public DiscoveryPresenter(DiscoveryViewInterface fragment) {
         this.view = fragment;
     }
 

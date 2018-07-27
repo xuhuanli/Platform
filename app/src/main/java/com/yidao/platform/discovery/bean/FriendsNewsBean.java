@@ -1,4 +1,4 @@
-package com.yidao.platform.discovery;
+package com.yidao.platform.discovery.bean;
 
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 

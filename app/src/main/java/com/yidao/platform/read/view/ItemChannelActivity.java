@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.jakewharton.rxbinding2.view.RxView;
 import com.yidao.platform.R;
@@ -24,7 +25,7 @@ public class ItemChannelActivity extends BaseActivity {
     @BindView(R.id.rv_channel)
     RecyclerView mRecyclerView;
     @BindView(R.id.imageButton)
-    ImageButton mBackIB;
+    ImageView mBackIB;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,7 +37,7 @@ public class ItemChannelActivity extends BaseActivity {
         GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
         mRecyclerView.setLayoutManager(layoutManager);
         List<String> arrayList = new ArrayList<>();
-        for (int a = 0; a < 10; a++) {
+        for (int a = 0; a < 6; a++) {
             arrayList.add("电商消费");
         }
         CardAdapter adapter = new CardAdapter(arrayList);

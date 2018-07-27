@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.allen.library.utils.ToastUtils;
 import com.yidao.platform.R;
@@ -40,9 +41,9 @@ import top.zibin.luban.OnCompressListener;
 public class DiscoveryEditorMessageActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks, BGASortableNinePhotoLayout.Delegate, View.OnClickListener, DiscoveryEditorMessageInterface {
 
     @BindView(R.id.btn_cancel)
-    Button mBtnCancel;
+    TextView mBtnCancel;
     @BindView(R.id.btn_publish)
-    Button mBtnPublish;
+    TextView mBtnPublish;
     @BindView(R.id.et_editor)
     EditText mEtEditor;
     private BGASortableNinePhotoLayout mPhotosSnpl;

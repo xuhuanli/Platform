@@ -3,6 +3,7 @@ package com.yidao.platform.info.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -48,6 +49,7 @@ public class InfoMyCollectionActivity extends BaseActivity implements BaseQuickA
                 finish();
             }
         }));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         ArrayList<String> data = new ArrayList<>();
         for (int i = 0; i < 20; i++) {

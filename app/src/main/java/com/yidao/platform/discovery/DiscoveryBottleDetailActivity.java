@@ -1,7 +1,6 @@
 package com.yidao.platform.discovery;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
@@ -29,11 +28,32 @@ import java.util.List;
 
 import butterknife.BindView;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
-import io.reactivex.functions.Consumer;
 
 public class DiscoveryBottleDetailActivity extends BaseActivity implements DiscoveryBottleDetailInterface, View.OnClickListener {
-
     @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.iv_discovery_icon)
+    ImageView ivDiscoveryIcon;
+    @BindView(R.id.tv_discovery_name)
+    TextView tvDiscoveryName;
+    @BindView(R.id.tv_discovery_time)
+    TextView tvDiscoveryTime;
+    @BindView(R.id.tv_discovery_vote)
+    TextView tvDiscoveryVote;
+    @BindView(R.id.tv_discovery_content)
+    TextView tvDiscoveryContent;
+    @BindView(R.id.npl_item_moment_photos)
+    BGANinePhotoLayout nplItemMomentPhotos;
+    @BindView(R.id.tv_delete)
+    TextView tvDelete;
+    @BindView(R.id.commentList)
+    CommentListView commentList;
+    @BindView(R.id.iv_comment)
+    ImageView ivComment;
+    @BindView(R.id.tv_publish_comment)
+    TextView tvPublishComment;
+
+    /*@BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.iv_discovery_icon)
     ImageView ivDiscoveryIcon;
@@ -52,7 +72,7 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
     @BindView(R.id.iv_back_comment_dialog)
     ImageView ivBackCommentDialog;
     @BindView(R.id.tv_comment)
-    TextView tvComment;
+    TextView tvComment;*/
     /**
      * 评论数据集合
      */
@@ -84,62 +104,47 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
     private void initData() {
         mDataList = DatasUtil.createCommentItemList();
         commentList.setDatas(mDataList);
-        addDisposable(RxView.clicks(tvComment).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) {
-                showCommentDialog(null);
-            }
-        }));
+        addDisposable(RxView.clicks(tvPublishComment).subscribe(o -> showCommentDialog(null)));
         if (mDataList.size() > 0) {
-            commentList.setOnItemClickListener(new CommentListView.OnItemClickListener() {
-                @Override
-                public void onItemClick(int position) {
-                    CommentItem commentItem = mDataList.get(position);
-                    if (DatasUtil.curUser.getId().equals(commentItem.getUser().getId())) {//复制或者删除自己的评论
-                        // TODO: 2018/7/17 0017 长按
-                        CommentDialog dialog = new CommentDialog(DiscoveryBottleDetailActivity.this, mPresenter, commentItem);
-                        dialog.show();
-                    } else {  //回复别人
-                        //回复当前条目的人,所以是getUser 不是getToReplyUser
-                        User toReplyUser = commentItem.getUser();
-                        showCommentDialog(toReplyUser);
-                    }
-                }
-            });
-            commentList.setOnItemLongClickListener(new CommentListView.OnItemLongClickListener() {
-                @Override
-                public void onItemLongClick(int position) {
-                    CommentItem commentItem = mDataList.get(position);
-                    //长按进行复制或者删除
+            commentList.setOnItemClickListener(position -> {
+                CommentItem commentItem = mDataList.get(position);
+                if (DatasUtil.curUser.getId().equals(commentItem.getUser().getId())) {//复制或者删除自己的评论
+                    // TODO: 2018/7/17 0017 长按
                     CommentDialog dialog = new CommentDialog(DiscoveryBottleDetailActivity.this, mPresenter, commentItem);
                     dialog.show();
+                } else {  //回复别人
+                    //回复当前条目的人,所以是getUser 不是getToReplyUser
+                    User toReplyUser = commentItem.getUser();
+                    showCommentDialog(toReplyUser);
                 }
+            });
+            commentList.setOnItemLongClickListener(position -> {
+                CommentItem commentItem = mDataList.get(position);
+                //长按进行复制或者删除
+                CommentDialog dialog = new CommentDialog(DiscoveryBottleDetailActivity.this, mPresenter, commentItem);
+                dialog.show();
             });
         } else {
             commentList.setVisibility(View.GONE);
         }
     }
+
     private void showCommentDialog(@Nullable User toReplyUser) {
         this.toReplyUser = toReplyUser;
         mCommentBottomSheetDialog = new BottomSheetDialog(this);
         mCommentBottomSheetDialog.setCanceledOnTouchOutside(false);
         @SuppressLint("InflateParams") View view = LayoutInflater.from(this).inflate(R.layout.layout_comment_fragment_dialog, null);
         mEtContent = view.findViewById(R.id.et_comment_content);
-        Button mBtnCancel = view.findViewById(R.id.btn_comment_cancel);
         Button mBtnSend = view.findViewById(R.id.btn_comment_send);
         mCommentBottomSheetDialog.setContentView(view);
         fillEditText();
         mCommentBottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         mCommentBottomSheetDialog.show();
-        mBtnCancel.setOnClickListener(this);
         mBtnSend.setOnClickListener(this);
         //when you invoke cancel() , callback to here .So  please use dialog.cancel() but not dialog.dismiss(), unless you setOnDismissListener
-        mCommentBottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                //when dialog cancel state write content into textview.
-                tvComment.setText(mEtContent.getText().toString());
-            }
+        mCommentBottomSheetDialog.setOnCancelListener(dialog -> {
+            //when dialog cancel state write content into textview.
+            tvPublishComment.setText(mEtContent.getText().toString());
         });
     }
 
@@ -149,8 +154,8 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
         mEtContent.setFocusable(true);
         mEtContent.setFocusableInTouchMode(true);
         mEtContent.requestFocus();
-        mEtContent.setText(tvComment.getText());
-        mEtContent.setSelection(tvComment.getText().length());
+        mEtContent.setText(tvPublishComment.getText());
+        mEtContent.setSelection(tvPublishComment.getText().length());
     }
 
     @Override
@@ -167,10 +172,6 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_comment_cancel: //评论内容cancel按钮
-                tvComment.setText(mEtContent.getText().toString());
-                mCommentBottomSheetDialog.cancel();
-                break;
             case R.id.btn_comment_send: //评论内容send按钮
                 // TODO: 2018/7/3 0003  当满足发送规则时，进行访问请求if success 清空et else 发送失败 doSomething
                 CommentItem item = new CommentItem();

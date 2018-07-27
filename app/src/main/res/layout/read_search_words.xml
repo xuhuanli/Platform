@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_search_word"
+    android:layout_width="wrap_content"
+    android:layout_height="28dp"
+    android:background="@drawable/search_words_shape_corner"
+    android:gravity="center"
+    android:layout_marginTop="@dimen/size_4dp"
+    android:paddingTop="@dimen/size_4dp"
+    android:paddingBottom="@dimen/size_4dp"
+    android:paddingLeft="@dimen/size_16dp"
+    android:paddingRight="@dimen/size_16dp"
+    android:text="@string/my_msg" />
