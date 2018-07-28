@@ -36,5 +36,85 @@
         android:layout_marginBottom="@dimen/size_56dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/size_16dp"
+            android:paddingRight="@dimen/size_16dp">
+
+            <TextView
+                android:text="@string/base_info"
+                android:id="@+id/tv_base_info"
+                android:layout_width="0dp"
+                android:layout_height="42dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.yidao.platform.service.view.CustomBpItemView
+                android:id="@+id/tv_name"
+                style="@style/BP_Item_Style"
+                app:setDrawableRight="@drawable/ic_stars_black_8dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_base_info"
+                app:leftText="名称"
+                app:rightHint="请输入企业名称"/>
+
+            <com.yidao.platform.service.view.CustomBpItemView
+                android:id="@+id/tv_city"
+                style="@style/BP_Item_Style"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_name"
+                app:leftText="城市"
+                app:rightHint="请输入所在城市" />
+
+            <com.yidao.platform.service.view.CustomBpItemView
+                android:id="@+id/tv_industry"
+                style="@style/BP_Item_Style"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_city"
+                app:leftText="行业"
+                app:rightHint="请输入企业所属行业" />
+
+            <com.yidao.platform.service.view.CustomBpItemView
+                android:id="@+id/tv_occupation"
+                style="@style/BP_Item_Style"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_industry"
+                app:leftText="职业"
+                app:rightHint="请输入你的职业" />
+
+            <com.yidao.platform.service.view.CustomBpItemView
+                android:id="@+id/tv_phone"
+                style="@style/BP_Item_Style"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_occupation"
+                app:leftText="手机"
+                app:rightHint="请输入你的联系方式" />
+
+            <com.yidao.platform.service.view.CustomBpItemView
+                android:id="@+id/tv_user_count"
+                style="@style/BP_Item_Style"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_phone"
+                app:leftText="人数"
+                app:rightHint="请输入你的团队人数"
+                app:setDrawableRight="@drawable/ic_stars_black_8dp"/>
+
+            <com.yidao.platform.service.view.CustomBpItemView
+                android:id="@+id/tv_valuation"
+                style="@style/BP_Item_Style"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_user_count"
+                app:leftText="估值"
+                app:rightHint="请输入企业目前估值" />
+        </android.support.constraint.ConstraintLayout>
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

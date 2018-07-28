@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_key"
+        android:layout_width="40dp"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:drawableEnd="@drawable/ic_stars_black_8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="名称" />
+
+    <EditText
+        android:id="@+id/et_value"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@null"
+        android:gravity="center_vertical"
+        android:ellipsize="end"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:maxLines="1"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_key"
+        app:layout_constraintEnd_toStartOf="@+id/iv_clear"
+        app:layout_constraintStart_toEndOf="@+id/tv_key"
+        app:layout_constraintTop_toTopOf="@+id/tv_key"
+        tools:hint="测试hint" />
+
+    <ImageView
+        android:id="@+id/iv_clear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/et_value"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/et_value"
+        app:srcCompat="@drawable/ic_cancel_black_24dp" />
+
+</android.support.constraint.ConstraintLayout>

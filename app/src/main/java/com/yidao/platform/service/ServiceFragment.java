@@ -13,6 +13,7 @@ public class ServiceFragment extends BaseFragment {
     Toolbar mToolbar;
     @Override
     protected void initView() {
+        //自定义View没有复用 存在卡顿现象
         initToolbar();
     }
 
@@ -26,6 +27,7 @@ public class ServiceFragment extends BaseFragment {
         //return R.layout.service_fragment_bp;
         return R.layout.service_fragment_bp_new;
     }
+
 
     @Override
     protected void initData() {

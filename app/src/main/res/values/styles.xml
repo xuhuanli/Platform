@@ -1,4 +1,5 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -119,6 +120,15 @@
         <item name="android:background">@color/colorWhite</item>
     </style>
 
+    <style name="BP_Item_Style">
+        <item name="leftColor">@color/FF333333</item>
+        <item name="leftSize">15sp</item>
+        <item name="rightColor">@color/FF333333</item>
+        <item name="rightImg">@drawable/ic_cancel_black_24dp</item>
+        <item name="rightSize">15sp</item>
+        <item name="android:layout_height">52dp</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
 
     <color name="colorLine">#ffeaecf1</color>
 </resources>
