@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <android.support.design.widget.AppBarLayout
+    android:layout_height="match_parent"
+    android:descendantFocusability="beforeDescendants"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+    <!--<android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="240dp">
 
@@ -26,95 +29,365 @@
                 android:id="@+id/toolbar_service"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin" />
+                app:navigationIcon="@drawable/jiantou_right"
+                app:layout_collapseMode="pin">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/bp_apply"
+                    android:textColor="#ff333333"
+                    android:textSize="17sp" />
+            </android.support.v7.widget.Toolbar>
         </android.support.design.widget.CollapsingToolbarLayout>
-    </android.support.design.widget.AppBarLayout>
+    </android.support.design.widget.AppBarLayout>-->
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/transparent"
+        app:popupTheme="@style/AppTheme.PopupOverlay">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/bp_apply"
+            android:textColor="#ff333333"
+            android:textSize="17sp" />
+    </android.support.v7.widget.Toolbar>
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nested_scrollview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/size_56dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="0dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="@dimen/size_16dp"
-            android:paddingRight="@dimen/size_16dp">
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/size_10dp">
 
             <TextView
-                android:text="@string/base_info"
                 android:id="@+id/tv_base_info"
+                style="@style/Padding_LR16"
                 android:layout_width="0dp"
                 android:layout_height="42dp"
+                android:background="#fff7f7f7"
+                android:gravity="center_vertical"
+                android:text="@string/base_info"
+                android:textColor="#ff666666"
+                android:textSize="13sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <!--注意 自定义控件里面没有对资源id进行解析处理，所以这里只能硬编码-->
             <com.yidao.platform.service.view.CustomBpItemView
                 android:id="@+id/tv_name"
                 style="@style/BP_Item_Style"
-                app:setDrawableRight="@drawable/ic_stars_black_8dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_base_info"
                 app:leftText="名称"
-                app:rightHint="请输入企业名称"/>
+                app:rightHint="请输入企业名称"
+                app:setImportantIcon="@drawable/ic_stars_black_8dp" />
+
+            <View
+                android:id="@+id/line1"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/colorLine"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
             <com.yidao.platform.service.view.CustomBpItemView
                 android:id="@+id/tv_city"
                 style="@style/BP_Item_Style"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_name"
+                app:layout_constraintTop_toBottomOf="@+id/line1"
                 app:leftText="城市"
                 app:rightHint="请输入所在城市" />
+
+            <View
+                android:id="@+id/line2"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/colorLine"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_city" />
 
             <com.yidao.platform.service.view.CustomBpItemView
                 android:id="@+id/tv_industry"
                 style="@style/BP_Item_Style"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_city"
+                app:layout_constraintTop_toBottomOf="@+id/line2"
                 app:leftText="行业"
                 app:rightHint="请输入企业所属行业" />
+
+            <View
+                android:id="@+id/line3"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/colorLine"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_industry" />
 
             <com.yidao.platform.service.view.CustomBpItemView
                 android:id="@+id/tv_occupation"
                 style="@style/BP_Item_Style"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_industry"
+                app:layout_constraintTop_toBottomOf="@+id/line3"
                 app:leftText="职业"
                 app:rightHint="请输入你的职业" />
+
+            <View
+                android:id="@+id/line4"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/colorLine"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_occupation" />
 
             <com.yidao.platform.service.view.CustomBpItemView
                 android:id="@+id/tv_phone"
                 style="@style/BP_Item_Style"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_occupation"
+                app:layout_constraintTop_toBottomOf="@+id/line4"
                 app:leftText="手机"
-                app:rightHint="请输入你的联系方式" />
+                app:rightHint="请输入你的联系方式"
+                app:setImportantIcon="@drawable/ic_stars_black_8dp" />
+
+            <View
+                android:id="@+id/line5"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/colorLine"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_phone" />
 
             <com.yidao.platform.service.view.CustomBpItemView
                 android:id="@+id/tv_user_count"
                 style="@style/BP_Item_Style"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_phone"
+                app:layout_constraintTop_toBottomOf="@+id/line5"
                 app:leftText="人数"
-                app:rightHint="请输入你的团队人数"
-                app:setDrawableRight="@drawable/ic_stars_black_8dp"/>
+                app:rightHint="请输入你的团队人数" />
+
+            <View
+                android:id="@+id/line6"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/colorLine"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_user_count" />
 
             <com.yidao.platform.service.view.CustomBpItemView
                 android:id="@+id/tv_valuation"
                 style="@style/BP_Item_Style"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_user_count"
+                app:layout_constraintTop_toBottomOf="@+id/line6"
                 app:leftText="估值"
                 app:rightHint="请输入企业目前估值" />
+
+            <TextView
+                android:id="@+id/tv_simple_intro"
+                style="@style/Padding_LR16"
+                android:layout_width="0dp"
+                android:layout_height="42dp"
+                android:background="#fff7f7f7"
+                android:gravity="center_vertical"
+                android:text="@string/simple_intro"
+                android:textColor="#ff666666"
+                android:textSize="13sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_valuation" />
+
+            <EditText
+                android:id="@+id/et_enterprise_introduction"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:background="@null"
+                android:ems="10"
+                android:gravity="top"
+                android:hint="@string/enterprise_Introduction"
+                android:inputType="textMultiLine"
+                android:maxLength="100"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="16dp"
+                android:scrollbars="vertical"
+                android:textColorHint="#ffc4c9ce"
+                android:textSize="15sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_simple_intro" />
+
+            <TextView
+                android:id="@+id/tv_content_length"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:paddingRight="16dp"
+                android:text="0/100"
+                app:layout_constraintBottom_toBottomOf="@+id/et_enterprise_introduction"
+                app:layout_constraintEnd_toEndOf="@+id/et_enterprise_introduction" />
+
+            <TextView
+                android:id="@+id/tv_financing_expect"
+                style="@style/Padding_LR16"
+                android:layout_width="0dp"
+                android:layout_height="42dp"
+                android:background="#fff7f7f7"
+                android:gravity="center_vertical"
+                android:text="@string/financing_expect"
+                android:textColor="#ff666666"
+                android:textSize="13sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_content_length" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
+
+            <TextView
+                android:id="@+id/tv_your_except_money"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:text="@string/your_except_money"
+                android:textColor="#ff333333"
+                android:textSize="15sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="@+id/guideline"
+                app:layout_constraintTop_toBottomOf="@+id/tv_financing_expect" />
+
+            <EditText
+                android:id="@+id/et_sum_money"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:background="@null"
+                android:drawableRight="@drawable/bp_wanyuan"
+                android:ems="10"
+                android:gravity="end|center_vertical"
+                android:hint="@string/sum_money_hint"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:paddingRight="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/guideline"
+                app:layout_constraintTop_toBottomOf="@+id/tv_financing_expect" />
+
+            <View
+                android:id="@+id/line7"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/colorLine"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_your_except_money" />
+
+            <TextView
+                android:id="@+id/tv_your_afford_equity"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:text="@string/your_afford_equity"
+                android:textColor="#ff333333"
+                android:textSize="15sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="@+id/guideline"
+                app:layout_constraintTop_toBottomOf="@+id/line7" />
+
+            <EditText
+                android:id="@+id/et_equity"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:background="@null"
+                android:drawableEnd="@drawable/bp_percent"
+                android:ems="10"
+                android:gravity="end|center_vertical"
+                android:hint="@string/equity_percent"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:paddingRight="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/guideline"
+                app:layout_constraintTop_toBottomOf="@+id/line7" />
+
+            <View
+                android:id="@+id/line8"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/colorLine"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_your_afford_equity" />
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:textColor="#ff999999"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_your_afford_equity" />
+
+            <TextView
+                android:id="@+id/tv_bp_protocol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/checkbox"
+                app:layout_constraintLeft_toRightOf="@+id/checkbox"
+                app:layout_constraintTop_toTopOf="@+id/checkbox"
+                tools:text="申请即默认同意《BP资格申请协议》" />
+
+            <Button
+                android:id="@+id/btn_commit"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="@dimen/size_16dp"
+                android:layout_marginRight="@dimen/size_16dp"
+                android:layout_marginTop="36dp"
+                android:background="@drawable/shape_btn_blue_corner"
+                android:text="@string/commit"
+                android:textColor="#ffffffff"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_bp_protocol" />
         </android.support.constraint.ConstraintLayout>
     </android.support.v4.widget.NestedScrollView>
-</android.support.design.widget.CoordinatorLayout>
+
+</android.support.constraint.ConstraintLayout>

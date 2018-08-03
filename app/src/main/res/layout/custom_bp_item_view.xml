@@ -19,27 +19,17 @@
         android:id="@+id/et_value"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:background="@null"
-        android:gravity="center_vertical"
+        android:drawableEnd="@drawable/ic_cancel_black_24dp"
         android:ellipsize="end"
         android:ems="10"
+        android:gravity="center_vertical"
         android:inputType="textPersonName"
         android:maxLines="1"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_key"
-        app:layout_constraintEnd_toStartOf="@+id/iv_clear"
-        app:layout_constraintStart_toEndOf="@+id/tv_key"
-        app:layout_constraintTop_toTopOf="@+id/tv_key"
-        tools:hint="测试hint" />
-
-    <ImageView
-        android:id="@+id/iv_clear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/et_value"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/et_value"
-        app:srcCompat="@drawable/ic_cancel_black_24dp" />
-
+        app:layout_constraintStart_toEndOf="@+id/tv_key"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:hint="测试hint" />
 </android.support.constraint.ConstraintLayout>

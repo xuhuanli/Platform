@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
     android:layout_marginTop="16dp">
 
     <ImageView
@@ -35,7 +34,6 @@
         app:layout_constraintStart_toStartOf="@+id/tv_discovery_time"
         app:layout_constraintTop_toBottomOf="@+id/iv_discovery_icon"
         tools:text="en是调用授权关系接口的调用凭证，由于access_token有效期（目前为2个小时）较短，当access_token超时后，可以使用refresh_token进行刷新，access_token刷新结果有两en是调用授权关系接口的调用凭证，由于access_token有效期（目前为2个小时）较短，当access_token超时后，可以使用refresh_token进行刷新，access_token刷新结果有两" />
-
 
 
     <TextView
@@ -70,7 +68,6 @@
         app:bga_npl_placeholderDrawable="@mipmap/bga_pp_ic_holder_light"
         app:bga_npl_showAsLargeWhenOnlyOne="true"
         app:layout_constraintBottom_toTopOf="@+id/tv_discovery_reply"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tv_discovery_content"
         app:layout_constraintTop_toBottomOf="@+id/tv_discovery_content" />
 
@@ -78,9 +75,9 @@
         android:id="@+id/tv_discovery_reply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:src="@drawable/discovery_reply"
         android:text="@string/more"
-        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/npl_item_moment_photos" />
 
@@ -93,7 +90,15 @@
         android:text="@string/delete"
         android:textColor="@color/colorPrimary"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tv_discovery_content"
         app:layout_constraintTop_toBottomOf="@id/npl_item_moment_photos" />
+
+    <View
+        android:layout_width="@dimen/size_0dp"
+        android:layout_height="@dimen/size_1dp"
+        android:layout_marginTop="@dimen/size_8dp"
+        android:background="@color/colorLine"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_discovery_name"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_discovery_reply" />
 </android.support.constraint.ConstraintLayout>

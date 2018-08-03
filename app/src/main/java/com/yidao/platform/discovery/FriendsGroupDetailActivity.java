@@ -114,12 +114,6 @@ public class FriendsGroupDetailActivity extends BaseActivity implements View.OnC
                     showCommentDialog(toReplyUser);
                 }
             });
-            /*commentList.setOnItemLongClickListener(position -> {
-                CommentItem commentItem = mDataList.get(position);
-                //长按进行复制或者删除
-                CommentDialog dialog = new CommentDialog(FriendsGroupDetailActivity.this, mPresenter, commentItem);
-                dialog.show();
-            });*/
         } else {
             commentList.setVisibility(View.GONE);
         }

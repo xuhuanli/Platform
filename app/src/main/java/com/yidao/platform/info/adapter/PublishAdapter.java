@@ -28,7 +28,7 @@ public class PublishAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
                 .addOnClickListener(R.id.tv_delete);
         BGANinePhotoLayout ninePhotoLayout = (BGANinePhotoLayout) helper.getView(R.id.npl_item_moment_photos);
         ArrayList<String> dataList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 9; i++) {
             dataList.add("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered1.png");
         }
         ninePhotoLayout.setData(dataList);

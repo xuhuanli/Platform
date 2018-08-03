@@ -3,8 +3,11 @@ package com.yidao.platform.webview;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+
+import com.yidao.platform.app.utils.MyLogger;
 
 public class XHLWebView extends WebView {
 

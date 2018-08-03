@@ -41,12 +41,7 @@ public class InfoMyPublishActivity extends BaseActivity implements BaseQuickAdap
     @SuppressLint("CheckResult")
     private void initView() {
         tvTitle.setText("我的发布");
-        RxToolbar.navigationClicks(toolbar).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) throws Exception {
-                finish();
-            }
-        });
+        RxToolbar.navigationClicks(toolbar).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish());
         rvMyPublish.setLayoutManager(new LinearLayoutManager(this));
         ArrayList<String> list = new ArrayList<>();
         for (int i = 0; i < 10; i++) {

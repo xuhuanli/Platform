@@ -107,7 +107,6 @@
                 app:bga_npl_placeholderDrawable="@mipmap/bga_pp_ic_holder_light"
                 app:bga_npl_showAsLargeWhenOnlyOne="true"
                 app:layout_constraintBottom_toTopOf="@+id/tv_delete"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/tv_discovery_content"
                 app:layout_constraintTop_toBottomOf="@+id/tv_discovery_content" />
 

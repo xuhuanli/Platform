@@ -124,10 +124,17 @@
         <item name="leftColor">@color/FF333333</item>
         <item name="leftSize">15sp</item>
         <item name="rightColor">@color/FF333333</item>
-        <item name="rightImg">@drawable/ic_cancel_black_24dp</item>
         <item name="rightSize">15sp</item>
         <item name="android:layout_height">52dp</item>
         <item name="android:layout_width">match_parent</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="setClearIcon">@drawable/ic_cancel_black_24dp</item>
+    </style>
+
+    <style name="Padding_LR16">
+        <item name="android:paddingLeft">@dimen/size_16dp</item>
+        <item name="android:paddingRight">@dimen/size_16dp</item>
     </style>
 
     <color name="colorLine">#ffeaecf1</color>

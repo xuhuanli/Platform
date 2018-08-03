@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
@@ -15,8 +16,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.allen.library.utils.ToastUtils;
@@ -26,15 +29,22 @@ import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.app.utils.BitmapUtil;
+import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.read.adapter.MultipleReadDetailAdapter;
+import com.yidao.platform.read.adapter.ReadDetailAdapter;
 import com.yidao.platform.read.adapter.ReadNewsDetailBean;
+import com.yidao.platform.webview.XHLWebChromeClient;
+import com.yidao.platform.webview.XHLWebView;
+import com.yidao.platform.webview.XHLWebViewClient;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import cn.bingoogolapple.badgeview.BGABadgeImageButton;
@@ -46,6 +56,8 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     RecyclerView mRecyclerView;
     @BindView(R.id.tv_comment)
     TextView mTvComment;
+    @BindView(R.id.iv_back_comment_dialog)
+    ImageView ivBack;
     private EditText mEtContent;
     private BGABadgeImageButton ib_comment;
     private BGABadgeImageButton ib_vote;
@@ -56,6 +68,13 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     private String url;
     private IWXAPI mWxapi;
     private BottomSheetDialog mShareBottomSheetDialog;
+    /**
+     * flag of isComment ; true equals comment
+     */
+    private boolean isComment = false;
+    private int lastOffset;
+    private int lastPosition;
+    private LinearLayoutManager layoutManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,6 +90,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void initView() {
+        ivBack = findViewById(R.id.iv_back_comment_dialog);
         ib_comment = findViewById(R.id.ib_comment);
         ib_vote = findViewById(R.id.ib_vote);
         ib_favorite = findViewById(R.id.ib_favorite);
@@ -79,19 +99,21 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         ib_vote.setOnClickListener(this);
         ib_favorite.setOnClickListener(this);
         ib__share.setOnClickListener(this);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         List<ReadNewsDetailBean> list = new ArrayList<>();
         list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_WEBVIEW));
-        for (int i = 0; i < 10; i++) {
+        list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_HOT_COMMENT));
+        for (int i = 0; i < 2; i++) {
             list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_COMMENTS));
         }
         list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_BOTTOM));
         mAdapter = new MultipleReadDetailAdapter(this, list);
         mAdapter.setWebViewUrl(url);
         mRecyclerView.setAdapter(mAdapter);
-        addDisposable(RxView.clicks(mTvComment).subscribe(o -> showCommentDialog()));
+        //展开评论框
+        addDisposable(RxView.clicks(mTvComment).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> showCommentDialog()));
+        addDisposable(RxView.clicks(ivBack).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish()));
         mAdapter.setOnItemLongClickListener((adapter, view, position) -> {
             int itemViewType = adapter.getItemViewType(position);
             // TODO: 2018/7/25 0025 还需要判断是否为本人评论 ignored
@@ -100,6 +122,21 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
             }
             return false;
         });
+
+        /*mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                View topView = layoutManager.getChildAt(0); //获取可视的第一个view
+                lastOffset = topView.getTop();
+                lastPosition = layoutManager.getPosition(topView);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });*/
     }
 
     private void showAlertDialog(int messageId, DialogInterface.OnClickListener positiveListener) {
@@ -172,7 +209,37 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
                 finish();
                 break;
             case R.id.ib_comment: //评论icon
-                ib_comment.showTextBadge("100");
+               /* int verticalScrollOffset = mRecyclerView.computeVerticalScrollOffset();
+                MyLogger.e("verticalScrollOffset = "+verticalScrollOffset);
+                IPreference.prefHolder.getPreference(this).put("v_offset",verticalScrollOffset);*/
+                /*if (layoutManager != null) {
+                    layoutManager.scrollToPositionWithOffset(1,0);
+                }*/
+               /* int height = mRecyclerView.getHeight();
+                WebView webView = mAdapter.getWebView();
+                int webViewHeight = webView.getHeight();
+                MyLogger.e("current height = "+height+" webViewHeight = "+webViewHeight);*/
+                /*if (manager != null) {
+                }
+                if (isComment) {
+                    ((LinearLayoutManager)mRecyclerView.getLayoutManager()).scrollToPositionWithOffset(1,0);
+                    // TODO: 2018/8/3 0003 不是评论 跳到评论
+                    isComment = true;
+                }else {
+                    ((LinearLayoutManager)mRecyclerView.getLayoutManager()).scrollToPositionWithOffset(0,0);
+                    isComment = false;
+                }*/
+                /*WebView webView = mAdapter.getWebView();
+                int webViewHeight = webView.getHeight();
+                if (!isComment) {
+                    webView.scrollTo(0,webViewHeight);
+                    mRecyclerView.scrollTo(0,webViewHeight);
+                    isComment = true;
+                }else {
+                    webView.scrollTo(0,0);
+                    isComment = false;
+                }
+                MyLogger.e("webViewHeight = "+webViewHeight);*/
                 break;
             case R.id.ib_vote: //点赞icon
                 ib_vote.showCirclePointBadge();

@@ -18,9 +18,10 @@
 
     <TextView
         android:id="@+id/tv_comment"
+        android:paddingLeft="@dimen/size_4dp"
         android:layout_width="140dp"
         android:layout_height="36dp"
-        android:background="@drawable/shape_text_view_border"
+        android:background="#fff5f6f7"
         android:gravity="center_vertical"
         android:maxLines="1"
         android:ellipsize="end"

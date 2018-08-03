@@ -10,14 +10,15 @@ import java.util.List;
 
 public class MyBottleAdapter extends BaseQuickAdapter<String,BaseViewHolder>{
     public MyBottleAdapter(@Nullable List<String> data) {
-        super(R.layout.my_bottle_item, data);
+        super(R.layout.info_message_bottle_item, data);
     }
 
     @Override
     protected void convert(BaseViewHolder helper, String item) {
-        helper.setImageResource(R.id.my_bootle_icon,R.drawable.mypic)
-                .setText(R.id.my_bottle_location,"杭州")
-                .setText(R.id.my_bottle_content,"嗨呀")
-                .setText(R.id.my_bottle_time,"14:21");
+        helper
+                .setImageResource(R.id.iv_touxiang, R.drawable.mypic)
+                .setText(R.id.tv_name, "xhl")
+                .setText(R.id.tv_comment_content, "这是瓶子的消息")
+                .setText(R.id.tv_comment_time, "1小时前");
     }
 }

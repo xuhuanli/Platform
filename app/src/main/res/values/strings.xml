@@ -9,7 +9,7 @@
     <string name="has_collected_at">本文已被收藏在:</string>
     <string name="rationable_ask">我需要这个权限来打开相机或相册</string>
     <string name="failed_to_get_image">获取图片失败</string>
-    <string name="bp_apply">免费BP资格申请</string>
+    <string name="bp_apply">申请BP服务</string>
     <string name="base_info">基本信息</string>
     <string name="service_protocal">申请即默认同意《BP资格申请协议》</string>
     <string name="commit_apply">提交申请</string>
@@ -74,4 +74,13 @@
     <string name="phone_number">手机号</string>
     <string name="has_no_bind">未绑定</string>
     <string name="male">男</string>
+    <string name="simple_intro">企业行业概述</string>
+    <string name="enterprise_Introduction">请简介的输入您的现有产业，商业模式或者盈利模式，我们会请专业投资复核专家团队进行评审</string>
+    <string name="financing_expect">融资期望</string>
+    <string name="your_except_money">你所期望的投资金额</string>
+    <string name="sum_money_hint">0.00</string>
+    <string name="your_afford_equity">对应你能让出的股权</string>
+    <string name="commit">提交</string>
+    <string name="equity_percent">0.00</string>
+    <string name="bp_protocol">申请即默认同意《BP资格申请协议》</string>
 </resources>

@@ -3,6 +3,7 @@ package com.yidao.platform.discovery;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -32,31 +33,23 @@ public class DiscoveryMyBottleActivity extends BaseActivity implements MyBottleI
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setSupportActionBar(toolbar);
         initView();
     }
 
     @SuppressLint("CheckResult")
     private void initView() {
-        RxToolbar.navigationClicks(toolbar).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) throws Exception {
-                finish();
-            }
-        });
+        RxToolbar.navigationClicks(toolbar).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         ArrayList<String> list = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             list.add(String.valueOf(i));
         }
         MyBottleAdapter adapter = new MyBottleAdapter(list);
         recyclerView.setAdapter(adapter);
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                // TODO: 2018/7/18 0018 单个瓶子内容
-                startActivity(DiscoveryBottleDetailActivity.class);
-            }
+        adapter.setOnItemClickListener((adapter1, view, position) -> {
+            // TODO: 2018/7/18 0018 单个瓶子内容
+            startActivity(DiscoveryBottleDetailActivity.class);
         });
     }
 

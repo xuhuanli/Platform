@@ -30,7 +30,7 @@ public class ReadContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         if (viewType == ITEM_TYPE.ITEM_TYPE_WEBVIEW.ordinal()) { //加载头部webview
             return new WebViewViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.read_detail_webview_item, parent, false));
         } else if (viewType == ITEM_TYPE.ITEM_TYPE_COLLECTION.ordinal()) { //加载收藏分类
-            return new CollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.read_detail_collection_item, parent, false));
+            return new CollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.read_detail_hot_comment_item, parent, false));
         } else { //加载评论列表
             return new CommentViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.read_detail_comment_item, parent, false));
         }

@@ -18,4 +18,6 @@
     <dimen name="sp_34">34sp</dimen>
     <dimen name="dp_36">36dp</dimen>
     <dimen name="size_10dp">10dp</dimen>
+    <dimen name="size_1dp">1dp</dimen>
+    <dimen name="size_5dp">5dp</dimen>
 </resources>

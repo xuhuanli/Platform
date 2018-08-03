@@ -32,4 +32,5 @@ public class Constant {
      * Bugly App ID
      */
     public static final String BUGLY_ID = "59c35ade6f";
+    public static final String WEBVIEW_PROGRESS = "webview_progress";
 }

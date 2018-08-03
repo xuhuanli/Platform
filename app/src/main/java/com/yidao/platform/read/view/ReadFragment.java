@@ -5,11 +5,11 @@ import android.graphics.Color;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.allen.library.RxHttpUtils;
 import com.allen.library.interceptor.Transformer;
@@ -19,19 +19,20 @@ import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseFragment;
 import com.yidao.platform.app.utils.MyLogger;
+import com.yidao.platform.app.utils.ScreenUtil;
 import com.yidao.platform.read.adapter.MultipleReadAdapter;
 import com.yidao.platform.read.adapter.ReadNewsBean;
 import com.yidao.platform.testpackage.bean.ApiService;
 import com.yidao.platform.testpackage.bean.TestBean;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
+import com.youth.banner.view.BannerViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
-import io.reactivex.functions.Consumer;
 
 public class ReadFragment extends BaseFragment {
 
@@ -155,16 +156,26 @@ public class ReadFragment extends BaseFragment {
         //设置图片加载器
         banner.setImageLoader(new GlideImageLoader());
         //设置图片集合
+        banner.setOffscreenPageLimit(5);
         banner.setImages(list);
+        //banner.setPageMargin(ScreenUtil.dip2px(getContext(),16));
+        BannerViewPager bannerViewPager = (BannerViewPager) banner.findViewById(com.youth.banner.R.id.bannerViewPager);
+        bannerViewPager.setPageMargin(ScreenUtil.dip2px(getContext(), 16));
+        //bannerViewPager.setPadding(ScreenUtil.dip2px(getContext(),16),0,ScreenUtil.dip2px(getContext(),16),0);
+        //bannerViewPager.setPageTransformer(true,new ScaleInTransformer());
+        //bannerViewPager.setOffscreenPageLimit(3);
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) bannerViewPager.getLayoutParams();
+        lp.setMargins(ScreenUtil.dip2px(getContext(), 16), 0, ScreenUtil.dip2px(getContext(), 16), 0);
+        bannerViewPager.setLayoutParams(lp);
         //设置banner动画效果
-        banner.setBannerAnimation(com.youth.banner.Transformer.DepthPage);
+        //banner.setBannerAnimation(com.youth.banner.Transformer.DepthPage);
         //设置标题集合（当banner样式有显示title时）
         ArrayList<String> titles = new ArrayList<>();
-        titles.add("带");
-        titles.add("带");
-        titles.add("大");
-        titles.add("师");
-        titles.add("兄");
+        titles.add("1");
+        titles.add("2");
+        titles.add("3");
+        titles.add("4");
+        titles.add("5");
         banner.setBannerTitles(titles);
         //设置自动轮播，默认为true
         banner.isAutoPlay(true);
@@ -179,7 +190,7 @@ public class ReadFragment extends BaseFragment {
     private void initRecyclerView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        mRecyclerView.addItemDecoration(new CustomDecoration(getActivity(), 5, 0, 0));
         List<ReadNewsBean> list = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             list.add(new ReadNewsBean(ReadNewsBean.ITEM_ONE));
@@ -197,7 +208,7 @@ public class ReadFragment extends BaseFragment {
         });
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             Intent intent = new Intent(getActivity(), ReadContentActivity.class);
-            intent.putExtra("url", "http://news.163.com/");
+            intent.putExtra("url", "https://alittlecup.github.io/2017/03/16/%E8%A7%A3%E5%86%B3AAR%E5%8C%85%E4%B8%AD%E5%BC%95%E7%94%A8%E7%AC%AC%E4%B8%89%E6%96%B9%E6%97%A0%E6%95%88/");
             startActivity(intent);
         });
         mRecyclerView.setAdapter(mAdapter);
@@ -206,12 +217,26 @@ public class ReadFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
+        MyLogger.d("onStart executed");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MyLogger.d("onResume executed");
         banner.startAutoPlay();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MyLogger.d("onPause executed");
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        MyLogger.d("onStop executed");
         banner.stopAutoPlay();
     }
 

@@ -52,27 +52,6 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
     ImageView ivComment;
     @BindView(R.id.tv_publish_comment)
     TextView tvPublishComment;
-
-    /*@BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.iv_discovery_icon)
-    ImageView ivDiscoveryIcon;
-    @BindView(R.id.tv_discovery_name)
-    TextView tvDiscoveryName;
-    @BindView(R.id.tv_discovery_time)
-    TextView tvDiscoveryTime;
-    @BindView(R.id.tv_discovery_vote)
-    TextView tvDiscoveryVote;
-    @BindView(R.id.tv_discovery_content)
-    TextView tvDiscoveryContent;
-    @BindView(R.id.npl_item_moment_photos)
-    BGANinePhotoLayout nplItemMomentPhotos;
-    @BindView(R.id.commentList)
-    CommentListView commentList;
-    @BindView(R.id.iv_back_comment_dialog)
-    ImageView ivBackCommentDialog;
-    @BindView(R.id.tv_comment)
-    TextView tvComment;*/
     /**
      * 评论数据集合
      */

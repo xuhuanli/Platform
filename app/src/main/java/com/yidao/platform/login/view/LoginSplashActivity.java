@@ -2,6 +2,7 @@ package com.yidao.platform.login.view;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
@@ -13,6 +14,8 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
+import com.yidao.platform.login.LoginBindingPhoneActivity;
+import com.yidao.platform.wxapi.WXEntryActivity;
 
 import butterknife.BindView;
 import io.reactivex.functions.Consumer;
@@ -55,13 +58,15 @@ public class LoginSplashActivity extends BaseActivity {
             @Override
             public void onAnimationEnd(Animator animation) {
                 mBtnLogin.setClickable(true);
-                addDisposable(RxView.clicks(mBtnLogin)
+                // TODO: 2018/7/30 0030 快速测试代码 用完删除
+                startActivity(new Intent(LoginSplashActivity.this,LoginBindingPhoneActivity.class));
+                /*addDisposable(RxView.clicks(mBtnLogin)
                         .subscribe(new Consumer<Object>() {
                             @Override
                             public void accept(Object o) {
                                 wxLogin();
                             }
-                        }));
+                        }));*/
             }
 
             @Override

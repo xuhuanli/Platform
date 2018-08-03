@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yidao.platform.R;
@@ -22,7 +21,7 @@ public class CustomBpItemView extends ConstraintLayout {
 
     private TextView tvKey;
     private EditText etValue;
-    private ImageView ivClear;
+    private int clearIconRef;
 
     public CustomBpItemView(Context context) {
         this(context, null);
@@ -37,7 +36,6 @@ public class CustomBpItemView extends ConstraintLayout {
         View view = LayoutInflater.from(context).inflate(R.layout.custom_bp_item_view, this, true);
         tvKey = view.findViewById(R.id.tv_key);
         etValue = view.findViewById(R.id.et_value);
-        ivClear = view.findViewById(R.id.iv_clear);
         init(context, attrs, R.styleable.CustomBpItemView);
     }
 
@@ -50,19 +48,17 @@ public class CustomBpItemView extends ConstraintLayout {
         //左侧文字大小
         float keySize = ta.getDimension(R.styleable.CustomBpItemView_leftSize, 0f);
         //左侧TextView Drawable
-        int leftSrcId = ta.getResourceId(R.styleable.CustomBpItemView_setDrawableRight,0);
+        int importantIcon = ta.getResourceId(R.styleable.CustomBpItemView_setImportantIcon, 0);
         //右侧文字
         String value = ta.getString(R.styleable.CustomBpItemView_rightText);
         //右侧文字颜色
         int valueColor = ta.getColor(R.styleable.CustomBpItemView_rightColor, Color.BLACK);
         //右侧文字大小
         float valueSize = ta.getDimension(R.styleable.CustomBpItemView_rightSize, 0f);
+        int clearIconSrcId = ta.getResourceId(R.styleable.CustomBpItemView_setClearIcon, 0);
+        clearIconRef = clearIconSrcId;
         //右侧文字hint
         String valueHint = ta.getString(R.styleable.CustomBpItemView_rightHint);
-        //右侧图片资源
-        int rightSrcId = ta.getResourceId(R.styleable.CustomBpItemView_rightImg, 0);
-        //是否展示右侧图片
-        boolean showRight = ta.getBoolean(R.styleable.CustomBpItemView_showRightImg, false);
         int type = ta.getInt(R.styleable.CustomBpItemView_setInputType, InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
         ta.recycle();
         setKey(key);
@@ -71,32 +67,52 @@ public class CustomBpItemView extends ConstraintLayout {
         setValue(value);
         setValueColor(valueColor);
         setValueSize(valueSize);
-        setLeftSrcId(leftSrcId);
-        setRightSrcId(rightSrcId);
-        isShowRight(showRight);
+        setImportantIconSrcId(importantIcon);
         setHint(valueHint);
         setInputType(type);
-        initEditText();
+        initEditText(clearIconRef);
     }
 
-    private void initEditText() {
-        boolean visible =false;
+    private void initEditText(int clearIcon) {
+        etValue.clearFocus();
+        setClearIconSrcId(0);
+        setOnFocusChangedListener(clearIcon);
+    }
+
+    private void setOnFocusChangedListener(int clearIcon) {
+        etValue.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                setClearIconSrcId(clearIcon);
+                //edittext获取到焦点后设置右侧drawable监听
+                setClearIconListener();
+            } else {
+                setClearIconSrcId(0);
+            }
+        });
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void setClearIconListener() {
         Drawable drawableRight = etValue.getCompoundDrawables()[2];
-        if (drawableRight == null)
-            return;
-        etValue.setCompoundDrawablesWithIntrinsicBounds(null, null, visible ? drawableRight : null, null);
+        etValue.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (event.getRawX() >= (etValue.getRight() - drawableRight.getBounds().width())) {
+                    //计算drawableRight的坐标
+                    etValue.setText("");
+                    return true;
+                }
+            }
+            return false;
+        });
     }
 
-    public void setLeftSrcId(int rightSrcId) {
-        tvKey.setCompoundDrawablesWithIntrinsicBounds(0, 0, rightSrcId, 0);
+    public void setImportantIconSrcId(int importantIconId) {
+        tvKey.setCompoundDrawablesWithIntrinsicBounds(0, 0, importantIconId, 0);
     }
 
-    public void setRightSrcId(int rightSrcId) {
-        ivClear.setImageResource(rightSrcId);
-    }
 
-    public void isShowRight(boolean b) {
-        ivClear.setVisibility(b ? VISIBLE : INVISIBLE);
+    public void setClearIconSrcId(int clearIconSrcId) {
+        etValue.setCompoundDrawablesWithIntrinsicBounds(0, 0, clearIconSrcId, 0);
     }
 
     public void setKey(CharSequence text) {
@@ -104,7 +120,7 @@ public class CustomBpItemView extends ConstraintLayout {
     }
 
     public String getKey() {
-        return String.valueOf(tvKey.getText());
+        return tvKey.getText().toString();
     }
 
     public void setKeyColor(int keyColor) {
@@ -116,7 +132,7 @@ public class CustomBpItemView extends ConstraintLayout {
     }
 
     public String getValue() {
-        return String.valueOf(etValue.getText());
+        return etValue.getText().toString().trim();
     }
 
     public void setValue(String value) {
@@ -137,19 +153,5 @@ public class CustomBpItemView extends ConstraintLayout {
 
     public void setInputType(int type) {
         etValue.setInputType(type);
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    public void setClearIconListener(){
-        etValue.setOnTouchListener((v, event) -> {
-            if(event.getAction() == MotionEvent.ACTION_UP) {
-                if(event.getRawX() >= (etValue.getRight() - etValue.getCompoundDrawables()[2].getBounds().width())) {
-                    // your action here
-                    etValue.setText("");
-                    return true;
-                }
-            }
-            return false;
-        });
     }
 }
