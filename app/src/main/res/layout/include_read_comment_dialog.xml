@@ -36,6 +36,7 @@
         style="@style/Bottom_Bar_Icon"
         android:src="@drawable/comment"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintLeft_toLeftOf="@+id/guideline_comment"
         app:layout_constraintRight_toLeftOf="@+id/ib_vote"
         app:layout_constraintTop_toTopOf="parent" />

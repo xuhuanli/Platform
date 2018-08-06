@@ -13,10 +13,13 @@ import android.widget.TextView;
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.yidao.platform.R;
+import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.ThreadPoolManager;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.app.utils.FileUtil;
 import com.yidao.platform.info.presenter.SettingsPresenter;
+
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import io.reactivex.functions.Consumer;
@@ -41,7 +44,7 @@ public class SettingsActivity extends BaseActivity implements SettingsViewInterf
         mPresenter = new SettingsPresenter(this);
     }
 
-    @SuppressLint({"DefaultLocale", "SetTextI18n"})
+    @SuppressLint({"DefaultLocale", "SetTextI18n", "CheckResult"})
     private void initView() {
         initCacheTextView();
         initToolbar();
@@ -77,8 +80,6 @@ public class SettingsActivity extends BaseActivity implements SettingsViewInterf
     }
 
     private void initToolbar() {
-        //setSupportActionBar(mToolbar);
-        //getSupportActionBar().setDisplayShowTitleEnabled(false);
         addDisposable(RxToolbar.navigationClicks(mToolbar).subscribe(o -> finish()));
     }
 

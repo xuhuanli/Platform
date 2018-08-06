@@ -75,6 +75,8 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     private int lastOffset;
     private int lastPosition;
     private LinearLayoutManager layoutManager;
+    //是否处于正在滑动状态
+    private boolean isScrolling = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -123,20 +125,28 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
             return false;
         });
 
-        /*mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                View topView = layoutManager.getChildAt(0); //获取可视的第一个view
-                lastOffset = topView.getTop();
-                lastPosition = layoutManager.getPosition(topView);
+                switch (newState) {
+                    case RecyclerView.SCROLL_STATE_IDLE:
+                        isScrolling = false;
+                        break;
+                    case RecyclerView.SCROLL_STATE_DRAGGING:
+                        isScrolling = true;
+                        break;
+                    case RecyclerView.SCROLL_STATE_SETTLING:
+                        isScrolling = true;
+                        break;
+                }
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
             }
-        });*/
+        });
     }
 
     private void showAlertDialog(int messageId, DialogInterface.OnClickListener positiveListener) {
@@ -209,6 +219,9 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
                 finish();
                 break;
             case R.id.ib_comment: //评论icon
+                if (!isScrolling) {
+                    layoutManager.scrollToPositionWithOffset(2,0);
+                }
                /* int verticalScrollOffset = mRecyclerView.computeVerticalScrollOffset();
                 MyLogger.e("verticalScrollOffset = "+verticalScrollOffset);
                 IPreference.prefHolder.getPreference(this).put("v_offset",verticalScrollOffset);*/
