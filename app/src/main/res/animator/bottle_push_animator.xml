@@ -1,15 +1,20 @@
 <set xmlns:android="http://schemas.android.com/apk/res/android"
     android:ordering="sequentially">
-    <set android:ordering="together">
+    <!--扔瓶子：1.先逆时针旋转3圈，并同时达到中间
+                2.然后同时往上移动缩小直至透明-->
+    <set android:ordering="sequentially">
+        <set android:ordering="together">
         <objectAnimator
-            android:duration="500"
+            android:duration="2000"
             android:propertyName="rotation"
-            android:valueFrom="0"
-            android:valueTo="360"
-            android:repeatCount="1"
+            android:valueFrom="360"
+            android:valueTo="0"
+            android:repeatCount="2"
             android:valueType="floatType"/>
 
-        <set android:ordering="sequentially">
+
+        </set>
+        <set android:ordering="together">
             <objectAnimator
                 android:duration="250"
                 android:propertyName="alpha"

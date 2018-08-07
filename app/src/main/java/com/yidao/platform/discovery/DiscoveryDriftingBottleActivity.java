@@ -1,27 +1,36 @@
 package com.yidao.platform.discovery;
 
-import android.annotation.SuppressLint;
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RawRes;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.allen.library.RxHttpUtils;
 import com.allen.library.interceptor.Transformer;
 import com.allen.library.observer.CommonObserver;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.yidao.platform.R;
@@ -34,8 +43,11 @@ import com.yidao.platform.testpackage.bean.TestBean;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class DiscoveryDriftingBottleActivity extends BaseActivity {
 
@@ -45,21 +57,33 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity {
     private static final int PUSH_BOTTLE_REQUEST = 100;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.cl_rootview)
+    ConstraintLayout mRootView;
+    @BindView(R.id.cl_container)
+    ConstraintLayout mClContainer;
+    //bottom item
     @BindView(R.id.iv_discovery_push_bottle)
     ImageView mIvPushBottle;
     @BindView(R.id.iv_discovery_pull_bottle)
     ImageView mIvPullBottle;
     @BindView(R.id.iv_discovery_my_bottle)
     ImageView mIvMyBottle;
-    @BindView(R.id.cl_rootview)
-    ConstraintLayout mRootView;
-    @BindView(R.id.iv_gif)
-    ImageView mGif;
-    @BindView(R.id.view_hide_line)
-    View mHideLine;
-    @BindView(R.id.cl_container)
-    ConstraintLayout mClContainer;
+    @BindView(R.id.tv_ryg)
+    TextView tv_ryg;
+    @BindView(R.id.tv_jyg)
+    TextView tv_jyg;
+    @BindView(R.id.tv_my_bottle)
+    TextView tv_my_bottle;
+    /**
+     * 见到瓶子的内容window
+     */
     private PopupWindow mPopupWindow;
+    /**
+     * 飞船的window
+     */
+    private PopupWindow mBottleWindow;
+    private Animator mPushAnim;
+    private Animator mPullAnim;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,10 +93,11 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity {
 
     private void initView() {
         initToolbar();
-        initStatusbar();
+        changeBackground(R.drawable.drift_bottle_has_bar);
+        initStatusBar();
     }
 
-    private void initStatusbar() {
+    private void initStatusBar() {
         View decorView = getWindow().getDecorView();
         int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
@@ -83,24 +108,96 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity {
     private void initToolbar() {
         setSupportActionBar(mToolbar);
         addDisposable(RxToolbar.navigationClicks(mToolbar).subscribe(o -> finish()));
-        //Glide加载Gif来做漂流瓶动画 快速搞定
-        addDisposable(RxView.clicks(mIvPushBottle).throttleFirst(1, TimeUnit.SECONDS).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) {
-                loadPullAnim();
-//                Intent intent = new Intent(DiscoveryDriftingBottleActivity.this, BottlePushActivity.class);
-//                startActivityForResult(intent, PUSH_BOTTLE_REQUEST);
-            }
+        //扔瓶子
+        addDisposable(RxView.clicks(mIvPushBottle).throttleFirst(1, TimeUnit.SECONDS).subscribe(o -> {
+            Intent intent = new Intent(DiscoveryDriftingBottleActivity.this, BottlePushActivity.class);
+            startActivityForResult(intent, PUSH_BOTTLE_REQUEST);
         }));
-        addDisposable(RxView.clicks(mIvPullBottle).throttleFirst(1, TimeUnit.SECONDS).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) {
-                mRootView.setVisibility(View.GONE);
-                mToolbar.setVisibility(View.GONE);
-                @SuppressLint("InflateParams") View view = LayoutInflater.from(DiscoveryDriftingBottleActivity.this).inflate(R.layout.discovery_pull_bottle_popupwindow, null);
-                showPopupWindow(view);
-            }
-        }));
+        //捡瓶子
+        addDisposable(RxView.clicks(mIvPullBottle).throttleFirst(1, TimeUnit.SECONDS).subscribe(o -> RxHttpUtils.createApi(ApiService.class)
+                .getGod()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(disposable -> {
+                    View view = LayoutInflater.from(DiscoveryDriftingBottleActivity.this).inflate(R.layout.drift_bottle_anim, mClContainer, false);
+                    showBottlePopupWindow(view);
+                    ImageView ivDriftBottle = view.findViewById(R.id.iv_bottle);
+                    setPullAnimator(ivDriftBottle, new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            mPullAnim = animation;
+                            mRootView.setVisibility(View.INVISIBLE);
+                            ActionBar actionBar = getSupportActionBar();
+                            actionBar.hide();
+                            changeBackground(R.drawable.drift_bottle_no_bar);
+                            ivDriftBottle.setEnabled(false);
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            //捡瓶子动画结束后，瓶子可以点击，点击后，飞船遮罩dismiss，对话popup展示
+                            ivDriftBottle.setEnabled(true);
+                            ivDriftBottle.setOnClickListener(v -> {
+                                if (mBottleWindow != null) {
+                                    mBottleWindow.dismiss();
+                                }
+                                View messageView = LayoutInflater.from(DiscoveryDriftingBottleActivity.this).inflate(R.layout.discovery_pull_bottle_popupwindow, mClContainer, false);
+                                showPopupWindow(messageView);
+                                Button backSea = messageView.findViewById(R.id.btn_backsea);
+                                addDisposable(RxView.clicks(backSea).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o1 -> {
+                                    mRootView.setVisibility(View.VISIBLE);
+                                    ActionBar actionBar = getSupportActionBar();
+                                    actionBar.show();
+                                    changeBackground(R.drawable.drift_bottle_has_bar);
+                                    if (mPopupWindow != null) {
+                                        mPopupWindow.dismiss();
+                                    }
+                                }));
+                                //回应
+                                Button btnReply = messageView.findViewById(R.id.btn_reply);
+                                addDisposable(RxView.clicks(btnReply).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o12 -> {
+                                    startActivity(DiscoveryBottleDetailActivity.class);
+                                    mRootView.setVisibility(View.VISIBLE);
+                                    ActionBar actionBar = getSupportActionBar();
+                                    actionBar.show();
+                                    changeBackground(R.drawable.drift_bottle_has_bar);
+                                    if (mPopupWindow != null) {
+                                        mPopupWindow.dismiss();
+                                    }
+                                }));
+                            });
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
+                        }
+                    });
+                })
+                .subscribe(new Observer<TestBean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(TestBean testBean) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                })));
         addDisposable(RxView.clicks(mIvMyBottle).throttleFirst(1, TimeUnit.SECONDS).subscribe(new Consumer<Object>() {
             @Override
             public void accept(Object o) {
@@ -113,59 +210,70 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity {
     /**
      * 加载捡瓶子anim
      */
-    private void loadPullAnim() {
-        /*View decorView = getWindow().getDecorView();
-        int option = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(option);*/
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
-        mPopupWindow = new PopupWindow(this);
-        // TODO: 2018/8/6 0006 动画
-        View view = LayoutInflater.from(this).inflate(R.layout.pull_bottle_anim, mClContainer, false);
-        mPopupWindow.setContentView(view);
-        mPopupWindow.setFocusable(true);
-        //需要设置这个，否则popup的遮罩无法撑满整个屏幕（边上会有漏光）
-        mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#99000000")));// 设置背景图片，不能在布局中设置，要通过代码来设置
-        mPopupWindow.setWidth(WindowManager.LayoutParams.MATCH_PARENT);
-        mPopupWindow.setHeight(WindowManager.LayoutParams.MATCH_PARENT);
-        mPopupWindow.showAtLocation(mClContainer, Gravity.CENTER, 0, 0);
+    private void showBottlePopupWindow(View view) {
+        mBottleWindow = creatPopupWindow(view);
     }
 
     private void showPopupWindow(View view) {
-        mPopupWindow = new PopupWindow();
-        mPopupWindow.setContentView(view);
-        mPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-        mPopupWindow.setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
-        mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#88000000")));
+        mPopupWindow = creatPopupWindow(view);
+        //捡瓶子时候，点击返回键与扔瓶子不同，会直接返回到discoveryFG
         mPopupWindow.setOutsideTouchable(false);
-        mPopupWindow.showAtLocation(mHideLine, Gravity.TOP | Gravity.LEFT, 0, 0);
-        Button backSea = view.findViewById(R.id.btn_backsea);
-        addDisposable(RxView.clicks(backSea).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) {
-                //再次加载动画
-                mRootView.setVisibility(View.VISIBLE);
-                mToolbar.setVisibility(View.VISIBLE);
-                mPopupWindow.dismiss();
-            }
-        }));
-        //回应
-        Button btnReply = view.findViewById(R.id.btn_reply);
-        addDisposable(RxView.clicks(btnReply).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) throws Exception {
-                startActivity(DiscoveryBottleDetailActivity.class);
-            }
-        }));
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mPopupWindow != null) {
-            mPopupWindow.dismiss();
-        }
+    private PopupWindow creatPopupWindow(View view) {
+        PopupWindow popupWindow = new PopupWindow(this);
+        popupWindow.setContentView(view);
+//        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#99000000")));// 设置背景图片
+        popupWindow.setWidth(WindowManager.LayoutParams.MATCH_PARENT);
+        popupWindow.setHeight(WindowManager.LayoutParams.MATCH_PARENT);
+        popupWindow.showAtLocation(mClContainer, Gravity.CENTER, 0, 0);
+        return popupWindow;
+    }
+
+    /**
+     * 扔瓶子：1.先逆时针旋转3圈，并同时达到中间
+     * 2.然后同时往上移动缩小直至透明
+     *
+     * @param view
+     */
+    private void setPushAnimator(View view, Animator.AnimatorListener listener) {
+        ObjectAnimator rotation = ObjectAnimator.ofFloat(view, "rotation", 360f, 0f);
+        rotation.setDuration(2000);
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        ObjectAnimator translationX = ObjectAnimator.ofFloat(view, "x", 0,metrics.widthPixels / 2);
+        translationX.setDuration(2000);
+        ObjectAnimator translationY = ObjectAnimator.ofFloat(view, "y", 300f);
+        translationY.setDuration(1000);
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(view, "alpha", 1f, 0f);
+        alpha.setDuration(1000);
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1f, 0.6f);
+        scaleX.setDuration(1000);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1f, 0.6f);
+        scaleY.setDuration(1000);
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(rotation).with(translationX).before(translationY).before(alpha).before(scaleX).before(scaleY);
+        animatorSet.addListener(listener);
+        animatorSet.start();
+    }
+
+    private void setPullAnimator(View view, Animator.AnimatorListener listener) {
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
+        alpha.setDuration(3000);
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(alpha);
+        animatorSet.addListener(listener);
+        animatorSet.start();
+    }
+
+    private void changeBackground(@RawRes @DrawableRes @Nullable Integer resourceId) {
+        Glide.with(DiscoveryDriftingBottleActivity.this).load(resourceId).into(new SimpleTarget<Drawable>() {
+            @Override
+            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                mClContainer.setBackground(resource);
+            }
+        });
     }
 
     @Override
@@ -179,27 +287,97 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity {
             //漂流瓶发布请求中，添加动画效果
             String bottleData = data.getStringExtra("data");
             String bottleCode = data.getStringExtra("code");
-            MyLogger.d(bottleData + "  " + bottleCode);
             RxHttpUtils.createApi(ApiService.class)
                     .getGod()
                     .compose(Transformer.<TestBean>switchSchedulers())
                     .doOnSubscribe(new Consumer<Disposable>() {
                         @Override
-                        public void accept(Disposable disposable) {
-                            Glide.with(DiscoveryDriftingBottleActivity.this).load(R.drawable.heimao).into(mGif);
+                        public void accept(Disposable disposable) throws Exception {
+                            View view = LayoutInflater.from(DiscoveryDriftingBottleActivity.this).inflate(R.layout.drift_bottle_anim, mClContainer, false);
+                            showBottlePopupWindow(view);
+                            ImageView IvDriftBottle = view.findViewById(R.id.iv_bottle);
+                            setPushAnimator(IvDriftBottle, new Animator.AnimatorListener() {
+                                @Override
+                                public void onAnimationStart(Animator animation) {
+                                    mPushAnim = animation;
+                                    mRootView.setVisibility(View.INVISIBLE);
+                                    ActionBar actionBar = getSupportActionBar();
+                                    actionBar.hide();
+                                    changeBackground(R.drawable.drift_bottle_no_bar);
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    mRootView.setVisibility(View.VISIBLE);
+                                    ActionBar actionBar = getSupportActionBar();
+                                    actionBar.show();
+                                    changeBackground(R.drawable.drift_bottle_has_bar);
+                                    if (mBottleWindow != null) {
+                                        mBottleWindow.dismiss();
+                                    }
+                                }
+
+                                @Override
+                                public void onAnimationCancel(Animator animation) { //emmmmm这个方法无法回调
+                                }
+
+                                @Override
+                                public void onAnimationRepeat(Animator animation) {
+                                }
+                            });
                         }
                     })
                     .subscribe(new CommonObserver<TestBean>() {
                         @Override
                         protected void onError(String errorMsg) {
-                            mGif.setImageDrawable(null);
+                            if (mBottleWindow != null) {
+                                mBottleWindow.dismiss();
+                            }
                         }
 
                         @Override
                         protected void onSuccess(TestBean testBean) {
-                            mGif.setImageDrawable(null);
                         }
                     });
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mPushAnim != null) {
+            mPushAnim.removeAllListeners();
+            mPushAnim = null;
+        }
+        if (mPullAnim != null) {
+            mPullAnim.removeAllListeners();
+            mPullAnim = null;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mBottleWindow != null && mBottleWindow.isShowing()) {
+            mBottleWindow.dismiss();
+            finish();
+        }
+        if (mPopupWindow != null && mPopupWindow.isShowing()) {
+            mPopupWindow.dismiss();
+            finish();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mBottleWindow != null && mBottleWindow.isShowing()) {
+            mBottleWindow.dismiss();
+            finish();
+        } else if (mPopupWindow != null && mPopupWindow.isShowing()) {
+            mPopupWindow.dismiss();
+            finish();
+        } else {
+            super.onBackPressed();
         }
     }
 }

@@ -150,12 +150,6 @@
         <item name="android:paddingRight">@dimen/size_16dp</item>
     </style>
 
-    <!-- ActionSheet进出动画 -->
-    <style name="DialogAnimation" parent="@android:style/Animation.Dialog">
-        <item name="android:windowEnterAnimation">@anim/dialog_in</item>
-        <item name="android:windowExitAnimation">@anim/dialog_out</item>
-    </style>
-
     <style name="Style_CAMERA_SELECTOR">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">56dp</item>
