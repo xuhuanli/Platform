@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.allen.library.utils.ToastUtils;
 import com.yidao.platform.R;
+import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.discovery.presenter.EditorMessagePresenter;
@@ -55,7 +56,6 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
     private static final int PRC_PHOTO_PICKER = 1;
     private EditorMessagePresenter mPresenter;
     private ArrayList<String> mUpLoadPicList;
-    private static final int  NEED_COMPRESS_SIZE = 300;
     private WaitDialog mProgressDialog;
     private Handler mHandler = new Handler(new Handler.Callback() {
         int uploadPicCounter = 0;
@@ -194,7 +194,7 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
                 mUpLoadPicList = mPhotosSnpl.getData();
                 if (mUpLoadPicList.size() >= 1) {
                     for (String datum : mUpLoadPicList) {
-                        if (!needCompress(NEED_COMPRESS_SIZE, datum)) {
+                        if (!needCompress(Constant.NEED_COMPRESS_SIZE, datum)) {
                             //<300K时，直传
                             mPresenter.uploadFile(datum, mHandler);
                         } else {

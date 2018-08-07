@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        app:navigationIcon="@drawable/jiantou_right"
+        app:navigationIcon="@drawable/jiantou_black"
         app:popupTheme="@style/AppTheme.PopupOverlay">
 
         <TextView

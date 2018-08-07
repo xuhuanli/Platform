@@ -6,6 +6,7 @@
     <color name="colorWhite" >#FFFFFFFF</color>
     <color name="colorBlack">#FF000000</color>
     <color name="colorGray">#FF645e5e</color>
+    <color name="colorRipple">#42000000</color>
     <color name="transparent">#00000000</color>
     <color name="half_transparent">#60000000</color>
 
@@ -19,4 +20,6 @@
     <color name="FF999999">#ff999999</color>
     <color name="FF333333">#ff333333</color>
     <color name="FFC4C9CE">#ffc4c9ce</color>
+
+    <color name="colorLine">#ffeaecf1</color>
 </resources>

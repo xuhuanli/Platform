@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        app:navigationIcon="@drawable/jiantou_right"
+        app:navigationIcon="@drawable/jiantou_black"
         app:popupTheme="@style/AppTheme.PopupOverlay">
 
         <TextView
@@ -25,7 +25,7 @@
     </android.support.v7.widget.Toolbar>
 
     <View
-        android:id="@+id/line"
+        android:id="@+id/line1"
         android:layout_width="0dp"
         android:layout_height="5dp"
         android:background="@color/colorLine"
@@ -43,5 +43,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/line"/>
+        app:layout_constraintTop_toBottomOf="@+id/line1"/>
 </android.support.constraint.ConstraintLayout>

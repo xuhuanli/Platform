@@ -29,7 +29,7 @@
                 android:id="@+id/toolbar_service"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:navigationIcon="@drawable/jiantou_right"
+                app:navigationIcon="@drawable/jiantou_black"
                 app:layout_collapseMode="pin">
                 <TextView
                     android:layout_width="wrap_content"

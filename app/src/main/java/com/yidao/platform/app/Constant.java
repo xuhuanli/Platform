@@ -33,4 +33,28 @@ public class Constant {
      */
     public static final String BUGLY_ID = "59c35ade6f";
     public static final String WEBVIEW_PROGRESS = "webview_progress";
+    /**
+     * 图片压缩的最小KB
+     */
+    public static final int NEED_COMPRESS_SIZE = 300;
+    /**
+     * oss_id
+     */
+    public static final String OSS_ID = "STS.NHPwo9nVM99Dnj1dGjnZV5LqL";
+    /**
+     * OSS_Secret
+     */
+    public static final String OSS_SECRET = "9qMhsvYwVznak6A1UHV37ApEACLw3xrgiq8hA4WJNBF5";
+    /**
+     * OSS_Token
+     */
+    public static final String OSS_TOKEN = "CAISoQJ1q6Ft5B2yfSjIr4vlPNWNg4lsjvuvbEyAgEc/YtV62onarjz2IH5Oe3VtBe8WsvU/mm9Y7fYflqVoRoReREvCKMBt9YgPRKYg+jKF6aKP9rUhpMCPFAr6UmzzvqL7Z+H+U6mqGJOEYEzFkSle2KbzcS7YMXWuLZyOj+wIDLkQRRLqL0AYZrFsKxBltdUROFbIKP+pKWSKuGfLC1dysQcO+wEP4K+kkMqH8Uic3h+o2+MNo43tLJ++ao4uHu8mD4fqhLItKfGfinABu0Mazsos0vwYowWgl8qGHlxc7y+BN+fp6dB1JGd7HPNkQfEY8aSjxaEp6rKMx9+nlgw+NOVUQjnZQ5u73MzHFeWmO9A0b7/nPG7X1dSCJn9lU+XshshxGoABpclmcnY0Sx4A1Fr0T7lzVnNpuXNxFtFOF7qIhnMYmBlXJI3m7aZ5XKVbi86mB6xE0W9vQbEt1jClxPNH4bqZAOd2D19qMW5a9+SE59WfCFZBWQu/nhqRZbQpHFv+7nzQWsEZ2OF6lx8ZAcm9qomy9ciHInrBhUmd0V5S8DQ0XH0=";
+    /**
+     * OSS_ENDPOINT
+     */
+    public static final String OSS_ENDPOINT = "http://oss-cn-hangzhou.aliyuncs.com";
+    /**
+     * OSS_BUCKET_NAME
+     */
+    public static final String OSS_BUCKET_NAME = "ydplatform";
 }

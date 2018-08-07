@@ -68,12 +68,6 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     private String url;
     private IWXAPI mWxapi;
     private BottomSheetDialog mShareBottomSheetDialog;
-    /**
-     * flag of isComment ; true equals comment
-     */
-    private boolean isComment = false;
-    private int lastOffset;
-    private int lastPosition;
     private LinearLayoutManager layoutManager;
     //是否处于正在滑动状态
     private boolean isScrolling = false;
@@ -222,37 +216,6 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
                 if (!isScrolling) {
                     layoutManager.scrollToPositionWithOffset(2,0);
                 }
-               /* int verticalScrollOffset = mRecyclerView.computeVerticalScrollOffset();
-                MyLogger.e("verticalScrollOffset = "+verticalScrollOffset);
-                IPreference.prefHolder.getPreference(this).put("v_offset",verticalScrollOffset);*/
-                /*if (layoutManager != null) {
-                    layoutManager.scrollToPositionWithOffset(1,0);
-                }*/
-               /* int height = mRecyclerView.getHeight();
-                WebView webView = mAdapter.getWebView();
-                int webViewHeight = webView.getHeight();
-                MyLogger.e("current height = "+height+" webViewHeight = "+webViewHeight);*/
-                /*if (manager != null) {
-                }
-                if (isComment) {
-                    ((LinearLayoutManager)mRecyclerView.getLayoutManager()).scrollToPositionWithOffset(1,0);
-                    // TODO: 2018/8/3 0003 不是评论 跳到评论
-                    isComment = true;
-                }else {
-                    ((LinearLayoutManager)mRecyclerView.getLayoutManager()).scrollToPositionWithOffset(0,0);
-                    isComment = false;
-                }*/
-                /*WebView webView = mAdapter.getWebView();
-                int webViewHeight = webView.getHeight();
-                if (!isComment) {
-                    webView.scrollTo(0,webViewHeight);
-                    mRecyclerView.scrollTo(0,webViewHeight);
-                    isComment = true;
-                }else {
-                    webView.scrollTo(0,0);
-                    isComment = false;
-                }
-                MyLogger.e("webViewHeight = "+webViewHeight);*/
                 break;
             case R.id.ib_vote: //点赞icon
                 ib_vote.showCirclePointBadge();

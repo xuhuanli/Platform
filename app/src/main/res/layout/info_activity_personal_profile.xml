@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_rootview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorLine">
@@ -10,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        app:navigationIcon="@drawable/jiantou_right"
+        app:navigationIcon="@drawable/jiantou_black"
         app:popupTheme="@style/AppTheme.PopupOverlay">
 
         <TextView
@@ -28,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="74dp"
         android:layout_marginTop="10dp"
-        android:background="@color/colorWhite"
+        android:background="@drawable/item_ripple_selector"
         android:clickable="true"
         android:focusable="true"
         android:paddingLeft="@dimen/size_16dp"
@@ -50,7 +51,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/head_portrait"
             android:layout_width="52dp"
             android:layout_height="52dp"

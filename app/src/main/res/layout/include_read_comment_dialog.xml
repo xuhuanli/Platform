@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="4dp"
-        android:src="@drawable/jiantou_right"
+        android:src="@drawable/jiantou_black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tv_comment"
         app:layout_constraintStart_toStartOf="parent"

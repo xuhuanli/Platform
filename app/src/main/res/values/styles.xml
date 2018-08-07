@@ -1,5 +1,4 @@
-<resources xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -8,6 +7,16 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <!--整体的背景颜色为白色-->
         <item name="android:windowBackground">@color/colorWhite</item>
+    </style>
+
+    <!-- Base application theme. -->
+    <style name="DriftBottleTheme" parent="AppTheme">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorWhite</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <!--整体的背景颜色为白色-->
+        <item name="android:windowBackground">@color/colorWhite</item>
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
     <style name="AppTheme.NoActionBarTransparent">
@@ -83,6 +92,10 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/FF333333</item>
         <item name="android:textSize">15sp</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
     </style>
 
     <style name="Info_Msg_Style">
@@ -117,7 +130,7 @@
         <item name="android:layout_height">44dp</item>
         <item name="android:paddingLeft">@dimen/size_16dp</item>
         <item name="android:paddingRight">@dimen/size_16dp</item>
-        <item name="android:background">@color/colorWhite</item>
+        <item name="android:background">@drawable/item_ripple_selector</item>
     </style>
 
     <style name="BP_Item_Style">
@@ -137,5 +150,21 @@
         <item name="android:paddingRight">@dimen/size_16dp</item>
     </style>
 
-    <color name="colorLine">#ffeaecf1</color>
+    <!-- ActionSheet进出动画 -->
+    <style name="DialogAnimation" parent="@android:style/Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/dialog_in</item>
+        <item name="android:windowExitAnimation">@anim/dialog_out</item>
+    </style>
+
+    <style name="Style_CAMERA_SELECTOR">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingBottom">@dimen/size_16dp</item>
+        <item name="android:paddingTop">@dimen/size_16dp</item>
+        <item name="android:textColor">#ff007aff</item>
+        <item name="android:textSize">20sp</item>
+    </style>
 </resources>

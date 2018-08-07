@@ -208,9 +208,6 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
                 case REQUEST_CHOOSE_PICTURE:
                     Intent choosePictureIntent = new Intent(getActivity(), DiscoveryEditorMessageActivity.class);
                     ArrayList<String> photos = BGAPhotoPickerActivity.getSelectedPhotos(data);
-                    for (String photo : photos) {
-                        MyLogger.d(photo.toString());
-                    }
                     choosePictureIntent.putStringArrayListExtra("choose_picture_path", photos);
                     startActivity(choosePictureIntent);
                     break;
@@ -218,7 +215,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
         }
     }
 
-    public static void refreshAlbum(Context context, File file) {
+    private  void refreshAlbum(Context context, File file) {
         context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
     }
 
@@ -233,7 +230,6 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
 
     @Override
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
-        Toast.makeText(getActivity(), "onPermissionsGranted", Toast.LENGTH_SHORT).show();
         switch (requestCode) {
             case PERM_OPEN_ALBUM:
                 if (perms.size() == 2) {
@@ -255,10 +251,9 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
         switch (requestCode) {
             case PERM_OPEN_ALBUM:
-                break;
             case PERM_OPEN_CAMERA:
-                break;
             case PERM_PREVIEW_PHOTO:
+                ToastUtils.showToast("相关权限被拒绝");
                 break;
         }
     }
