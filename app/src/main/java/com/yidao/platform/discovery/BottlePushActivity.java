@@ -29,8 +29,8 @@ public class BottlePushActivity extends BaseActivity {
     EditText mBottleContent;
     @BindView(R.id.tv_content_length)
     TextView mContentLength;
-    @BindView(R.id.tv_want)
-    TextView tvWant;
+    @BindView(R.id.tv_bottle_label)
+    TextView mTvLabel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,15 +43,10 @@ public class BottlePushActivity extends BaseActivity {
             @SuppressLint("DefaultLocale")
             @Override
             public void accept(CharSequence charSequence) throws Exception {
-                mContentLength.setText(String.format("%d%s", charSequence.length(), getString(R.string.bottle_base_length)));
+                mContentLength.setText(String.format("%d%s", charSequence.length(), "/150"));
             }
         }));
-        addDisposable(RxView.clicks(tvBottleCancel).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) throws Exception {
-                finish();
-            }
-        }));
+        addDisposable(RxView.clicks(tvBottleCancel).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish()));
         addDisposable(RxView.clicks(tvBottlePush).throttleFirst(Constant.THROTTLE_TIME,TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
             @Override
             public void accept(Object o) throws Exception {
@@ -63,10 +58,10 @@ public class BottlePushActivity extends BaseActivity {
                 finish();
             }
         }));
-        addDisposable(RxView.clicks(tvWant).throttleFirst(Constant.THROTTLE_TIME,TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
+        addDisposable(RxView.clicks(mTvLabel).throttleFirst(Constant.THROTTLE_TIME,TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
             @Override
             public void accept(Object o) throws Exception {
-
+                // TODO: 2018/8/8 0008 展示标签选择器
             }
         }));
     }

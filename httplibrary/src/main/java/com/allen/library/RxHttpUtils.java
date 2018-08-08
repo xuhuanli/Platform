@@ -11,6 +11,7 @@ import com.allen.library.http.SingleRxHttp;
 import com.allen.library.upload.UploadRetrofit;
 import com.allen.library.utils.SPUtils;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 
 /**
@@ -48,7 +50,6 @@ public class RxHttpUtils {
                     disposables = new ArrayList<>();
                 }
             }
-
         }
         return instance;
     }

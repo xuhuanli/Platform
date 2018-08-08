@@ -41,7 +41,7 @@
     <string name="my_publish">我的发布</string>
     <string name="bottle_content_hint">关于投融资，你有什么想法或需求？来和 志同道合的伙伴们沟通一下吧！说不定会 发现新的商机。</string>
     <string name="string_editor_detail_default_font">0/300</string>
-    <string name="bottle_base_length">/300</string>
+    <string name="bottle_base_length">/150</string>
     <string name="want_to_be_looked">希望看到的人</string>
     <string name="detail">详情</string>
     <string name="my_bottle">我的瓶子</string>
@@ -85,4 +85,6 @@
     <string name="bp_protocol">申请即默认同意《BP资格申请协议》</string>
     <string name="camera">相机</string>
     <string name="gallery">相册</string>
+    <string name="add_label">添加标签</string>
+    <string name="_0_150">0/150</string>
 </resources>
