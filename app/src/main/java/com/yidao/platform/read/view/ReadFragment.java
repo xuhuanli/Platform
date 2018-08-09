@@ -208,7 +208,7 @@ public class ReadFragment extends BaseFragment {
         });
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             Intent intent = new Intent(getActivity(), ReadContentActivity.class);
-            intent.putExtra("url", "https://alittlecup.github.io/2017/03/16/%E8%A7%A3%E5%86%B3AAR%E5%8C%85%E4%B8%AD%E5%BC%95%E7%94%A8%E7%AC%AC%E4%B8%89%E6%96%B9%E6%97%A0%E6%95%88/");
+            intent.putExtra("url", "https://news.163.com/");
             startActivity(intent);
         });
         mRecyclerView.setAdapter(mAdapter);

@@ -65,6 +65,8 @@ public class FriendsGroupDetailActivity extends BaseActivity implements View.OnC
     ImageView mIvIcon;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.tv_title)
+    TextView mTitle;
     /**
      * 评论数据集合
      */
@@ -87,9 +89,8 @@ public class FriendsGroupDetailActivity extends BaseActivity implements View.OnC
     }
 
     private void initView() {
-        //setSupportActionBar(mToolbar);
-        //getSupportActionBar().setDisplayShowTitleEnabled(false);
         addDisposable(RxToolbar.navigationClicks(mToolbar).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish()));
+        mTitle.setText(R.string.discovery_pyq_title);
         ivDiscoveryIcon.setImageResource(R.drawable.mypic);
         tvDiscoveryName.setText("xhl");
         tvDiscoveryVote.setText("100");

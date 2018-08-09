@@ -13,8 +13,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.yidao.platform.R;
+import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.discovery.bean.CommentItem;
 import com.yidao.platform.discovery.bean.DatasUtil;
@@ -25,9 +27,11 @@ import com.yidao.platform.discovery.view.CommentListView;
 import com.yidao.platform.discovery.view.DiscoveryBottleDetailInterface;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
+import io.reactivex.functions.Consumer;
 
 public class DiscoveryBottleDetailActivity extends BaseActivity implements DiscoveryBottleDetailInterface, View.OnClickListener {
     @BindView(R.id.toolbar)
@@ -52,6 +56,8 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
     ImageView ivComment;
     @BindView(R.id.tv_publish_comment)
     TextView tvPublishComment;
+    @BindView(R.id.tv_title)
+    TextView mTitle;
     /**
      * 评论数据集合
      */
@@ -72,8 +78,12 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
         initData();
     }
 
+    @SuppressLint("CheckResult")
     private void initView() {
         //瓶子不展示点赞和九宫格
+        RxToolbar.navigationClicks(toolbar).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish());
+        mTitle.setText("来自杭州的瓶子");
+        tvDiscoveryContent.setText("？？？来了");
         tvDiscoveryVote.setVisibility(View.GONE);
         nplItemMomentPhotos.setVisibility(View.GONE);
         ivDiscoveryIcon.setImageResource(R.drawable.mypic);

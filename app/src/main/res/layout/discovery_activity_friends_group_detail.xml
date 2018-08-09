@@ -14,11 +14,12 @@
         app:popupTheme="@style/AppTheme.PopupOverlay">
 
         <TextView
+            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="@string/discovery_pyq_title"
+            tools:text="@string/discovery_pyq_title"
             android:textColor="#ff333333"
             android:textSize="17sp" />
     </android.support.v7.widget.Toolbar>
@@ -147,12 +148,13 @@
     <TextView
         android:id="@+id/tv_publish_comment"
         android:layout_width="match_parent"
-        android:paddingLeft="20dp"
+        android:paddingStart="20dp"
         android:gravity="center_vertical"
         android:layout_height="@dimen/size_56dp"
         android:hint="@string/add_comment"
-        android:textColor="#ffaaaaaa"
+        android:textColor="#fffcfcfc"
         android:textSize="15sp"
+        android:background="@drawable/textview_border"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

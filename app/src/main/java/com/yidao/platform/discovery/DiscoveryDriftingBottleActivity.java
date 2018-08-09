@@ -109,12 +109,12 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity {
         setSupportActionBar(mToolbar);
         addDisposable(RxToolbar.navigationClicks(mToolbar).subscribe(o -> finish()));
         //扔瓶子
-        addDisposable(RxView.clicks(mIvPushBottle).throttleFirst(1, TimeUnit.SECONDS).subscribe(o -> {
+        addDisposable(RxView.clicks(mIvPushBottle).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
             Intent intent = new Intent(DiscoveryDriftingBottleActivity.this, BottlePushActivity.class);
             startActivityForResult(intent, PUSH_BOTTLE_REQUEST);
         }));
         //捡瓶子
-        addDisposable(RxView.clicks(mIvPullBottle).throttleFirst(1, TimeUnit.SECONDS).subscribe(o -> RxHttpUtils.createApi(ApiService.class)
+        addDisposable(RxView.clicks(mIvPullBottle).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> RxHttpUtils.createApi(ApiService.class)
                 .getGod()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -143,6 +143,15 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity {
                                 }
                                 View messageView = LayoutInflater.from(DiscoveryDriftingBottleActivity.this).inflate(R.layout.discovery_pull_bottle_popupwindow, mClContainer, false);
                                 showPopupWindow(messageView);
+                                //test code
+                                TextView tv_name = messageView.findViewById(R.id.tv_name);
+                                TextView tv_location = messageView.findViewById(R.id.tv_location);
+                                TextView tv_content = messageView.findViewById(R.id.tv_content);
+                                ImageView iv_head_portrait = messageView.findViewById(R.id.iv_head_portrait);
+                                tv_name.setText("xhl");
+                                tv_location.setText("浙江 杭州");
+                                tv_content.setText("的撒方法即可恢复放大会计核算");
+                                Glide.with(DiscoveryDriftingBottleActivity.this).load(R.drawable.mypic).into(iv_head_portrait);
                                 Button backSea = messageView.findViewById(R.id.btn_backsea);
                                 addDisposable(RxView.clicks(backSea).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o1 -> {
                                     //点击扔回海里 飞船重现，对话框dismiss
@@ -226,12 +235,9 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity {
 
                     }
                 })));
-        addDisposable(RxView.clicks(mIvMyBottle).throttleFirst(1, TimeUnit.SECONDS).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) {
-                // TODO: 2018/7/18 0018 我的瓶子详情
-                startActivity(DiscoveryMyBottleActivity.class);
-            }
+        addDisposable(RxView.clicks(mIvMyBottle).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
+            // TODO: 2018/7/18 0018 我的瓶子详情
+            startActivity(DiscoveryMyBottleActivity.class);
         }));
     }
 

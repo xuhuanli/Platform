@@ -197,4 +197,7 @@ dependencies {
 
     //分割线
     implementation 'com.yanyusong.y_divideritemdecoration:y_divideritemdecoration:2.0'
+
+    //picker
+    implementation 'com.contrarywind:Android-PickerView:4.1.6'
 }
