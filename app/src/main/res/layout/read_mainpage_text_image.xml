@@ -10,15 +10,18 @@
     <TextView
         android:id="@+id/read_list_content"
         android:layout_width="0dp"
-        android:layout_height="42dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:layout_marginTop="16dp"
-        android:maxLines="2"
         android:ellipsize="end"
+        android:maxLines="3"
+        android:textColor="#ff000000"
+        android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/read_list_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="状态栏布局和图标挺像Android,但是这白底黑字Android设计规范里可没有啊，于是我们开发的时候果断忽视这个状态栏了（当时大部分用户" />
+        tools:text="状态栏布局和图标挺像Android,但是这白底黑字Android设计规范里可没有啊，于是我们开发的时候果断忽视这个状态栏了（当时大部分用户
+状态栏布局和图标挺像Android,但是这白底黑字Android设计规范里可没有啊，于是我们开发的时候果断忽视这个状态栏了（当时大部分用户" />
 
     <ImageView
         android:id="@+id/read_list_image"
@@ -45,6 +48,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="#ff848e98"
+        android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@+id/iv_hot"
         tools:text="321阅" />
 
@@ -53,7 +58,7 @@
         android:layout_width="2dp"
         android:layout_height="2dp"
         android:layout_marginLeft="4dp"
-        android:background="@color/colorBlack"
+        android:background="@color/colorPoint"
         app:layout_constraintBottom_toBottomOf="@+id/tv_read_count"
         app:layout_constraintLeft_toRightOf="@+id/tv_read_count"
         app:layout_constraintRight_toLeftOf="@+id/tv_news_time"
@@ -62,8 +67,10 @@
     <TextView
         android:id="@+id/tv_news_time"
         android:layout_width="wrap_content"
-        android:layout_marginLeft="4dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:textColor="#ff848e98"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@id/tv_read_count"
         app:layout_constraintLeft_toRightOf="@+id/point"
         tools:text="4小时前" />

@@ -3,7 +3,7 @@ package com.yidao.platform.app;
 public class Constant {
 
     //http://192.168.1.149:8080/product/style/get/1014051050182672384  test
-    public static final String BASE_URL = "http://192.168.1.105:8081/";
+    public static final String BASE_URL = "http://192.168.1.157:8060/";
 
     /**
      * 全局debug模式开关 在release时候设置为false
@@ -57,4 +57,14 @@ public class Constant {
      * OSS_BUCKET_NAME
      */
     public static final String OSS_BUCKET_NAME = "ydplatform";
+    public static final long CATEGORY_ID_FUHUA = 6355509193605120L; //孵化那些事
+    public static final long CATEGORY_ID_HULIANGWANG = 5309401944162304L; //互联网工具
+    public static final long CATEGORY_ID_BP = 5211114973036544L; //商业计划书
+    public static final long CATEGORY_ID_TOUZI = 6355216141778944L; //投资金额
+    public static final long CATEGORY_ID_ZHENGCE = 6355476889075712L; //国家政策
+    public static final long CATEGORY_ID_ZIXUN = 6355421843030016L; //产业咨询
+    /**
+     * 更多列表 pageSize
+     */
+    public static final int PAGE_SIZE = 2;
 }

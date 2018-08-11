@@ -74,7 +74,7 @@ public class ReadContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
         private void initWebView() {
-            webView.setWebViewClient(new XHLWebViewClient(webView));
+            //webView.setWebViewClient(new XHLWebViewClient(webView));
             webView.setWebChromeClient(new XHLWebChromeClient(webView));
             webView.loadUrl("http://www.edaochina.com/");
         }

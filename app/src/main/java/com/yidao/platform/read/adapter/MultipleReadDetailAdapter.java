@@ -8,7 +8,6 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.yidao.platform.R;
-import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.webview.XHLWebChromeClient;
 import com.yidao.platform.webview.XHLWebView;
 import com.yidao.platform.webview.XHLWebViewClient;
@@ -42,7 +41,6 @@ public class MultipleReadDetailAdapter extends BaseMultiItemQuickAdapter<ReadNew
     protected void convert(BaseViewHolder helper, ReadNewsDetailBean item) {
         switch (item.getItemType()) {
             case ReadNewsDetailBean.ITEM_WEBVIEW:
-                MyLogger.e("error1");
                 mWebView = helper.getView(R.id.xhlwebview_detail);
                 mWebView.setWebViewClient(new XHLWebViewClient(mWebView));
                 mWebView.setWebChromeClient(new XHLWebChromeClient(mWebView));
@@ -53,7 +51,6 @@ public class MultipleReadDetailAdapter extends BaseMultiItemQuickAdapter<ReadNew
             case ReadNewsDetailBean.ITEM_HOT_COMMENT:
                 break;
             case ReadNewsDetailBean.ITEM_COMMENTS:
-                MyLogger.e("error2");
                 Glide.with(mContext).load(ContextCompat.getDrawable(mContext, R.drawable.mypic)).into((CircleImageView) helper.getView(R.id.iv_detail_icon));
                 helper.setText(R.id.tv_detail_name, "xhl");
                 helper.setText(R.id.tv_detail_comment, "好，支持，威武，有希望了");
@@ -67,7 +64,7 @@ public class MultipleReadDetailAdapter extends BaseMultiItemQuickAdapter<ReadNew
         this.url = url;
     }
 
-    public WebView getWebView(){
+    public WebView getWebView() {
         return mWebView;
     }
 }

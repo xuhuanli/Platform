@@ -78,13 +78,13 @@
         android:id="@+id/tv_nick_name"
         android:layout_marginTop="10dp"
         style="@style/CustomViewStyle"
-        app:key="@string/nick_name"
+        app:key="@string/id"
         app:keyColor="@color/FF333333"
         app:keySize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rl_head"
-        app:value="悟空思密达"
+        app:value="11255647545"
         app:valueColor="@color/FF999999"
         app:valueSize="15sp" />
 
@@ -92,13 +92,13 @@
         android:layout_marginTop="1dp"
         android:id="@+id/tv_sex"
         style="@style/CustomViewStyle"
-        app:key="@string/sex"
+        app:key="@string/nick_name"
         app:keyColor="@color/FF333333"
         app:keySize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_nick_name"
-        app:value="@string/male"
+        app:value="@string/nick_name"
         app:valueColor="@color/FF999999"
         app:valueSize="15sp" />
 
@@ -106,26 +106,26 @@
         android:id="@+id/tv_phone_number"
         android:layout_marginTop="10dp"
         style="@style/CustomViewStyle"
-        app:key="@string/phone_number"
+        app:key="@string/location"
         app:keyColor="@color/FF333333"
         app:keySize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_sex"
-        app:value="@string/has_no_bind"
+        app:value="@string/hangzhou"
         app:valueColor="@color/FF999999"
         app:valueSize="15sp" />
 
     <com.yidao.platform.info.view.CustomTextView
         style="@style/CustomViewStyle"
-        app:key="@string/wx"
+        app:key="@string/jianjie"
         android:layout_marginTop="1dp"
         app:keyColor="@color/FF333333"
         app:keySize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_phone_number"
-        app:value="@string/has_bind"
+        app:value="@string/void_text"
         app:valueColor="@color/FF999999"
         app:valueSize="15sp" />
 </android.support.constraint.ConstraintLayout>

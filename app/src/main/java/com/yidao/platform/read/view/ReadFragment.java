@@ -2,44 +2,39 @@ package com.yidao.platform.read.view;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.allen.library.RxHttpUtils;
-import com.allen.library.interceptor.Transformer;
-import com.allen.library.observer.CommonObserver;
+import com.allen.library.utils.ToastUtils;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseFragment;
-import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.app.utils.ScreenUtil;
 import com.yidao.platform.read.adapter.MultipleReadAdapter;
-import com.yidao.platform.read.adapter.ReadNewsBean;
-import com.yidao.platform.testpackage.bean.ApiService;
-import com.yidao.platform.testpackage.bean.TestBean;
+import com.yidao.platform.read.bean.CommonArticleBean;
+import com.yidao.platform.read.bean.ReadNewsBean;
+import com.yidao.platform.read.presenter.ReadFragmentPresenter;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.view.BannerViewPager;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 
-public class ReadFragment extends BaseFragment {
+public class ReadFragment extends BaseFragment implements IViewReadFragment {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.banner)
-    Banner banner;
     @BindView(R.id.recycleview)
     RecyclerView mRecyclerView;
     @BindView(R.id.swipeRefreshLayout)
@@ -49,6 +44,10 @@ public class ReadFragment extends BaseFragment {
     @BindView(R.id.iv_search)
     ImageView mIvSearch;
     /**
+     * 轮播图
+     */
+    Banner banner;
+    /**
      * 一页默认的条数
      */
     private static final int PAGE_SIZE = 6;
@@ -57,12 +56,12 @@ public class ReadFragment extends BaseFragment {
      */
     private int mNextRequestPage = 1;
     private MultipleReadAdapter mAdapter;
-    private BottomSheetDialog mChannelBottomSheetDialog;
+    private ReadFragmentPresenter mPresenter;
 
     @Override
     protected void initView() {
         initToolbar();
-        initBanner();
+        mPresenter = new ReadFragmentPresenter(this);
         initRecyclerView();
         initSwipeRefreshLayout();
     }
@@ -78,46 +77,25 @@ public class ReadFragment extends BaseFragment {
 
     private void initSwipeRefreshLayout() {
         mSwipeRefreshLayout.setColorSchemeColors(Color.rgb(47, 223, 189));
-        mSwipeRefreshLayout.setOnRefreshListener(() -> refresh());
-        //进去的时候就刷新一次
-        //refresh();
+        mSwipeRefreshLayout.setOnRefreshListener(this::refresh);
     }
 
     private void refresh() {
-        mNextRequestPage = 1;
         mAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
-        RxHttpUtils.createApi(ApiService.class)
-                .getGod()
-                .compose(Transformer.<TestBean>switchSchedulers())
-                .subscribe(new CommonObserver<TestBean>() {
-                    @Override
-                    protected void onError(String errorMsg) {
-                        MyLogger.e(errorMsg);
-                        mAdapter.setEnableLoadMore(true);
-                        mSwipeRefreshLayout.setRefreshing(false);
-                    }
-
-                    @Override
-                    protected void onSuccess(TestBean testBean) {
-                        mAdapter.setEnableLoadMore(true);
-                        mSwipeRefreshLayout.setRefreshing(false);
-                        //setData(true, testBean.getData());
-                        MyLogger.d(testBean.getData().get(0).getStyleName());
-                    }
-                });
+        mPresenter.getMainArticleData();
     }
 
     /**
      * 往rv里面填充data
      */
-    private void setData(boolean isRefresh, List<ReadNewsBean> data) {
+    private void setData(boolean isRefresh, List<CommonArticleBean.ListBean> data) {
         mNextRequestPage++;
         final int size = data == null ? 0 : data.size();
         if (isRefresh) {
-            mAdapter.setNewData(data);
+            //mAdapter.setNewData(data);
         } else {
             if (size > 0) {
-                mAdapter.addData(data);
+                //mAdapter.addData(data);
             }
         }
         if (size < PAGE_SIZE) {
@@ -135,73 +113,113 @@ public class ReadFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-
-    }
-
-    private void showChannelUI() {
-        Intent intent = new Intent(getActivity(), ItemChannelActivity.class);
-        startActivity(intent);
-    }
-
-    private void initBanner() {
-        ArrayList<String> list = new ArrayList<>();
-        list.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic1xjab4j30ci08cjrv.jpg");
-        list.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic21363tj30ci08ct96.jpg");
-        list.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic259ohaj30ci08c74r.jpg");
-        list.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg");
-        list.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic2e7vsaj30ci08cglz.jpg");
-        banner.setImageLoader(new GlideImageLoader());
-        //设置banner样式
-        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
-        //设置图片加载器
-        banner.setImageLoader(new GlideImageLoader());
-        //设置图片集合
-        banner.setOffscreenPageLimit(5);
-        banner.setImages(list);
-        //banner.setPageMargin(ScreenUtil.dip2px(getContext(),16));
-        BannerViewPager bannerViewPager = (BannerViewPager) banner.findViewById(com.youth.banner.R.id.bannerViewPager);
-        bannerViewPager.setPageMargin(ScreenUtil.dip2px(getContext(), 16));
-        //bannerViewPager.setPadding(ScreenUtil.dip2px(getContext(),16),0,ScreenUtil.dip2px(getContext(),16),0);
-        //bannerViewPager.setPageTransformer(true,new ScaleInTransformer());
-        //bannerViewPager.setOffscreenPageLimit(3);
-        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) bannerViewPager.getLayoutParams();
-        lp.setMargins(ScreenUtil.dip2px(getContext(), 16), 0, ScreenUtil.dip2px(getContext(), 16), 0);
-        bannerViewPager.setLayoutParams(lp);
-        //设置banner动画效果
-        //banner.setBannerAnimation(com.youth.banner.Transformer.DepthPage);
-        //设置标题集合（当banner样式有显示title时）
-        ArrayList<String> titles = new ArrayList<>();
-        titles.add("1");
-        titles.add("2");
-        titles.add("3");
-        titles.add("4");
-        titles.add("5");
-        banner.setBannerTitles(titles);
-        //设置自动轮播，默认为true
-        banner.isAutoPlay(true);
-        //设置轮播时间
-        banner.setDelayTime(5000);
-        //设置指示器位置（当banner模式中有指示器时）
-        banner.setIndicatorGravity(BannerConfig.CENTER);
-        //banner设置方法全部调用完毕时最后调用
-        banner.start();
+        //第一次进入加载Banner
+        mPresenter.getBannerData();
+        //加载首页类目文章
+        mPresenter.getMainArticleData();
     }
 
     private void initRecyclerView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.addItemDecoration(new CustomDecoration(getActivity(), 5, 0, 0));
-        List<ReadNewsBean> list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            list.add(new ReadNewsBean(ReadNewsBean.ITEM_ONE));
-            list.add(new ReadNewsBean(ReadNewsBean.ITEM_TWO));
+    }
+
+    /**
+     * 右上角频道分类
+     */
+    private void showChannelUI() {
+        Intent intent = new Intent(getActivity(), ItemChannelActivity.class);
+        startActivity(intent);
+    }
+
+    private View getHeaderView() {
+        View view = getLayoutInflater().inflate(R.layout.read_mainpage_banner, (ViewGroup) mRecyclerView.getParent(), false);
+        banner = view.findViewById(R.id.banner);
+        initBanner();
+        mPresenter.getBannerData();
+        return view;
+    }
+
+    /**
+     * init banner
+     */
+    private void initBanner() {
+        banner.setImageLoader(new GlideImageLoader());
+        //设置banner样式
+        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
+        //设置图片加载器
+        banner.setImageLoader(new GlideImageLoader());
+        banner.setOffscreenPageLimit(5);
+        BannerViewPager bannerViewPager = (BannerViewPager) banner.findViewById(com.youth.banner.R.id.bannerViewPager);
+        bannerViewPager.setPageMargin(ScreenUtil.dip2px(getContext(), 16));
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) bannerViewPager.getLayoutParams();
+        lp.setMargins(ScreenUtil.dip2px(getContext(), 16), 0, ScreenUtil.dip2px(getContext(), 16), 0);
+        bannerViewPager.setLayoutParams(lp);
+        //设置自动轮播，默认为true
+        banner.isAutoPlay(true);
+        //设置轮播时间
+        banner.setDelayTime(5000);
+        //设置指示器位置（当banner模式中有指示器时）
+        banner.setIndicatorGravity(BannerConfig.CENTER);
+    }
+
+    @Override
+    public void showBanner(List<String> imageUrls, List<String> bannerTitles) {
+        banner.setImages(imageUrls);
+        banner.setBannerTitles(bannerTitles);
+        banner.start();
+    }
+
+    @Override
+    public void loadMoreFail() {
+        mAdapter.loadMoreFail();
+        ToastUtils.showToast(getString(R.string.connection_failed));
+    }
+
+    @Override
+    public void loadMoreSuccess(CommonArticleBean ordinaryArticleBean) {
+        List<CommonArticleBean.ListBean> list = ordinaryArticleBean.getList();
+        setData(false, list);
+    }
+
+    @Override
+    public void setEnableLoadMore(boolean b) {
+        if (mAdapter != null) {
+            mAdapter.setEnableLoadMore(b);
         }
-        mAdapter = new MultipleReadAdapter(getActivity(), list);
+    }
+
+    @Override
+    public void loadMoreEnd(boolean b) {
+        if (mAdapter != null) {
+            mAdapter.loadMoreEnd(b);
+        }
+    }
+
+    @Override
+    public void loadMoreComplete() {
+        if (mAdapter != null) {
+            mAdapter.loadMoreComplete();
+        }
+    }
+
+    @Override
+    public void setRefreshing(boolean b) {
+        mSwipeRefreshLayout.setRefreshing(b);
+    }
+
+    @Override
+    public void showMainArticle(List<ReadNewsBean> dataList) {
+        mAdapter = new MultipleReadAdapter(getActivity(), dataList);
+        mAdapter.addHeaderView(getHeaderView());
         mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             switch (view.getId()) {
                 case R.id.tv_item_more:
-                    Intent intent = new Intent(getActivity(), ReadItemMoreActivity.class);
+                    ReadNewsBean item = (ReadNewsBean) adapter.getItem(position);
+                    Intent intent = new Intent(ReadFragment.this.getActivity(), ReadItemMoreActivity.class);
+                    intent.putExtra("categoryId", String.valueOf(item.getCategoryId()));
                     startActivity(intent);
                     break;
             }
@@ -215,32 +233,23 @@ public class ReadFragment extends BaseFragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        MyLogger.d("onStart executed");
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
-        MyLogger.d("onResume executed");
-        banner.startAutoPlay();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        MyLogger.d("onPause executed");
+        if (banner != null) {
+            banner.startAutoPlay();
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        MyLogger.d("onStop executed");
-        banner.stopAutoPlay();
+        if (banner != null) {
+            banner.stopAutoPlay();
+        }
     }
 
     private void loadMore() {
-        // TODO: 2018/7/9 0009 加载更多
+        mNextRequestPage++;
+        mPresenter.loadMoreData();
     }
 }

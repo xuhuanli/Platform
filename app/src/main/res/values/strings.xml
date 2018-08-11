@@ -87,4 +87,11 @@
     <string name="gallery">相册</string>
     <string name="add_label">添加标签</string>
     <string name="_0_150">0/150</string>
+    <string name="comm_hdl_web_url_default">file:///android_asset/net_error.html</string>
+    <string name="id">ID</string>
+    <string name="location">地区</string>
+    <string name="hangzhou">浙江 杭州</string>
+    <string name="jianjie">简介</string>
+    <string name="void_text"> </string>
+    <string name="connection_failed">网络连接失败</string>
 </resources>

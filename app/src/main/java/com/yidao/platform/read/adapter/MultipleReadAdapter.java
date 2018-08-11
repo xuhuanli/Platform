@@ -1,12 +1,22 @@
 package com.yidao.platform.read.adapter;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.yidao.platform.R;
+import com.yidao.platform.app.Constant;
+import com.yidao.platform.app.utils.ScreenUtil;
+import com.yidao.platform.read.bean.ReadNewsBean;
+import com.yidao.platform.read.presenter.ReadFragmentPresenter;
+import com.yidao.platform.read.view.GlideImageLoader;
+import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
+import com.youth.banner.view.BannerViewPager;
 
 import java.util.List;
 
@@ -32,11 +42,21 @@ public class MultipleReadAdapter extends BaseMultiItemQuickAdapter<ReadNewsBean,
     protected void convert(BaseViewHolder helper, ReadNewsBean item) {
         switch (item.getItemType()) {
             case ReadNewsBean.ITEM_ONE:
-                helper.setImageResource(R.id.iv_item_name,R.drawable.hulianwang);
-                Glide.with(mContext).load(R.drawable.a).into((ImageView) helper.getView(R.id.iv_big_image));
-                //Glide.with(mContext).load(R.drawable.fuhua).into((ImageView) helper.getView(R.id.iv_item_name));
-                helper.setText(R.id.tv_item_title,"那么在前面的Fragment中再显示一个子Fragment, 并且又带有一个不一样的Toolbar, 还需要哪些处理呢?\n" +
-                        "首先");
+                if (item.getCategoryId() == Constant.CATEGORY_ID_FUHUA) {
+                    helper.setImageResource(R.id.iv_item_name, R.drawable.fuhua);
+                } else if (item.getCategoryId() == Constant.CATEGORY_ID_HULIANGWANG) {
+                    helper.setImageResource(R.id.iv_item_name, R.drawable.hulianwang);
+                } else if (item.getCategoryId() == Constant.CATEGORY_ID_ZIXUN) {
+                    helper.setImageResource(R.id.iv_item_name, R.drawable.chanyezixun);
+                } else if (item.getCategoryId() == Constant.CATEGORY_ID_ZHENGCE) {
+                    helper.setImageResource(R.id.iv_item_name, R.drawable.zhengce);
+                } else if (item.getCategoryId() == Constant.CATEGORY_ID_TOUZI) {
+                    helper.setImageResource(R.id.iv_item_name, R.drawable.touzi);
+                } else if (item.getCategoryId() == Constant.CATEGORY_ID_BP) {
+                    helper.setImageResource(R.id.iv_item_name, R.drawable.bp);
+                }
+                Glide.with(mContext).load(R.drawable.mypic).into((ImageView) helper.getView(R.id.iv_big_image));
+                helper.setText(R.id.tv_item_title, item.getTitle());
                 helper.addOnClickListener(R.id.tv_item_more);
                 break;
             case ReadNewsBean.ITEM_TWO:

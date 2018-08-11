@@ -21,7 +21,7 @@
             android:layout_height="55dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@drawable/a" />
+            tools:srcCompat="@drawable/mypic" />
 
         <TextView
             android:id="@+id/tv_login_success_name_info"

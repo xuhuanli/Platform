@@ -2,14 +2,13 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:padding="@dimen/size_8dp"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/iv_big_pic"
+    <com.youth.banner.Banner xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/banner"
         android:layout_width="0dp"
-        android:layout_height="@dimen/size_160dp"
-        android:src="@drawable/a"
+        android:layout_height="160dp"
+        android:layout_marginTop="@dimen/size_10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

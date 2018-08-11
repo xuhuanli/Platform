@@ -10,16 +10,15 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.allen.library.utils.ToastUtils;
@@ -29,18 +28,17 @@ import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.app.utils.BitmapUtil;
-import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.read.adapter.MultipleReadDetailAdapter;
-import com.yidao.platform.read.adapter.ReadDetailAdapter;
 import com.yidao.platform.read.adapter.ReadNewsDetailBean;
-import com.yidao.platform.webview.XHLWebChromeClient;
-import com.yidao.platform.webview.XHLWebView;
-import com.yidao.platform.webview.XHLWebViewClient;
+import com.yidao.platform.read.bus.WebViewLoadEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,11 +56,15 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     TextView mTvComment;
     @BindView(R.id.iv_back_comment_dialog)
     ImageView ivBack;
+    @BindView(R.id.comment_dialog)
+    ConstraintLayout mCommentBar;
+    @BindView(R.id.progressBar)
+    ProgressBar mProgressBar;
     private EditText mEtContent;
     private BGABadgeImageButton ib_comment;
     private BGABadgeImageButton ib_vote;
     private BGABadgeImageButton ib_favorite;
-    private BGABadgeImageButton ib__share;
+    private BGABadgeImageButton ib_share;
     private BottomSheetDialog mCommentBottomSheetDialog;
     private MultipleReadDetailAdapter mAdapter;
     private String url;
@@ -78,6 +80,12 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         regToWX();
         initData();
         initView();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.read_activity_news_content;
     }
 
     private void initData() {
@@ -86,15 +94,19 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void initView() {
-        ivBack = findViewById(R.id.iv_back_comment_dialog);
         ib_comment = findViewById(R.id.ib_comment);
         ib_vote = findViewById(R.id.ib_vote);
         ib_favorite = findViewById(R.id.ib_favorite);
-        ib__share = findViewById(R.id.ib_share);
+        ib_share = findViewById(R.id.ib_share);
+        //在载入文章前展示progressbar
+        mRecyclerView.setVisibility(View.INVISIBLE);
+        mCommentBar.setVisibility(View.INVISIBLE);
+        mProgressBar.setVisibility(View.VISIBLE);
+        //-------------------------
         ib_comment.setOnClickListener(this);
         ib_vote.setOnClickListener(this);
         ib_favorite.setOnClickListener(this);
-        ib__share.setOnClickListener(this);
+        ib_share.setOnClickListener(this);
         layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
         List<ReadNewsDetailBean> list = new ArrayList<>();
@@ -200,12 +212,6 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         mEtContent.setSelection(mTvComment.getText().length());
     }
 
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.read_activity_news_content;
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -214,7 +220,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.ib_comment: //评论icon
                 if (!isScrolling) {
-                    layoutManager.scrollToPositionWithOffset(2,0);
+                    layoutManager.scrollToPositionWithOffset(2, 0);
                 }
                 break;
             case R.id.ib_vote: //点赞icon
@@ -242,6 +248,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         if (mShareBottomSheetDialog != null) {
             mShareBottomSheetDialog.cancel();
         }
+        EventBus.getDefault().unregister(this);
     }
 
     private void weChatShare(int mTargetScene) {
@@ -270,4 +277,12 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         mWxapi = WXAPIFactory.createWXAPI(this, Constant.WX_LOGIN_APP_ID, Constant.IS_DEBUG);
         mWxapi.registerApp(Constant.WX_LOGIN_APP_ID);
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(WebViewLoadEvent event) {
+        mRecyclerView.setVisibility(View.VISIBLE);
+        mCommentBar.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.GONE);
+    }
+
 }

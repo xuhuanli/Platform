@@ -14,6 +14,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.yidao.platform.app.utils.MyLogger;
+import com.yidao.platform.read.bus.WebViewLoadEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class XHLWebViewClient extends WebViewClient {
     private XHLWebView webView;
@@ -58,6 +61,7 @@ public class XHLWebViewClient extends WebViewClient {
     @Override
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
+        EventBus.getDefault().post(new WebViewLoadEvent());
         if (!view.getSettings().getLoadsImagesAutomatically()) {
             view.getSettings().setLoadsImagesAutomatically(true);
         }

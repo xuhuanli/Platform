@@ -84,9 +84,9 @@ public class MyApplicationLike extends DefaultApplicationLike {
                 //开启缓存策略(默认false)
                 //1、在有网络的时候，先去读缓存，缓存时间到了，再去访问网络获取数据；
                 //2、在没有网络的时候，去读缓存中的数据。
-                .setCache(true)
+                .setCache(false)
                 //全局持久话cookie,保存本地每次都会携带在header中（默认false）
-                .setSaveCookie(true)
+                .setSaveCookie(false)
                 //添加自己的拦截器 基于DiskLruCache
                 .setAddInterceptor(new MyCacheInterceptor())
                 //全局ssl证书认证
