@@ -17,7 +17,7 @@ public class BottleViewAdapter extends BaseQuickAdapter<String, BaseViewHolder> 
     @Override
     protected void convert(BaseViewHolder helper, String item) {
         helper
-                .setImageResource(R.id.iv_touxiang, R.drawable.mypic)
+                .setImageResource(R.id.iv_touxiang, R.drawable.info_head_p)
                 .setText(R.id.tv_name, "xhl")
                 .setText(R.id.tv_comment_content, "这是瓶子的消息")
                 .setText(R.id.tv_comment_time, "1小时前");

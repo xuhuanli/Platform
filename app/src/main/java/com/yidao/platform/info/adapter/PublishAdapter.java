@@ -18,7 +18,7 @@ public class PublishAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
 
     @Override
     protected void convert(BaseViewHolder helper, String item) {
-        helper.setImageResource(R.id.iv_discovery_icon, R.drawable.mypic)
+        helper.setImageResource(R.id.iv_discovery_icon, R.drawable.info_head_p)
                 .setText(R.id.tv_discovery_name, "xhl")
                 .setText(R.id.tv_discovery_time, "16:47")
                 .setText(R.id.tv_discovery_vote, "233")

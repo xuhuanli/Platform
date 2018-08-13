@@ -28,6 +28,7 @@ import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
@@ -73,11 +74,13 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     private LinearLayoutManager layoutManager;
     //是否处于正在滑动状态
     private boolean isScrolling = false;
+    private IPreference mSp;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         regToWX();
+        mSp = IPreference.prefHolder.getPreference(this);
         initData();
         initView();
         EventBus.getDefault().register(this);
@@ -223,10 +226,17 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
                     layoutManager.scrollToPositionWithOffset(2, 0);
                 }
                 break;
-            case R.id.ib_vote: //点赞icon
-                ib_vote.showCirclePointBadge();
+            case R.id.ib_vote: //收藏
+                Boolean isCollection = mSp.get("collection", IPreference.DataType.BOOLEAN);
+                if (isCollection) {
+                    ib_vote.setSelected(false);
+                    mSp.put("collection", false);
+                } else {
+                    ib_vote.setSelected(true);
+                    mSp.put("collection", true);
+                }
                 break;
-            case R.id.ib_favorite: //喜欢icon
+            case R.id.ib_favorite: //点赞icon
                 break;
             case R.id.ib_share: //分享icon
                 showShareDialog();
@@ -257,7 +267,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         WXMediaMessage msg = new WXMediaMessage(webpage);
         msg.title = "WebPage Title WebPage Title WebPage Title WebPage Title WebPage Title WebPage Title WebPage Title WebPage Title WebPage Title Very Long Very Long Very Long Very Long Very Long Very Long Very Long Very Long Very Long Very Long";
         msg.description = "WebPage Description WebPage Description WebPage Description WebPage Description WebPage Description WebPage Description WebPage Description WebPage Description WebPage Description Very Long Very Long Very Long Very Long Very Long Very Long Very Long";
-        Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.mypic);
+        Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.info_head_p);
         Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, THUMB_SIZE, THUMB_SIZE, true);
         bmp.recycle();
         msg.thumbData = BitmapUtil.bmpToByteArray(thumbBmp, true);

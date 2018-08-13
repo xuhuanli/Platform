@@ -13,7 +13,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription"
-        tools:src="@drawable/mypic" />
+        tools:src="@drawable/info_head_p" />
 
     <TextView
         android:id="@+id/tv_discovery_name"

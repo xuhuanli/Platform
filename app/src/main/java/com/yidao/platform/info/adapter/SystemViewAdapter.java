@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.yidao.platform.R;
+import com.yidao.platform.read.adapter.MultipleReadDetailAdapter;
 
 import java.util.List;
 
@@ -18,6 +19,6 @@ public class SystemViewAdapter extends BaseQuickAdapter<String, BaseViewHolder> 
     protected void convert(BaseViewHolder helper, String item) {
         helper.setText(R.id.tv_kind,"这是系统的消息内容部分")
         .setText(R.id.tv_msg_content,"官方有精美礼品送给您")
-        .setImageResource(R.id.imageView,R.drawable.mypic);
+        .setImageResource(R.id.imageView,R.drawable.info_head_p);
     }
 }

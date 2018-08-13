@@ -1,8 +1,10 @@
 package com.yidao.platform.testpackage.bean;
 
+import com.yidao.platform.info.model.UserCollectArtBean;
 import com.yidao.platform.read.bean.ArticleBean;
 import com.yidao.platform.read.bean.BannerBean;
 import com.yidao.platform.read.bean.CategoryArticleExtBean;
+import com.yidao.platform.read.bean.ChannelBean;
 import com.yidao.platform.read.bean.CommonArticleBean;
 
 import java.util.Map;
@@ -40,9 +42,38 @@ public interface ApiService {
     @GET("home/article/listCategoryAndArticle")
     Observable<ArticleBean> getMainArticle();
 
+    /**
+     * 获取首页余下的普通文章
+     *
+     * @param options
+     * @return
+     */
     @POST("home/article/listArticleByDeploytime")
-    Observable<CommonArticleBean> getCommonArticle();
+    Observable<CommonArticleBean> getCommonArticle(@QueryMap Map<String, String> options);
 
+    /**
+     * 获取类目的扩展文章
+     *
+     * @param options
+     * @return
+     */
     @POST("home/article/getCategoryArticleExt")
     Observable<CategoryArticleExtBean> getCategoryArticleExt(@QueryMap Map<String, String> options);
+
+    /**
+     * 查询类目 （首页 右上角的按钮）
+     *
+     * @return
+     */
+    @POST("home/article/listCategories")
+    Observable<ChannelBean> getListCategories();
+
+    //test user id 21211
+    /**
+     * 获取用户收藏的文章
+     * @param options
+     * @return
+     */
+    @POST("user/center/listuserCollectArt")
+    Observable<UserCollectArtBean> getUserCollectArt(@QueryMap Map<String, String> options);
 }

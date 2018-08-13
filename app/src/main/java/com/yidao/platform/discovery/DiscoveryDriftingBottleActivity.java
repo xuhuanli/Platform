@@ -46,7 +46,6 @@ import butterknife.BindView;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class DiscoveryDriftingBottleActivity extends BaseActivity {
@@ -151,7 +150,7 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity {
                                 tv_name.setText("xhl");
                                 tv_location.setText("浙江 杭州");
                                 tv_content.setText("的撒方法即可恢复放大会计核算");
-                                Glide.with(DiscoveryDriftingBottleActivity.this).load(R.drawable.mypic).into(iv_head_portrait);
+                                Glide.with(DiscoveryDriftingBottleActivity.this).load(R.drawable.info_head_p).into(iv_head_portrait);
                                 Button backSea = messageView.findViewById(R.id.btn_backsea);
                                 addDisposable(RxView.clicks(backSea).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o1 -> {
                                     //点击扔回海里 飞船重现，对话框dismiss

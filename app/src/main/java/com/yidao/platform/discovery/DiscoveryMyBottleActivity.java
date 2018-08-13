@@ -7,7 +7,9 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
@@ -42,11 +44,18 @@ public class DiscoveryMyBottleActivity extends BaseActivity implements MyBottleI
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         ArrayList<String> list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            list.add(String.valueOf(i));
-        }
+        //for (int i = 0; i < 10; i++) {
+        //   list.add(String.valueOf(i));
+        //}
         MyBottleAdapter adapter = new MyBottleAdapter(list);
         recyclerView.setAdapter(adapter);
+        if (list.size() == 0) {
+            adapter.bindToRecyclerView(recyclerView);
+            View view = LayoutInflater.from(this).inflate(R.layout.info_no_msg_layout, recyclerView, false);
+            ((TextView)view.findViewById(R.id.tv_tips)).setText(R.string.no_bottle_message);
+            adapter.setEmptyView(view);
+            adapter.setNewData(null);
+        }
         adapter.setOnItemClickListener((adapter1, view, position) -> {
             // TODO: 2018/7/18 0018 单个瓶子内容
             startActivity(DiscoveryBottleDetailActivity.class);

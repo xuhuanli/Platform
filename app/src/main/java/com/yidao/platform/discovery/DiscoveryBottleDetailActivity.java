@@ -31,7 +31,6 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
-import io.reactivex.functions.Consumer;
 
 public class DiscoveryBottleDetailActivity extends BaseActivity implements DiscoveryBottleDetailInterface, View.OnClickListener {
     @BindView(R.id.toolbar)
@@ -86,7 +85,7 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
         tvDiscoveryContent.setText("？？？来了");
         tvDiscoveryVote.setVisibility(View.GONE);
         nplItemMomentPhotos.setVisibility(View.GONE);
-        ivDiscoveryIcon.setImageResource(R.drawable.mypic);
+        ivDiscoveryIcon.setImageResource(R.drawable.info_head_p);
         tvDiscoveryName.setText("xhl");
     }
 

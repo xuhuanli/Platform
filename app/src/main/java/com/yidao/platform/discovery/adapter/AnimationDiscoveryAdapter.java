@@ -28,7 +28,7 @@ public class AnimationDiscoveryAdapter extends BaseQuickAdapter<FriendsNewsBean,
 
     @Override
     protected void convert(BaseViewHolder helper, FriendsNewsBean item) {
-        Glide.with(mContext).load(R.drawable.mypic).into((ImageView) helper.getView(R.id.iv_discovery_icon));
+        Glide.with(mContext).load(R.drawable.info_head_p).into((ImageView) helper.getView(R.id.iv_discovery_icon));
 //        helper.setText(R.id.tv_discovery_name,"xhl");
 //        helper.setText(R.id.tv_discovery_time,"11:39");
 //        helper.setText(R.id.tv_discovery_vote,"10001");

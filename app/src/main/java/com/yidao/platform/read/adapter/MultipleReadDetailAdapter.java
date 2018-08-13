@@ -51,7 +51,7 @@ public class MultipleReadDetailAdapter extends BaseMultiItemQuickAdapter<ReadNew
             case ReadNewsDetailBean.ITEM_HOT_COMMENT:
                 break;
             case ReadNewsDetailBean.ITEM_COMMENTS:
-                Glide.with(mContext).load(ContextCompat.getDrawable(mContext, R.drawable.mypic)).into((CircleImageView) helper.getView(R.id.iv_detail_icon));
+                Glide.with(mContext).load(ContextCompat.getDrawable(mContext, R.drawable.info_head_p)).into((CircleImageView) helper.getView(R.id.iv_detail_icon));
                 helper.setText(R.id.tv_detail_name, "xhl");
                 helper.setText(R.id.tv_detail_comment, "好，支持，威武，有希望了");
                 helper.setText(R.id.tv_detail_vote, "100");

@@ -44,7 +44,7 @@
     <cn.bingoogolapple.badgeview.BGABadgeImageButton
         android:id="@+id/ib_vote"
         style="@style/Bottom_Bar_Icon"
-        android:src="@drawable/like"
+        android:src="@drawable/selector_vote"
         app:layout_constraintBottom_toBottomOf="@+id/ib_comment"
         app:layout_constraintLeft_toRightOf="@+id/ib_comment"
         app:layout_constraintRight_toLeftOf="@+id/ib_favorite" />

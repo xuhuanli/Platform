@@ -1,6 +1,5 @@
 package com.yidao.platform.info.view;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -8,8 +7,8 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
@@ -19,6 +18,7 @@ import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.info.adapter.BottleViewAdapter;
 import com.yidao.platform.info.adapter.CommentViewAdapter;
 import com.yidao.platform.info.adapter.SystemViewAdapter;
+import com.yidao.platform.read.view.CustomDecoration;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -35,8 +35,6 @@ public class InfoMyMessageActivity extends BaseActivity implements View.OnClickL
     TabLayout mTabLayout;
     @BindView(R.id.rv_msg)
     RecyclerView mRecyclerView;
-    @BindView(R.id.iv_none_msg)
-    ImageView mNoneMsgPic;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,14 +60,17 @@ public class InfoMyMessageActivity extends BaseActivity implements View.OnClickL
                 switch (tab.getPosition()) {
                     case 0:
                         ArrayList<String> systemDatas = new ArrayList<>();
-                        for (int i = 0; i < 4; i++) {
+                        /*for (int i = 0; i < 4; i++) {
                             systemDatas.add("systemDatas");
-                        }
-                        if (systemDatas.size() == 0){
-                            noMsg();
-                        }else {
-                            SystemViewAdapter systemViewAdapter = new SystemViewAdapter(systemDatas);
-                            setTabViewData(systemViewAdapter);
+                        }*/
+                        SystemViewAdapter systemViewAdapter = new SystemViewAdapter(systemDatas);
+                        setTabViewData(systemViewAdapter);
+                        if (systemDatas.size() == 0) {
+                            systemViewAdapter.bindToRecyclerView(mRecyclerView);
+                            View view = LayoutInflater.from(InfoMyMessageActivity.this).inflate(R.layout.info_no_msg_layout, mRecyclerView, false);
+                            ((TextView) view.findViewById(R.id.tv_tips)).setText(R.string.no_notify);
+                            systemViewAdapter.setEmptyView(view);
+                            systemViewAdapter.setNewData(null);
                         }
                         break;
                     case 1:
@@ -79,6 +80,13 @@ public class InfoMyMessageActivity extends BaseActivity implements View.OnClickL
                         }
                         CommentViewAdapter commentViewAdapter = new CommentViewAdapter(commentDatas);
                         setTabViewData(commentViewAdapter);
+                        if (commentDatas.size() == 0) {
+                            commentViewAdapter.bindToRecyclerView(mRecyclerView);
+                            View view = LayoutInflater.from(InfoMyMessageActivity.this).inflate(R.layout.info_no_msg_layout, mRecyclerView, false);
+                            ((TextView) view.findViewById(R.id.tv_tips)).setText(R.string.no_comments_message);
+                            commentViewAdapter.setEmptyView(view);
+                            commentViewAdapter.setNewData(null);
+                        }
                         break;
                     case 2:
                         ArrayList<String> bottleDatas = new ArrayList<>();
@@ -87,6 +95,13 @@ public class InfoMyMessageActivity extends BaseActivity implements View.OnClickL
                         }
                         BottleViewAdapter bottleViewAdapter = new BottleViewAdapter(bottleDatas);
                         setTabViewData(bottleViewAdapter);
+                        if (bottleDatas.size() == 0) {
+                            bottleViewAdapter.bindToRecyclerView(mRecyclerView);
+                            View view = LayoutInflater.from(InfoMyMessageActivity.this).inflate(R.layout.info_no_msg_layout, mRecyclerView, false);
+                            ((TextView) view.findViewById(R.id.tv_tips)).setText(R.string.no_bottle_message);
+                            bottleViewAdapter.setEmptyView(view);
+                            bottleViewAdapter.setNewData(null);
+                        }
                         break;
                 }
             }
@@ -103,29 +118,24 @@ public class InfoMyMessageActivity extends BaseActivity implements View.OnClickL
         });
     }
 
-    private void noMsg() {
-        mRecyclerView.setVisibility(View.GONE);
-        mNoneMsgPic.setVisibility(View.VISIBLE);
-        mNoneMsgPic.setBackgroundColor(Color.parseColor("#ffd8d8d8"));
-    }
-
-    private void hasMsg() {
-        mRecyclerView.setVisibility(View.VISIBLE);
-        mNoneMsgPic.setVisibility(View.GONE);
-    }
-
     private void setTabViewData(RecyclerView.Adapter adapter) {
-        hasMsg();
         configRecyclerView(adapter);
     }
 
     private void setDefaultTabView() {
         ArrayList<String> systemDatas = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
+        /*for (int i = 0; i < 4; i++) {
             systemDatas.add("systemDatas");
-        }
+        }*/
         SystemViewAdapter systemViewAdapter = new SystemViewAdapter(systemDatas);
         setTabViewData(systemViewAdapter);
+        if (systemDatas.size() == 0) {
+            systemViewAdapter.bindToRecyclerView(mRecyclerView);
+            View view = LayoutInflater.from(InfoMyMessageActivity.this).inflate(R.layout.info_no_msg_layout, mRecyclerView, false);
+            ((TextView) view.findViewById(R.id.tv_tips)).setText(R.string.no_notify);
+            systemViewAdapter.setEmptyView(view);
+            systemViewAdapter.setNewData(null);
+        }
     }
 
     private void initData() {
@@ -139,7 +149,7 @@ public class InfoMyMessageActivity extends BaseActivity implements View.OnClickL
 
     private void configRecyclerView(RecyclerView.Adapter adapter) {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        mRecyclerView.addItemDecoration(new CustomDecoration(this, 1, 16, 16));
         mRecyclerView.setAdapter(adapter);
     }
 

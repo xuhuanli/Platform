@@ -3,7 +3,7 @@ package com.yidao.platform.app;
 public class Constant {
 
     //http://192.168.1.149:8080/product/style/get/1014051050182672384  test
-    public static final String BASE_URL = "http://192.168.1.157:8060/";
+    public static final String BASE_URL = "http://10.10.20.11:8060/";
 
     /**
      * 全局debug模式开关 在release时候设置为false

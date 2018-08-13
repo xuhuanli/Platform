@@ -63,10 +63,10 @@ public class XHLWebView extends WebView {
         webSettings.setDisplayZoomControls(false); //隐藏原生的缩放控件
         //允许缓存，设置缓存位置
         webSettings.setAppCacheEnabled(true);
-        webSettings.setAllowFileAccess(false); //设置可以访问文件
+        webSettings.setAllowFileAccess(true); //设置可以访问文件
         webSettings.setJavaScriptCanOpenWindowsAutomatically(false); //支持通过JS打开新窗口
         //允许SessionStorage/LocalStorage存储
-        webSettings.setDomStorageEnabled(false);
+        webSettings.setDomStorageEnabled(true);
         webSettings.setAppCachePath(webView.getContext().getExternalCacheDir().getPath());
         //移除部分系统JavaScript接口
         //自动加载图片 在WebViewClient finished后加载

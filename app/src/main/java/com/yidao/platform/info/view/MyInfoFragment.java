@@ -2,7 +2,6 @@ package com.yidao.platform.info.view;
 
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -45,7 +44,7 @@ public class MyInfoFragment extends BaseFragment {
     protected void initView() {
         if (login_state) {
             Glide.with(this)
-                    .load(R.drawable.mypic)
+                    .load(R.drawable.info_head_p)
                     .apply(RequestOptions.circleCropTransform())
                     .into(ivLoginSuccessInfo);
         }

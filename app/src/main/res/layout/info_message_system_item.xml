@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    style="@style/Padding_LR16"
     android:layout_height="wrap_content">
 
     <ImageView
@@ -14,7 +15,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/dianzan_big" />
+        tools:srcCompat="@drawable/info_notify" />
 
     <TextView
         android:id="@+id/tv_kind"

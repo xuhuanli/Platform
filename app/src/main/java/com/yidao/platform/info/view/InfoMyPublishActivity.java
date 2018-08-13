@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
@@ -44,11 +45,18 @@ public class InfoMyPublishActivity extends BaseActivity implements BaseQuickAdap
         RxToolbar.navigationClicks(toolbar).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish());
         rvMyPublish.setLayoutManager(new LinearLayoutManager(this));
         ArrayList<String> list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            list.add(String.valueOf(i));
-        }
+        //for (int i = 0; i < 10; i++) {
+        //    list.add(String.valueOf(i));
+        //}
         PublishAdapter publishAdapter = new PublishAdapter(list);
         rvMyPublish.setAdapter(publishAdapter);
+        if (list.size() == 0) {
+            publishAdapter.bindToRecyclerView(rvMyPublish);
+            View view = LayoutInflater.from(this).inflate(R.layout.info_no_msg_layout, rvMyPublish, false);
+            ((TextView)view.findViewById(R.id.tv_tips)).setText(R.string.no_publish);
+            publishAdapter.setEmptyView(view);
+            publishAdapter.setNewData(null);
+        }
         publishAdapter.setOnItemChildClickListener(this);
     }
 

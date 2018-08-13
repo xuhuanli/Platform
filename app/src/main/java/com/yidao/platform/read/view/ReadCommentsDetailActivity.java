@@ -1,7 +1,6 @@
 package com.yidao.platform.read.view;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
@@ -17,7 +16,6 @@ import android.widget.TextView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.yidao.platform.R;
 import com.yidao.platform.app.base.BaseActivity;
-import com.yidao.platform.discovery.DiscoveryBottleDetailActivity;
 import com.yidao.platform.discovery.bean.CommentItem;
 import com.yidao.platform.discovery.bean.DatasUtil;
 import com.yidao.platform.discovery.bean.User;
@@ -29,7 +27,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
-import io.reactivex.functions.Consumer;
 
 //这一期不做
 @Deprecated
@@ -73,7 +70,7 @@ public class ReadCommentsDetailActivity extends BaseActivity implements ReadComm
     private void initView() {
         tvDiscoveryVote.setVisibility(View.GONE);
         nplItemMomentPhotos.setVisibility(View.GONE);
-        ivDiscoveryIcon.setImageResource(R.drawable.mypic);
+        ivDiscoveryIcon.setImageResource(R.drawable.info_head_p);
         tvDiscoveryName.setText("xhl");
     }
 

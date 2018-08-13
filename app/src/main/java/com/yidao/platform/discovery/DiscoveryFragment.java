@@ -11,7 +11,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -19,7 +18,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.allen.library.utils.ToastUtils;
 import com.bumptech.glide.Glide;
@@ -28,7 +27,6 @@ import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseFragment;
 import com.yidao.platform.app.utils.FileUtil;
-import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.discovery.bean.Moment;
 import com.yidao.platform.discovery.presenter.DiscoveryPresenter;
 
@@ -62,11 +60,11 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     private static final int REQUEST_IMAGE_CAPTURE = 100;
     private static final int REQUEST_CHOOSE_PICTURE = 101;
     @BindView(R.id.btn_take_photo)
-    ImageView mBtnPhoto;
+    TextView mBtnPhoto;
     @BindView(R.id.btn_album)
-    ImageView mBtnAlbum;
+    TextView mBtnAlbum;
     @BindView(R.id.btn_bottle)
-    ImageView mBtnBottle;
+    TextView mBtnBottle;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.recyclerView)
@@ -310,7 +308,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
 
         @Override
         protected void fillData(BGAViewHolderHelper helper, int position, Moment moment) {
-            helper.setImageResource(R.id.iv_discovery_icon, R.drawable.mypic);
+            helper.setImageResource(R.id.iv_discovery_icon, R.drawable.info_head_p);
             helper.setText(R.id.tv_discovery_name,"xhl")
                     .setText(R.id.tv_discovery_time,"10分钟前")
                     .setText(R.id.tv_discovery_vote,"1000");

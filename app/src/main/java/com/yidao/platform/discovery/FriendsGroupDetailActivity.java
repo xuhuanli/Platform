@@ -91,7 +91,7 @@ public class FriendsGroupDetailActivity extends BaseActivity implements View.OnC
     private void initView() {
         addDisposable(RxToolbar.navigationClicks(mToolbar).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish()));
         mTitle.setText(R.string.discovery_pyq_title);
-        ivDiscoveryIcon.setImageResource(R.drawable.mypic);
+        ivDiscoveryIcon.setImageResource(R.drawable.info_head_p);
         tvDiscoveryName.setText("xhl");
         tvDiscoveryVote.setText("100");
         tvDiscoveryContent.setText("撒谎接口撒回调接口撒回调接口撒");

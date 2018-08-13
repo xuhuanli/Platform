@@ -17,7 +17,7 @@ public class CommentViewAdapter extends BaseQuickAdapter<String, BaseViewHolder>
     @Override
     protected void convert(BaseViewHolder helper, String item) {
         helper
-                .setImageResource(R.id.iv_touxiang,R.drawable.mypic)
+                .setImageResource(R.id.iv_touxiang,R.drawable.info_head_p)
                 .setText(R.id.tv_name,"xhl")
         .setText(R.id.tv_comment_content,"评论了你：今年资产管理新规出台以后，银行…")
         .setText(R.id.tv_comment_title,"这会带来一系列连锁反应会带来一系列连锁反应会带来一系列连锁反应会带来一系列连锁反应")

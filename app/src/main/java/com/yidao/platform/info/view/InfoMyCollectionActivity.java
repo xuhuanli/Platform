@@ -7,6 +7,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
@@ -34,13 +35,6 @@ public class InfoMyCollectionActivity extends BaseActivity implements BaseQuickA
     TextView tvTitle;
     private CollectionAdapter mCollectionAdapter;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        initView();
-        initData();
-    }
-
     private void initView() {
         tvTitle.setText("我的收藏");
         addDisposable(RxToolbar.navigationClicks(mToolbar).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
@@ -52,13 +46,27 @@ public class InfoMyCollectionActivity extends BaseActivity implements BaseQuickA
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         ArrayList<String> data = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            data.add(String.valueOf(i));
-        }
+//        for (int i = 0; i < 20; i++) {
+//            data.add(String.valueOf(i));
+//        }
         mCollectionAdapter = new CollectionAdapter(data);
         mRecyclerView.setAdapter(mCollectionAdapter);
+        if (data.size() == 0) {
+            mCollectionAdapter.bindToRecyclerView(mRecyclerView);
+            View view = LayoutInflater.from(this).inflate(R.layout.info_no_msg_layout, mRecyclerView, false);
+            ((TextView)view.findViewById(R.id.tv_tips)).setText(R.string.no_collection);
+            mCollectionAdapter.setEmptyView(view);
+            mCollectionAdapter.setNewData(null);
+        }
         mCollectionAdapter.setOnItemClickListener(this);
         mCollectionAdapter.setOnItemLongClickListener(this);
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initView();
+        initData();
     }
 
     private void initData() {

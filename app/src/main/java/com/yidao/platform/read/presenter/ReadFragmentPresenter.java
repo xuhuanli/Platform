@@ -12,6 +12,7 @@ import com.yidao.platform.read.view.IViewReadFragment;
 import com.yidao.platform.testpackage.bean.ApiService;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ReadFragmentPresenter {
@@ -109,9 +110,12 @@ public class ReadFragmentPresenter {
     /**
      * 首页上拉加载的文章
      */
-    public void loadMoreData() {
+    public void loadMoreData(String pageIndex, String pageSize) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("pageIndex", pageIndex);
+        map.put("pageSize", pageSize);
         RxHttpUtils.createApi(ApiService.class)
-                .getCommonArticle()
+                .getCommonArticle(map)
                 .compose(Transformer.switchSchedulers())
                 .subscribe(new CommonObserver<CommonArticleBean>() {
                     @Override
@@ -129,8 +133,19 @@ public class ReadFragmentPresenter {
                             } else {
                                 mView.loadMoreComplete();
                             }
+                            ArrayList<ReadNewsBean> dataList = new ArrayList<>();
+                            for (CommonArticleBean.ListBean listBean : list) {
+                                ReadNewsBean readNewsBean = new ReadNewsBean(ReadNewsBean.ITEM_TWO);
+                                readNewsBean.setType(listBean.getType());
+                                readNewsBean.setTitle(listBean.getTitle());
+                                readNewsBean.setReadAmount(listBean.getReadAmount());
+                                readNewsBean.setId(listBean.getId());
+                                readNewsBean.setHomeImg(listBean.getHomeImg());
+                                readNewsBean.setDeployTime(listBean.getDeployTime());
+                                dataList.add(readNewsBean);
+                            }
+                            mView.loadMoreData(dataList);
                         }
-                        //mView.loadMoreSuccess(commonArticleBean);
                     }
                 });
     }

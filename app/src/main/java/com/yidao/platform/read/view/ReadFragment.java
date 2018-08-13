@@ -26,6 +26,7 @@ import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.view.BannerViewPager;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -47,10 +48,6 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
      * 轮播图
      */
     Banner banner;
-    /**
-     * 一页默认的条数
-     */
-    private static final int PAGE_SIZE = 6;
     /**
      * 请求的下一个页码
      */
@@ -81,29 +78,9 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
     }
 
     private void refresh() {
+        //mAdapter.getData().clear();
         mAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
         mPresenter.getMainArticleData();
-    }
-
-    /**
-     * 往rv里面填充data
-     */
-    private void setData(boolean isRefresh, List<CommonArticleBean.ListBean> data) {
-        mNextRequestPage++;
-        final int size = data == null ? 0 : data.size();
-        if (isRefresh) {
-            //mAdapter.setNewData(data);
-        } else {
-            if (size > 0) {
-                //mAdapter.addData(data);
-            }
-        }
-        if (size < PAGE_SIZE) {
-            //第一页如果不够一页就不显示没有更多数据布局
-            mAdapter.loadMoreEnd(isRefresh);
-        } else {
-            mAdapter.loadMoreComplete();
-        }
     }
 
     @Override
@@ -166,21 +143,17 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
 
     @Override
     public void showBanner(List<String> imageUrls, List<String> bannerTitles) {
-        banner.setImages(imageUrls);
-        banner.setBannerTitles(bannerTitles);
-        banner.start();
+        if (banner != null) {
+            banner.setImages(imageUrls);
+            banner.setBannerTitles(bannerTitles);
+            banner.start();
+        }
     }
 
     @Override
     public void loadMoreFail() {
         mAdapter.loadMoreFail();
         ToastUtils.showToast(getString(R.string.connection_failed));
-    }
-
-    @Override
-    public void loadMoreSuccess(CommonArticleBean ordinaryArticleBean) {
-        List<CommonArticleBean.ListBean> list = ordinaryArticleBean.getList();
-        setData(false, list);
     }
 
     @Override
@@ -201,6 +174,13 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
     public void loadMoreComplete() {
         if (mAdapter != null) {
             mAdapter.loadMoreComplete();
+        }
+    }
+
+    @Override
+    public void loadMoreData(ArrayList<ReadNewsBean> dataList) {
+        if (mAdapter != null) {
+            mAdapter.addData(dataList);
         }
     }
 
@@ -226,7 +206,7 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
         });
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             Intent intent = new Intent(getActivity(), ReadContentActivity.class);
-            intent.putExtra("url", "https://news.163.com/");
+            intent.putExtra("url", "https://ydplatform.oss-cn-hangzhou.aliyuncs.com/article/haha%20%281%29.html");
             startActivity(intent);
         });
         mRecyclerView.setAdapter(mAdapter);
@@ -249,7 +229,7 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
     }
 
     private void loadMore() {
-        mNextRequestPage++;
-        mPresenter.loadMoreData();
+        mPresenter.loadMoreData(String.valueOf(mNextRequestPage), String.valueOf(Constant.PAGE_SIZE));
+        mNextRequestPage++; //这里跟更多列表的上拉加载有一点不一样，因为首页这个两个接口，所以把++放在后面
     }
 }

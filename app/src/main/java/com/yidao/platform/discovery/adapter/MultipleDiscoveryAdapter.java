@@ -34,7 +34,7 @@ public class MultipleDiscoveryAdapter extends BaseMultiItemQuickAdapter<FriendsN
     protected void convert(BaseViewHolder helper, FriendsNewsBean item) {
         switch (item.getItemType()) {
             case FriendsNewsBean.ITEM_ONE:
-                Glide.with(mContext).load(ContextCompat.getDrawable(mContext,R.drawable.mypic)).into((ImageView) helper.getView(R.id.iv_discovery_icon));
+                Glide.with(mContext).load(ContextCompat.getDrawable(mContext,R.drawable.info_head_p)).into((ImageView) helper.getView(R.id.iv_discovery_icon));
                 helper.setText(R.id.tv_discovery_name,"xhl");
                 helper.setText(R.id.tv_discovery_time,"11:39");
                 helper.setText(R.id.tv_discovery_vote,"10001");

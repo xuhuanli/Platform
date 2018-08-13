@@ -21,7 +21,7 @@
             android:layout_height="55dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@drawable/mypic" />
+            tools:srcCompat="@drawable/info_head_p" />
 
         <TextView
             android:id="@+id/tv_login_success_name_info"
@@ -59,7 +59,7 @@
         android:id="@+id/tv_recent_read"
         style="@style/Style_Info_TextView"
         android:drawableEnd="@drawable/ic_keyboard_arrow_right_black_24dp"
-        android:drawableStart="@drawable/ic_notifications_black_24dp"
+        android:drawableStart="@drawable/info_last_read"
         android:text="@string/recent_read"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,7 +69,7 @@
         android:id="@+id/tv_settings"
         style="@style/Style_Info_TextView"
         android:drawableEnd="@drawable/ic_keyboard_arrow_right_black_24dp"
-        android:drawableStart="@drawable/ic_notifications_black_24dp"
+        android:drawableStart="@drawable/info_settings"
         android:text="@string/settings"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

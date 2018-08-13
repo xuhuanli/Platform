@@ -20,6 +20,6 @@ public class RecentReadAdapter extends BaseQuickAdapter<String, BaseViewHolder> 
         helper.setText(R.id.read_list_content, "状态栏布局和图标挺像Android,但是这白底黑字Android设计规范里可没有啊，于是我们开发的时候果断忽视这个状态栏了（当时大部分用户")
                 .setText(R.id.tv_read_count, "12121阅读")
                 .setText(R.id.tv_news_time, "6小时前");
-        Glide.with(mContext).load(R.drawable.mypic).into((ImageView) helper.getView(R.id.read_list_image));
+        Glide.with(mContext).load(R.drawable.info_head_p).into((ImageView) helper.getView(R.id.read_list_image));
     }
 }

@@ -94,4 +94,11 @@
     <string name="jianjie">简介</string>
     <string name="void_text"> </string>
     <string name="connection_failed">网络连接失败</string>
+    <string name="no_collection">您还没有收藏</string>
+    <string name="no_publish">还没有任何发布哦</string>
+    <string name="no_comments_message">目前还没有收到评论</string>
+    <string name="no_bottle_message">目前还没有瓶子哦，快去扔一个/捡一个瓶子吧！</string>
+    <string name="no_notify">目前还没有通知</string>
+    <string name="no_read_record">没有阅读记录</string>
+    <string name="take_photo">拍摄</string>
 </resources>
