@@ -29,6 +29,7 @@
     <TextView
         android:id="@+id/tv_settings_callback_item"
         android:text="@string/user_callback"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +41,7 @@
         style="@style/Style_Settings_TextView"
         android:text="@string/about_us"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_settings_callback_item" />
 

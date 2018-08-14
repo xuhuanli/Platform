@@ -59,16 +59,4 @@ public class ItemChannelActivity extends BaseActivity implements IViewItemChanne
     protected int getLayoutId() {
         return R.layout.read_activity_channel_select;
     }
-
-    /*@Override
-    public void loadChannel(List<ChannelBean.ResultBean> result) {
-        mAdapter = new ChannelAdapter(result);
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener((adapter, view, position) -> {
-            ChannelBean.ResultBean data = (ChannelBean.ResultBean) adapter.getData().get(position);
-            Intent intent = new Intent(ItemChannelActivity.this, ReadItemMoreActivity.class);
-            intent.putExtra("categoryId", String.valueOf(data.getId()));
-            startActivity(intent);
-        });
-    }*/
 }

@@ -2,7 +2,6 @@ package com.yidao.platform.read.view;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,13 +15,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.allen.library.utils.ToastUtils;
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseFragment;
 import com.yidao.platform.app.utils.ScreenUtil;
+import com.yidao.platform.read.adapter.ErrorAdapter;
 import com.yidao.platform.read.adapter.MultipleReadAdapter;
 import com.yidao.platform.read.bean.ChannelBean;
 import com.yidao.platform.read.bean.ReadNewsBean;
@@ -239,6 +237,7 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
                 }
             });
             mAdapter.setOnItemClickListener((adapter, view, position) -> {
+                ReadNewsBean item = (ReadNewsBean) adapter.getItem(position);
                 Intent intent = new Intent(getActivity(), ReadContentActivity.class);
                 intent.putExtra("url", "https://ydplatform.oss-cn-hangzhou.aliyuncs.com/article/haha%20%281%29.html");
                 startActivity(intent);
@@ -268,17 +267,5 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
     private void loadMore() {
         mPresenter.loadMoreData(String.valueOf(mNextRequestPage), String.valueOf(Constant.PAGE_SIZE));
         mNextRequestPage++; //这里跟更多列表的上拉加载有一点不一样，因为首页这个两个接口，所以把++放在后面
-    }
-
-    private class ErrorAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
-
-        ErrorAdapter(@Nullable List<String> data) {
-            super(0, data);
-        }
-
-        @Override
-        protected void convert(BaseViewHolder helper, String item) {
-
-        }
     }
 }

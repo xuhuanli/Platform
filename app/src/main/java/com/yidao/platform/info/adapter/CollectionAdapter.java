@@ -5,16 +5,20 @@ import android.support.annotation.Nullable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.yidao.platform.R;
+import com.yidao.platform.app.utils.ConvertFormatUtil;
+import com.yidao.platform.read.bean.ReadNewsBean;
 
 import java.util.List;
 
-public class CollectionAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
-    public CollectionAdapter(@Nullable List<String> data) {
+public class CollectionAdapter extends BaseQuickAdapter<ReadNewsBean, BaseViewHolder> {
+    public CollectionAdapter(@Nullable List<ReadNewsBean> data) {
         super(R.layout.item_my_collection, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, String item) {
-        helper.setText(R.id.tv_collection_title,"做有情感关怀的优质AR内容产品，CandyBook完成近千万元 Pre-A 轮融资");
+    protected void convert(BaseViewHolder helper, ReadNewsBean item) {
+        String time = ConvertFormatUtil.convertTime(item.getDeployTime());
+        helper.setText(R.id.tv_collection_title, item.getTitle())
+        .setText(R.id.textView,time);
     }
 }

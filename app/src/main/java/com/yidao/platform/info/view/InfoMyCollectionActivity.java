@@ -18,6 +18,8 @@ import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.info.adapter.CollectionAdapter;
 import com.yidao.platform.info.presenter.MyCollectionActivityPresenter;
+import com.yidao.platform.read.adapter.ErrorAdapter;
+import com.yidao.platform.read.bean.ReadNewsBean;
 import com.yidao.platform.read.view.ReadContentActivity;
 
 import java.util.ArrayList;
@@ -37,25 +39,17 @@ public class InfoMyCollectionActivity extends BaseActivity implements BaseQuickA
     private CollectionAdapter mCollectionAdapter;
     private MyCollectionActivityPresenter mPresenter;
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initView();
+        initData();
+    }
+
     private void initView() {
         initToolBar();
         mPresenter = new MyCollectionActivityPresenter(this);
         initRecyclerView();
-        ArrayList<String> data = new ArrayList<>();
-//        for (int i = 0; i < 20; i++) {
-//            data.add(String.valueOf(i));
-//        }
-        mCollectionAdapter = new CollectionAdapter(data);
-        mRecyclerView.setAdapter(mCollectionAdapter);
-        if (data.size() == 0) {
-            mCollectionAdapter.bindToRecyclerView(mRecyclerView);
-            View view = LayoutInflater.from(this).inflate(R.layout.info_no_msg_layout, mRecyclerView, false);
-            ((TextView) view.findViewById(R.id.tv_tips)).setText(R.string.no_collection);
-            mCollectionAdapter.setEmptyView(view);
-            mCollectionAdapter.setNewData(null);
-        }
-        mCollectionAdapter.setOnItemClickListener(this);
-        mCollectionAdapter.setOnItemLongClickListener(this);
     }
 
     private void initRecyclerView() {
@@ -73,15 +67,8 @@ public class InfoMyCollectionActivity extends BaseActivity implements BaseQuickA
         }));
     }
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        initView();
-        initData();
-    }
-
     private void initData() {
-
+        mPresenter.getUserCollectArtList("21211");
     }
 
     @Override
@@ -100,5 +87,31 @@ public class InfoMyCollectionActivity extends BaseActivity implements BaseQuickA
     public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
         // TODO: 2018/7/18 0018 delete it
         return false;
+    }
+
+    @Override
+    public void loadRecyclerData(ArrayList<ReadNewsBean> dataList) {
+        //这里就不做null判断new Adapter了 因为没有分页所以只会回调到1次
+        mCollectionAdapter = new CollectionAdapter(dataList);
+        mRecyclerView.setAdapter(mCollectionAdapter);
+        if (dataList.size() == 0) {
+            mCollectionAdapter.bindToRecyclerView(mRecyclerView);
+            View view = LayoutInflater.from(this).inflate(R.layout.info_no_msg_layout, mRecyclerView, false);
+            ((TextView) view.findViewById(R.id.tv_tips)).setText(R.string.no_collection);
+            mCollectionAdapter.setEmptyView(view);
+            mCollectionAdapter.setNewData(null);
+        }
+        mCollectionAdapter.setOnItemClickListener(this);
+        mCollectionAdapter.setOnItemLongClickListener(this);
+    }
+
+    @Override
+    public void showError() {
+        ErrorAdapter adapter = new ErrorAdapter(null);
+        adapter.bindToRecyclerView(mRecyclerView);
+        View view = LayoutInflater.from(this).inflate(R.layout.info_no_msg_layout, mRecyclerView, false);
+        ((TextView) view.findViewById(R.id.tv_tips)).setText(R.string.connection_failed);
+        adapter.setEmptyView(view);
+        adapter.setNewData(null);
     }
 }

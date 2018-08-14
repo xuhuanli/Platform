@@ -57,12 +57,13 @@ public class Constant {
      * OSS_BUCKET_NAME
      */
     public static final String OSS_BUCKET_NAME = "ydplatform";
-    public static final long CATEGORY_ID_FUHUA = 6355509193605120L; //孵化那些事
-    public static final long CATEGORY_ID_HULIANGWANG = 5309401944162304L; //互联网工具
-    public static final long CATEGORY_ID_BP = 5211114973036544L; //商业计划书
-    public static final long CATEGORY_ID_TOUZI = 6355216141778944L; //投资金额
-    public static final long CATEGORY_ID_ZHENGCE = 6355476889075712L; //国家政策
-    public static final long CATEGORY_ID_ZIXUN = 6355421843030016L; //产业咨询
+    public static final long CATEGORY_ID_LABEL_1 = 5210479661809664L; //全球资讯榜
+    public static final long CATEGORY_ID_LABEL_2 = 5211114973036544L; //产业资讯圈
+    public static final long CATEGORY_ID_LABEL_3 = 5309401944162304L; //创业大方针
+    public static final long CATEGORY_ID_LABEL_4 = 6355216141778944L; //投资活动汇
+    public static final long CATEGORY_ID_LABEL_5 = 6355421843030016L; //创投直通车
+    public static final long CATEGORY_ID_LABEL_6 = 6355476889075712L; //金融华尔街
+    public static final long CATEGORY_ID_LABEL_7 = 6355509193605120L; //经营方法论
     /**
      * 更多列表 pageSize
      */

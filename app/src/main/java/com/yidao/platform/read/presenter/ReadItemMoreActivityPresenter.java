@@ -85,18 +85,4 @@ public class ReadItemMoreActivityPresenter {
     private void showError() {
         ToastUtils.showToast("网络连接失败，请查看网络");
     }
-
-    /*private void setData(List data, int pageSize) {
-        mNextRequestPage++;
-        final int size = data == null ? 0 : data.size();
-        if (size > 0) {
-            mAdapter.addData(data);
-        }
-        if (size < pageSize) {
-            //第一页如果不够一页就不显示没有更多数据布局
-            mAdapter.loadMoreEnd(false);
-        } else {
-            mAdapter.loadMoreComplete();
-        }
-    }*/
 }

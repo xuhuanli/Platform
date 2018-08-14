@@ -355,6 +355,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
+                android:buttonTint="#ff3f81ff"
                 android:textColor="#ff999999"
                 android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="parent"
