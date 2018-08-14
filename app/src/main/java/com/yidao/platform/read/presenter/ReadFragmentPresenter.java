@@ -151,6 +151,7 @@ public class ReadFragmentPresenter {
     }
 
     private void showError() {
+        mView.showError();
         ToastUtils.showToast("网络连接失败，请查看网络");
     }
 }

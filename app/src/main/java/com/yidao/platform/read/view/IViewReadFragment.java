@@ -22,4 +22,6 @@ public interface IViewReadFragment {
     void loadMoreComplete();
 
     void loadMoreData(ArrayList<ReadNewsBean> dataList);
+
+    void showError();
 }
