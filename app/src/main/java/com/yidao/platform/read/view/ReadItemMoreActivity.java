@@ -31,9 +31,10 @@ public class ReadItemMoreActivity extends BaseActivity implements IViewReadItemM
     RecyclerView mRecyclerView;
     private ReadItemMoreAdapter mAdapter;
     private ReadItemMoreActivityPresenter mPresenter;
-    private String categoryId;
+    private long categoryId;
     //上拉加载page控制value
     private int mNextRequestPage = 1;
+    private String categoryName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,13 +46,18 @@ public class ReadItemMoreActivity extends BaseActivity implements IViewReadItemM
 
     private void initData() {
         Intent intent = getIntent();
-        categoryId = intent.getStringExtra("categoryId");
+        categoryId = intent.getLongExtra("categoryId", 0L);
+        categoryName = intent.getStringExtra("categoryName");
+        setTitle(categoryName);
         mPresenter.getCategoryArticleExt(categoryId, String.valueOf(1), String.valueOf(Constant.PAGE_SIZE));
+    }
+
+    private void setTitle(String title) {
+        tvTitle.setText(title);
     }
 
     @SuppressLint("CheckResult")
     private void initView() {
-        tvTitle.setText("孵化那些事");//根据类目来设置
         RxToolbar.navigationClicks(toolbar).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.addItemDecoration(new CustomDecoration(this, 5, 0, 0));

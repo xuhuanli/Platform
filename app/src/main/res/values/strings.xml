@@ -101,4 +101,10 @@
     <string name="no_notify">目前还没有通知</string>
     <string name="no_read_record">没有阅读记录</string>
     <string name="take_photo">拍摄</string>
+    <string name="bp">商业计划书</string>
+    <string name="fu_hua">孵化那些事</string>
+    <string name="hu_lian_wang">互联网工具</string>
+    <string name="tou_zi">投资金额</string>
+    <string name="zheng_ce">国家政策</string>
+    <string name="zi_xun">产业咨询</string>
 </resources>

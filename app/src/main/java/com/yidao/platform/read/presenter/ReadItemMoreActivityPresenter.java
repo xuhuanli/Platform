@@ -7,7 +7,7 @@ import com.allen.library.utils.ToastUtils;
 import com.yidao.platform.read.bean.CategoryArticleExtBean;
 import com.yidao.platform.read.bean.ReadNewsBean;
 import com.yidao.platform.read.view.IViewReadItemMoreActivity;
-import com.yidao.platform.testpackage.bean.ApiService;
+import com.yidao.platform.app.ApiService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +24,8 @@ public class ReadItemMoreActivityPresenter {
      * 获取某一类目的文章列表
      * pageIndex 按服务端要求 从 1 开始
      */
-    public void getCategoryArticleExt(String categoryId, String pageIndex, String pageSize) {
+    public void getCategoryArticleExt(long id, String pageIndex, String pageSize) {
+        String categoryId = String.valueOf(id);
         HashMap<String, String> map = new HashMap<>();
         map.put("categoryId", categoryId);
         map.put("pageIndex", pageIndex);

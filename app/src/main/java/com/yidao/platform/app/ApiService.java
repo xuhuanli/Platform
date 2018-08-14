@@ -1,4 +1,4 @@
-package com.yidao.platform.testpackage.bean;
+package com.yidao.platform.app;
 
 import com.yidao.platform.info.model.UserCollectArtBean;
 import com.yidao.platform.read.bean.ArticleBean;
@@ -6,6 +6,9 @@ import com.yidao.platform.read.bean.BannerBean;
 import com.yidao.platform.read.bean.CategoryArticleExtBean;
 import com.yidao.platform.read.bean.ChannelBean;
 import com.yidao.platform.read.bean.CommonArticleBean;
+import com.yidao.platform.testpackage.bean.TestBean;
+import com.yidao.platform.testpackage.bean.UserDataBean;
+import com.yidao.platform.testpackage.bean.WxTokenBean;
 
 import java.util.Map;
 

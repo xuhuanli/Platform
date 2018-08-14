@@ -1,5 +1,8 @@
 package com.yidao.platform.read.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 public class ChannelBean {
@@ -23,12 +26,12 @@ public class ChannelBean {
         this.result = result;
     }
 
-    public static class ResultBean {
+    public static class ResultBean implements Parcelable {
 
         private String name;
         private long id;
         private long parentid;
-        private Object childList;
+        private String childList;
         private boolean parente;
 
         public String getName() {
@@ -59,7 +62,7 @@ public class ChannelBean {
             return childList;
         }
 
-        public void setChildList(Object childList) {
+        public void setChildList(String childList) {
             this.childList = childList;
         }
 
@@ -81,6 +84,43 @@ public class ChannelBean {
                     ", parente=" + parente +
                     '}';
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(this.name);
+            dest.writeLong(this.id);
+            dest.writeLong(this.parentid);
+            dest.writeString(this.childList);
+            dest.writeByte(this.parente ? (byte) 1 : (byte) 0);
+        }
+
+        public ResultBean() {
+        }
+
+        protected ResultBean(Parcel in) {
+            this.name = in.readString();
+            this.id = in.readLong();
+            this.parentid = in.readLong();
+            this.childList = in.readString();
+            this.parente = in.readByte() != 0;
+        }
+
+        public static final Parcelable.Creator<ResultBean> CREATOR = new Parcelable.Creator<ResultBean>() {
+            @Override
+            public ResultBean createFromParcel(Parcel source) {
+                return new ResultBean(source);
+            }
+
+            @Override
+            public ResultBean[] newArray(int size) {
+                return new ResultBean[size];
+            }
+        };
     }
 
     @Override

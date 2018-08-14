@@ -17,6 +17,7 @@ import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.info.adapter.CollectionAdapter;
+import com.yidao.platform.info.presenter.MyCollectionActivityPresenter;
 import com.yidao.platform.read.view.ReadContentActivity;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import io.reactivex.functions.Consumer;
 
-public class InfoMyCollectionActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemLongClickListener {
+public class InfoMyCollectionActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemLongClickListener, IViewMyCollectionActivity {
 
     @BindView(R.id.rv_my_collection)
     RecyclerView mRecyclerView;
@@ -34,17 +35,12 @@ public class InfoMyCollectionActivity extends BaseActivity implements BaseQuickA
     @BindView(R.id.tv_title)
     TextView tvTitle;
     private CollectionAdapter mCollectionAdapter;
+    private MyCollectionActivityPresenter mPresenter;
 
     private void initView() {
-        tvTitle.setText("我的收藏");
-        addDisposable(RxToolbar.navigationClicks(mToolbar).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) {
-                finish();
-            }
-        }));
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        initToolBar();
+        mPresenter = new MyCollectionActivityPresenter(this);
+        initRecyclerView();
         ArrayList<String> data = new ArrayList<>();
 //        for (int i = 0; i < 20; i++) {
 //            data.add(String.valueOf(i));
@@ -54,12 +50,27 @@ public class InfoMyCollectionActivity extends BaseActivity implements BaseQuickA
         if (data.size() == 0) {
             mCollectionAdapter.bindToRecyclerView(mRecyclerView);
             View view = LayoutInflater.from(this).inflate(R.layout.info_no_msg_layout, mRecyclerView, false);
-            ((TextView)view.findViewById(R.id.tv_tips)).setText(R.string.no_collection);
+            ((TextView) view.findViewById(R.id.tv_tips)).setText(R.string.no_collection);
             mCollectionAdapter.setEmptyView(view);
             mCollectionAdapter.setNewData(null);
         }
         mCollectionAdapter.setOnItemClickListener(this);
         mCollectionAdapter.setOnItemLongClickListener(this);
+    }
+
+    private void initRecyclerView() {
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    private void initToolBar() {
+        tvTitle.setText("我的收藏");
+        addDisposable(RxToolbar.navigationClicks(mToolbar).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(Object o) {
+                finish();
+            }
+        }));
     }
 
     @Override

@@ -17,13 +17,9 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.login.LoginBindingPhoneActivity;
-import com.yidao.platform.login.LoginClassificationActivity;
-import com.yidao.platform.login.view.LoginSplashActivity;
-import com.yidao.platform.testpackage.bean.ApiService;
+import com.yidao.platform.app.ApiService;
 import com.yidao.platform.testpackage.bean.UserDataBean;
 import com.yidao.platform.testpackage.bean.WxTokenBean;
-
-import org.greenrobot.eventbus.EventBus;
 
 public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 

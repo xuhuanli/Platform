@@ -37,7 +37,7 @@ import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.app.utils.ScreenUtil;
-import com.yidao.platform.testpackage.bean.ApiService;
+import com.yidao.platform.app.ApiService;
 import com.yidao.platform.testpackage.bean.TestBean;
 
 import java.util.concurrent.TimeUnit;

@@ -1,5 +1,6 @@
 package com.yidao.platform.read.view;
 
+import com.yidao.platform.read.bean.ChannelBean;
 import com.yidao.platform.read.bean.ReadNewsBean;
 import com.yidao.platform.read.bean.CommonArticleBean;
 
@@ -24,4 +25,6 @@ public interface IViewReadFragment {
     void loadMoreData(ArrayList<ReadNewsBean> dataList);
 
     void showError();
+
+    void saveChannelData(ArrayList<ChannelBean.ResultBean> result);
 }

@@ -24,6 +24,7 @@ import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseFragment;
 import com.yidao.platform.app.utils.ScreenUtil;
 import com.yidao.platform.read.adapter.MultipleReadAdapter;
+import com.yidao.platform.read.bean.ChannelBean;
 import com.yidao.platform.read.bean.ReadNewsBean;
 import com.yidao.platform.read.presenter.ReadFragmentPresenter;
 import com.youth.banner.Banner;
@@ -58,6 +59,7 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
     private int mNextRequestPage = 1;
     private MultipleReadAdapter mAdapter;
     private ReadFragmentPresenter mPresenter;
+    private ArrayList<ChannelBean.ResultBean> mChannelBean;
 
     @Override
     protected void initView() {
@@ -82,6 +84,7 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
     }
 
     private void refresh() {
+        mNextRequestPage = 1;
         if (mAdapter != null) {
             mAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
         }
@@ -99,6 +102,8 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
         mPresenter.getBannerData();
         //加载首页类目文章
         mPresenter.getMainArticleData();
+        //请求所有id&name类目做保存
+        mPresenter.getListCategories();
     }
 
     private void initRecyclerView() {
@@ -112,6 +117,7 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
      */
     private void showChannelUI() {
         Intent intent = new Intent(getActivity(), ItemChannelActivity.class);
+        intent.putParcelableArrayListExtra("channel", mChannelBean);
         startActivity(intent);
     }
 
@@ -200,31 +206,47 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
     }
 
     @Override
+    public void saveChannelData(ArrayList<ChannelBean.ResultBean> result) {
+        //这里拿到了类目的ID和Name，没做本地化存储
+        mChannelBean = result;
+    }
+
+    @Override
     public void setRefreshing(boolean b) {
         mSwipeRefreshLayout.setRefreshing(b);
     }
 
     @Override
     public void showMainArticle(List<ReadNewsBean> dataList) {
-        mAdapter = new MultipleReadAdapter(getActivity(), dataList);
-        mAdapter.addHeaderView(getHeaderView());
-        mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
-        mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
-            switch (view.getId()) {
-                case R.id.tv_item_more:
-                    ReadNewsBean item = (ReadNewsBean) adapter.getItem(position);
-                    Intent intent = new Intent(ReadFragment.this.getActivity(), ReadItemMoreActivity.class);
-                    intent.putExtra("categoryId", String.valueOf(item.getCategoryId()));
-                    startActivity(intent);
-                    break;
-            }
-        });
-        mAdapter.setOnItemClickListener((adapter, view, position) -> {
-            Intent intent = new Intent(getActivity(), ReadContentActivity.class);
-            intent.putExtra("url", "https://ydplatform.oss-cn-hangzhou.aliyuncs.com/article/haha%20%281%29.html");
-            startActivity(intent);
-        });
-        mRecyclerView.setAdapter(mAdapter);
+        if (mAdapter == null) {
+            mAdapter = new MultipleReadAdapter(getActivity(), dataList);
+            mAdapter.addHeaderView(getHeaderView());
+            mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
+            mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+                switch (view.getId()) {
+                    case R.id.tv_item_more:
+                        ReadNewsBean item = (ReadNewsBean) adapter.getItem(position);
+                        Intent intent = new Intent(ReadFragment.this.getActivity(), ReadItemMoreActivity.class);
+                        long categoryId = item.getCategoryId();
+                        for (ChannelBean.ResultBean resultBean : mChannelBean) {
+                            if (categoryId == resultBean.getId()) {
+                                intent.putExtra("categoryId", categoryId);
+                                intent.putExtra("categoryName", resultBean.getName());
+                                startActivity(intent);
+                            }
+                        }
+                        break;
+                }
+            });
+            mAdapter.setOnItemClickListener((adapter, view, position) -> {
+                Intent intent = new Intent(getActivity(), ReadContentActivity.class);
+                intent.putExtra("url", "https://ydplatform.oss-cn-hangzhou.aliyuncs.com/article/haha%20%281%29.html");
+                startActivity(intent);
+            });
+            mRecyclerView.setAdapter(mAdapter);
+        } else {
+            mAdapter.setNewData(dataList);
+        }
     }
 
     @Override
@@ -248,10 +270,10 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
         mNextRequestPage++; //这里跟更多列表的上拉加载有一点不一样，因为首页这个两个接口，所以把++放在后面
     }
 
-    private class ErrorAdapter extends BaseQuickAdapter<String,BaseViewHolder>{
+    private class ErrorAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
 
         ErrorAdapter(@Nullable List<String> data) {
-            super(0,data);
+            super(0, data);
         }
 
         @Override

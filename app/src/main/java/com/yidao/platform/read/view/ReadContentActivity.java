@@ -36,6 +36,7 @@ import com.yidao.platform.app.utils.BitmapUtil;
 import com.yidao.platform.read.adapter.MultipleReadDetailAdapter;
 import com.yidao.platform.read.adapter.ReadNewsDetailBean;
 import com.yidao.platform.read.bus.WebViewLoadEvent;
+import com.yidao.platform.read.presenter.ReadContentActivityPresenter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -48,7 +49,7 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import cn.bingoogolapple.badgeview.BGABadgeImageButton;
 
-public class ReadContentActivity extends BaseActivity implements View.OnClickListener {
+public class ReadContentActivity extends BaseActivity implements View.OnClickListener, IViewReadContentActivity{
 
     private static final int THUMB_SIZE = 150;
     @BindView(R.id.rv_read_content)
@@ -75,12 +76,14 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     //是否处于正在滑动状态
     private boolean isScrolling = false;
     private IPreference mSp;
+    private ReadContentActivityPresenter mPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         regToWX();
         mSp = IPreference.prefHolder.getPreference(this);
+        mPresenter = new ReadContentActivityPresenter(this);
         initData();
         initView();
         EventBus.getDefault().register(this);

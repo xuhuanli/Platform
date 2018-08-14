@@ -4,12 +4,13 @@ import com.allen.library.RxHttpUtils;
 import com.allen.library.interceptor.Transformer;
 import com.allen.library.observer.CommonObserver;
 import com.allen.library.utils.ToastUtils;
+import com.yidao.platform.app.ApiService;
 import com.yidao.platform.read.bean.ArticleBean;
 import com.yidao.platform.read.bean.BannerBean;
+import com.yidao.platform.read.bean.ChannelBean;
 import com.yidao.platform.read.bean.CommonArticleBean;
 import com.yidao.platform.read.bean.ReadNewsBean;
 import com.yidao.platform.read.view.IViewReadFragment;
-import com.yidao.platform.testpackage.bean.ApiService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -145,6 +146,26 @@ public class ReadFragmentPresenter {
                                 dataList.add(readNewsBean);
                             }
                             mView.loadMoreData(dataList);
+                        }
+                    }
+                });
+    }
+
+    public void getListCategories() {
+        RxHttpUtils.createApi(ApiService.class)
+                .getListCategories()
+                .compose(Transformer.switchSchedulers())
+                .subscribe(new CommonObserver<ChannelBean>() {
+                    @Override
+                    protected void onError(String errorMsg) {
+                        showError();
+                    }
+
+                    @Override
+                    protected void onSuccess(ChannelBean channelBean) {
+                        if (channelBean.isStatus()) {
+                            ArrayList<ChannelBean.ResultBean> result = (ArrayList<ChannelBean.ResultBean>) channelBean.getResult();
+                            mView.saveChannelData(result);
                         }
                     }
                 });
