@@ -59,6 +59,8 @@ public class ContainerActivity extends BaseActivity {
         for (int i = 0; i < ViewpagerAdapter.DRAWABLE_RES_UNSELECTED.length; i++) {
             mTabLayout.getTabAt(i).setText(ViewpagerAdapter.TAB_NAMES[i]).setIcon(ViewpagerAdapter.DRAWABLE_RES_UNSELECTED[i]);
         }
+        //不正经fix:修复tablayout默认选中bug
+        mTabLayout.getTabAt(0).setIcon(ViewpagerAdapter.DRAWABLE_RES_SELECTED[0]);
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
