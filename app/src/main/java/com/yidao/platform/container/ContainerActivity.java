@@ -51,14 +51,32 @@ public class ContainerActivity extends BaseActivity {
         mViewPager.setAdapter(new ViewpagerAdapter(getSupportFragmentManager(), list));
         mViewPager.setOffscreenPageLimit(1);
         //smoothScroll  true:在点击tablayout时，vp会有滑动效果 false : 取消平滑效果
-        mViewPager.setCurrentItem(0, false);
+        //mViewPager.setCurrentItem(0, false);
     }
 
     private void loadTabData() {
         mTabLayout.setupWithViewPager(mViewPager, true);
-        for (int i = 0; i < ViewpagerAdapter.DRAWABLE_RES_IDS.length; i++) {
-            mTabLayout.getTabAt(i).setText(ViewpagerAdapter.TAB_NAMES[i]);
-            mTabLayout.getTabAt(i).setIcon(ViewpagerAdapter.DRAWABLE_RES_IDS[i]);
+        for (int i = 0; i < ViewpagerAdapter.DRAWABLE_RES_UNSELECTED.length; i++) {
+            mTabLayout.getTabAt(i).setText(ViewpagerAdapter.TAB_NAMES[i]).setIcon(ViewpagerAdapter.DRAWABLE_RES_UNSELECTED[i]);
         }
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+                mTabLayout.getTabAt(position).setIcon(ViewpagerAdapter.DRAWABLE_RES_SELECTED[position]);
+                mViewPager.setCurrentItem(position, false);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+                mTabLayout.getTabAt(position).setIcon(ViewpagerAdapter.DRAWABLE_RES_UNSELECTED[position]);
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 }

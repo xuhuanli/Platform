@@ -12,7 +12,8 @@ import java.util.ArrayList;
 public class ViewpagerAdapter extends FragmentPagerAdapter {
 
     public static final String[] TAB_NAMES = new String[]{"阅读", "发现", "服务", "我的"};
-    public static final int[] DRAWABLE_RES_IDS = {R.drawable.ic_assignment_black_24dp, R.drawable.ic_assignment_ind_black_24dp, R.drawable.ic_assignment_late_black_24dp, R.drawable.ic_assignment_return_black_24dp};
+    public static final int[] DRAWABLE_RES_UNSELECTED = {R.drawable.read_unselected, R.drawable.discovery_unselected, R.drawable.server_unselected, R.drawable.my_unselected};
+    public static final int[] DRAWABLE_RES_SELECTED = {R.drawable.read_selected, R.drawable.discovery_selected, R.drawable.server_selected, R.drawable.my_selected};
     private ArrayList<Fragment> fragmentArrayList;
 
     ViewpagerAdapter(FragmentManager fm, ArrayList<Fragment> fragmentArrayList) {

@@ -29,6 +29,8 @@
     <android.support.design.widget.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
+        app:tabSelectedTextColor="#007aff"
+        app:tabTextColor="#999999"
         android:layout_height="@dimen/app_navigation_height"
         android:background="@color/colorWhite"
         app:layout_constraintTop_toBottomOf="@+id/line1"
