@@ -96,6 +96,16 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    /* Aliyun push */
+    allprojects {
+        repositories {
+            jcenter()
+            maven {
+                url 'http://maven.aliyun.com/nexus/content/repositories/releases/'
+            }
+        }
+    }
 }
 
 dependencies {
@@ -200,4 +210,7 @@ dependencies {
 
     //picker
     implementation 'com.contrarywind:Android-PickerView:4.1.6'
+
+    //aliyun push
+    compile 'com.aliyun.ams:alicloud-android-push:3.1.2'
 }

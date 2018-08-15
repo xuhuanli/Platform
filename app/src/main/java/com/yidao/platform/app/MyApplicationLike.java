@@ -7,6 +7,9 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.multidex.MultiDex;
 
+import com.alibaba.sdk.android.push.CloudPushService;
+import com.alibaba.sdk.android.push.CommonCallback;
+import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.allen.library.RxHttpUtils;
 import com.allen.library.config.OkHttpConfig;
 import com.squareup.leakcanary.LeakCanary;
@@ -41,6 +44,7 @@ public class MyApplicationLike extends DefaultApplicationLike {
         initLeakCanary();
         initLogger();
         initRetrofit();
+        initCloudChannel(appContext);
     }
 
     private void initBugly() {
@@ -106,6 +110,27 @@ public class MyApplicationLike extends DefaultApplicationLike {
                 .setDebug(Constant.IS_DEBUG)
                 .build();
         return okHttpClient;
+    }
+
+    /**
+     * 初始化aliyun push通道
+     *
+     * @param applicationContext
+     */
+    private void initCloudChannel(Context applicationContext) {
+        PushServiceFactory.init(applicationContext);
+        CloudPushService pushService = PushServiceFactory.getCloudPushService();
+        pushService.register(applicationContext, new CommonCallback() {
+            @Override
+            public void onSuccess(String response) {
+                MyLogger.i(TAG, "init cloudchannel success" + response);
+            }
+
+            @Override
+            public void onFailed(String errorCode, String errorMessage) {
+                MyLogger.i(TAG, "init cloudchannel failed -- errorcode:" + errorCode + " -- errorMessage:" + errorMessage);
+            }
+        });
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
