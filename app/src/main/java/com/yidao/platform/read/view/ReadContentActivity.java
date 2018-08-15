@@ -12,6 +12,7 @@ import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -49,7 +50,7 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import cn.bingoogolapple.badgeview.BGABadgeImageButton;
 
-public class ReadContentActivity extends BaseActivity implements View.OnClickListener, IViewReadContentActivity{
+public class ReadContentActivity extends BaseActivity implements View.OnClickListener, IViewReadContentActivity {
 
     private static final int THUMB_SIZE = 150;
     @BindView(R.id.rv_read_content)
@@ -77,6 +78,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     private boolean isScrolling = false;
     private IPreference mSp;
     private ReadContentActivityPresenter mPresenter;
+    private long artId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -96,7 +98,8 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
 
     private void initData() {
         Intent intent = getIntent();
-        url = intent.getStringExtra("url");
+        url = intent.getStringExtra(Constant.STRING_URL);
+        artId = intent.getLongExtra(Constant.STRING_ART_ID, 0L);
     }
 
     private void initView() {
@@ -245,7 +248,11 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
                 showShareDialog();
                 break;
             case R.id.btn_comment_send: //评论内容send按钮
-                // TODO: 2018/7/3 0003  当满足发送规则时，进行访问请求if success 清空et else 发送失败 doSomething
+                String context = mEtContent.getText().toString().trim();
+                String userId = IPreference.prefHolder.getPreference(this).get("userId", IPreference.DataType.STRING);
+                if (!TextUtils.isEmpty(context)) {
+                    mPresenter.pushComment(artId, context, userId);
+                }
                 mEtContent.setText("");
                 mCommentBottomSheetDialog.cancel();
                 break;
@@ -266,7 +273,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
 
     private void weChatShare(int mTargetScene) {
         WXWebpageObject webpage = new WXWebpageObject();
-        webpage.webpageUrl = "http://www.baidu.com";
+        webpage.webpageUrl = url;
         WXMediaMessage msg = new WXMediaMessage(webpage);
         msg.title = "WebPage Title WebPage Title WebPage Title WebPage Title WebPage Title WebPage Title WebPage Title WebPage Title WebPage Title Very Long Very Long Very Long Very Long Very Long Very Long Very Long Very Long Very Long Very Long";
         msg.description = "WebPage Description WebPage Description WebPage Description WebPage Description WebPage Description WebPage Description WebPage Description WebPage Description WebPage Description Very Long Very Long Very Long Very Long Very Long Very Long Very Long";

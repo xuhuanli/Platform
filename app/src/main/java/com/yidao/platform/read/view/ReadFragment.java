@@ -240,6 +240,7 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
                 ReadNewsBean item = (ReadNewsBean) adapter.getItem(position);
                 Intent intent = new Intent(getActivity(), ReadContentActivity.class);
                 intent.putExtra("url", "https://ydplatform.oss-cn-hangzhou.aliyuncs.com/article/haha%20%281%29.html");
+                intent.putExtra(Constant.STRING_ART_ID,item.getId());
                 startActivity(intent);
             });
             mRecyclerView.setAdapter(mAdapter);

@@ -31,6 +31,7 @@
         android:layout_marginTop="10dp"
         android:gravity="top"
         android:hint="@string/add_comment"
+        android:maxLength="150"
         android:inputType="none"
         android:padding="@dimen/size_8dp"
         android:textSize="@dimen/text_size_16sp"
