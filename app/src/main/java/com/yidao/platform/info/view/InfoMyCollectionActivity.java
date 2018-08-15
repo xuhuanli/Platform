@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
+import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
@@ -68,7 +69,8 @@ public class InfoMyCollectionActivity extends BaseActivity implements BaseQuickA
     }
 
     private void initData() {
-        mPresenter.getUserCollectArtList("21211");
+        String userId = IPreference.prefHolder.getPreference(this).get("userId", IPreference.DataType.STRING);
+        mPresenter.getUserCollectArtList(userId);
     }
 
     @Override

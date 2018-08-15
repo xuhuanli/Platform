@@ -79,4 +79,46 @@ public interface ApiService {
      */
     @POST("user/center/listuserCollectArt")
     Observable<UserCollectArtBean> getUserCollectArt(@QueryMap Map<String, String> options);
+
+    /**
+     * 删除评论
+     */
+    @POST("user/center/delComment")
+    Observable<String> delComment(@QueryMap Map<String, String> options);
+
+    /**
+     * 发布评论
+     */
+    @POST("user/center/pushComment")
+    Observable<String> pushComment(@QueryMap Map<String, String> options);
+
+    /**
+     * 用户阅读
+     */
+    @POST("user/center/read")
+    Observable<String> pushHasRead(@QueryMap Map<String, String> options);
+
+    /**
+     * 用户点赞
+     */
+    @POST("user/center/like")
+    Observable<String> pushHasLike(@QueryMap Map<String, String> options);
+
+    /**
+     * 用户收藏
+     */
+    @POST("user/center/collect")
+    Observable<String> pushHasCollect(@QueryMap Map<String, String> options);
+
+    /**
+     * 取消收藏
+     */
+    @POST("user/center/unCollect")
+    Observable<String> unCollect(@QueryMap Map<String, String> options);
+
+    /**
+     * 取消点赞
+     */
+    @POST("user/center/unLike")
+    Observable<String> unLike(@QueryMap Map<String, String> options);
 }

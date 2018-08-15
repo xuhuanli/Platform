@@ -10,6 +10,7 @@ import android.widget.EditText;
 import com.allen.library.utils.ToastUtils;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
+import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
@@ -47,6 +48,7 @@ public class LoginBindingPhoneActivity extends BaseActivity {
         addDisposable(RxView.clicks(button2).throttleFirst(Constant.THROTTLE_TIME,TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
             @Override
             public void accept(Object o) throws Exception {
+                IPreference.prefHolder.getPreference(LoginBindingPhoneActivity.this).put("userId","21211");
                 startActivity(ContainerActivity.class);
             }
         }));
