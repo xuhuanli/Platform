@@ -1,11 +1,13 @@
 package com.yidao.platform.app;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.multidex.MultiDex;
+import android.util.Log;
 
 import com.alibaba.sdk.android.push.CloudPushService;
 import com.alibaba.sdk.android.push.CommonCallback;
@@ -121,14 +123,18 @@ public class MyApplicationLike extends DefaultApplicationLike {
         PushServiceFactory.init(applicationContext);
         CloudPushService pushService = PushServiceFactory.getCloudPushService();
         pushService.register(applicationContext, new CommonCallback() {
+            @SuppressLint("LongLogTag")
             @Override
             public void onSuccess(String response) {
-                MyLogger.i(TAG, "init cloudchannel success" + response);
+                Log.i(TAG, "init cloudchannel success" + response);
+                String deviceId = pushService.getDeviceId();
+                Log.i(TAG, "当前设备对应的deviceId是-->" + deviceId);
             }
 
+            @SuppressLint("LongLogTag")
             @Override
             public void onFailed(String errorCode, String errorMessage) {
-                MyLogger.i(TAG, "init cloudchannel failed -- errorcode:" + errorCode + " -- errorMessage:" + errorMessage);
+                Log.i(TAG, "init cloudchannel failed -- errorcode:" + errorCode + " -- errorMessage:" + errorMessage);
             }
         });
     }
