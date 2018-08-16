@@ -52,7 +52,7 @@
     <cn.bingoogolapple.badgeview.BGABadgeImageButton
         android:id="@+id/ib_favorite"
         style="@style/Bottom_Bar_Icon"
-        android:src="@drawable/dianzan_big"
+        android:src="@drawable/selector_dianzan"
         app:layout_constraintBottom_toBottomOf="@+id/ib_vote"
         app:layout_constraintLeft_toRightOf="@+id/ib_vote"
         app:layout_constraintRight_toLeftOf="@+id/ib_share" />

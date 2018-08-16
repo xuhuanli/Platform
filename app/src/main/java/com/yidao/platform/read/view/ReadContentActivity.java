@@ -135,7 +135,12 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
             int itemViewType = adapter.getItemViewType(position);
             // TODO: 2018/7/25 0025 还需要判断是否为本人评论 ignored
             if (itemViewType == ReadNewsDetailBean.ITEM_COMMENTS) {
-                showAlertDialog(R.string.ensure_delete, (dialog, which) -> ToastUtils.showToast("删除"));
+                showAlertDialog(R.string.ensure_delete, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mPresenter.deleteMineComment(0L);
+                    }
+                });
             }
             return false;
         });
@@ -168,8 +173,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         AlertDialog alertDialog = new AlertDialog.Builder(ReadContentActivity.this)
                 .setMessage(messageId)
                 .setPositiveButton(R.string.ensure, positiveListener)
-                .setNegativeButton(R.string.cancel, (dialog, which) -> {
-                })
+                .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
                 .create();
         alertDialog.show();
     }
@@ -233,16 +237,24 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
                 }
                 break;
             case R.id.ib_vote: //收藏
-                Boolean isCollection = mSp.get("collection", IPreference.DataType.BOOLEAN);
+                Boolean isCollection = mSp.get(Constant.STRING_COLLECTION, IPreference.DataType.BOOLEAN);
                 if (isCollection) {
                     ib_vote.setSelected(false);
-                    mSp.put("collection", false);
+                    mSp.put(Constant.STRING_COLLECTION, false);
                 } else {
                     ib_vote.setSelected(true);
-                    mSp.put("collection", true);
+                    mSp.put(Constant.STRING_COLLECTION, true);
                 }
                 break;
             case R.id.ib_favorite: //点赞icon
+                Boolean isLike = mSp.get(Constant.STRING_DIAN_ZAN, IPreference.DataType.BOOLEAN);
+                if (isLike) {
+                    ib_favorite.setSelected(false);
+                    mSp.put(Constant.STRING_DIAN_ZAN, false);
+                } else {
+                    ib_favorite.setSelected(true);
+                    mSp.put(Constant.STRING_DIAN_ZAN, true);
+                }
                 break;
             case R.id.ib_share: //分享icon
                 showShareDialog();
@@ -305,4 +317,21 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         mProgressBar.setVisibility(View.GONE);
     }
 
+    @Override
+    public void deleteCommentSuccess() {
+        // TODO: 2018/8/16 0016 删除成功后需要刷新评论list数据 删除评论id的数据(推荐)或者重新获取
+    }
+
+    @Override
+    public void deleteCommentFail() {
+    }
+
+    @Override
+    public void pushCommentSuccess() {
+        // TODO: 2018/8/16 0016 发布成功后需要刷新评论list数据 添加评论id的数据(推荐)或者重新获取
+    }
+
+    @Override
+    public void pushCommentFail() {
+    }
 }

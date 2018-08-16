@@ -87,6 +87,7 @@ public class ReadFragmentPresenter {
                                         readNewsBean.setId(articleExtListBean.getId());
                                         readNewsBean.setReadAmount(articleExtListBean.getReadAmount());
                                         readNewsBean.setTitle(articleExtListBean.getTitle());
+                                        readNewsBean.setArticleContent(articleExtListBean.getArticleContent());
                                         readNewsBean.setType(articleExtListBean.getType());
                                         dataList.add(readNewsBean);
                                     } else if (type == 1) {
@@ -98,6 +99,7 @@ public class ReadFragmentPresenter {
                                         readNewsBean.setReadAmount(articleExtListBean.getReadAmount());
                                         readNewsBean.setTitle(articleExtListBean.getTitle());
                                         readNewsBean.setType(articleExtListBean.getType());
+                                        readNewsBean.setArticleContent(articleExtListBean.getArticleContent());
                                         dataList.add(readNewsBean);
                                     }
                                 }
@@ -142,6 +144,7 @@ public class ReadFragmentPresenter {
                                 readNewsBean.setId(listBean.getId());
                                 readNewsBean.setHomeImg(listBean.getHomeImg());
                                 readNewsBean.setDeployTime(listBean.getDeployTime());
+                                readNewsBean.setArticleContent(listBean.getArticleContent());
                                 dataList.add(readNewsBean);
                             }
                             mView.loadMoreData(dataList);

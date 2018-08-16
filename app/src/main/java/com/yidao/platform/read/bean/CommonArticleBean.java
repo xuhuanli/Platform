@@ -86,6 +86,15 @@ public class CommonArticleBean {
         private int deployTime;
         private int type;
         private int readAmount;
+        private String articleContent;
+
+        public String getArticleContent() {
+            return articleContent;
+        }
+
+        public void setArticleContent(String articleContent) {
+            this.articleContent = articleContent;
+        }
 
         public int getId() {
             return id;

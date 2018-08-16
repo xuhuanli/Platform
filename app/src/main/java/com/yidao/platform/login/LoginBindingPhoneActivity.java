@@ -3,7 +3,13 @@ package com.yidao.platform.login;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -46,6 +52,12 @@ public class LoginBindingPhoneActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setProtocol();
     }
 
     private void initView() {
@@ -91,6 +103,22 @@ public class LoginBindingPhoneActivity extends BaseActivity {
             }
         };
         addDisposable(mObservableCountTime.subscribe(mConsumerCountTime));
+    }
+
+    private void setProtocol() {
+        String str = getString(R.string.register_protocol);
+        SpannableStringBuilder builder = new SpannableStringBuilder(str);
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+                ToastUtils.showToast("跳转到协议page");
+            }
+        };
+        builder.setSpan(clickableSpan,10,str.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#009ad6"));
+        builder.setSpan(colorSpan, 10, str.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        tvRegisterProtocol.setText(builder);
+        tvRegisterProtocol.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     @Override

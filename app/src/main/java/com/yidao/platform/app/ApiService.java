@@ -141,6 +141,8 @@ public interface ApiService {
     @POST("user/center/listUserReadArt")
     Observable<UserReadRecordBean> getListUserReadArt(@QueryMap Map<String, String> options);
 
+
+
     /**
      * 发布朋友圈图片上传路径到公司服务器 后期注意ip地址的修改
      */

@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawablePadding="2dp"
-        android:drawableRight="@drawable/dianzan_small"
+        android:drawableRight="@drawable/selector_dianzan_small"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

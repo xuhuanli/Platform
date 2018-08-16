@@ -53,6 +53,15 @@ public class ArticleBean {
             private int deployTime;
             private int type;
             private int readAmount;
+            private String articleContent;
+
+            public String getArticleContent() {
+                return articleContent;
+            }
+
+            public void setArticleContent(String articleContent) {
+                this.articleContent = articleContent;
+            }
 
             public long getId() {
                 return id;

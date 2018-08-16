@@ -54,6 +54,7 @@ public class ReadItemMoreActivityPresenter {
                                     readNewsBean.setId(listBean.getId());
                                     readNewsBean.setHomeImg(listBean.getHomeImg());
                                     readNewsBean.setDeployTime(listBean.getDeployTime());
+                                    readNewsBean.setArticleContent(listBean.getArticleContent());
                                     dataList.add(readNewsBean);
                                 }
                                 mView.loadRecyclerData(dataList);
@@ -73,6 +74,7 @@ public class ReadItemMoreActivityPresenter {
                                     readNewsBean.setId(listBean.getId());
                                     readNewsBean.setHomeImg(listBean.getHomeImg());
                                     readNewsBean.setDeployTime(listBean.getDeployTime());
+                                    readNewsBean.setArticleContent(listBean.getArticleContent());
                                     dataList.add(readNewsBean);
                                 }
                                 mView.loadMoreData(dataList);

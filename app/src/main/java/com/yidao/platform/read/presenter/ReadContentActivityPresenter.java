@@ -7,6 +7,9 @@ import com.allen.library.utils.ToastUtils;
 import com.yidao.platform.app.ApiService;
 import com.yidao.platform.read.view.IViewReadContentActivity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 
 public class ReadContentActivityPresenter {
@@ -14,6 +17,10 @@ public class ReadContentActivityPresenter {
 
     public ReadContentActivityPresenter(IViewReadContentActivity view) {
         mView = view;
+    }
+
+    private void showError() {
+        ToastUtils.showToast("网络连接失败，请查看网络");
     }
 
     /**
@@ -39,12 +46,51 @@ public class ReadContentActivityPresenter {
 
                     @Override
                     protected void onSuccess(String data) {
-
+                        try {
+                            JSONObject jsonObject = new JSONObject(data);
+                            Boolean status = (Boolean) jsonObject.get("status");
+                            if (status) {
+                                mView.pushCommentSuccess();
+                            }else {
+                                mView.pushCommentFail();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
     }
 
-    private void showError() {
-        ToastUtils.showToast("网络连接失败，请查看网络");
+    /**
+     * 删除我的文章评论
+     * @param commentId
+     */
+    public void deleteMineComment(long commentId) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("commentId", String.valueOf(commentId));
+        RxHttpUtils.createApi(ApiService.class)
+                .delComment(map)
+                .compose(Transformer.switchSchedulers())
+                .subscribe(new StringObserver() {
+                    @Override
+                    protected void onError(String errorMsg) {
+                        showError();
+                    }
+
+                    @Override
+                    protected void onSuccess(String data) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(data);
+                            Boolean status = (Boolean) jsonObject.get("status");
+                            if (status) {
+                                mView.deleteCommentSuccess();
+                            }else {
+                                mView.deleteCommentFail();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 }
