@@ -249,7 +249,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.btn_comment_send: //评论内容send按钮
                 String context = mEtContent.getText().toString().trim();
-                String userId = IPreference.prefHolder.getPreference(this).get("userId", IPreference.DataType.STRING);
+                String userId = IPreference.prefHolder.getPreference(this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
                 if (!TextUtils.isEmpty(context)) {
                     mPresenter.pushComment(artId, context, userId);
                 }

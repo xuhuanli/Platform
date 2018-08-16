@@ -1,23 +1,21 @@
 package com.yidao.platform.discovery;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
-import android.view.LayoutInflater;
+import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.allen.library.utils.ToastUtils;
+import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
@@ -48,28 +46,47 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
     @BindView(R.id.et_editor)
     EditText mEtEditor;
     private BGASortableNinePhotoLayout mPhotosSnpl;
+    /**
+     * 选择拍照
+     */
     private static final int RC_CHOOSE_PHOTO = 1;
+    /**
+     * 照片预览
+     */
     private static final int RC_PHOTO_PREVIEW = 2;
     /**
      * permission
      */
-    private static final int PRC_PHOTO_PICKER = 1;
+    private static final int PERMISSION_PHOTO_PICKER = 1;
     private EditorMessagePresenter mPresenter;
+    /**
+     * 需要上传的图片集合
+     */
     private ArrayList<String> mUpLoadPicList;
     private WaitDialog mProgressDialog;
+    private ArrayList<String> picPathList = new ArrayList<>();
+    private int uploadPicCounter = 0;  //上传到Oss成功的图片计数器
+    private String userId;
     private Handler mHandler = new Handler(new Handler.Callback() {
-        int uploadPicCounter = 0;
-
         @Override
         public boolean handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
                     //每上传成功1张，计数+1
                     uploadPicCounter++;
+                    picPathList.add((String) msg.obj);
+                    break;
+                case 1:
+                    uploadPicFailed();
+                    break;
             }
             //当上传成功数 == 选中图片数时，告知服务器上传成功
             if (mUpLoadPicList.size() == uploadPicCounter) {
-                MyLogger.d("告诉服务器上传成功");
+                String content = mEtEditor.getText().toString().trim();
+                if (TextUtils.isEmpty(content)) {
+                    content = " ";
+                }
+                mPresenter.sendMsg2Server(userId, content, picPathList);
                 //重置数量
                 uploadPicCounter = 0;
                 mProgressDialog.dismiss();
@@ -81,7 +98,8 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresenter = new EditorMessagePresenter(this);
+        mPresenter = new EditorMessagePresenter(this, this);
+        userId = IPreference.prefHolder.getPreference(DiscoveryEditorMessageActivity.this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
         mPhotosSnpl = findViewById(R.id.snpl_moment_add_photos);
         mPhotosSnpl.setDelegate(this);
         initView();
@@ -134,13 +152,12 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
         //拖动pic时候回调
     }
 
-    @AfterPermissionGranted(PRC_PHOTO_PICKER)
+    @AfterPermissionGranted(PERMISSION_PHOTO_PICKER)
     private void choicePhotoWrapper() {
         String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
         if (EasyPermissions.hasPermissions(this, perms)) {
             // 拍照后照片的存放目录，改成你自己拍照后要存放照片的目录。如果不传递该参数的话就没有拍照功能
             File takePhotoDir = new File(Environment.getExternalStorageDirectory(), "com.yidao.platform");
-
             Intent photoPickerIntent = new BGAPhotoPickerActivity.IntentBuilder(this)
                     .cameraFileDir(takePhotoDir) // 拍照后照片的存放目录，改成你自己拍照后要存放照片的目录。如果不传递该参数的话则不开启图库里的拍照功能
                     .maxChooseCount(mPhotosSnpl.getMaxItemCount() - mPhotosSnpl.getItemCount()) // 图片选择张数的最大值
@@ -149,7 +166,7 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
                     .build();
             startActivityForResult(photoPickerIntent, RC_CHOOSE_PHOTO);
         } else {
-            EasyPermissions.requestPermissions(this, "图片选择需要以下权限:\n\n1.访问设备上的照片\n\n2.拍照", PRC_PHOTO_PICKER, perms);
+            EasyPermissions.requestPermissions(this, "图片选择需要以下权限:\n\n1.访问设备上的照片\n\n2.拍照", PERMISSION_PHOTO_PICKER, perms);
         }
     }
 
@@ -159,6 +176,9 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
+    /**
+     * @see #choicePhotoWrapper()
+     */
     @Override
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
 
@@ -166,7 +186,7 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
 
     @Override
     public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
-        if (requestCode == PRC_PHOTO_PICKER) {
+        if (requestCode == PERMISSION_PHOTO_PICKER) {
             ToastUtils.showToast("您拒绝了「图片选择」所需要的相关权限!");
         }
     }
@@ -188,17 +208,13 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
                 finish();
                 break;
             case R.id.btn_publish:
-                mProgressDialog = new WaitDialog(this);
-                mProgressDialog.setText("图片上传中...");
-                mProgressDialog.show();
+                //mPresenter.uploadFile();
                 mUpLoadPicList = mPhotosSnpl.getData();
-                if (mUpLoadPicList.size() >= 1) {
+                if (mUpLoadPicList.size() > 0) {
                     for (String datum : mUpLoadPicList) {
-                        if (!needCompress(Constant.NEED_COMPRESS_SIZE, datum)) {
-                            //<300K时，直传
+                        if (!needCompress(Constant.NEED_COMPRESS_SIZE, datum)) { //<300K时，直传
                             mPresenter.uploadFile(datum, mHandler);
-                        } else {
-                            //>300K时，进行压缩处理
+                        } else { //>300K时，进行压缩处理
                             Luban.with(this)
                                     .load(datum)
                                     .setTargetDir(getExternalCacheDir().getAbsolutePath())
@@ -214,18 +230,30 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
 
                                         @Override
                                         public void onError(Throwable e) {
-                                            uploadPicFailed();
-                                            return;
+                                            uploadPicFailed();  //这里其实是压缩图片失败，偷懒了QWQ
+                                            return;  //有一张压缩失败，就表示这次发布朋友圈failed
                                         }
                                     })
                                     .launch();
                         }
+                    }
+                }else { //纯文本
+                    String content = mEtEditor.getText().toString().trim();
+                    if (!TextUtils.isEmpty(content)) {
+                        mPresenter.sendMsg2Server(userId,content,null);
                     }
                 }
                 break;
         }
     }
 
+    /**
+     * if 图片大小> leastCompressSize，return true else return false
+     *
+     * @param leastCompressSize
+     * @param path
+     * @return
+     */
     private boolean needCompress(int leastCompressSize, String path) {
         if (leastCompressSize > 0) {
             File source = new File(path);
@@ -236,7 +264,26 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
 
     @Override
     public void uploadPicFailed() {
-        mProgressDialog.dismiss();
-        ToastUtils.showToast("图片上传失败,请重试");
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+            ToastUtils.showToast("图片上传失败,请重试");
+        }
+    }
+
+    @Override
+    public void showDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new WaitDialog(this);
+        }
+        mProgressDialog.setText("图片上传中...");
+        mProgressDialog.show();
+    }
+
+    @Override
+    public void uploadSuccess() {
+        //mPhotosSnpl.setData(null);
+        //mEtEditor.setText("");
+        ToastUtils.showToast("发布成功");
+        finish();
     }
 }

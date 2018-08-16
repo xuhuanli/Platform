@@ -40,6 +40,7 @@
         android:gravity="top"
         android:hint="@string/editor_hint"
         android:inputType="textMultiLine"
+        android:maxLength="150"
         android:maxHeight="@dimen/size_120dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

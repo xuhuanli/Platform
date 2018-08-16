@@ -1,6 +1,8 @@
 package com.yidao.platform.app;
 
+import com.yidao.platform.discovery.bean.SendFindObj;
 import com.yidao.platform.info.model.UserCollectArtBean;
+import com.yidao.platform.info.model.UserReadRecordBean;
 import com.yidao.platform.read.bean.ArticleBean;
 import com.yidao.platform.read.bean.BannerBean;
 import com.yidao.platform.read.bean.CategoryArticleExtBean;
@@ -10,10 +12,16 @@ import com.yidao.platform.testpackage.bean.TestBean;
 import com.yidao.platform.testpackage.bean.UserDataBean;
 import com.yidao.platform.testpackage.bean.WxTokenBean;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
@@ -72,8 +80,10 @@ public interface ApiService {
     Observable<ChannelBean> getListCategories();
 
     //test user id 21211
+
     /**
      * 获取用户收藏的文章
+     *
      * @param options
      * @return
      */
@@ -121,4 +131,20 @@ public interface ApiService {
      */
     @POST("user/center/unLike")
     Observable<String> unLike(@QueryMap Map<String, String> options);
+
+    /**
+     * 获取用户最近阅读
+     *
+     * @param options
+     * @return
+     */
+    @POST("user/center/listUserReadArt")
+    Observable<UserReadRecordBean> getListUserReadArt(@QueryMap Map<String, String> options);
+
+    /**
+     * 发布朋友圈图片上传路径到公司服务器 后期注意ip地址的修改
+     */
+    @Headers({ "Content-Type: application/json;charset=UTF-8"})
+    @POST("edit/find/sendFind")
+    Observable<String> sendFind(@Body SendFindObj sendFindObj);
 }

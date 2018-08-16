@@ -73,6 +73,7 @@
         <activity android:name=".info.view.RecentlyReadActivity" />
         <activity android:name=".read.view.SearchArticleActivity" />
         <activity android:name=".info.view.PersonInfomationActivity" />
+        <activity android:name=".info.view.ChangeInfoActivity" />
 
         <!--相册的fileProvider-->
         <provider

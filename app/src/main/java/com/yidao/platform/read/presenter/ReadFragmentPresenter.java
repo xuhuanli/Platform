@@ -127,7 +127,6 @@ public class ReadFragmentPresenter {
                     @Override
                     protected void onSuccess(CommonArticleBean commonArticleBean) {
                         if (commonArticleBean.isStatus()) {
-                            int pageIndex = commonArticleBean.getPageIndex();
                             List<CommonArticleBean.ListBean> list = commonArticleBean.getList();
                             if (list != null && list.size() < commonArticleBean.getPageSize()) {  //所得数目< pageSize =>到底了
                                 mView.loadMoreEnd(false);

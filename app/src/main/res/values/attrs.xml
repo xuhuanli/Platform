@@ -21,6 +21,7 @@
         <attr name="value" format="string"/>
         <attr name="valueSize" format="dimension"/>
         <attr name="valueColor" format="color"/>
+        <attr name="arrowVisible" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="CustomBpItemView">

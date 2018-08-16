@@ -41,6 +41,7 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
+import io.reactivex.functions.Consumer;
 import pub.devrel.easypermissions.EasyPermissions;
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
@@ -53,12 +54,14 @@ public class PersonInfomationActivity extends BaseActivity implements View.OnCli
     ImageView headPortrait;
     @BindView(R.id.rl_head)
     ConstraintLayout rlHead;
-    @BindView(R.id.tv_nick_name)
-    CustomTextView tvNickName;
-    @BindView(R.id.tv_sex)
-    CustomTextView tvSex;
-    @BindView(R.id.tv_phone_number)
+    @BindView(R.id.tv_id)
+    CustomTextView tvUserId;
+    @BindView(R.id.tv_nike_name)
+    CustomTextView tvNikeName;
+    @BindView(R.id.tv_location)
     CustomTextView tvPhoneNumber;
+    @BindView(R.id.tv_status)
+    CustomTextView tvStatus;
     private BottomSheetDialog mHeadPhotoDialog;
     private TextView mTvCamera;
     private TextView mTvGallery;
@@ -71,6 +74,7 @@ public class PersonInfomationActivity extends BaseActivity implements View.OnCli
     //startActivityForResult的常量
     private static final int REQUEST_IMAGE_CAPTURE = 100;
     private static final int REQUEST_CHOOSE_PICTURE = 101;
+    private static final int REQUEST_CHANGE_INFO = 102;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,6 +88,10 @@ public class PersonInfomationActivity extends BaseActivity implements View.OnCli
         RxToolbar.navigationClicks(toolbarInfo).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish());
         Glide.with(this).load(R.drawable.info_head_p).into(headPortrait);
         RxView.clicks(rlHead).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> setDialog());
+        RxView.clicks(tvNikeName).throttleFirst(Constant.THROTTLE_TIME,TimeUnit.MILLISECONDS).subscribe(o -> {
+            Intent intent = new Intent(PersonInfomationActivity.this, ChangeInfoActivity.class);
+            startActivityForResult(intent,REQUEST_CHANGE_INFO);
+        });
     }
 
     private void setDialog() {

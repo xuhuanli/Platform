@@ -30,7 +30,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(getLayoutId());
-        MyLogger.i(TAG, getClass().getSimpleName());
         mUnbinder = ButterKnife.bind(this);
     }
 

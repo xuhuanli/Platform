@@ -2,6 +2,7 @@ package com.yidao.platform.app.utils;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 
 import com.alibaba.sdk.android.oss.ClientConfiguration;
@@ -33,16 +34,20 @@ public class OssUploadUtil {
     }
 
     public void uploadFile(final String filePath, @Nullable final Handler handler) {
-        PutObjectRequest put = new PutObjectRequest(Constant.OSS_BUCKET_NAME, "test/IMG_" + FileUtil.formateTime(), filePath);
+        String objectKey = "test/IMG_" + FileUtil.formateTime();
+        PutObjectRequest put = new PutObjectRequest(Constant.OSS_BUCKET_NAME, objectKey, filePath);
         // 异步上传时可以设置进度回调
         /*put.setProgressCallback((request, currentSize, totalSize) -> MyLogger.d("currentSize: " + currentSize + " totalSize: " + totalSize + "文件目录 = " + filePath));*/
         OSSAsyncTask<PutObjectResult> task = ossClient.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
             @Override
             public void onSuccess(PutObjectRequest request, PutObjectResult result) {
-                //import : 计数oss成功counter
-                if (handler != null) {
-                    handler.sendEmptyMessage(0);
-                } else {
+                String pathOnOss = Constant.OSS_ENDPOINT + objectKey;
+                if (handler != null) { //import : 计数oss成功counter handler一般是给发布朋友圈多图
+                    Message msg = Message.obtain();
+                    msg.what = 0;
+                    msg.obj = pathOnOss;
+                    handler.sendMessage(msg);
+                } else {  //发布一个String的event
                     String json = "success";
                     EventBus.getDefault().post(json);
                 }
@@ -51,8 +56,12 @@ public class OssUploadUtil {
             @Override
             public void onFailure(PutObjectRequest request, ClientException clientException, ServiceException serviceException) {
                 // 请求异常
-                String json = "fail";
-                EventBus.getDefault().post(json);
+                if (handler != null) { //import : 计数oss成功counter handler一般是给发布朋友圈多图
+                    handler.sendEmptyMessage(1);
+                } else {  //发布一个String的event
+                    String json = "fail";
+                    EventBus.getDefault().post(json);
+                }
             }
         });
     }

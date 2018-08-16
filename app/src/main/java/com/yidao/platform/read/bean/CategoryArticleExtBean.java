@@ -99,15 +99,6 @@ public class CategoryArticleExtBean {
         }
 
         public static class ListBean {
-            /**
-             * id : 6709842913394688
-             * title : 10 个月获 3 轮融资，营地教育品牌「斯达营地」获数千万人民币 A 轮融资
-             * status : 1
-             * homeImg : http:www.hubei1.com%
-             * deployTime : 318
-             * type : 1
-             * readAmount : 22
-             */
 
             private long id;
             private String title;

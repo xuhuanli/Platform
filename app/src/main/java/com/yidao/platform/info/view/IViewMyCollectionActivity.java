@@ -9,4 +9,12 @@ public interface IViewMyCollectionActivity {
     void loadRecyclerData(ArrayList<ReadNewsBean> dataList);
 
     void showError();
+
+    void loadMoreFail();
+
+    void loadMoreEnd(boolean b);
+
+    void loadMoreComplete();
+
+    void loadMoreData(ArrayList<ReadNewsBean> dataList);
 }

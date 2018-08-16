@@ -9,6 +9,7 @@ import com.allen.library.utils.ToastUtils;
 import com.yidao.platform.app.ApiService;
 import com.yidao.platform.info.model.UserCollectArtBean;
 import com.yidao.platform.info.view.IViewMyCollectionActivity;
+import com.yidao.platform.read.bean.CategoryArticleExtBean;
 import com.yidao.platform.read.bean.ReadNewsBean;
 
 import java.util.ArrayList;
@@ -22,9 +23,11 @@ public class MyCollectionActivityPresenter {
         this.mView = view;
     }
 
-    public void getUserCollectArtList(@NonNull String userId) {
+    public void getUserCollectArtList(@NonNull String userId, String pageIndex, String pageSize) {
         HashMap<String, String> map = new HashMap<>();
         map.put("userId", userId);
+        map.put("pageIndex", pageIndex);
+        map.put("pageSize", pageSize);
         RxHttpUtils.createApi(ApiService.class)
                 .getUserCollectArt(map)
                 .compose(Transformer.switchSchedulers())
@@ -37,19 +40,44 @@ public class MyCollectionActivityPresenter {
                     @Override
                     protected void onSuccess(UserCollectArtBean userCollectArtBean) {
                         if (userCollectArtBean.isStatus()) {
-                            List<UserCollectArtBean.ResultBean> result = userCollectArtBean.getResult();
-                            ArrayList<ReadNewsBean> dataList = new ArrayList<>();
-                            for (UserCollectArtBean.ResultBean resultBean : result) {
-                                ReadNewsBean readNewsBean = new ReadNewsBean(ReadNewsBean.ITEM_TWO);
-                                readNewsBean.setType(resultBean.getType());
-                                readNewsBean.setTitle(resultBean.getTitle());
-                                readNewsBean.setReadAmount(resultBean.getReadAmount());
-                                readNewsBean.setId(resultBean.getId());
-                                readNewsBean.setHomeImg(resultBean.getHomeImg());
-                                readNewsBean.setDeployTime(resultBean.getDeployTime());
-                                dataList.add(readNewsBean);
+                            UserCollectArtBean.ResultBean result = userCollectArtBean.getResult();
+                            if (result.getPageIndex() == 1) { //page = 1时，表示初始列表值
+                                List<UserCollectArtBean.ResultBean.ListBean> list = result.getList();
+                                ArrayList<ReadNewsBean> dataList = new ArrayList<>();
+                                for (UserCollectArtBean.ResultBean.ListBean listBean : list) {
+                                    ReadNewsBean readNewsBean = new ReadNewsBean(ReadNewsBean.ITEM_ONE);
+                                    readNewsBean.setType(listBean.getType());
+                                    readNewsBean.setTitle(listBean.getTitle());
+                                    readNewsBean.setReadAmount(listBean.getReadAmount());
+                                    readNewsBean.setId(listBean.getId());
+                                    readNewsBean.setHomeImg(listBean.getHomeImg());
+                                    readNewsBean.setDeployTime(listBean.getDeployTime());
+                                    readNewsBean.setArticleContent(listBean.getArticleContent());
+                                    dataList.add(readNewsBean);
+                                }
+                                mView.loadRecyclerData(dataList);
+                            }else { //上拉
+                                List<UserCollectArtBean.ResultBean.ListBean> list = result.getList();
+                                if (list != null && list.size() < result.getPageSize()) {  //所得数目< pageSize =>到底了
+                                    mView.loadMoreEnd(false);
+                                } else {
+                                    mView.loadMoreComplete();
+                                }
+                                ArrayList<ReadNewsBean> dataList = new ArrayList<>();
+                                for (UserCollectArtBean.ResultBean.ListBean listBean : list) {
+                                    ReadNewsBean readNewsBean = new ReadNewsBean(ReadNewsBean.ITEM_ONE);
+                                    readNewsBean.setType(listBean.getType());
+                                    readNewsBean.setTitle(listBean.getTitle());
+                                    readNewsBean.setReadAmount(listBean.getReadAmount());
+                                    readNewsBean.setId(listBean.getId());
+                                    readNewsBean.setHomeImg(listBean.getHomeImg());
+                                    readNewsBean.setDeployTime(listBean.getDeployTime());
+                                    dataList.add(readNewsBean);
+                                }
+                                mView.loadMoreData(dataList);
                             }
-                            mView.loadRecyclerData(dataList);
+                        }else {
+                            showError();
                         }
                     }
                 });
@@ -57,6 +85,5 @@ public class MyCollectionActivityPresenter {
 
     private void showError() {
         mView.showError();
-        ToastUtils.showToast("网络连接失败，请查看网络");
     }
 }

@@ -35,6 +35,10 @@ public class ReadNewsBean implements MultiItemEntity {
      * 文章阅读数
      */
     private long readAmount;
+    /**
+     * 文章URL
+     */
+    private String articleContent;
 
     public ReadNewsBean(int itemType) {
         this.itemType = itemType;
@@ -99,5 +103,28 @@ public class ReadNewsBean implements MultiItemEntity {
 
     public void setReadAmount(long readAmount) {
         this.readAmount = readAmount;
+    }
+
+    public String getArticleContent() {
+        return articleContent;
+    }
+
+    public void setArticleContent(String articleContent) {
+        this.articleContent = articleContent;
+    }
+
+    @Override
+    public String toString() {
+        return "ReadNewsBean{" +
+                "itemType=" + itemType +
+                ", categoryId=" + categoryId +
+                ", id=" + id +
+                ", title='" + title + '\'' +
+                ", homeImg='" + homeImg + '\'' +
+                ", deployTime=" + deployTime +
+                ", type=" + type +
+                ", readAmount=" + readAmount +
+                ", articleContent='" + articleContent + '\'' +
+                '}';
     }
 }

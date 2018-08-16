@@ -1,11 +1,12 @@
 package com.yidao.platform.login;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.allen.library.utils.ToastUtils;
 import com.jakewharton.rxbinding2.view.RxView;
@@ -14,7 +15,6 @@ import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
-import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.container.ContainerActivity;
 
 import java.util.concurrent.TimeUnit;
@@ -28,80 +28,66 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class LoginBindingPhoneActivity extends BaseActivity {
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.editText)
-    EditText mEtPhone;
-    @BindView(R.id.editText2)
-    EditText editText2;
-    @BindView(R.id.button)
-    Button mBtnSendMsm;
-    @BindView(R.id.button2)
-    Button button2;
 
     //最大倒计时长
-    private static final long MAX_COUNT_TIME = 10;
+    private static final long MAX_COUNT_TIME = 30;
+    @BindView(R.id.et_phone)
+    EditText etPhone;
+    @BindView(R.id.btn_v_code)
+    Button btnVCode;
+    @BindView(R.id.et_v_code)
+    EditText etVCode;
+    @BindView(R.id.tv_register_protocol)
+    TextView tvRegisterProtocol;
+    @BindView(R.id.btn_ensure)
+    Button btnEnsure;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addDisposable(RxView.clicks(button2).throttleFirst(Constant.THROTTLE_TIME,TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) throws Exception {
-                IPreference.prefHolder.getPreference(LoginBindingPhoneActivity.this).put("userId","21211");
-                startActivity(ContainerActivity.class);
-            }
+        initView();
+    }
+
+    private void initView() {
+        addDisposable(RxView.clicks(btnEnsure).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
+            IPreference.prefHolder.getPreference(LoginBindingPhoneActivity.this).put(Constant.STRING_USER_ID, "21211");
+            startActivity(ContainerActivity.class);
         }));
-        Observable<Long> mObservableCountTime = RxView.clicks(mBtnSendMsm)
+        Observable<Long> mObservableCountTime = RxView.clicks(btnVCode)
                 //防止重复点击
                 .throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS)
                 .subscribeOn(AndroidSchedulers.mainThread())
                 //判断手机号否为空
-                .flatMap(new Function<Object, ObservableSource<Boolean>>() {
-                    @Override
-                    public ObservableSource<Boolean> apply(Object o) throws Exception {
-                        String phone = mEtPhone.getText().toString();
-                        if (TextUtils.isEmpty(phone)) {
-                            ToastUtils.showToast("phone can not be empty");
-                            return Observable.empty();
-                        }
-                        return Observable.just(true);
+                .flatMap((Function<Object, ObservableSource<Boolean>>) o -> {
+                    String phone = etPhone.getText().toString();
+                    if (TextUtils.isEmpty(phone)) {
+                        ToastUtils.showToast("电话号码不能为空");
+                        return Observable.empty();
                     }
+                    return Observable.just(true);
                 })
                 //将点击事件转换成倒计时事件
-                .flatMap(new Function<Object, ObservableSource<Long>>() {
-                    @Override
-                    public ObservableSource<Long> apply(Object o) throws Exception {
-                        //更新发送按钮的状态并初始化显现倒计时文字
-                        mBtnSendMsm.setEnabled(false);
-                        RxTextView.text(mBtnSendMsm).accept("剩余 " + MAX_COUNT_TIME + " 秒");
-
-                        //在实际操作中可以在此发送获取网络的请求,,续1s
-
-                        return Observable.interval(1, TimeUnit.SECONDS, Schedulers.io())
-                                .take(MAX_COUNT_TIME)
-                                //将递增数字替换成递减的倒计时数字
-                                .map(new Function<Long, Long>() {
-                                    @Override
-                                    public Long apply(Long aLong) throws Exception {
-                                        return MAX_COUNT_TIME - (aLong + 1);
-                                    }
-                                });
-                    }
+                .flatMap((Function<Object, ObservableSource<Long>>) o -> {
+                    //更新发送按钮的状态并初始化显现倒计时文字
+                    btnVCode.setEnabled(false);
+                    btnVCode.setBackgroundColor(Color.GRAY);
+                    RxTextView.text(btnVCode).accept("剩余 " + MAX_COUNT_TIME + " 秒");
+                    //在实际操作中可以在此发送获取网络的请求,,续1s
+                    return Observable.interval(1, TimeUnit.SECONDS, Schedulers.io())
+                            .take(MAX_COUNT_TIME)
+                            //将递增数字替换成递减的倒计时数字
+                            .map(aLong -> MAX_COUNT_TIME - (aLong + 1));
                 })
                 //切换到 Android 的主线程。
                 .observeOn(AndroidSchedulers.mainThread());
-
-        Consumer<Long> mConsumerCountTime = new Consumer<Long>() {
-            @Override
-            public void accept(Long aLong) throws Exception {
-                //当倒计时为 0 时，还原 btn 按钮
-                if (aLong == 0) {
-                    mBtnSendMsm.setEnabled(true);
-                    RxTextView.text(mBtnSendMsm).accept("发送验证码");
-                } else {
-                    RxTextView.text(mBtnSendMsm).accept("剩余 " + aLong + " 秒");
-                }
+        Consumer<Long> mConsumerCountTime = aLong -> {
+            //当倒计时为 0 时，还原 btn 按钮
+            if (aLong == 0) {
+                btnVCode.setEnabled(true);
+                btnVCode.setBackgroundColor(Color.parseColor("#ff007aff"));
+                RxTextView.text(btnVCode).accept("获取验证码");
+            } else {
+                RxTextView.text(btnVCode).accept("剩余 " + aLong + " 秒");
             }
         };
         addDisposable(mObservableCountTime.subscribe(mConsumerCountTime));

@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yidao.platform.R;
@@ -16,6 +17,7 @@ public class CustomTextView extends ConstraintLayout {
 
     private TextView tvKey;
     private TextView tvValue;
+    private ImageView icon;
 
     public CustomTextView(Context context) {
         this(context, null);
@@ -30,6 +32,7 @@ public class CustomTextView extends ConstraintLayout {
         View view = LayoutInflater.from(context).inflate(R.layout.custom_text_view, this, true);
         tvKey = view.findViewById(R.id.tv_key);
         tvValue = view.findViewById(R.id.tv_value);
+        icon = view.findViewById(R.id.imageView);
         init(context, attrs, R.styleable.CustomTextView);
     }
 
@@ -41,6 +44,7 @@ public class CustomTextView extends ConstraintLayout {
         String value = ta.getString(R.styleable.CustomTextView_value);
         int valueColor = ta.getColor(R.styleable.CustomTextView_valueColor, Color.BLACK);
         float valueSize = ta.getDimension(R.styleable.CustomTextView_valueSize, 0f);
+        boolean visible = ta.getBoolean(R.styleable.CustomTextView_arrowVisible, true);
         ta.recycle();
         setKey(key);
         setKeyColor(keyColor);
@@ -48,6 +52,7 @@ public class CustomTextView extends ConstraintLayout {
         setValue(value);
         setValueColor(valueColor);
         setValueSize(valueSize);
+        setArrowVisible(visible);
     }
 
     public void setKey(CharSequence text) {
@@ -80,5 +85,9 @@ public class CustomTextView extends ConstraintLayout {
 
     public void setValueSize(float valueSize) {
         tvValue.setTextSize(TypedValue.COMPLEX_UNIT_PX, valueSize);
+    }
+
+    public void setArrowVisible(boolean arrowVisible) {
+        icon.setVisibility(arrowVisible ? VISIBLE : INVISIBLE);
     }
 }
