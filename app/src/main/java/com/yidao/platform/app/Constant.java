@@ -76,4 +76,6 @@ public class Constant {
     public static final String STRING_USER_ID = "userId";
     public static final String STRING_COLLECTION = "collection";
     public static final String STRING_DIAN_ZAN = "dian_zan";
+    public static final String STRING_TITLE = "title";
+    public static final String STRING_VALUE = "value";
 }

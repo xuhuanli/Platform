@@ -95,6 +95,13 @@ public class ReadContentActivityPresenter {
                 });
     }
 
+    /**
+     * 收藏了文章后发给server
+     *
+     * @param isCollection
+     * @param artId
+     * @param userId
+     */
     public void sendCollectionInfo(Boolean isCollection, long artId, String userId) {
         HashMap<String, String> map = new HashMap<>();
         map.put("artId", String.valueOf(artId));
@@ -112,6 +119,13 @@ public class ReadContentActivityPresenter {
         }
     }
 
+    /**
+     * 点赞了文章后发给server
+     *
+     * @param isLike
+     * @param artId
+     * @param userId
+     */
     public void sendLikeInfo(boolean isLike, long artId, String userId) {
         HashMap<String, String> map = new HashMap<>();
         map.put("artId", String.valueOf(artId));
@@ -127,5 +141,21 @@ public class ReadContentActivityPresenter {
                     .compose(Transformer.switchSchedulers())
                     .subscribe();
         }
+    }
+
+    /**
+     * 阅读了文章后发给server
+     *
+     * @param artId
+     * @param userId
+     */
+    public void sendReadRecordInfo(long artId, String userId) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("artId", String.valueOf(artId));
+        map.put("userId", String.valueOf(userId));
+        RxHttpUtils.createApi(ApiService.class)
+                .pushHasRead(map)
+                .compose(Transformer.switchSchedulers())
+                .subscribe();
     }
 }

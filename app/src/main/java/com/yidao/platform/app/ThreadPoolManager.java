@@ -3,13 +3,16 @@ package com.yidao.platform.app;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * 好像没什么b用 维护2个线程得了
+ */
 public class ThreadPoolManager {
 
     private final ExecutorService mService;
 
     private ThreadPoolManager() {
         int core = Runtime.getRuntime().availableProcessors();
-        mService = Executors.newFixedThreadPool(core + 1);
+        mService = Executors.newFixedThreadPool(2);
     }
 
     public static ThreadPoolManager getInstance(){

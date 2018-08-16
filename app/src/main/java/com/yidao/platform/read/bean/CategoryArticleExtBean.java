@@ -31,7 +31,7 @@ public class CategoryArticleExtBean {
         private int begIndex;
         private boolean status;
         private String errCode;
-        private Object info;
+        private String info;
         private List<ListBean> list;
 
         public int getPageIndex() {
@@ -86,7 +86,7 @@ public class CategoryArticleExtBean {
             return info;
         }
 
-        public void setInfo(Object info) {
+        public void setInfo(String info) {
             this.info = info;
         }
 

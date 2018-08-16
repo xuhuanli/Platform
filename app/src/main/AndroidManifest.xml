@@ -36,13 +36,17 @@
             android:configChanges="keyboardHidden|orientation|screenSize|locale"
             android:theme="@android:style/Theme.Translucent" />
         <activity android:name=".container.ContainerActivity" />
-        <activity android:name=".login.view.LoginSplashActivity">
+        <!--启动引导页-->
+        <activity
+            android:name=".login.view.GuideActivity"
+            android:theme="@style/YiDao_WelCome">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".login.view.LoginActivity" />
         <activity
             android:name=".read.view.ReadContentActivity"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
@@ -104,10 +108,10 @@
         <receiver
             android:name=".receiver.AliyunPushReceiver"
             android:exported="false">
-            <intent-filter> 
+            <intent-filter>
                 <action android:name="com.alibaba.push2.action.NOTIFICATION_OPENED" />
             </intent-filter>
-            <intent-filter>     
+            <intent-filter>
                 <action android:name="com.alibaba.push2.action.NOTIFICATION_REMOVED" />
             </intent-filter>
             <intent-filter>

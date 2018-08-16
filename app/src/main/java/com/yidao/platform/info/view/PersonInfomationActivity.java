@@ -15,6 +15,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,11 +25,14 @@ import com.allen.library.utils.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.app.utils.FileUtil;
 import com.yidao.platform.app.utils.OssUploadUtil;
+import com.yidao.platform.info.model.EventChangeInfo;
+import com.yidao.platform.info.presenter.PersonInfomationActivityPresenter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -41,12 +45,11 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
-import io.reactivex.functions.Consumer;
 import pub.devrel.easypermissions.EasyPermissions;
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
 
-public class PersonInfomationActivity extends BaseActivity implements View.OnClickListener, EasyPermissions.PermissionCallbacks {
+public class PersonInfomationActivity extends BaseActivity implements View.OnClickListener, EasyPermissions.PermissionCallbacks ,IViewPersonInfomationActivity{
 
     @BindView(R.id.toolbar_info)
     Toolbar toolbarInfo;
@@ -65,7 +68,6 @@ public class PersonInfomationActivity extends BaseActivity implements View.OnCli
     private BottomSheetDialog mHeadPhotoDialog;
     private TextView mTvCamera;
     private TextView mTvGallery;
-    private TextView mTvCancel;
     //权限的常量
     private static final int PERM_OPEN_ALBUM = 0;
     private static final int PERM_OPEN_CAMERA = 1;
@@ -75,10 +77,14 @@ public class PersonInfomationActivity extends BaseActivity implements View.OnCli
     private static final int REQUEST_IMAGE_CAPTURE = 100;
     private static final int REQUEST_CHOOSE_PICTURE = 101;
     private static final int REQUEST_CHANGE_INFO = 102;
+    private PersonInfomationActivityPresenter mPresenter;
+    private String userId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mPresenter = new PersonInfomationActivityPresenter(this);
+        userId = IPreference.prefHolder.getPreference(this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
         initView();
         EventBus.getDefault().register(this);
     }
@@ -88,9 +94,17 @@ public class PersonInfomationActivity extends BaseActivity implements View.OnCli
         RxToolbar.navigationClicks(toolbarInfo).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish());
         Glide.with(this).load(R.drawable.info_head_p).into(headPortrait);
         RxView.clicks(rlHead).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> setDialog());
-        RxView.clicks(tvNikeName).throttleFirst(Constant.THROTTLE_TIME,TimeUnit.MILLISECONDS).subscribe(o -> {
+        RxView.clicks(tvNikeName).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
             Intent intent = new Intent(PersonInfomationActivity.this, ChangeInfoActivity.class);
-            startActivityForResult(intent,REQUEST_CHANGE_INFO);
+            intent.putExtra(Constant.STRING_TITLE, "昵称");
+            intent.putExtra(Constant.STRING_VALUE, tvNikeName.getValue());
+            startActivityForResult(intent, REQUEST_CHANGE_INFO);
+        });
+        RxView.clicks(tvStatus).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
+            Intent intent = new Intent(PersonInfomationActivity.this, ChangeInfoActivity.class);
+            intent.putExtra(Constant.STRING_TITLE, "简介");
+            intent.putExtra(Constant.STRING_VALUE, tvStatus.getValue());
+            startActivityForResult(intent, REQUEST_CHANGE_INFO);
         });
     }
 
@@ -100,7 +114,7 @@ public class PersonInfomationActivity extends BaseActivity implements View.OnCli
         @SuppressLint("InflateParams") View view = LayoutInflater.from(this).inflate(R.layout.layout_head_photo_dialog, null);
         mTvCamera = view.findViewById(R.id.tv_camera);
         mTvGallery = view.findViewById(R.id.tv_gallery);
-        mTvCancel = view.findViewById(R.id.tv_cancel);
+        TextView mTvCancel = view.findViewById(R.id.tv_cancel);
         mHeadPhotoDialog.setContentView(view);
         mHeadPhotoDialog.show();
         mTvCamera.setOnClickListener(this);
@@ -128,7 +142,6 @@ public class PersonInfomationActivity extends BaseActivity implements View.OnCli
                 }));
                 break;
             case R.id.tv_gallery:
-//相册function
                 addDisposable(RxView.clicks(mTvGallery).subscribe(o -> {
                     String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
                     if (EasyPermissions.hasPermissions(this, perms)) {
@@ -231,6 +244,22 @@ public class PersonInfomationActivity extends BaseActivity implements View.OnCli
             ToastUtils.showToast("头像上传成功");
         } else if (message.equals("fail")) {
             ToastUtils.showToast("头像上传失败");
+        }
+    }
+
+    /**
+     * 修改完属性的事件bu
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onChangeInfoEvent(EventChangeInfo event) {
+        if (TextUtils.equals(event.title, "昵称")) {
+            tvNikeName.setValue(event.value);
+            mPresenter.updateUserInfo(userId,"nickname",event.value);
+        }
+        if (TextUtils.equals(event.title, "简介")) {
+            tvStatus.setValue(event.value);
+            mPresenter.updateUserInfo(userId,"Introduction",event.value);
         }
     }
 

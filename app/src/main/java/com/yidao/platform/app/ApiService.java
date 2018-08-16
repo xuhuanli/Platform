@@ -144,4 +144,10 @@ public interface ApiService {
     @Headers({"Content-Type: application/json;charset=UTF-8"})
     @POST("edit/find/sendFind")
     Observable<String> sendFind(@Body SendFindObj sendFindObj);
+
+    /**
+     * 修改个人信息 后期注意ip地址的修改
+     */
+    @POST("user/updateUserInfo")
+    Observable<String> updateUserInfo(@QueryMap Map<String, String> options);
 }

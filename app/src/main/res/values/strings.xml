@@ -110,4 +110,6 @@
     <string name="zi_xun">产业咨询</string>
     <string name="get_v_code">获取验证码</string>
     <string name="verification_code">验证码</string>
+    <string name="save">保存</string>
+    <string name="instant_open">立即开启</string>
 </resources>

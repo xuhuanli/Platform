@@ -107,6 +107,13 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        //告知服务器阅读记录
+        mPresenter.sendReadRecordInfo(artId, userId);
+    }
+
+    @Override
     protected int getLayoutId() {
         return R.layout.read_activity_news_content;
     }
@@ -253,14 +260,6 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
                 }
                 break;
             case R.id.ib_vote: //收藏
-                /*Boolean isCollection = mSp.get(Constant.STRING_COLLECTION, IPreference.DataType.BOOLEAN);
-                if (isCollection) {
-                    ib_vote.setSelected(false);
-                    mSp.put(Constant.STRING_COLLECTION, false);
-                } else {
-                    ib_vote.setSelected(true);
-                    mSp.put(Constant.STRING_COLLECTION, true);
-                }*/
                 isOperateCollection = true;
                 ib_vote.setSelected(!isCollection);
                 isCollection = !isCollection;

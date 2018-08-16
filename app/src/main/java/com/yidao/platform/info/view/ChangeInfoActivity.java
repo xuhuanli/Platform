@@ -1,9 +1,71 @@
 package com.yidao.platform.info.view;
 
-import com.yidao.platform.R;
-import com.yidao.platform.app.base.BaseActivity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
+import android.text.TextUtils;
+import android.widget.EditText;
+import android.widget.TextView;
 
-public class ChangeInfoActivity extends BaseActivity{
+import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
+import com.jakewharton.rxbinding2.view.RxView;
+import com.yidao.platform.R;
+import com.yidao.platform.app.Constant;
+import com.yidao.platform.app.base.BaseActivity;
+import com.yidao.platform.info.model.EventChangeInfo;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.concurrent.TimeUnit;
+
+import butterknife.BindView;
+import io.reactivex.functions.Consumer;
+
+public class ChangeInfoActivity extends BaseActivity {
+
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
+    @BindView(R.id.tv_save)
+    TextView tvSave;
+    @BindView(R.id.toolbar_info)
+    Toolbar toolbarInfo;
+    @BindView(R.id.et_value)
+    EditText etValue;
+    private String title;
+    private String value;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initView();
+    }
+
+    private void initView() {
+        Intent intent = getIntent();
+        title = intent.getStringExtra(Constant.STRING_TITLE);
+        value = intent.getStringExtra(Constant.STRING_VALUE);
+        tvTitle.setText(title);
+        if (TextUtils.equals(title, "昵称")) {
+            etValue.setFilters(new InputFilter[]{new InputFilter.LengthFilter(8)});
+        } else if (TextUtils.equals(title, "简介")) {
+            etValue.setFilters(new InputFilter[]{new InputFilter.LengthFilter(20)});
+        }
+        etValue.setText(value);
+        addDisposable(RxView.clicks(tvSave).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(Object o) throws Exception {
+                String newValue = etValue.getText().toString().trim();
+                if (!TextUtils.isEmpty(newValue)) {
+                    EventBus.getDefault().post(new EventChangeInfo(title, newValue));
+                    finish();
+                }
+            }
+        }));
+        addDisposable(RxToolbar.navigationClicks(toolbarInfo).subscribe(o -> finish()));
+    }
+
     @Override
     protected int getLayoutId() {
         return R.layout.info_activity_change_info;

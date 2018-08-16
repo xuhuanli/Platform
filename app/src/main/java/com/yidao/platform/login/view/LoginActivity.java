@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.jakewharton.rxbinding2.view.RxView;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -15,12 +14,10 @@ import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.login.LoginBindingPhoneActivity;
-import com.yidao.platform.wxapi.WXEntryActivity;
 
 import butterknife.BindView;
-import io.reactivex.functions.Consumer;
 
-public class LoginSplashActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity {
 
     @BindView(R.id.btn_login_by_wechat)
     Button mBtnLogin;
@@ -32,7 +29,8 @@ public class LoginSplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         //EventBus.getDefault().register(this);
         regToWX();
-        loadAnim();
+        //loadAnim();
+        setListener();
     }
 
     private void regToWX() {
@@ -43,6 +41,17 @@ public class LoginSplashActivity extends BaseActivity {
     @Override
     protected int getLayoutId() {
         return R.layout.login_activity_splash;
+    }
+
+    private void setListener() {
+        /*addDisposable(RxView.clicks(mBtnLogin)
+                        .subscribe(new Consumer<Object>() {
+                            @Override
+                            public void accept(Object o) {
+                                wxLogin();
+                            }
+                        }));*/
+        startActivity(new Intent(LoginActivity.this,LoginBindingPhoneActivity.class));
     }
 
     private void loadAnim() {
@@ -59,7 +68,7 @@ public class LoginSplashActivity extends BaseActivity {
             public void onAnimationEnd(Animator animation) {
                 mBtnLogin.setClickable(true);
                 // TODO: 2018/7/30 0030 快速测试代码 用完删除
-                startActivity(new Intent(LoginSplashActivity.this,LoginBindingPhoneActivity.class));
+                startActivity(new Intent(LoginActivity.this,LoginBindingPhoneActivity.class));
                 /*addDisposable(RxView.clicks(mBtnLogin)
                         .subscribe(new Consumer<Object>() {
                             @Override
@@ -97,24 +106,4 @@ public class LoginSplashActivity extends BaseActivity {
         super.onDestroy();
         //EventBus.getDefault().unregister(this);
     }
-
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void onMessageEvent() {
-//        dismissDialog();
-//    }
-
-//    @Override
-//    public void showDialog() {
-//        mDialog = new WaitDialog(this);
-//        mDialog.setText(getString(R.string.logining));
-//    }
-//
-//    @Override
-//    public void dismissDialog() {
-//        mDialog.dismiss();
-//    }
-
-//    public static class MessageEvent {
-//        //nothing
-//    }
 }
