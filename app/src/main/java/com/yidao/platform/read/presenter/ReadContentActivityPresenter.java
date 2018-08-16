@@ -51,7 +51,7 @@ public class ReadContentActivityPresenter {
                             Boolean status = (Boolean) jsonObject.get("status");
                             if (status) {
                                 mView.pushCommentSuccess();
-                            }else {
+                            } else {
                                 mView.pushCommentFail();
                             }
                         } catch (JSONException e) {
@@ -63,6 +63,7 @@ public class ReadContentActivityPresenter {
 
     /**
      * 删除我的文章评论
+     *
      * @param commentId
      */
     public void deleteMineComment(long commentId) {
@@ -84,7 +85,7 @@ public class ReadContentActivityPresenter {
                             Boolean status = (Boolean) jsonObject.get("status");
                             if (status) {
                                 mView.deleteCommentSuccess();
-                            }else {
+                            } else {
                                 mView.deleteCommentFail();
                             }
                         } catch (JSONException e) {
@@ -92,5 +93,39 @@ public class ReadContentActivityPresenter {
                         }
                     }
                 });
+    }
+
+    public void sendCollectionInfo(Boolean isCollection, long artId, String userId) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("artId", String.valueOf(artId));
+        map.put("userId", String.valueOf(userId));
+        if (isCollection) {
+            RxHttpUtils.createApi(ApiService.class)
+                    .pushHasCollect(map)
+                    .compose(Transformer.switchSchedulers())
+                    .subscribe();
+        } else {
+            RxHttpUtils.createApi(ApiService.class)
+                    .unCollect(map)
+                    .compose(Transformer.switchSchedulers())
+                    .subscribe();
+        }
+    }
+
+    public void sendLikeInfo(boolean isLike, long artId, String userId) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("artId", String.valueOf(artId));
+        map.put("userId", String.valueOf(userId));
+        if (isLike) {
+            RxHttpUtils.createApi(ApiService.class)
+                    .pushHasLike(map)
+                    .compose(Transformer.switchSchedulers())
+                    .subscribe();
+        } else {
+            RxHttpUtils.createApi(ApiService.class)
+                    .unLike(map)
+                    .compose(Transformer.switchSchedulers())
+                    .subscribe();
+        }
     }
 }

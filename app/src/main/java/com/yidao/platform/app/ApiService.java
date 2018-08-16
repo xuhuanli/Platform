@@ -12,14 +12,10 @@ import com.yidao.platform.testpackage.bean.TestBean;
 import com.yidao.platform.testpackage.bean.UserDataBean;
 import com.yidao.platform.testpackage.bean.WxTokenBean;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -142,11 +138,10 @@ public interface ApiService {
     Observable<UserReadRecordBean> getListUserReadArt(@QueryMap Map<String, String> options);
 
 
-
     /**
      * 发布朋友圈图片上传路径到公司服务器 后期注意ip地址的修改
      */
-    @Headers({ "Content-Type: application/json;charset=UTF-8"})
+    @Headers({"Content-Type: application/json;charset=UTF-8"})
     @POST("edit/find/sendFind")
     Observable<String> sendFind(@Body SendFindObj sendFindObj);
 }

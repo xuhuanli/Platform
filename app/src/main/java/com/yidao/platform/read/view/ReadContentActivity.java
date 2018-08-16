@@ -22,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.allen.library.utils.ToastUtils;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
@@ -76,15 +75,31 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     private LinearLayoutManager layoutManager;
     //是否处于正在滑动状态
     private boolean isScrolling = false;
-    private IPreference mSp;
     private ReadContentActivityPresenter mPresenter;
     private long artId;
+    private String userId;
+    // TODO: 2018/8/16 0016  获取文章时刷新这个flag
+    /**
+     * 这个文章是否被用户收藏flag 这个flag状态会在获取文章详情时被刷新一次
+     */
+    private boolean isCollection = false;
+    /**
+     * 是否点收藏有操作
+     */
+    private boolean isOperateCollection = false;
+    /**
+     * 这个文章是否被用户点赞flag 这个flag状态会在获取文章详情时被刷新一次
+     */
+    private boolean isLike = false;
+    /**
+     * 是否对点赞有操作
+     */
+    private boolean isOperateLike = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         regToWX();
-        mSp = IPreference.prefHolder.getPreference(this);
         mPresenter = new ReadContentActivityPresenter(this);
         initData();
         initView();
@@ -100,6 +115,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         Intent intent = getIntent();
         url = intent.getStringExtra(Constant.STRING_URL);
         artId = intent.getLongExtra(Constant.STRING_ART_ID, 0L);
+        userId = IPreference.prefHolder.getPreference(this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
     }
 
     private void initView() {
@@ -237,31 +253,28 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
                 }
                 break;
             case R.id.ib_vote: //收藏
-                Boolean isCollection = mSp.get(Constant.STRING_COLLECTION, IPreference.DataType.BOOLEAN);
+                /*Boolean isCollection = mSp.get(Constant.STRING_COLLECTION, IPreference.DataType.BOOLEAN);
                 if (isCollection) {
                     ib_vote.setSelected(false);
                     mSp.put(Constant.STRING_COLLECTION, false);
                 } else {
                     ib_vote.setSelected(true);
                     mSp.put(Constant.STRING_COLLECTION, true);
-                }
+                }*/
+                isOperateCollection = true;
+                ib_vote.setSelected(!isCollection);
+                isCollection = !isCollection;
                 break;
             case R.id.ib_favorite: //点赞icon
-                Boolean isLike = mSp.get(Constant.STRING_DIAN_ZAN, IPreference.DataType.BOOLEAN);
-                if (isLike) {
-                    ib_favorite.setSelected(false);
-                    mSp.put(Constant.STRING_DIAN_ZAN, false);
-                } else {
-                    ib_favorite.setSelected(true);
-                    mSp.put(Constant.STRING_DIAN_ZAN, true);
-                }
+                isOperateLike = true;
+                ib_favorite.setSelected(!isLike);
+                isLike = !isLike;
                 break;
             case R.id.ib_share: //分享icon
                 showShareDialog();
                 break;
             case R.id.btn_comment_send: //评论内容send按钮
                 String context = mEtContent.getText().toString().trim();
-                String userId = IPreference.prefHolder.getPreference(this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
                 if (!TextUtils.isEmpty(context)) {
                     mPresenter.pushComment(artId, context, userId);
                 }
@@ -274,6 +287,12 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (isOperateCollection) {
+            mPresenter.sendCollectionInfo(isCollection, artId, userId);
+        }
+        if (isOperateLike) {
+            mPresenter.sendLikeInfo(isLike, artId, userId);
+        }
         if (mCommentBottomSheetDialog != null) {
             mCommentBottomSheetDialog.cancel();
         }
