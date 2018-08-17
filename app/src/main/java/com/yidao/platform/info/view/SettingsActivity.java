@@ -34,6 +34,8 @@ public class SettingsActivity extends BaseActivity implements SettingsViewInterf
     TextView mTvCache;
     @BindView(R.id.pb_cache)
     ProgressBar mProgressBar;
+    @BindView(R.id.tv_settings_about_us_item)
+    TextView tvAboutUs;
     private SettingsPresenter mPresenter;
     private Handler mHandler = new Handler();
 
@@ -49,6 +51,12 @@ public class SettingsActivity extends BaseActivity implements SettingsViewInterf
         initCacheTextView();
         initToolbar();
         addDisposable(RxView.clicks(mRlcache).subscribe(o -> clearAppCache()));
+        addDisposable(RxView.clicks(tvAboutUs).throttleFirst(Constant.THROTTLE_TIME,TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(Object o) throws Exception {
+                startActivity(AboutUsActivity.class);
+            }
+        }));
     }
 
     private void initCacheTextView() {

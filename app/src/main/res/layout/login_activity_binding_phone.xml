@@ -34,7 +34,8 @@
             android:layout_height="match_parent"
             android:hint="@string/phone_number"
             android:inputType="phone"
-            android:maxLength="14"
+            android:backgroundTint="#ffd9d9d9"
+            android:maxLength="11"
             android:maxLines="1" />
     </android.support.design.widget.TextInputLayout>
 
@@ -70,6 +71,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/verification_code"
             android:inputType="number"
+            android:backgroundTint="#ffd9d9d9"
             android:maxLength="6"
             android:maxLines="1" />
     </android.support.design.widget.TextInputLayout>

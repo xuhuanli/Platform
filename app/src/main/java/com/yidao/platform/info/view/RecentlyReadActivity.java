@@ -1,5 +1,6 @@
 package com.yidao.platform.info.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
@@ -20,6 +21,7 @@ import com.yidao.platform.info.adapter.RecentReadAdapter;
 import com.yidao.platform.info.presenter.MyRecentlyReadActivityPresenter;
 import com.yidao.platform.read.adapter.ErrorAdapter;
 import com.yidao.platform.read.bean.ReadNewsBean;
+import com.yidao.platform.read.view.ReadContentActivity;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -52,7 +54,7 @@ public class RecentlyReadActivity extends BaseActivity implements IViewRecentlyR
 
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
     }
 
     private void initData() {
@@ -89,6 +91,11 @@ public class RecentlyReadActivity extends BaseActivity implements IViewRecentlyR
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+        ReadNewsBean item = (ReadNewsBean) adapter.getItem(position);
+        String url = item.getArticleContent();
+        Intent intent = new Intent(this, ReadContentActivity.class);
+        intent.putExtra("url", item.getArticleContent());
+        intent.putExtra(Constant.STRING_ART_ID,item.getId());
+        startActivity(intent);
     }
 }

@@ -32,6 +32,7 @@ import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.app.utils.FileUtil;
 import com.yidao.platform.app.utils.OssUploadUtil;
 import com.yidao.platform.info.model.EventChangeInfo;
+import com.yidao.platform.info.model.EventTouXiangInfo;
 import com.yidao.platform.info.presenter.PersonInfomationActivityPresenter;
 
 import org.greenrobot.eventbus.EventBus;
@@ -49,7 +50,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
 
-public class PersonInfomationActivity extends BaseActivity implements View.OnClickListener, EasyPermissions.PermissionCallbacks ,IViewPersonInfomationActivity{
+public class PersonInfomationActivity extends BaseActivity implements View.OnClickListener, EasyPermissions.PermissionCallbacks, IViewPersonInfomationActivity {
 
     @BindView(R.id.toolbar_info)
     Toolbar toolbarInfo;
@@ -85,6 +86,7 @@ public class PersonInfomationActivity extends BaseActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         mPresenter = new PersonInfomationActivityPresenter(this);
         userId = IPreference.prefHolder.getPreference(this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
+        userId = "9266129287118848";
         initView();
         EventBus.getDefault().register(this);
     }
@@ -239,27 +241,28 @@ public class PersonInfomationActivity extends BaseActivity implements View.OnCli
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void helloEventBus(String message) {
-        if (message.equals("success")) {
-            ToastUtils.showToast("头像上传成功");
-        } else if (message.equals("fail")) {
+    public void helloEventBus(EventTouXiangInfo info) {
+        if (info.isStatus) {
+            mPresenter.updateUserInfo(userId, "headImgUrl", info.path);
+        } else {
             ToastUtils.showToast("头像上传失败");
         }
     }
 
     /**
      * 修改完属性的事件bu
+     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onChangeInfoEvent(EventChangeInfo event) {
         if (TextUtils.equals(event.title, "昵称")) {
             tvNikeName.setValue(event.value);
-            mPresenter.updateUserInfo(userId,"nickname",event.value);
+            mPresenter.updateUserInfo(userId, "nickname", event.value);
         }
         if (TextUtils.equals(event.title, "简介")) {
             tvStatus.setValue(event.value);
-            mPresenter.updateUserInfo(userId,"Introduction",event.value);
+            mPresenter.updateUserInfo(userId, "Introduction", event.value);
         }
     }
 

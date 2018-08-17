@@ -78,4 +78,6 @@ public class Constant {
     public static final String STRING_DIAN_ZAN = "dian_zan";
     public static final String STRING_TITLE = "title";
     public static final String STRING_VALUE = "value";
+
+    public static final String STRING_DEVICE_ID = "deviceId";
 }

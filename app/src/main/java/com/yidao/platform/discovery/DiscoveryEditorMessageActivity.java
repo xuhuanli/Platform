@@ -2,7 +2,6 @@ package com.yidao.platform.discovery;
 
 import android.Manifest;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -19,7 +18,6 @@ import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
-import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.discovery.presenter.EditorMessagePresenter;
 import com.yidao.platform.discovery.view.DiscoveryEditorMessageInterface;
 import com.yidao.platform.login.view.WaitDialog;
@@ -83,6 +81,7 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
             //当上传成功数 == 选中图片数时，告知服务器上传成功
             if (mUpLoadPicList.size() == uploadPicCounter) {
                 String content = mEtEditor.getText().toString().trim();
+                // TODO: 2018/8/17 0017  服务器的一个bug 当有图片时，内容也不能为空
                 if (TextUtils.isEmpty(content)) {
                     content = " ";
                 }
@@ -237,10 +236,10 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
                                     .launch();
                         }
                     }
-                }else { //纯文本
+                } else { //纯文本
                     String content = mEtEditor.getText().toString().trim();
                     if (!TextUtils.isEmpty(content)) {
-                        mPresenter.sendMsg2Server(userId,content,null);
+                        mPresenter.sendMsg2Server(userId, content, null);
                     }
                 }
                 break;

@@ -14,6 +14,7 @@ import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.login.LoginBindingPhoneActivity;
@@ -21,15 +22,17 @@ import com.yidao.platform.app.ApiService;
 import com.yidao.platform.testpackage.bean.UserDataBean;
 import com.yidao.platform.testpackage.bean.WxTokenBean;
 
-public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
+public class WXEntryActivity extends Activity implements IWXAPIEventHandler ,IViewWXEntryActivity{
 
     private IWXAPI mWxapi;
     private static final int RETURN_MSG_TYPE_LOGIN = 1;
     private static final int RETURN_MSG_TYPE_SHARE = 2;
+    private WXEntryActivityPresenter mPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mPresenter = new WXEntryActivityPresenter(this);
         mWxapi = WXAPIFactory.createWXAPI(this, Constant.WX_LOGIN_APP_ID, Constant.IS_DEBUG);
         mWxapi.handleIntent(getIntent(), this);
     }
@@ -50,11 +53,12 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 break;
             case BaseResp.ErrCode.ERR_OK:
                 switch (baseResp.getType()) {
-                    case RETURN_MSG_TYPE_LOGIN:
+                    case RETURN_MSG_TYPE_LOGIN:  //type = 1 表示登录
                         //拿到了微信返回的code,立马再去请求access_token
                         String code = ((SendAuth.Resp) baseResp).code;
-                        MyLogger.d("微信Code:  "+code);
-                        RxHttpUtils
+                        String deviceId = IPreference.prefHolder.getPreference(WXEntryActivity.this).get(Constant.STRING_DEVICE_ID, IPreference.DataType.STRING);
+                        mPresenter.sendCodeToServer(code,deviceId,"Android");
+                        /*RxHttpUtils
                                 .getSInstance()
                                 .baseUrl("https://api.weixin.qq.com/")
                                 .createSApi(ApiService.class)
@@ -77,9 +81,9 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                                             requestUserInfo(access_token, openid);
                                         }
                                     }
-                                });
+                                });*/
                         break;
-                    case RETURN_MSG_TYPE_SHARE:
+                    case RETURN_MSG_TYPE_SHARE:  //type = 2 表示分享
                         //分享成功后结束掉回调activity
                         finish();
                         break;

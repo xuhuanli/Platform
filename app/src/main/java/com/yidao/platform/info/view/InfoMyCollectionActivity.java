@@ -77,8 +77,11 @@ public class InfoMyCollectionActivity extends BaseActivity implements BaseQuickA
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        ReadNewsBean item = (ReadNewsBean) adapter.getItem(position);
+        String url = item.getArticleContent();
         Intent intent = new Intent(this, ReadContentActivity.class);
-        intent.putExtra("url", "http://news.163.com/");
+        intent.putExtra("url", item.getArticleContent());
+        intent.putExtra(Constant.STRING_ART_ID,item.getId());
         startActivity(intent);
     }
 

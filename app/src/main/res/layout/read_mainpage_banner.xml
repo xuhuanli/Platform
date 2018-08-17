@@ -7,7 +7,7 @@
     <com.youth.banner.Banner xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/banner"
         android:layout_width="0dp"
-        android:layout_height="160dp"
+        android:layout_height="194dp"
         android:layout_marginTop="@dimen/size_10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

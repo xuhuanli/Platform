@@ -18,6 +18,7 @@ import com.squareup.leakcanary.LeakCanary;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.tinker.loader.app.DefaultApplicationLike;
+import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.app.utils.FileUtil;
 import com.yidao.platform.app.utils.MyCacheInterceptor;
 import com.yidao.platform.app.utils.MyLogger;
@@ -126,9 +127,10 @@ public class MyApplicationLike extends DefaultApplicationLike {
             @SuppressLint("LongLogTag")
             @Override
             public void onSuccess(String response) {
-                Log.i(TAG, "init cloudchannel success" + response);
+                MyLogger.i(TAG, "init cloudchannel success" + response);
                 String deviceId = pushService.getDeviceId();
-                Log.i(TAG, "当前设备对应的deviceId是-->" + deviceId);
+                MyLogger.i(TAG, "当前设备对应的deviceId是-->" + deviceId);
+                IPreference.prefHolder.getPreference(getAppContext()).put(Constant.STRING_DEVICE_ID, deviceId);
             }
 
             @SuppressLint("LongLogTag")

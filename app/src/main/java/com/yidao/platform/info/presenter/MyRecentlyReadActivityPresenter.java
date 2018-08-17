@@ -19,6 +19,11 @@ public class MyRecentlyReadActivityPresenter {
         mView = view;
     }
 
+    /**
+     * 最近阅读
+     *
+     * @param userId
+     */
     public void getListUserReadArt(String userId) {
         HashMap<String, String> map = new HashMap<>();
         map.put("userId", userId);

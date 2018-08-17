@@ -15,6 +15,7 @@ import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.yidao.platform.app.Constant;
+import com.yidao.platform.info.model.EventTouXiangInfo;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -48,8 +49,8 @@ public class OssUploadUtil {
                     msg.obj = pathOnOss;
                     handler.sendMessage(msg);
                 } else {  //发布一个String的event
-                    String json = "success";
-                    EventBus.getDefault().post(json);
+                    EventTouXiangInfo info = new EventTouXiangInfo(true, pathOnOss);
+                    EventBus.getDefault().post(info);
                 }
             }
 
@@ -59,8 +60,8 @@ public class OssUploadUtil {
                 if (handler != null) { //import : 计数oss成功counter handler一般是给发布朋友圈多图
                     handler.sendEmptyMessage(1);
                 } else {  //发布一个String的event
-                    String json = "fail";
-                    EventBus.getDefault().post(json);
+                    EventTouXiangInfo info = new EventTouXiangInfo(false, "");
+                    EventBus.getDefault().post(info);
                 }
             }
         });

@@ -21,6 +21,7 @@ import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
+import com.yidao.platform.app.utils.PhoneRegUtil;
 import com.yidao.platform.container.ContainerActivity;
 
 import java.util.concurrent.TimeUnit;
@@ -74,6 +75,9 @@ public class LoginBindingPhoneActivity extends BaseActivity {
                     String phone = etPhone.getText().toString();
                     if (TextUtils.isEmpty(phone)) {
                         ToastUtils.showToast("电话号码不能为空");
+                        return Observable.empty();
+                    }else if (!PhoneRegUtil.checkPhoneNumber(phone)){
+                        ToastUtils.showToast("请输入正确的手机号");
                         return Observable.empty();
                     }
                     return Observable.just(true);
