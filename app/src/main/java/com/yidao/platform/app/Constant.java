@@ -70,7 +70,7 @@ public class Constant {
     /**
      * 更多列表 pageSize
      */
-    public static final int PAGE_SIZE = 2;
+    public static final int PAGE_SIZE = 6;
     public static final String STRING_ART_ID = "artId";
     public static final String STRING_URL = "url";
     public static final String STRING_USER_ID = "userId";

@@ -8,7 +8,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="?android:attr/actionBarSize"
         android:background="@color/transparent"
         app:navigationIcon="@drawable/jiantou_black"
         app:popupTheme="@style/AppTheme.PopupOverlay">
@@ -27,8 +27,6 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:paddingLeft="@dimen/size_16dp"
-        android:paddingRight="@dimen/size_16dp"
         android:paddingTop="@dimen/size_8dp"
         app:layout_constraintBottom_toTopOf="@+id/tv_publish_comment"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -75,7 +73,8 @@
                 android:id="@+id/tv_discovery_vote"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableRight="@drawable/discovery_vote"
+                android:layout_marginEnd="8dp"
+                android:drawableLeft="@drawable/discovery_vote"
                 android:gravity="center"
                 android:textColor="#ff848e98"
                 android:textSize="12sp"
@@ -87,6 +86,7 @@
                 android:id="@+id/tv_discovery_content"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintBottom_toTopOf="@+id/npl_item_moment_photos"
                 app:layout_constraintLeft_toLeftOf="@+id/tv_discovery_time"
@@ -99,6 +99,7 @@
                 android:id="@+id/npl_item_moment_photos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 app:bga_npl_itemCornerRadius="0dp"
                 app:bga_npl_itemSpanCount="3"
@@ -108,7 +109,7 @@
                 app:bga_npl_placeholderDrawable="@mipmap/bga_pp_ic_holder_light"
                 app:bga_npl_showAsLargeWhenOnlyOne="true"
                 app:layout_constraintBottom_toTopOf="@+id/tv_delete"
-                app:layout_constraintStart_toStartOf="@+id/tv_discovery_content"
+                app:layout_constraintStart_toEndOf="@+id/iv_discovery_icon"
                 app:layout_constraintTop_toBottomOf="@+id/tv_discovery_content" />
 
             <TextView
@@ -117,6 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/delete"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toTopOf="@+id/commentList"
                 app:layout_constraintLeft_toLeftOf="@+id/tv_discovery_content"
                 app:layout_constraintTop_toBottomOf="@+id/npl_item_moment_photos" />
@@ -124,21 +126,25 @@
             <com.yidao.platform.discovery.view.CommentListView
                 android:id="@+id/commentList"
                 android:layout_width="0dp"
-                android:layout_marginTop="10dp"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="24dp"
                 android:background="#fff3f3f5"
                 android:orientation="vertical"
+                android:padding="8dp"
                 app:item_color="@color/praise_item"
                 app:layout_constraintLeft_toLeftOf="@id/tv_discovery_content"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_delete"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_delete" />
 
             <ImageView
                 android:id="@+id/iv_comment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/comment"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/discovery_reply"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_delete"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_delete" />

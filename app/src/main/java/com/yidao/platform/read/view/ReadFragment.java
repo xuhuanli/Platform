@@ -77,7 +77,7 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
     }
 
     private void initSwipeRefreshLayout() {
-        mSwipeRefreshLayout.setColorSchemeColors(Color.rgb(47, 223, 189));
+        mSwipeRefreshLayout.setColorSchemeColors(Color.BLUE);
         mSwipeRefreshLayout.setOnRefreshListener(this::refresh);
     }
 

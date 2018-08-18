@@ -34,13 +34,18 @@ public class WXEntryActivityPresenter {
                 .subscribe(new StringObserver() {
                     @Override
                     protected void onError(String errorMsg) {
-
+                        MyLogger.i("weixin",errorMsg);
+                        showError();
                     }
 
                     @Override
                     protected void onSuccess(String data) {
-                        MyLogger.e(data);
+                        MyLogger.i("weixin",data);
                     }
                 });
+    }
+
+    private void showError() {
+        mView.loginFail();
     }
 }

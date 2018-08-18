@@ -125,4 +125,9 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler ,IVi
         mWxapi.unregisterApp();
         RxHttpUtils.clearAllCompositeDisposable();
     }
+
+    @Override
+    public void loginFail() {
+
+    }
 }

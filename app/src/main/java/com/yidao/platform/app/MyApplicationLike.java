@@ -22,6 +22,7 @@ import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.app.utils.FileUtil;
 import com.yidao.platform.app.utils.MyCacheInterceptor;
 import com.yidao.platform.app.utils.MyLogger;
+import com.yidao.platform.app.utils.TokenInterceptor;
 import com.yidao.platform.container.ContainerActivity;
 
 import okhttp3.OkHttpClient;
@@ -96,6 +97,7 @@ public class MyApplicationLike extends DefaultApplicationLike {
                 .setSaveCookie(false)
                 //添加自己的拦截器 基于DiskLruCache
                 .setAddInterceptor(new MyCacheInterceptor())
+                //.setAddInterceptor(new TokenInterceptor())
                 //全局ssl证书认证
                 //1、信任所有证书,不安全有风险（默认信任所有证书）
                 //.setSslSocketFactory()

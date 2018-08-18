@@ -4,10 +4,10 @@ import com.allen.library.RxHttpUtils;
 import com.allen.library.interceptor.Transformer;
 import com.allen.library.observer.CommonObserver;
 import com.allen.library.utils.ToastUtils;
+import com.yidao.platform.app.ApiService;
 import com.yidao.platform.read.bean.CategoryArticleExtBean;
 import com.yidao.platform.read.bean.ReadNewsBean;
 import com.yidao.platform.read.view.IViewReadItemMoreActivity;
-import com.yidao.platform.app.ApiService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,40 +43,30 @@ public class ReadItemMoreActivityPresenter {
                     protected void onSuccess(CategoryArticleExtBean categoryArticleExtBean) {
                         if (categoryArticleExtBean.isStatus()) {
                             CategoryArticleExtBean.ResultBean result = categoryArticleExtBean.getResult();
+
+                            if (result != null && result.getList().size() < result.getPageSize()) {  //所得数目< pageSize =>到底了
+                                mView.loadMoreEnd(false);
+                            } else {
+                                mView.loadMoreComplete();
+                            }
+
+                            List<CategoryArticleExtBean.ResultBean.ListBean> list = result.getList();
+                            ArrayList<ReadNewsBean> dataList = new ArrayList<>();
+                            for (CategoryArticleExtBean.ResultBean.ListBean listBean : list) {
+                                ReadNewsBean readNewsBean = new ReadNewsBean(ReadNewsBean.ITEM_ONE);
+                                readNewsBean.setType(listBean.getType());
+                                readNewsBean.setTitle(listBean.getTitle());
+                                readNewsBean.setReadAmount(listBean.getReadAmount());
+                                readNewsBean.setId(listBean.getId());
+                                readNewsBean.setHomeImg(listBean.getHomeImg());
+                                readNewsBean.setDeployTime(listBean.getDeployTime());
+                                readNewsBean.setArticleContent(listBean.getArticleContent());
+                                dataList.add(readNewsBean);
+                            }
+
                             if (result.getPageIndex() == 1) {  //page = 1时，表示初始列表值
-                                List<CategoryArticleExtBean.ResultBean.ListBean> list = result.getList();
-                                ArrayList<ReadNewsBean> dataList = new ArrayList<>();
-                                for (CategoryArticleExtBean.ResultBean.ListBean listBean : list) {
-                                    ReadNewsBean readNewsBean = new ReadNewsBean(ReadNewsBean.ITEM_ONE);
-                                    readNewsBean.setType(listBean.getType());
-                                    readNewsBean.setTitle(listBean.getTitle());
-                                    readNewsBean.setReadAmount(listBean.getReadAmount());
-                                    readNewsBean.setId(listBean.getId());
-                                    readNewsBean.setHomeImg(listBean.getHomeImg());
-                                    readNewsBean.setDeployTime(listBean.getDeployTime());
-                                    readNewsBean.setArticleContent(listBean.getArticleContent());
-                                    dataList.add(readNewsBean);
-                                }
                                 mView.loadRecyclerData(dataList);
                             } else { //page !=1 表示上拉加载
-                                List<CategoryArticleExtBean.ResultBean.ListBean> list = result.getList();
-                                if (list != null && list.size() < result.getPageSize()) {  //所得数目< pageSize =>到底了
-                                    mView.loadMoreEnd(false);
-                                } else {
-                                    mView.loadMoreComplete();
-                                }
-                                ArrayList<ReadNewsBean> dataList = new ArrayList<>();
-                                for (CategoryArticleExtBean.ResultBean.ListBean listBean : list) {
-                                    ReadNewsBean readNewsBean = new ReadNewsBean(ReadNewsBean.ITEM_ONE);
-                                    readNewsBean.setType(listBean.getType());
-                                    readNewsBean.setTitle(listBean.getTitle());
-                                    readNewsBean.setReadAmount(listBean.getReadAmount());
-                                    readNewsBean.setId(listBean.getId());
-                                    readNewsBean.setHomeImg(listBean.getHomeImg());
-                                    readNewsBean.setDeployTime(listBean.getDeployTime());
-                                    readNewsBean.setArticleContent(listBean.getArticleContent());
-                                    dataList.add(readNewsBean);
-                                }
                                 mView.loadMoreData(dataList);
                             }
                         }

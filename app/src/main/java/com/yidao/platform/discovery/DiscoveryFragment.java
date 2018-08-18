@@ -4,43 +4,41 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.allen.library.utils.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseFragment;
 import com.yidao.platform.app.utils.FileUtil;
-import com.yidao.platform.discovery.bean.Moment;
+import com.yidao.platform.discovery.adapter.MomentAdapter;
+import com.yidao.platform.discovery.bean.FriendsShowBean;
+import com.yidao.platform.discovery.model.FindDiscoveryObj;
 import com.yidao.platform.discovery.presenter.DiscoveryPresenter;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
-import cn.bingoogolapple.baseadapter.BGAOnRVItemClickListener;
-import cn.bingoogolapple.baseadapter.BGAOnRVItemLongClickListener;
-import cn.bingoogolapple.baseadapter.BGARecyclerViewAdapter;
-import cn.bingoogolapple.baseadapter.BGAViewHolderHelper;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
 import cn.bingoogolapple.photopicker.imageloader.BGARVOnScrollListener;
@@ -50,7 +48,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 import static android.app.Activity.RESULT_OK;
 
-public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInterface, EasyPermissions.PermissionCallbacks, BGANinePhotoLayout.Delegate, BGAOnRVItemClickListener, BGAOnRVItemLongClickListener {
+public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInterface, EasyPermissions.PermissionCallbacks, BGANinePhotoLayout.Delegate {
 
     //权限的常量
     private static final int PERM_OPEN_ALBUM = 0;
@@ -71,66 +69,28 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     RecyclerView mRecyclerView;
     @BindView(R.id.iv_select_item)
     ImageView mIvIcon;
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
     private DiscoveryPresenter mPresenter;
     private MomentAdapter mAdapter;
     private BGANinePhotoLayout mCurrentClickNpl;
     private Uri uriForFile;
     private File app_photo;
+    private String userId;
+    /**
+     * 请求的下一个页码
+     */
+    private int mNextRequestPage = 1;
+    private FindDiscoveryObj findDiscoveryObj;
 
     @Override
     protected void initView() {
         mPresenter = new DiscoveryPresenter(this);
         initToolbar();
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mAdapter = new MomentAdapter(mRecyclerView);
-        setDataToAdapter();
+        initRecyclerView();
+        initSwipeRefreshLayout();
         //mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnRVItemClickListener(this);
-        mAdapter.setOnRVItemLongClickListener(this);
         mRecyclerView.addOnScrollListener(new BGARVOnScrollListener(getActivity()));
-    }
-
-    private void setDataToAdapter() {
-        List<Moment> moments = new ArrayList<>();
-        moments.add(new Moment("1张网络图片", new ArrayList<>(Arrays.asList("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered1.png"))));
-        moments.add(new Moment("2张网络图片", new ArrayList<>(Arrays.asList("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered2.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered3.png"))));
-        moments.add(new Moment("9张网络图片", new ArrayList<>(Arrays.asList("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered11.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered12.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered13.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered14.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered15.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered16.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered17.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered18.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered19.png"))));
-        moments.add(new Moment("5张网络图片", new ArrayList<>(Arrays.asList("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered11.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered12.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered13.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered14.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered15.png"))));
-        moments.add(new Moment("3张网络图片", new ArrayList<>(Arrays.asList("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered4.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered5.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered6.png"))));
-        moments.add(new Moment("8张网络图片", new ArrayList<>(Arrays.asList("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered11.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered12.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered13.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered14.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered15.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered16.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered17.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered18.png"))));
-        moments.add(new Moment("4张网络图片", new ArrayList<>(Arrays.asList("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered7.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered8.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered9.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered10.png"))));
-        moments.add(new Moment("2张网络图片", new ArrayList<>(Arrays.asList("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered2.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered3.png"))));
-        moments.add(new Moment("3张网络图片", new ArrayList<>(Arrays.asList("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered4.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered5.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered6.png"))));
-        moments.add(new Moment("4张网络图片", new ArrayList<>(Arrays.asList("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered7.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered8.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered9.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered10.png"))));
-        moments.add(new Moment("9张网络图片", new ArrayList<>(Arrays.asList("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered11.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered12.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered13.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered14.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered15.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered16.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered17.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered18.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered19.png"))));
-        moments.add(new Moment("1张网络图片", new ArrayList<>(Arrays.asList("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered1.png"))));
-        moments.add(new Moment("5张网络图片", new ArrayList<>(Arrays.asList("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered11.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered12.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered13.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered14.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered15.png"))));
-        moments.add(new Moment("6张网络图片", new ArrayList<>(Arrays.asList("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered11.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered12.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered13.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered14.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered15.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered16.png"))));
-        moments.add(new Moment("7张网络图片", new ArrayList<>(Arrays.asList("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered11.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered12.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered13.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered14.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered15.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered16.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered17.png"))));
-        moments.add(new Moment("8张网络图片", new ArrayList<>(Arrays.asList("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered11.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered12.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered13.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered14.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered15.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered16.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered17.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered18.png"))));
-
-        mAdapter.setData(moments);
-    }
-
-    private void initToolbar() {
-        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
-        addDisposable(RxView.clicks(mIvIcon).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) throws Exception {
-                Intent intent = new Intent(getActivity(), DiscoveryEditorMessageActivity.class);
-                startActivity(intent);
-            }
-        }));
-    }
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.discovery_fragment_content;
-    }
-
-    @Override
-    protected void initData() {
         //拍照function
         addDisposable(RxView.clicks(mBtnPhoto).subscribe(o -> {
             String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
@@ -151,6 +111,64 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
         }));
         //漂流瓶function core ，one of the most important functions
         addDisposable(RxView.clicks(mBtnBottle).subscribe(o -> startActivity(new Intent(getActivity(), DiscoveryDriftingBottleActivity.class))));
+        userId = IPreference.prefHolder.getPreference(getActivity()).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
+    }
+
+    @Override
+    protected void initData() {
+        createObj();
+        mPresenter.getFriendsList(findDiscoveryObj);
+    }
+
+    private void createObj() {
+        if (findDiscoveryObj == null) {
+            findDiscoveryObj = new FindDiscoveryObj();
+        }
+        findDiscoveryObj.setMemberId(695286546104320L);
+        findDiscoveryObj.setIsContent(true);
+        findDiscoveryObj.setIsImg(true);
+        FindDiscoveryObj.PageBean pageBean = new FindDiscoveryObj.PageBean();
+        pageBean.setPageIndex(mNextRequestPage);
+        pageBean.setPageSize(Constant.PAGE_SIZE);
+        findDiscoveryObj.setPage(pageBean);
+    }
+
+    private void initRecyclerView() {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    }
+
+    private void initToolbar() {
+        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+        addDisposable(RxView.clicks(mIvIcon).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(Object o) throws Exception {
+                Intent intent = new Intent(getActivity(), DiscoveryEditorMessageActivity.class);
+                startActivity(intent);
+            }
+        }));
+    }
+
+    private void initSwipeRefreshLayout() {
+        mSwipeRefreshLayout.setColorSchemeColors(Color.BLUE);
+        mSwipeRefreshLayout.setOnRefreshListener(this::refresh);
+    }
+
+    private void refresh() {
+        mNextRequestPage = 1;
+        if (findDiscoveryObj == null) {
+            createObj();
+        }else {
+            findDiscoveryObj.getPage().setPageIndex(mNextRequestPage);
+        }
+        if (mAdapter != null) {
+            mAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
+        }
+        mPresenter.getFriendsList(findDiscoveryObj);
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.discovery_fragment_content;
     }
 
     @Override
@@ -187,6 +205,56 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     }
 
     @Override
+    public void loadMoreEnd(boolean b) {
+        if (mAdapter != null) {
+            mAdapter.loadMoreEnd(b);
+        }
+    }
+
+    @Override
+    public void loadMoreComplete() {
+        if (mAdapter != null) {
+            mAdapter.loadMoreComplete();
+        }
+    }
+
+    @Override
+    public void loadRecyclerData(ArrayList<FriendsShowBean> dataList) {
+        mAdapter = new MomentAdapter(dataList,this);
+        mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener((adapter, view, position) -> {
+            Intent intent = new Intent(getActivity(), FriendsGroupDetailActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    private void loadMore() {
+        mNextRequestPage++;
+        findDiscoveryObj.getPage().setPageIndex(mNextRequestPage);
+        mPresenter.getFriendsList(findDiscoveryObj);
+    }
+
+    @Override
+    public void loadMoreData(ArrayList<FriendsShowBean> dataList) {
+        if (mAdapter != null) {
+            mAdapter.addData(dataList);
+        }
+    }
+
+    @Override
+    public void setEnableLoadMore(boolean b) {
+        if (mAdapter != null) {
+            mAdapter.setEnableLoadMore(b);
+        }
+    }
+
+    @Override
+    public void setRefreshing(boolean b) {
+        mSwipeRefreshLayout.setRefreshing(b);
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
@@ -213,7 +281,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
         }
     }
 
-    private  void refreshAlbum(Context context, File file) {
+    private void refreshAlbum(Context context, File file) {
         context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
     }
 
@@ -257,17 +325,6 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     }
 
     @Override
-    public void onRVItemClick(ViewGroup parent, View itemView, int position) {
-        Intent intent = new Intent(getActivity(), FriendsGroupDetailActivity.class);
-        startActivity(intent);
-    }
-
-    @Override
-    public boolean onRVItemLongClick(ViewGroup parent, View itemView, int position) {
-        return false;
-    }
-
-    @Override
     public void onClickNinePhotoItem(BGANinePhotoLayout ninePhotoLayout, View view, int position, String model, List<String> models) {
         mCurrentClickNpl = ninePhotoLayout;
         requestPreviewPhotoPermission();
@@ -298,29 +355,5 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
                     .currentPosition(mCurrentClickNpl.getCurrentClickItemPosition()); // 当前预览图片的索引
         }
         startActivity(photoPreviewIntentBuilder.build());
-    }
-
-    private class MomentAdapter extends BGARecyclerViewAdapter<Moment> {
-
-        MomentAdapter(RecyclerView recyclerView) {
-            super(recyclerView, R.layout.discovery_friends_item);
-        }
-
-        @Override
-        protected void fillData(BGAViewHolderHelper helper, int position, Moment moment) {
-            helper.setImageResource(R.id.iv_discovery_icon, R.drawable.info_head_p);
-            helper.setText(R.id.tv_discovery_name,"xhl")
-                    .setText(R.id.tv_discovery_time,"10分钟前")
-                    .setText(R.id.tv_discovery_vote,"1000");
-            if (TextUtils.isEmpty(moment.content)) {
-                helper.setVisibility(R.id.tv_discovery_content, View.GONE);
-            } else {
-                helper.setVisibility(R.id.tv_discovery_content, View.VISIBLE);
-                helper.setText(R.id.tv_discovery_content, moment.content);
-            }
-            BGANinePhotoLayout ninePhotoLayout = helper.getView(R.id.npl_item_moment_photos);
-            ninePhotoLayout.setDelegate(DiscoveryFragment.this);
-            ninePhotoLayout.setData(moment.photos);
-        }
     }
 }

@@ -2,6 +2,7 @@ package com.yidao.platform.discovery.bean;
 
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 
+@Deprecated
 public class FriendsNewsBean implements MultiItemEntity {
     public static final int ITEM_ONE = 1;
     public static final int ITEM_TWO = 2;

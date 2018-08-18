@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.allen.library.config.OkHttpConfig;
 import com.allen.library.utils.ToastUtils;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
@@ -19,8 +20,10 @@ import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseFragment;
+import com.yidao.platform.app.utils.FileUtil;
 import com.yidao.platform.app.utils.InputFilterMinMax;
 import com.yidao.platform.app.utils.PhoneRegUtil;
+import com.yidao.platform.app.utils.TokenInterceptor;
 import com.yidao.platform.service.model.BpObj;
 import com.yidao.platform.service.presenter.ServiceFragmentPresenter;
 import com.yidao.platform.service.view.CustomBpItemView;
@@ -29,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import io.reactivex.functions.Consumer;
+import okhttp3.OkHttpClient;
 
 public class ServiceFragment extends BaseFragment implements IViewServiceFragment {
 

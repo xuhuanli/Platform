@@ -1,6 +1,8 @@
 package com.yidao.platform.app;
 
+import com.yidao.platform.discovery.bean.FriendsListBean;
 import com.yidao.platform.discovery.bean.SendFindObj;
+import com.yidao.platform.discovery.model.FindDiscoveryObj;
 import com.yidao.platform.info.model.UserCollectArtBean;
 import com.yidao.platform.info.model.UserReadRecordBean;
 import com.yidao.platform.read.bean.ArticleBean;
@@ -24,6 +26,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 
 public interface ApiService {
 
@@ -160,6 +163,13 @@ public interface ApiService {
     Observable<String> sendFind(@Body SendFindObj sendFindObj);
 
     /**
+     * 获取朋友圈列表 后期注意ip地址的修改
+     */
+    @Headers({"Content-Type: application/json;charset=UTF-8"})
+    @POST("find/qryFindMagList")
+    Observable<FriendsListBean> getFriendsList(@Body FindDiscoveryObj findDiscoveryObj);
+
+    /**
      * 修改个人信息 后期注意ip地址的修改
      */
     @FormUrlEncoded
@@ -170,15 +180,14 @@ public interface ApiService {
      * 申请 bp  后期注意ip地址的修改 10.10.20.27:8080
      */
     @Headers({"Content-Type: application/json;charset=UTF-8"})
-    @POST("bp/apply")
+    @POST("app/bp/apply")
     Observable<String> bpApply(@Body BpObj bpObj);
 
     /**
      * 发送code到server 后期注意ip地址的修改 10.10.20.27:8080
      */
-    @FormUrlEncoded
-    @GET("user-login/grant")
-    Observable<String> sendCodeToServer(@FieldMap Map<String, String> options);
+    @GET("app/user-login/grant")
+    Observable<String> sendCodeToServer(@QueryMap Map<String, String> options);
 
     /**
      * 标题搜索
@@ -187,4 +196,6 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("home/article/searchArticle")
     Observable<SearchBean> searchArticle(@FieldMap Map<String, String> options);
+
+
 }

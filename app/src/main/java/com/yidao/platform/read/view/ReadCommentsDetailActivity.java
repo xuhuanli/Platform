@@ -105,7 +105,7 @@ public class ReadCommentsDetailActivity extends BaseActivity implements ReadComm
     private void showCommentDialog(@Nullable User toReplyUser) {
         this.toReplyUser = toReplyUser;
         mCommentBottomSheetDialog = new BottomSheetDialog(this);
-        mCommentBottomSheetDialog.setCanceledOnTouchOutside(false);
+        mCommentBottomSheetDialog.setCanceledOnTouchOutside(true);
         @SuppressLint("InflateParams") View view = LayoutInflater.from(this).inflate(R.layout.layout_comment_fragment_dialog, null);
         mEtContent = view.findViewById(R.id.et_comment_content);
         Button mBtnSend = view.findViewById(R.id.btn_comment_send);

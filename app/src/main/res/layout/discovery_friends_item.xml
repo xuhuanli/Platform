@@ -33,7 +33,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tv_discovery_time"
         app:layout_constraintTop_toBottomOf="@+id/iv_discovery_icon"
-        tools:text="en是调用授权关系接口的调用凭证，由于access_token有效期（目前为2个小时）较短，当access_token超时后，可以使用refresh_token进行刷新，access_token刷新结果有两en是调用授权关系接口的调用凭证，由于access_token有效期（目前为2个小时）较短，当access_token超时后，可以使用refresh_token进行刷新，access_token刷新结果有两" />
+        tools:text="en是调用授权关系接口" />
 
 
     <TextView
@@ -68,7 +68,7 @@
         app:bga_npl_placeholderDrawable="@mipmap/bga_pp_ic_holder_light"
         app:bga_npl_showAsLargeWhenOnlyOne="true"
         app:layout_constraintBottom_toTopOf="@+id/tv_discovery_reply"
-        app:layout_constraintStart_toStartOf="@+id/tv_discovery_content"
+        app:layout_constraintLeft_toRightOf="@+id/iv_discovery_icon"
         app:layout_constraintTop_toBottomOf="@+id/tv_discovery_content" />
 
     <ImageView
@@ -89,7 +89,7 @@
         android:clickable="true"
         android:text="@string/delete"
         android:textColor="@color/colorPrimary"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="@+id/tv_discovery_content"
         app:layout_constraintTop_toBottomOf="@id/npl_item_moment_photos" />
 

@@ -73,6 +73,13 @@ public class ReadItemMoreActivity extends BaseActivity implements IViewReadItemM
         mAdapter = new ReadItemMoreAdapter(dataList);
         mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
         mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener((adapter, view, position) -> {
+            ReadNewsBean item = (ReadNewsBean) adapter.getItem(position);
+            Intent intent = new Intent(this, ReadContentActivity.class);
+            intent.putExtra("url", item.getArticleContent());
+            intent.putExtra(Constant.STRING_ART_ID, item.getId());
+            startActivity(intent);
+        });
     }
 
     @Override

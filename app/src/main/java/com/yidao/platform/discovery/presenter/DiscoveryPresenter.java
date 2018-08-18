@@ -11,27 +11,37 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.widget.ImageView;
 
+import com.allen.library.RxHttpUtils;
+import com.allen.library.interceptor.Transformer;
+import com.allen.library.observer.CommonObserver;
 import com.yidao.platform.R;
+import com.yidao.platform.app.ApiService;
 import com.yidao.platform.discovery.DiscoveryViewInterface;
+import com.yidao.platform.discovery.bean.FriendsListBean;
+import com.yidao.platform.discovery.bean.FriendsShowBean;
+import com.yidao.platform.discovery.model.FindDiscoveryObj;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DiscoveryPresenter {
 
-    private DiscoveryViewInterface view;
+    private DiscoveryViewInterface mView;
 
     public DiscoveryPresenter(DiscoveryViewInterface fragment) {
-        this.view = fragment;
+        this.mView = fragment;
     }
 
     public void openCamera() {
-        view.openCamera();
+        mView.openCamera();
     }
 
     public void setImage(Bitmap bitmap, ImageView imageView) {
-        view.showImage(bitmap, imageView);
+        mView.showImage(bitmap, imageView);
     }
 
     public void openAlbum() {
-        view.openAlbum();
+        mView.openAlbum();
     }
 
     public void handleImage(Context context, Intent data, ImageView imageView) {
@@ -57,9 +67,9 @@ public class DiscoveryPresenter {
         }
         if (imagePath != null) {
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-            view.showImage(bitmap, imageView);
+            mView.showImage(bitmap, imageView);
         } else {
-            view.showToast(context.getString(R.string.failed_to_get_image));
+            mView.showToast(context.getString(R.string.failed_to_get_image));
         }
     }
 
@@ -73,5 +83,60 @@ public class DiscoveryPresenter {
             cursor.close();
         }
         return path;
+    }
+
+    /**
+     * 获取朋友圈列表
+     */
+    public void getFriendsList(FindDiscoveryObj findDiscoveryObj) {
+        RxHttpUtils.getSInstance()
+                .baseUrl("http://10.10.20.24:8080/")
+                .createSApi(ApiService.class)
+                .getFriendsList(findDiscoveryObj)
+                .compose(Transformer.switchSchedulers())
+                .subscribe(new CommonObserver<FriendsListBean>() {
+                    @Override
+                    protected void onError(String errorMsg) {
+                        mView.setEnableLoadMore(true);
+                        mView.setRefreshing(false);
+                    }
+
+                    @Override
+                    protected void onSuccess(FriendsListBean friendsListBean) {
+                        mView.setEnableLoadMore(true);
+                        mView.setRefreshing(false);
+                        if (friendsListBean.isStatus()) {
+                            FriendsListBean.ResultBean result = friendsListBean.getResult();
+
+                            if (result != null && result.getList().size() < result.getPageSize()) {  //所得数目< pageSize =>到底了
+                                mView.loadMoreEnd(false);
+                            } else {
+                                mView.loadMoreComplete();
+                            }
+
+                            List<FriendsListBean.ResultBean.ListBean> list = result.getList();
+                            ArrayList<FriendsShowBean> dataList = new ArrayList<>();
+                            for (FriendsListBean.ResultBean.ListBean listBean : list) {
+                                FriendsShowBean bean = new FriendsShowBean();
+                                bean.setHeadImg(listBean.getHeadImg());
+                                bean.setDeployName(listBean.getDeployName());
+                                bean.setDeployTime(listBean.getDeployTime());
+                                bean.setLikeAmount(String.valueOf(listBean.getLikeAmount()));
+                                bean.setContent(listBean.getFind().getContent());
+                                bean.setImgUrls((ArrayList<String>) listBean.getImgs());
+                                bean.setFindId(String.valueOf(listBean.getFindId()));
+                                dataList.add(bean);
+                            }
+
+                            if (result.getPageIndex() == 1) {  //page = 1时，表示初始列表值
+                                mView.loadRecyclerData(dataList);
+                            } else {
+                                mView.loadMoreData(dataList);
+                            }
+
+
+                        }
+                    }
+                });
     }
 }
