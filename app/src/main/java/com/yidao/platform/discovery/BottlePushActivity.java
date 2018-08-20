@@ -9,6 +9,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.allen.library.RxHttpUtils;
+import com.allen.library.interceptor.Transformer;
+import com.allen.library.observer.StringObserver;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
@@ -16,10 +19,17 @@ import com.contrarywind.view.WheelView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.yidao.platform.R;
+import com.yidao.platform.app.ApiService;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
+import com.yidao.platform.app.utils.MyLogger;
+import com.yidao.platform.discovery.model.ThrowBottleObj;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -52,8 +62,8 @@ public class BottlePushActivity extends BaseActivity {
         addDisposable(RxView.clicks(tvBottlePush).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
             // TODO: 2018/7/14 0014 if push success
             Intent intent = new Intent();
-            intent.putExtra("data", "这是瓶子里面的内容");
-            intent.putExtra("code", "这是想给谁看到");
+            intent.putExtra("content", "这是瓶子里面的内容");
+            intent.putExtra("label", "这是瓶子的标签");
             setResult(PUSH_SUCCESS, intent);
             finish();
         }));

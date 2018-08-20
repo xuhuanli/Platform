@@ -76,7 +76,7 @@ public class ChannelBean {
 
         @Override
         public String toString() {
-            return "ResultBean{" +
+            return "BaseData{" +
                     "name='" + name + '\'' +
                     ", id=" + id +
                     ", parentid=" + parentid +

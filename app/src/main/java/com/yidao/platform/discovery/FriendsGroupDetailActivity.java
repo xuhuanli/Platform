@@ -3,6 +3,7 @@ package com.yidao.platform.discovery;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -23,8 +24,10 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
+import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.discovery.bean.CommentItem;
 import com.yidao.platform.discovery.bean.DatasUtil;
+import com.yidao.platform.discovery.bean.FriendsShowBean;
 import com.yidao.platform.discovery.bean.User;
 import com.yidao.platform.discovery.presenter.FriendsGroupDetailPresenter;
 import com.yidao.platform.discovery.view.CommentListView;
@@ -89,6 +92,10 @@ public class FriendsGroupDetailActivity extends BaseActivity implements View.OnC
     }
 
     private void initView() {
+        Intent intent = getIntent();
+        FriendsShowBean friendsShowBean = intent.getParcelableExtra("friendsShowBean");
+        MyLogger.e(friendsShowBean.toString());
+        // TODO: 2018/8/18 0018 waiting
         addDisposable(RxToolbar.navigationClicks(mToolbar).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish()));
         mTitle.setText(R.string.discovery_pyq_title);
         ivDiscoveryIcon.setImageResource(R.drawable.info_head_p);

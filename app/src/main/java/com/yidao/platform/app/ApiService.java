@@ -1,8 +1,10 @@
 package com.yidao.platform.app;
 
 import com.yidao.platform.discovery.bean.FriendsListBean;
+import com.yidao.platform.discovery.bean.PickBottleBean;
 import com.yidao.platform.discovery.bean.SendFindObj;
 import com.yidao.platform.discovery.model.FindDiscoveryObj;
+import com.yidao.platform.discovery.model.ThrowBottleObj;
 import com.yidao.platform.info.model.UserCollectArtBean;
 import com.yidao.platform.info.model.UserReadRecordBean;
 import com.yidao.platform.read.bean.ArticleBean;
@@ -197,5 +199,13 @@ public interface ApiService {
     @POST("home/article/searchArticle")
     Observable<SearchBean> searchArticle(@FieldMap Map<String, String> options);
 
+    @Headers({"Content-Type: application/json;charset=UTF-8"})
+    @POST("app/bottle/throwBottle")
+    Observable<String>  throwBottle(@Body ThrowBottleObj throwBottleObj);
 
+    /**
+     * 捡瓶子
+     */
+    @GET("app/bottle/pickBottle")
+    Observable<PickBottleBean> pickBottle(@Query("userId") String userId);
 }
