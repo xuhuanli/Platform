@@ -27,9 +27,8 @@ public class BottleActivityPresenter {
      * @param obj
      */
     public void throwBottle(ThrowBottleObj obj) {
-        RxHttpUtils.getSInstance()
-                .baseUrl("http://10.10.20.5:8080/platform-pc-web/")
-                .createSApi(ApiService.class)
+        RxHttpUtils
+                .createApi(ApiService.class)
                 .throwBottle(obj)
                 .compose(Transformer.switchSchedulers())
                 .doOnSubscribe(disposable -> mView.pushAnim())
@@ -66,9 +65,8 @@ public class BottleActivityPresenter {
      * @param userId
      */
     public void pickBottle(String userId) {
-        RxHttpUtils.getSInstance()
-                .baseUrl("http://10.10.20.5:8080/platform-pc-web/")
-                .createSApi(ApiService.class)
+        RxHttpUtils
+                .createApi(ApiService.class)
                 .pickBottle(userId)
                 .compose(Transformer.switchSchedulers())
                 .doOnSubscribe(disposable -> mView.pickAnim())

@@ -2,8 +2,11 @@ package com.yidao.platform.app;
 
 import com.yidao.platform.discovery.bean.FriendsListBean;
 import com.yidao.platform.discovery.bean.PickBottleBean;
+import com.yidao.platform.discovery.bean.PyqCommentsBean;
 import com.yidao.platform.discovery.bean.SendFindObj;
+import com.yidao.platform.discovery.model.DianZanObj;
 import com.yidao.platform.discovery.model.FindDiscoveryObj;
+import com.yidao.platform.discovery.model.PyqCommentsObj;
 import com.yidao.platform.discovery.model.ThrowBottleObj;
 import com.yidao.platform.info.model.UserCollectArtBean;
 import com.yidao.platform.info.model.UserReadRecordBean;
@@ -22,6 +25,7 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -40,6 +44,75 @@ public interface ApiService {
 
     @GET("sns/userinfo")
     Observable<UserDataBean> getUserInfo(@Query("access_token") String access_token, @Query("openid") String openid);
+
+    /**
+     * 修改个人信息 后期注意ip地址的修改
+     */
+    @FormUrlEncoded
+    @POST("app/user/updateUserInfo")
+    Observable<String> updateUserInfo(@FieldMap Map<String, String> options);
+
+    /**
+     * 申请 bp  后期注意ip地址的修改 10.10.20.27:8080
+     */
+    @Headers({"Content-Type: application/json;charset=UTF-8"})
+    @POST("app/bp/apply")
+    Observable<String> bpApply(@Body BpObj bpObj);
+
+    /**
+     * 发送code到server 后期注意ip地址的修改 10.10.20.27:8080
+     */
+    @GET("app/user-login/grant")
+    Observable<String> sendCodeToServer(@QueryMap Map<String, String> options);
+
+    @Headers({"Content-Type: application/json;charset=UTF-8"})
+    @POST("app/bottle/throwBottle")
+    Observable<String> throwBottle(@Body ThrowBottleObj throwBottleObj);
+
+    /**
+     * 捡瓶子
+     */
+    @GET("app/bottle/pickBottle")
+    Observable<PickBottleBean> pickBottle(@Query("userId") String userId);
+
+    //----------朋友圈模块----------
+
+    /**
+     * 发布朋友圈图片上传路径到公司服务器 后期注意ip地址的修改
+     */
+    @Headers({"Content-Type: application/json;charset=UTF-8"})
+    @POST("edit/find/sendFind")
+    Observable<String> sendFind(@Body SendFindObj sendFindObj);
+
+    /**
+     * 获取朋友圈列表 后期注意ip地址的修改
+     */
+    @Headers({"Content-Type: application/json;charset=UTF-8"})
+    @POST("find/qryFindMagList")
+    Observable<FriendsListBean> getFriendsList(@Body FindDiscoveryObj findDiscoveryObj);
+
+    /**
+     * 朋友圈点赞
+     */
+    @Headers({"Content-Type: application/json;charset=UTF-8"})
+    @POST("edit/find/sendFindLike")
+    Observable<String> sendFindLike(@Body DianZanObj dianZanObj);
+
+    /**
+     * 取消朋友圈点赞
+     */
+    @Headers({"Content-Type: application/json;charset=UTF-8"})
+    @POST("edit/find/cancelFindLike")
+    Observable<String> cancelFindLike(@Body DianZanObj dianZanObj);
+
+    /**
+     * 获取朋友圈评论详情 testId = 695106241363968
+     */
+    @Headers({"Content-Type: application/json;charset=UTF-8"})
+    @POST("find/qryFindComms")
+    Observable<PyqCommentsBean> qryFindComms(@Body PyqCommentsObj pyqCommentsObj);
+
+    //----------文章模块------------
 
     /**
      * 查询banner(正在显示的)
@@ -84,8 +157,6 @@ public interface ApiService {
      */
     @POST("home/article/listCategories")
     Observable<ChannelBean> getListCategories();
-
-    //test user id 21211
 
     /**
      * 获取用户收藏的文章
@@ -156,41 +227,6 @@ public interface ApiService {
     @POST("user/center/listUserReadArt")
     Observable<UserReadRecordBean> getListUserReadArt(@FieldMap Map<String, String> options);
 
-
-    /**
-     * 发布朋友圈图片上传路径到公司服务器 后期注意ip地址的修改
-     */
-    @Headers({"Content-Type: application/json;charset=UTF-8"})
-    @POST("edit/find/sendFind")
-    Observable<String> sendFind(@Body SendFindObj sendFindObj);
-
-    /**
-     * 获取朋友圈列表 后期注意ip地址的修改
-     */
-    @Headers({"Content-Type: application/json;charset=UTF-8"})
-    @POST("find/qryFindMagList")
-    Observable<FriendsListBean> getFriendsList(@Body FindDiscoveryObj findDiscoveryObj);
-
-    /**
-     * 修改个人信息 后期注意ip地址的修改
-     */
-    @FormUrlEncoded
-    @POST("user/updateUserInfo")
-    Observable<String> updateUserInfo(@FieldMap Map<String, String> options);
-
-    /**
-     * 申请 bp  后期注意ip地址的修改 10.10.20.27:8080
-     */
-    @Headers({"Content-Type: application/json;charset=UTF-8"})
-    @POST("app/bp/apply")
-    Observable<String> bpApply(@Body BpObj bpObj);
-
-    /**
-     * 发送code到server 后期注意ip地址的修改 10.10.20.27:8080
-     */
-    @GET("app/user-login/grant")
-    Observable<String> sendCodeToServer(@QueryMap Map<String, String> options);
-
     /**
      * 标题搜索
      * warning 参数中带有中文的 必须用Filed形式 而不是Query
@@ -199,13 +235,23 @@ public interface ApiService {
     @POST("home/article/searchArticle")
     Observable<SearchBean> searchArticle(@FieldMap Map<String, String> options);
 
-    @Headers({"Content-Type: application/json;charset=UTF-8"})
-    @POST("app/bottle/throwBottle")
-    Observable<String>  throwBottle(@Body ThrowBottleObj throwBottleObj);
+    /**
+     * 获取文章热评
+     *
+     * @param artId
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/home/article/listArticleCommenty")
+    Observable<String> getHotComments(@Field("id") long artId);
 
     /**
-     * 捡瓶子
+     * 获取文章最新评论
+     *
+     * @param artId
+     * @return
      */
-    @GET("app/bottle/pickBottle")
-    Observable<PickBottleBean> pickBottle(@Query("userId") String userId);
+    @FormUrlEncoded
+    @POST("/home/article/listArticleCommentyList")
+    Observable<String> getLastComments(@Field("id") long artId, @Field("pageIndex") long pageIndex,@Field("pageSize") int pageSize);
 }

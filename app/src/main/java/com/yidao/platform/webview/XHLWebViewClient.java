@@ -70,6 +70,7 @@ public class XHLWebViewClient extends WebViewClient {
         //addImageClickListener(view);
     }
 
+
     @Override
     public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
         handler.proceed();
@@ -78,7 +79,8 @@ public class XHLWebViewClient extends WebViewClient {
     @Override
     public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
         super.onReceivedError(view, request, error);
-        view.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
+        EventBus.getDefault().post(new WebViewLoadEvent());
+        view.loadUrl("file:///android_asset/net_error.html");
     }
 
     private void addImageClickListener(WebView view) {

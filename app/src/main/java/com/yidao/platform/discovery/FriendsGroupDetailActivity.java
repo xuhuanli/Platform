@@ -19,22 +19,25 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
-import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.discovery.bean.CommentItem;
+import com.yidao.platform.discovery.bean.CommentsItem;
 import com.yidao.platform.discovery.bean.DatasUtil;
 import com.yidao.platform.discovery.bean.FriendsShowBean;
 import com.yidao.platform.discovery.bean.User;
+import com.yidao.platform.discovery.model.PyqCommentsObj;
 import com.yidao.platform.discovery.presenter.FriendsGroupDetailPresenter;
 import com.yidao.platform.discovery.view.CommentListView;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -43,7 +46,7 @@ import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class FriendsGroupDetailActivity extends BaseActivity implements View.OnClickListener, FriendsGroupDetailInterface, EasyPermissions.PermissionCallbacks, BGANinePhotoLayout.Delegate {
+public class FriendsGroupDetailActivity extends BaseActivity implements View.OnClickListener, IViewFriendsGroupDetail, EasyPermissions.PermissionCallbacks, BGANinePhotoLayout.Delegate {
 
     private static final int PERM_PREVIEW_PHOTO = 1;
     @BindView(R.id.iv_discovery_icon)
@@ -73,7 +76,7 @@ public class FriendsGroupDetailActivity extends BaseActivity implements View.OnC
     /**
      * 评论数据集合
      */
-    private List<CommentItem> mDataList;
+    private List<CommentsItem> mDataList;
     private BottomSheetDialog mCommentBottomSheetDialog;
     private EditText mEtContent;
     private BGANinePhotoLayout mCurrentClickNpl;
@@ -82,6 +85,8 @@ public class FriendsGroupDetailActivity extends BaseActivity implements View.OnC
      */
     private User toReplyUser;
     private FriendsGroupDetailPresenter mPresenter;
+    private FriendsShowBean friendsShowBean;
+    private String userId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,39 +97,29 @@ public class FriendsGroupDetailActivity extends BaseActivity implements View.OnC
     }
 
     private void initView() {
+        initToolbar();
         Intent intent = getIntent();
-        FriendsShowBean friendsShowBean = intent.getParcelableExtra("friendsShowBean");
-        MyLogger.e(friendsShowBean.toString());
-        // TODO: 2018/8/18 0018 waiting
+        userId = IPreference.prefHolder.getPreference(this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
+        friendsShowBean = intent.getParcelableExtra("friendsShowBean");
+        Glide.with(this).load(friendsShowBean.getHeadImg()).apply(new RequestOptions().placeholder(R.drawable.info_head_p)).into(ivDiscoveryIcon);
+        tvDiscoveryName.setText(friendsShowBean.getDeployName());
+        tvDiscoveryTime.setText(friendsShowBean.getDeployTime());
+        tvDiscoveryVote.setText(String.valueOf(friendsShowBean.getLikeAmount()));
+        tvDiscoveryVote.setCompoundDrawablesWithIntrinsicBounds(friendsShowBean.isLike() ? R.drawable.dianzan_small_done : R.drawable.dianzan_small, 0, 0, 0);
+        tvDiscoveryContent.setText(friendsShowBean.getContent());
+        nplItemMomentPhotos.setData(friendsShowBean.getImgUrls());
+        nplItemMomentPhotos.setDelegate(this);
+    }
+
+    private void initToolbar() {
         addDisposable(RxToolbar.navigationClicks(mToolbar).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish()));
         mTitle.setText(R.string.discovery_pyq_title);
-        ivDiscoveryIcon.setImageResource(R.drawable.info_head_p);
-        tvDiscoveryName.setText("xhl");
-        tvDiscoveryVote.setText("100");
-        tvDiscoveryContent.setText("撒谎接口撒回调接口撒回调接口撒");
-        nplItemMomentPhotos.setDelegate(this);
-        ArrayList<String> list = new ArrayList<>(Arrays.asList("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered11.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered12.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered13.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered14.png", "http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/images/staggered15.png"));
-        nplItemMomentPhotos.setData(list);
     }
 
     private void initData() {
-        mDataList = DatasUtil.createCommentItemList();
-        commentList.setDatas(mDataList);
-        addDisposable(RxView.clicks(mTvComment).subscribe(o -> showCommentDialog(null)));
-        if (mDataList.size() > 0) {
-            commentList.setOnItemClickListener(position -> {
-                CommentItem commentItem = mDataList.get(position);
-                if (DatasUtil.curUser.getId().equals(commentItem.getUser().getId())) {//复制或者删除自己的评论
-                    showAlertDialog(R.string.ensure_delete_reply, (dialog, which) -> mPresenter.deleteComment(commentItem));
-                } else {  //回复别人
-                    //回复当前条目的人,所以是getUser 不是getToReplyUser
-                    User toReplyUser = commentItem.getUser();
-                    showCommentDialog(toReplyUser);
-                }
-            });
-        } else {
-            commentList.setVisibility(View.GONE);
-        }
+        PyqCommentsObj obj = new PyqCommentsObj(friendsShowBean.getFindId());
+        mPresenter.qryFindComms(obj);
+        addDisposable(RxView.clicks(mTvComment).subscribe(o -> showCommentDialog()));
     }
 
     private void showAlertDialog(int messageId, DialogInterface.OnClickListener positiveListener) {
@@ -142,8 +137,7 @@ public class FriendsGroupDetailActivity extends BaseActivity implements View.OnC
         return R.layout.discovery_activity_friends_group_detail;
     }
 
-    private void showCommentDialog(@Nullable User toReplyUser) {
-        this.toReplyUser = toReplyUser;
+    private void showCommentDialog() {
         mCommentBottomSheetDialog = new BottomSheetDialog(this);
         mCommentBottomSheetDialog.setCanceledOnTouchOutside(true);
         @SuppressLint("InflateParams") View view = LayoutInflater.from(this).inflate(R.layout.layout_comment_fragment_dialog, null);
@@ -186,7 +180,7 @@ public class FriendsGroupDetailActivity extends BaseActivity implements View.OnC
                 if (toReplyUser != null) {
                     item.setToReplyUser(toReplyUser);
                 }
-                mDataList.add(item);
+                //mDataList.add(item);
                 commentList.notifyDataSetChanged();
                 //评论完以后把ReplyUser重新置空
                 toReplyUser = null;
@@ -264,8 +258,35 @@ public class FriendsGroupDetailActivity extends BaseActivity implements View.OnC
     }
 
     @Override
-    public void update2DeleteComment(CommentItem commentItem) {
-        mDataList.remove(commentItem);
+    public void update2DeleteComment(CommentsItem commentsItem) {
+        mDataList.remove(commentsItem);
         commentList.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showComments(ArrayList<CommentsItem> dataList) {
+        mDataList = dataList;
+        commentList.setDatas(dataList);
+        if (dataList.size() > 0) {
+            commentList.setOnItemClickListener(new CommentListView.OnItemClickListener() {
+                @Override
+                public void onItemClick(int position) {
+                    CommentsItem commentsItem = dataList.get(position);
+                    if (commentsItem.getDeployId() == 0) {  //单人的评论
+                        if (String.valueOf(commentsItem.getOwnerId()).equals(userId)) {
+                            showAlertDialog(R.string.ensure_delete_reply, (dialog, which) -> mPresenter.deleteComment(commentsItem));
+                        } else {
+                            showCommentDialog();
+                        }
+                    } else if (String.valueOf(commentsItem.getDeployId()).equals(userId)) {  //A回复B情况下 A是deployId
+                        showAlertDialog(R.string.ensure_delete_reply, (dialog, which) -> mPresenter.deleteComment(commentsItem));
+                    } else {
+                        showCommentDialog();
+                    }
+                }
+            });
+        } else {
+            commentList.setVisibility(View.GONE);
+        }
     }
 }

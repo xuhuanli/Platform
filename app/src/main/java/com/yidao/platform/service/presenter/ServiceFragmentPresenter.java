@@ -23,9 +23,8 @@ public class ServiceFragmentPresenter {
      * @param bpObj
      */
     public void sendBpApply(BpObj bpObj) {
-        RxHttpUtils.getSInstance()
-                .baseUrl("http://10.10.20.27:8080/")
-                .createSApi(ApiService.class)
+        RxHttpUtils
+                .createApi(ApiService.class)
                 .bpApply(bpObj)
                 .compose(Transformer.switchSchedulers())
                 .subscribe(new StringObserver() {

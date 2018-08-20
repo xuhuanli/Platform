@@ -26,9 +26,8 @@ public class WXEntryActivityPresenter {
         map.put("code", code);
         map.put("deviceId", deviceId);
         map.put("deviceType", android);
-        RxHttpUtils.getSInstance()
-                .baseUrl("http://10.10.20.27:8080/")
-                .createSApi(ApiService.class)
+        RxHttpUtils
+                .createApi(ApiService.class)
                 .sendCodeToServer(map)
                 .compose(Transformer.switchSchedulers())
                 .subscribe(new StringObserver() {

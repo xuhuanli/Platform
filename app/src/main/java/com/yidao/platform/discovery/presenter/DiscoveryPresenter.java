@@ -14,11 +14,14 @@ import android.widget.ImageView;
 import com.allen.library.RxHttpUtils;
 import com.allen.library.interceptor.Transformer;
 import com.allen.library.observer.CommonObserver;
+import com.allen.library.observer.StringObserver;
 import com.yidao.platform.R;
 import com.yidao.platform.app.ApiService;
+import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.discovery.DiscoveryViewInterface;
 import com.yidao.platform.discovery.bean.FriendsListBean;
 import com.yidao.platform.discovery.bean.FriendsShowBean;
+import com.yidao.platform.discovery.model.DianZanObj;
 import com.yidao.platform.discovery.model.FindDiscoveryObj;
 
 import java.util.ArrayList;
@@ -89,9 +92,8 @@ public class DiscoveryPresenter {
      * 获取朋友圈列表
      */
     public void getFriendsList(FindDiscoveryObj findDiscoveryObj) {
-        RxHttpUtils.getSInstance()
-                .baseUrl("http://10.10.20.24:8080/")
-                .createSApi(ApiService.class)
+        RxHttpUtils
+                .createApi(ApiService.class)
                 .getFriendsList(findDiscoveryObj)
                 .compose(Transformer.switchSchedulers())
                 .subscribe(new CommonObserver<FriendsListBean>() {
@@ -121,10 +123,11 @@ public class DiscoveryPresenter {
                                 bean.setHeadImg(listBean.getHeadImg());
                                 bean.setDeployName(listBean.getDeployName());
                                 bean.setDeployTime(listBean.getDeployTime());
-                                bean.setLikeAmount(String.valueOf(listBean.getLikeAmount()));
+                                bean.setLikeAmount(listBean.getLikeAmount());
                                 bean.setContent(listBean.getFind().getContent());
                                 bean.setImgUrls((ArrayList<String>) listBean.getImgs());
                                 bean.setFindId(String.valueOf(listBean.getFindId()));
+                                bean.setLike(listBean.isIsLike());
                                 dataList.add(bean);
                             }
 
@@ -136,6 +139,49 @@ public class DiscoveryPresenter {
 
 
                         }
+                    }
+                });
+    }
+
+    /**
+     * 点赞
+     */
+    public void sendFindLike(DianZanObj obj) {
+        RxHttpUtils
+                .createApi(ApiService.class)
+                .sendFindLike(obj)
+                .compose(Transformer.switchSchedulers())
+                .subscribe(new StringObserver() {
+                    @Override
+                    protected void onError(String errorMsg) {
+                        MyLogger.e(errorMsg);
+                    }
+
+                    @Override
+                    protected void onSuccess(String data) {
+                        MyLogger.e(data);
+                    }
+                });
+    }
+
+    /**
+     * 取消点赞
+     * @param obj
+     */
+    public void cancelFindLike(DianZanObj obj) {
+        RxHttpUtils
+                .createApi(ApiService.class)
+                .cancelFindLike(obj)
+                .compose(Transformer.switchSchedulers())
+                .subscribe(new StringObserver() {
+                    @Override
+                    protected void onError(String errorMsg) {
+                        MyLogger.e(errorMsg);
+                    }
+
+                    @Override
+                    protected void onSuccess(String data) {
+                        MyLogger.e(data);
                     }
                 });
     }

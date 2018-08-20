@@ -33,6 +33,7 @@ import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.app.utils.BitmapUtil;
+import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.read.adapter.MultipleReadDetailAdapter;
 import com.yidao.platform.read.adapter.ReadNewsDetailBean;
 import com.yidao.platform.read.bus.WebViewLoadEvent;
@@ -347,9 +348,11 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void pushCommentSuccess() {
         // TODO: 2018/8/16 0016 发布成功后需要刷新评论list数据 添加评论id的数据(推荐)或者重新获取
+        MyLogger.e("发布成功");
     }
 
     @Override
     public void pushCommentFail() {
+        MyLogger.e("发布失败");
     }
 }

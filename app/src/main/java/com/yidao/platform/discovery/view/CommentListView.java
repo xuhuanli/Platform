@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yidao.platform.R;
-import com.yidao.platform.discovery.bean.CommentItem;
+import com.yidao.platform.discovery.bean.CommentsItem;
 import com.yidao.platform.discovery.bean.UrlUtils;
 
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ public class CommentListView extends LinearLayout {
     private int itemSelectorColor;
     private OnItemClickListener onItemClickListener;
     private OnItemLongClickListener onItemLongClickListener;
-    private List<CommentItem> mDatas;
+    private List<CommentsItem> mDatas;
     private LayoutInflater layoutInflater;
 
     public OnItemClickListener getOnItemClickListener() {
@@ -45,15 +44,15 @@ public class CommentListView extends LinearLayout {
         this.onItemLongClickListener = onItemLongClickListener;
     }
 
-    public void setDatas(List<CommentItem> datas) {
+    public void setDatas(List<CommentsItem> datas) {
         if (datas == null) {
-            datas = new ArrayList<CommentItem>();
+            datas = new ArrayList<CommentsItem>();
         }
         mDatas = datas;
         notifyDataSetChanged();
     }
 
-    public List<CommentItem> getDatas() {
+    public List<CommentsItem> getDatas() {
         return mDatas;
     }
 
@@ -105,20 +104,18 @@ public class CommentListView extends LinearLayout {
         View convertView = layoutInflater.inflate(R.layout.item_comment, null, false);
         TextView commentTv = (TextView) convertView.findViewById(R.id.commentTv);
         final CircleMovementMethod circleMovementMethod = new CircleMovementMethod(itemSelectorColor, itemSelectorColor);
-        final CommentItem bean = mDatas.get(position);
-        String name = bean.getUser().getName();
-        String id = bean.getId();
-        String toReplyName = "";
-        if (bean.getToReplyUser() != null) {
-            toReplyName = bean.getToReplyUser().getName();
-        }
-
+        final CommentsItem bean = mDatas.get(position);
+        String ownerName = bean.getOwnerName();
+        String deployName = bean.getDeployName();
+        long ownerId = bean.getOwnerId();
+        long deployId = bean.getDeployId();
         SpannableStringBuilder builder = new SpannableStringBuilder();
-        builder.append(setClickableSpan(name, bean.getUser().getId()));
-
-        if (!TextUtils.isEmpty(toReplyName)) {
+        if (deployId == 0) {
+            builder.append(setClickableSpan(ownerName, String.valueOf(ownerId)));
+        } else {
+            builder.append(setClickableSpan(deployName, String.valueOf(deployId)));
             builder.append(" 回复 ");
-            builder.append(setClickableSpan(toReplyName, bean.getToReplyUser().getId()));
+            builder.append(setClickableSpan(ownerName, String.valueOf(bean.getOwnerId())));
         }
         builder.append(": ");
         //转换表情字符
@@ -127,27 +124,21 @@ public class CommentListView extends LinearLayout {
         commentTv.setText(builder);
 
         commentTv.setMovementMethod(circleMovementMethod);
-        commentTv.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (circleMovementMethod.isPassToTv()) {
-                    if (onItemClickListener != null) {
-                        onItemClickListener.onItemClick(position);
-                    }
+        commentTv.setOnClickListener(v -> {
+            if (circleMovementMethod.isPassToTv()) {
+                if (onItemClickListener != null) {
+                    onItemClickListener.onItemClick(position);
                 }
             }
         });
-        commentTv.setOnLongClickListener(new OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (circleMovementMethod.isPassToTv()) {
-                    if (onItemLongClickListener != null) {
-                        onItemLongClickListener.onItemLongClick(position);
-                    }
-                    return true;
+        commentTv.setOnLongClickListener(v -> {
+            if (circleMovementMethod.isPassToTv()) {
+                if (onItemLongClickListener != null) {
+                    onItemLongClickListener.onItemLongClick(position);
                 }
-                return false;
+                return true;
             }
+            return false;
         });
 
         return convertView;

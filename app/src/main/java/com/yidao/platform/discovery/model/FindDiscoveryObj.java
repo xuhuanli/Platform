@@ -14,7 +14,22 @@ public class FindDiscoveryObj {
     private boolean isImg;
     private PageBean page;
     private int status;
+    /**
+     * 这是登录用户ID
+     */
     private long memberId;
+    /**
+     * 发布朋友圈人的id,用来查询这个id下的朋友圈->我的发布
+     */
+    private  String userId;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public boolean isIsContent() {
         return isContent;

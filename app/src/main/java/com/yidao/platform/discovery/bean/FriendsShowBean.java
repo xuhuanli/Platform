@@ -28,7 +28,11 @@ public class FriendsShowBean implements Parcelable {
     /**
      * 点赞数
      */
-    private String likeAmount;
+    private long likeAmount;
+    /**
+     * 是否点赞
+     */
+    private boolean isLike;
     /**
      * 内容
      */
@@ -37,6 +41,14 @@ public class FriendsShowBean implements Parcelable {
      * 图片地址
      */
     private ArrayList<String> imgUrls;
+
+    public boolean isLike() {
+        return isLike;
+    }
+
+    public void setLike(boolean like) {
+        isLike = like;
+    }
 
     public String getFindId() {
         return findId;
@@ -70,11 +82,11 @@ public class FriendsShowBean implements Parcelable {
         this.deployTime = deployTime;
     }
 
-    public String getLikeAmount() {
+    public long getLikeAmount() {
         return likeAmount;
     }
 
-    public void setLikeAmount(String likeAmount) {
+    public void setLikeAmount(long likeAmount) {
         this.likeAmount = likeAmount;
     }
 
@@ -105,7 +117,7 @@ public class FriendsShowBean implements Parcelable {
         dest.writeString(this.headImg);
         dest.writeString(this.deployName);
         dest.writeString(this.deployTime);
-        dest.writeString(this.likeAmount);
+        dest.writeLong(this.likeAmount);
         dest.writeString(this.content);
         dest.writeStringList(this.imgUrls);
     }
@@ -118,7 +130,7 @@ public class FriendsShowBean implements Parcelable {
         this.headImg = in.readString();
         this.deployName = in.readString();
         this.deployTime = in.readString();
-        this.likeAmount = in.readString();
+        this.likeAmount = in.readLong();
         this.content = in.readString();
         this.imgUrls = in.createStringArrayList();
     }

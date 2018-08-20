@@ -91,7 +91,7 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
 
     private void initData() {
         mDataList = DatasUtil.createCommentItemList();
-        commentList.setDatas(mDataList);
+        //commentList.setDatas(mDataList);
         addDisposable(RxView.clicks(tvPublishComment).subscribe(o -> showCommentDialog(null)));
         if (mDataList.size() > 0) {
             commentList.setOnItemClickListener(position -> {

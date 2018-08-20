@@ -1,18 +1,68 @@
 package com.yidao.platform.discovery.presenter;
 
-import com.yidao.platform.discovery.FriendsGroupDetailInterface;
+import com.allen.library.RxHttpUtils;
+import com.allen.library.interceptor.Transformer;
+import com.allen.library.observer.CommonObserver;
+import com.yidao.platform.app.ApiService;
+import com.yidao.platform.app.utils.MyLogger;
+import com.yidao.platform.discovery.IViewFriendsGroupDetail;
 import com.yidao.platform.discovery.bean.CommentItem;
+import com.yidao.platform.discovery.bean.CommentsItem;
+import com.yidao.platform.discovery.bean.PyqCommentsBean;
+import com.yidao.platform.discovery.model.PyqCommentsObj;
 
-public class FriendsGroupDetailPresenter extends BasePresenter {
+import java.util.ArrayList;
+import java.util.List;
 
-    private FriendsGroupDetailInterface view;
+public class FriendsGroupDetailPresenter {
 
-    public FriendsGroupDetailPresenter(FriendsGroupDetailInterface view) {
-        this.view = view;
+    private IViewFriendsGroupDetail mView;
+
+    public FriendsGroupDetailPresenter(IViewFriendsGroupDetail view) {
+        this.mView = view;
     }
 
-    @Override
-    public void deleteComment(CommentItem commentItem) {
-        view.update2DeleteComment(commentItem);
+    public void deleteComment(CommentsItem commentsItem) {
+        mView.update2DeleteComment(commentsItem);
+    }
+
+    /**
+     * 获取朋友圈评论
+     *
+     * @param obj
+     */
+    public void qryFindComms(PyqCommentsObj obj) {
+        RxHttpUtils
+                .createApi(ApiService.class)
+                .qryFindComms(obj)
+                .compose(Transformer.switchSchedulers())
+                .subscribe(new CommonObserver<PyqCommentsBean>() {
+                    @Override
+                    protected void onError(String errorMsg) {
+                        MyLogger.e(errorMsg);
+                    }
+
+                    @Override
+                    protected void onSuccess(PyqCommentsBean pyqCommentsBean) {
+                        if (pyqCommentsBean.isStatus()) {
+                            List<PyqCommentsBean.ResultBean> result = pyqCommentsBean.getResult();
+                            ArrayList<CommentsItem> dataList = new ArrayList<>();
+                            for (PyqCommentsBean.ResultBean resultBean : result) {
+                                CommentsItem item = new CommentsItem();
+                                item.setCommentId(resultBean.getId());
+                                item.setMemberId(resultBean.getMemberId());
+                                item.setContent(resultBean.getContent());
+                                item.setDeployId(resultBean.getDeployId());
+                                item.setDeployName(resultBean.getDeployName());
+                                item.setOwnerId(resultBean.getOwnerId());
+                                item.setOwnerName(resultBean.getOwnerName());
+                                dataList.add(item);
+                            }
+                            mView.showComments(dataList);
+                        } else {
+                            MyLogger.e("加载评论失败");
+                        }
+                    }
+                });
     }
 }

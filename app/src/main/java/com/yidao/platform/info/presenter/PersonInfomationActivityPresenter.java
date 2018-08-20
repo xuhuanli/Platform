@@ -25,9 +25,7 @@ public class PersonInfomationActivityPresenter {
         map.put("id", userId);
         map.put(key, String.valueOf(value));
         RxHttpUtils
-                .getSInstance()
-                .baseUrl("http://10.10.20.8:8081/")
-                .createSApi(ApiService.class)
+                .createApi(ApiService.class)
                 .updateUserInfo(map)
                 .compose(Transformer.switchSchedulers())
                 .subscribe(new StringObserver() {

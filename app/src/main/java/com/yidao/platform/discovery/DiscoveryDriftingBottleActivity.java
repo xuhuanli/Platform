@@ -98,6 +98,25 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity implements IVi
         changeBackground(R.drawable.drift_bottle_has_bar);
         initStatusBar();
         mPresenter = new BottleActivityPresenter(this);
+        //扔瓶子
+        addDisposable(RxView.clicks(mIvPushBottle).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
+            Intent intent = new Intent(DiscoveryDriftingBottleActivity.this, BottlePushActivity.class);
+            startActivityForResult(intent, PUSH_BOTTLE_REQUEST);
+        }));
+        //捡瓶子
+        addDisposable(RxView.clicks(mIvPullBottle).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(Object o) throws Exception {
+                // TODO: 2018/8/20 0020 替换成userId
+                mPresenter.pickBottle("9978363793506304");
+            }
+        }));
+        /**
+         * 我的瓶子
+         */
+        addDisposable(RxView.clicks(mIvMyBottle).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
+            startActivity(DiscoveryMyBottleActivity.class);
+        }));
     }
 
     private void initStatusBar() {
@@ -111,22 +130,6 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity implements IVi
     private void initToolbar() {
         setSupportActionBar(mToolbar);
         addDisposable(RxToolbar.navigationClicks(mToolbar).subscribe(o -> finish()));
-        //扔瓶子
-        addDisposable(RxView.clicks(mIvPushBottle).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
-            Intent intent = new Intent(DiscoveryDriftingBottleActivity.this, BottlePushActivity.class);
-            startActivityForResult(intent, PUSH_BOTTLE_REQUEST);
-        }));
-        //捡瓶子
-        addDisposable(RxView.clicks(mIvPullBottle).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) throws Exception {
-                mPresenter.pickBottle("9978363793506304");
-            }
-        }));
-        addDisposable(RxView.clicks(mIvMyBottle).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
-            // TODO: 2018/7/18 0018 我的瓶子详情
-            startActivity(DiscoveryMyBottleActivity.class);
-        }));
     }
 
     /**

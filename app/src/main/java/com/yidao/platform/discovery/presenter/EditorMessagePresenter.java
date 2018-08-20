@@ -39,9 +39,7 @@ public class EditorMessagePresenter {
         sendFindObj.setContent(content);
         sendFindObj.setImgUrls(mUpLoadPicList);
         RxHttpUtils
-                .getSInstance()
-                .baseUrl("http://10.10.20.24:8080/")
-                .createSApi(ApiService.class)
+                .createApi(ApiService.class)
                 .sendFind(sendFindObj)
                 .compose(Transformer.switchSchedulers())
                 .subscribe(new StringObserver() {

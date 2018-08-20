@@ -30,8 +30,11 @@ import com.yidao.platform.app.base.BaseFragment;
 import com.yidao.platform.app.utils.FileUtil;
 import com.yidao.platform.discovery.adapter.MomentAdapter;
 import com.yidao.platform.discovery.bean.FriendsShowBean;
+import com.yidao.platform.discovery.model.DianZanObj;
 import com.yidao.platform.discovery.model.FindDiscoveryObj;
 import com.yidao.platform.discovery.presenter.DiscoveryPresenter;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -82,10 +85,12 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
      */
     private int mNextRequestPage = 1;
     private FindDiscoveryObj findDiscoveryObj;
+    private DianZanObj dianZanObj;
 
     @Override
     protected void initView() {
         mPresenter = new DiscoveryPresenter(this);
+        //EventBus.getDefault().register(this);
         initToolbar();
         initRecyclerView();
         initSwipeRefreshLayout();
@@ -120,11 +125,17 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
         mPresenter.getFriendsList(findDiscoveryObj);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //EventBus.getDefault().unregister(this);
+    }
+
     private void createObj() {
         if (findDiscoveryObj == null) {
             findDiscoveryObj = new FindDiscoveryObj();
         }
-        findDiscoveryObj.setMemberId(695286546104320L);
+        findDiscoveryObj.setMemberId(Long.parseLong(userId));
         findDiscoveryObj.setIsContent(true);
         findDiscoveryObj.setIsImg(true);
         FindDiscoveryObj.PageBean pageBean = new FindDiscoveryObj.PageBean();
@@ -135,6 +146,8 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
 
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        //取消闪烁
+        mRecyclerView.setItemAnimator(null);
     }
 
     private void initToolbar() {
@@ -157,7 +170,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
         mNextRequestPage = 1;
         if (findDiscoveryObj == null) {
             createObj();
-        }else {
+        } else {
             findDiscoveryObj.getPage().setPageIndex(mNextRequestPage);
         }
         if (mAdapter != null) {
@@ -220,14 +233,33 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
 
     @Override
     public void loadRecyclerData(ArrayList<FriendsShowBean> dataList) {
-        mAdapter = new MomentAdapter(dataList,this);
+        mAdapter = new MomentAdapter(dataList, this);
         mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             Intent intent = new Intent(getActivity(), FriendsGroupDetailActivity.class);
             //传一个序列化的对象到下一页 就不去请求接口了
-            intent.putExtra("friendsShowBean",(FriendsShowBean)adapter.getItem(position));
+            intent.putExtra("friendsShowBean", (FriendsShowBean) adapter.getItem(position));
             startActivity(intent);
+        });
+        mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+            FriendsShowBean item = (FriendsShowBean) adapter.getItem(position);
+            // TODO: 2018/8/20 0020 替换userId
+            boolean isLike = item.isLike();
+            if (dianZanObj == null) {
+                dianZanObj = new DianZanObj();
+            }
+            dianZanObj.setUserId(userId);
+            dianZanObj.setFindId(item.getFindId());
+            if (isLike) {  //已点赞，点击后变成不点赞 传服务器
+                mPresenter.cancelFindLike(dianZanObj);
+                item.setLikeAmount(item.getLikeAmount()-1);
+            } else {
+                mPresenter.sendFindLike(dianZanObj);
+                item.setLikeAmount(item.getLikeAmount()+1);
+            }
+            item.setLike(!isLike);
+            mAdapter.notifyItemChanged(position);
         });
     }
 

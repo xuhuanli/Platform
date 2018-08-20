@@ -76,7 +76,7 @@ public class ReadCommentsDetailActivity extends BaseActivity implements ReadComm
 
     private void initData(){
         mDataList = DatasUtil.createCommentItemList();
-        commentList.setDatas(mDataList);
+        //commentList.setDatas(mDataList);
         addDisposable(RxView.clicks(tvComment).subscribe(o -> showCommentDialog(null)));
         if (mDataList.size() > 0) {
             commentList.setOnItemClickListener(position -> {

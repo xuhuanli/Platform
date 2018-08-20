@@ -2,8 +2,16 @@ package com.yidao.platform.app;
 
 public class Constant {
 
-    //http://192.168.1.149:8080/product/style/get/1014051050182672384  test
-    public static final String BASE_URL = "http://10.10.20.11:8060/";
+    //王鹏
+    //public static final String BASE_URL = "http://10.10.20.8:8060/";
+    //徐ww
+    public static final String BASE_URL = "http://10.10.20.24:8080/";
+    //徐ly
+    //public static final String BASE_URL = "http://10.10.20.27:8080/";
+    //张zk
+    //public static final String BASE_URL = "http://10.10.20.10:8081/";
+    //陈dq
+    //public static final String BASE_URL = "http://10.10.20.5:8080/platform-pc-web/";
 
     /**
      * 全局debug模式开关 在release时候设置为false
