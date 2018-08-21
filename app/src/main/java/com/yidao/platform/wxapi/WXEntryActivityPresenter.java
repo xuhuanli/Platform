@@ -2,9 +2,11 @@ package com.yidao.platform.wxapi;
 
 import com.allen.library.RxHttpUtils;
 import com.allen.library.interceptor.Transformer;
-import com.allen.library.observer.StringObserver;
+import com.allen.library.observer.CommonObserver;
+import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.app.ApiService;
 import com.yidao.platform.app.utils.MyLogger;
+import com.yidao.platform.login.bean.WxCodeBean;
 
 import java.util.HashMap;
 
@@ -17,6 +19,7 @@ public class WXEntryActivityPresenter {
 
     /**
      * 传微信code到服务器
+     *
      * @param code
      * @param deviceId
      * @param android
@@ -30,21 +33,25 @@ public class WXEntryActivityPresenter {
                 .createApi(ApiService.class)
                 .sendCodeToServer(map)
                 .compose(Transformer.switchSchedulers())
-                .subscribe(new StringObserver() {
+                .subscribe(new CommonObserver<WxCodeBean>() {
                     @Override
                     protected void onError(String errorMsg) {
-                        MyLogger.i("weixin",errorMsg);
-                        showError();
+                        MyLogger.e(errorMsg);
+                        mView.loginFail();
                     }
 
                     @Override
-                    protected void onSuccess(String data) {
-                        MyLogger.i("weixin",data);
+                    protected void onSuccess(WxCodeBean wxCodeBean) {
+                        switch (wxCodeBean.getErrCode()) {
+                            case "1000":
+                                WxCodeBean.ResultBean result = wxCodeBean.getResult();
+                                mView.loginSuccess(result);
+                                break;
+                            default:
+                                mView.loginFail();
+                                break;
+                        }
                     }
                 });
-    }
-
-    private void showError() {
-        mView.loginFail();
     }
 }

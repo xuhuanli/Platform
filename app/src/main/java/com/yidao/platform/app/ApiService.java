@@ -3,14 +3,15 @@ package com.yidao.platform.app;
 import com.yidao.platform.discovery.bean.FriendsListBean;
 import com.yidao.platform.discovery.bean.PickBottleBean;
 import com.yidao.platform.discovery.bean.PyqCommentsBean;
-import com.yidao.platform.discovery.model.SendFindObj;
 import com.yidao.platform.discovery.model.DianZanObj;
 import com.yidao.platform.discovery.model.FindDiscoveryObj;
 import com.yidao.platform.discovery.model.PyqCommentsObj;
 import com.yidao.platform.discovery.model.PyqFindIdObj;
+import com.yidao.platform.discovery.model.SendFindObj;
 import com.yidao.platform.discovery.model.ThrowBottleObj;
 import com.yidao.platform.info.model.UserCollectArtBean;
 import com.yidao.platform.info.model.UserReadRecordBean;
+import com.yidao.platform.login.bean.WxCodeBean;
 import com.yidao.platform.read.bean.ArticleBean;
 import com.yidao.platform.read.bean.BannerBean;
 import com.yidao.platform.read.bean.CategoryArticleExtBean;
@@ -18,9 +19,6 @@ import com.yidao.platform.read.bean.ChannelBean;
 import com.yidao.platform.read.bean.CommonArticleBean;
 import com.yidao.platform.read.bean.SearchBean;
 import com.yidao.platform.service.model.BpObj;
-import com.yidao.platform.testpackage.bean.TestBean;
-import com.yidao.platform.testpackage.bean.UserDataBean;
-import com.yidao.platform.testpackage.bean.WxTokenBean;
 
 import java.util.Map;
 
@@ -37,14 +35,31 @@ import retrofit2.http.QueryMap;
 
 public interface ApiService {
 
-    @GET("product/style/get/1014051050182672384")
-    Observable<TestBean> getGod();
+    //-------------登录模块---------------
 
-    @GET("sns/oauth2/access_token")
-    Observable<WxTokenBean> getWxToken(@Query("appid") String appid, @Query("secret") String secret, @Query("code") String code, @Query("grant_type") String grant_type);
+    /**
+     * 发送code到server
+     */
+    @GET("app/user/login/wx")
+    Observable<WxCodeBean> sendCodeToServer(@QueryMap Map<String, String> options);
 
-    @GET("sns/userinfo")
-    Observable<UserDataBean> getUserInfo(@Query("access_token") String access_token, @Query("openid") String openid);
+    /**
+     * 发送验证码
+     */
+    @GET("app/phone/send-code")
+    Observable<String> sendVCode(@Query("phone") String phone, @Query("userId") String userId);
+
+    /**
+     * 绑定手机号
+     */
+    @POST("app/phone/bind")
+    Observable<String> bindPhone(@QueryMap Map<String, String> options);
+
+    /**
+     * 绑定手机号
+     */
+    @POST("app/user/token-refresh")
+    Observable<String> refreshToken(@Field("refreshToken") String refreshToken);
 
     /**
      * 修改个人信息 后期注意ip地址的修改
@@ -59,12 +74,6 @@ public interface ApiService {
     @Headers({"Content-Type: application/json;charset=UTF-8"})
     @POST("app/bp/apply")
     Observable<String> bpApply(@Body BpObj bpObj);
-
-    /**
-     * 发送code到server 后期注意ip地址的修改 10.10.20.27:8080
-     */
-    @GET("app/user-login/grant")
-    Observable<String> sendCodeToServer(@QueryMap Map<String, String> options);
 
     @Headers({"Content-Type: application/json;charset=UTF-8"})
     @POST("app/bottle/throwBottle")

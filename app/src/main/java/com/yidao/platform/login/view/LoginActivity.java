@@ -1,6 +1,5 @@
 package com.yidao.platform.login.view;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -12,7 +11,6 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
-import com.yidao.platform.login.LoginBindingPhoneActivity;
 
 import java.util.concurrent.TimeUnit;
 
@@ -43,10 +41,10 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void setListener() {
-        /*addDisposable(RxView.clicks(mBtnLogin)
+        addDisposable(RxView.clicks(mBtnLogin)
                 .throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS)
-                .subscribe(o -> wxLogin()));*/
-        startActivity(new Intent(LoginActivity.this, LoginBindingPhoneActivity.class));
+                .subscribe(o -> wxLogin()));
+        //startActivity(new Intent(LoginActivity.this, LoginBindingPhoneActivity.class));
     }
 
     private void wxLogin() {

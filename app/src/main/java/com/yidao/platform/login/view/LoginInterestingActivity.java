@@ -1,4 +1,4 @@
-package com.yidao.platform.login;
+package com.yidao.platform.login.view;
 
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.yidao.platform.R;
 import com.yidao.platform.app.base.BaseActivity;
+import com.yidao.platform.login.LoginInterestItemAdapter;
 
 import butterknife.BindView;
 

@@ -6,8 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.allen.library.RxHttpUtils;
-import com.allen.library.interceptor.Transformer;
-import com.allen.library.observer.CommonObserver;
+import com.allen.library.utils.ToastUtils;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
@@ -16,13 +15,10 @@ import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.app.Constant;
-import com.yidao.platform.app.utils.MyLogger;
-import com.yidao.platform.login.LoginBindingPhoneActivity;
-import com.yidao.platform.app.ApiService;
-import com.yidao.platform.testpackage.bean.UserDataBean;
-import com.yidao.platform.testpackage.bean.WxTokenBean;
+import com.yidao.platform.login.bean.WxCodeBean;
+import com.yidao.platform.login.view.LoginBindingPhoneActivity;
 
-public class WXEntryActivity extends Activity implements IWXAPIEventHandler ,IViewWXEntryActivity{
+public class WXEntryActivity extends Activity implements IWXAPIEventHandler, IViewWXEntryActivity {
 
     private IWXAPI mWxapi;
     private static final int RETURN_MSG_TYPE_LOGIN = 1;
@@ -57,31 +53,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler ,IVi
                         //拿到了微信返回的code,立马再去请求access_token
                         String code = ((SendAuth.Resp) baseResp).code;
                         String deviceId = IPreference.prefHolder.getPreference(WXEntryActivity.this).get(Constant.STRING_DEVICE_ID, IPreference.DataType.STRING);
-                        mPresenter.sendCodeToServer(code,deviceId,"Android");
-                        /*RxHttpUtils
-                                .getSInstance()
-                                .baseUrl("https://api.weixin.qq.com/")
-                                .createSApi(ApiService.class)
-                                .getWxToken(Constant.WX_LOGIN_APP_ID, Constant.WX_LOGIN_APP_SECRET, code, "authorization_code")
-                                .compose(Transformer.<WxTokenBean>switchSchedulers())
-                                .subscribe(new CommonObserver<WxTokenBean>() {
-                                    @Override
-                                    protected void onError(String errorMsg) {
-                                        MyLogger.d(errorMsg);
-                                        finish();
-                                    }
-
-                                    @Override
-                                    protected void onSuccess(WxTokenBean wxTokenBean) {
-                                        MyLogger.d("success"+wxTokenBean.getErrmsg()+"------"+wxTokenBean.getErrcode());
-                                        if (wxTokenBean.getErrmsg() == null) {
-                                            String access_token = wxTokenBean.getAccess_token();
-                                            String openid = wxTokenBean.getOpenid();
-                                            MyLogger.d(access_token);
-                                            requestUserInfo(access_token, openid);
-                                        }
-                                    }
-                                });*/
+                        mPresenter.sendCodeToServer(code, deviceId, "Android");
                         break;
                     case RETURN_MSG_TYPE_SHARE:  //type = 2 表示分享
                         //分享成功后结束掉回调activity
@@ -90,33 +62,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler ,IVi
                 }
                 break;
         }
-    }
-
-    /**
-     * 获取用户信息
-     */
-    private void requestUserInfo(String access_token, String openid) {
-        RxHttpUtils
-                .getSInstance()
-                .baseUrl("https://api.weixin.qq.com/")
-                .createSApi(ApiService.class)
-                .getUserInfo(access_token, openid)
-                .compose(Transformer.<UserDataBean>switchSchedulers())
-                .subscribe(new CommonObserver<UserDataBean>() {
-                    @Override
-                    protected void onError(String errorMsg) {
-
-                    }
-
-                    @Override
-                    protected void onSuccess(UserDataBean userDataBean) {
-                        if (userDataBean.getErrmsg() == null) {
-                            Intent intent = new Intent(WXEntryActivity.this, LoginBindingPhoneActivity.class);
-                            startActivity(intent);
-                        }
-                        finish();
-                    }
-                });
     }
 
     @Override
@@ -128,6 +73,21 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler ,IVi
 
     @Override
     public void loginFail() {
+        ToastUtils.showToast("登录失败");
+    }
 
+    @Override
+    public void loginSuccess(WxCodeBean.ResultBean result) {
+        IPreference.prefHolder.getPreference(this).put(Constant.STRING_USER_TOKEN, result.getToken());
+        IPreference.prefHolder.getPreference(this).put(Constant.STRING_USER_REFRESHTOKEN, result.getRefreshToken());
+        if (result.isBindPhone()) {
+            // TODO: 2018/8/21 0021 上线时候修改userId 21211不要
+            //IPreference.prefHolder.getPreference(this).put(Constant.STRING_USER_ID,result.getUserId());
+            IPreference.prefHolder.getPreference(this).put(Constant.STRING_USER_ID, "21211");
+        }else {
+            Intent intent = new Intent(this, LoginBindingPhoneActivity.class);
+            intent.putExtra(Constant.STRING_USER_ID,"21211");
+            startActivity(intent);
+        }
     }
 }

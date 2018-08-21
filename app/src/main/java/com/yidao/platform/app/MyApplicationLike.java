@@ -20,9 +20,7 @@ import com.tencent.bugly.beta.Beta;
 import com.tencent.tinker.loader.app.DefaultApplicationLike;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.app.utils.FileUtil;
-import com.yidao.platform.app.utils.MyCacheInterceptor;
 import com.yidao.platform.app.utils.MyLogger;
-import com.yidao.platform.app.utils.TokenInterceptor;
 import com.yidao.platform.container.ContainerActivity;
 
 import okhttp3.OkHttpClient;
@@ -44,11 +42,12 @@ public class MyApplicationLike extends DefaultApplicationLike {
         // 这里实现SDK初始化，appId替换成你的在Bugly平台申请的appId
         // 调试时，将第三个参数改为true
         appContext = getApplication();
+        //为了尽快拿到设备ID回调，请把阿里云推送放到最前面
+        initCloudChannel(appContext);
+        initRetrofit();
         initBugly();
         initLeakCanary();
         initLogger();
-        initRetrofit();
-        initCloudChannel(appContext);
     }
 
     private void initBugly() {
@@ -84,6 +83,8 @@ public class MyApplicationLike extends DefaultApplicationLike {
     }
 
     private OkHttpClient initOkHttpClient() {
+        //HashMap<String, Object> headers = new HashMap<>();
+        //headers.put("token", IPreference.prefHolder.getPreference(getAppContext()).getString(Constant.STRING_USER_TOKEN));
         OkHttpClient okHttpClient = new OkHttpConfig
                 .Builder()
                 //全局的请求头信息
@@ -93,11 +94,12 @@ public class MyApplicationLike extends DefaultApplicationLike {
                 //1、在有网络的时候，先去读缓存，缓存时间到了，再去访问网络获取数据；
                 //2、在没有网络的时候，去读缓存中的数据。
                 .setCache(false)
+                //.setHeaders(headers)
                 //全局持久话cookie,保存本地每次都会携带在header中（默认false）
                 .setSaveCookie(false)
                 //添加自己的拦截器 基于DiskLruCache
-                .setAddInterceptor(new MyCacheInterceptor())
-                //.setAddInterceptor(new TokenInterceptor())
+                //.setAddInterceptor(new MyCacheInterceptor())
+                .setAddInterceptor(new TokenInterceptor())
                 //全局ssl证书认证
                 //1、信任所有证书,不安全有风险（默认信任所有证书）
                 //.setSslSocketFactory()
@@ -129,9 +131,9 @@ public class MyApplicationLike extends DefaultApplicationLike {
             @SuppressLint("LongLogTag")
             @Override
             public void onSuccess(String response) {
-                MyLogger.i(TAG, "init cloudchannel success" + response);
+                MyLogger.e("init cloudchannel success" + response);
                 String deviceId = pushService.getDeviceId();
-                MyLogger.i(TAG, "当前设备对应的deviceId是-->" + deviceId);
+                MyLogger.e("当前设备对应的deviceId是-->" + deviceId);
                 IPreference.prefHolder.getPreference(getAppContext()).put(Constant.STRING_DEVICE_ID, deviceId);
             }
 

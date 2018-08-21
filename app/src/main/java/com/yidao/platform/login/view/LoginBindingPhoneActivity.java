@@ -1,4 +1,4 @@
-package com.yidao.platform.login;
+package com.yidao.platform.login.view;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -23,6 +23,7 @@ import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.app.utils.PhoneRegUtil;
 import com.yidao.platform.container.ContainerActivity;
+import com.yidao.platform.login.presenter.LoginBindingPhonePresenter;
 
 import java.util.concurrent.TimeUnit;
 
@@ -34,10 +35,10 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
-public class LoginBindingPhoneActivity extends BaseActivity {
+public class LoginBindingPhoneActivity extends BaseActivity implements IViewBindingPhoneActivity{
 
     //最大倒计时长
-    private static final long MAX_COUNT_TIME = 30;
+    private static final long MAX_COUNT_TIME = 60;
     @BindView(R.id.et_phone)
     EditText etPhone;
     @BindView(R.id.btn_v_code)
@@ -48,10 +49,13 @@ public class LoginBindingPhoneActivity extends BaseActivity {
     TextView tvRegisterProtocol;
     @BindView(R.id.btn_ensure)
     Button btnEnsure;
+    private LoginBindingPhonePresenter mPresenter;
+    private String userId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mPresenter = new LoginBindingPhonePresenter(this);
         initView();
     }
 
@@ -62,6 +66,7 @@ public class LoginBindingPhoneActivity extends BaseActivity {
     }
 
     private void initView() {
+        userId = getIntent().getStringExtra(Constant.STRING_USER_ID);
         addDisposable(RxView.clicks(btnEnsure).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
             IPreference.prefHolder.getPreference(LoginBindingPhoneActivity.this).put(Constant.STRING_USER_ID, "21211");
             startActivity(ContainerActivity.class);
@@ -76,7 +81,7 @@ public class LoginBindingPhoneActivity extends BaseActivity {
                     if (TextUtils.isEmpty(phone)) {
                         ToastUtils.showToast("电话号码不能为空");
                         return Observable.empty();
-                    }else if (!PhoneRegUtil.checkPhoneNumber(phone)){
+                    } else if (!PhoneRegUtil.checkPhoneNumber(phone)) {
                         ToastUtils.showToast("请输入正确的手机号");
                         return Observable.empty();
                     }
@@ -84,6 +89,8 @@ public class LoginBindingPhoneActivity extends BaseActivity {
                 })
                 //将点击事件转换成倒计时事件
                 .flatMap((Function<Object, ObservableSource<Long>>) o -> {
+                    //请求验证码
+                    mPresenter.requestVCode(etPhone.getText().toString(),userId);
                     //更新发送按钮的状态并初始化显现倒计时文字
                     btnVCode.setEnabled(false);
                     btnVCode.setBackgroundColor(Color.GRAY);
@@ -118,7 +125,7 @@ public class LoginBindingPhoneActivity extends BaseActivity {
                 ToastUtils.showToast("跳转到协议page");
             }
         };
-        builder.setSpan(clickableSpan,10,str.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        builder.setSpan(clickableSpan, 10, str.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#009ad6"));
         builder.setSpan(colorSpan, 10, str.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         tvRegisterProtocol.setText(builder);
@@ -128,5 +135,10 @@ public class LoginBindingPhoneActivity extends BaseActivity {
     @Override
     protected int getLayoutId() {
         return R.layout.login_activity_binding_phone;
+    }
+
+    @Override
+    public void sendCodeSuccess() {
+        ToastUtils.showToast("验证码发送成功");
     }
 }

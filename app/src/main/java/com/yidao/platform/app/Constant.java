@@ -5,9 +5,9 @@ public class Constant {
     //王鹏
     //public static final String BASE_URL = "http://10.10.20.8:8060/";
     //徐ww
-    public static final String BASE_URL = "http://10.10.20.24:8080/";
+    //public static final String BASE_URL = "http://10.10.20.24:8080/";
     //徐ly
-    //public static final String BASE_URL = "http://10.10.20.27:8080/";
+    public static final String BASE_URL = "http://10.10.20.21:8080/";
     //张zk
     //public static final String BASE_URL = "http://10.10.20.10:8081/";
     //陈dq
@@ -81,11 +81,22 @@ public class Constant {
     public static final int PAGE_SIZE = 6;
     public static final String STRING_ART_ID = "artId";
     public static final String STRING_URL = "url";
-    public static final String STRING_USER_ID = "userId";
     public static final String STRING_COLLECTION = "collection";
     public static final String STRING_DIAN_ZAN = "dian_zan";
     public static final String STRING_TITLE = "title";
     public static final String STRING_VALUE = "value";
+    public static final String STRING_USER_ID = "userId";
+    public static final String STRING_USER_NAME = "nickname";
+    public static final String STRING_USER_SEX = "sex";
+    public static final String STRING_USER_COUNTRY = "country";
+    public static final String STRING_USER_PROVINCE = "province";
+    public static final String STRING_USER_CITY = "city";
+    public static final String STRING_USER_HEADIMGURL = "headImgUrl";
+    public static final String STRING_USER_PRIVILEGELIST = "privilegeList";
+    public static final String STRING_USER_TOKEN = "token";
+    public static final String STRING_USER_REFRESHTOKEN = "refreshToken";
+    public static final String STRING_USER_FIRSTLOGIN = "firstLogin";
+    public static final String STRING_USER_BINDPHONE = "bindPhone";
 
     public static final String STRING_DEVICE_ID = "deviceId";
 }

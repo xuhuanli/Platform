@@ -1,4 +1,4 @@
-package com.yidao.platform.login;
+package com.yidao.platform.login.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

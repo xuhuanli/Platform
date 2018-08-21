@@ -2,10 +2,14 @@ package com.yidao.platform.login.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.ImageView;
 
+import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
+import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
+import com.yidao.platform.container.ContainerActivity;
 
 import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.bingoogolapple.bgabanner.BGALocalImageSize;
@@ -22,6 +26,12 @@ public class GuideActivity extends BaseActivity {
     }
 
     private void initView() {
+        String userId = IPreference.prefHolder.getPreference(this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
+        // TODO: 2018/8/21 0021 发布时候记得删除注释
+        if (!TextUtils.isEmpty(userId)) {  //如果userId不为空 则表示用户已经登录 直接跳转到首页  token过期的情况会在首页处理 然后重新跳转到登录
+            startActivity(ContainerActivity.class);
+            finish();
+        }
         mBackgroundBanner = findViewById(R.id.banner_guide_background);
     }
 
