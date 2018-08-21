@@ -1,17 +1,17 @@
 package com.yidao.platform.info.view;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.allen.library.utils.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
@@ -22,7 +22,7 @@ import com.yidao.platform.discovery.FriendsGroupDetailActivity;
 import com.yidao.platform.discovery.adapter.MomentAdapter;
 import com.yidao.platform.discovery.bean.FriendsShowBean;
 import com.yidao.platform.discovery.model.FindDiscoveryObj;
-import com.yidao.platform.info.adapter.PublishAdapter;
+import com.yidao.platform.discovery.model.PyqFindIdObj;
 import com.yidao.platform.info.presenter.MyPublishActivityPresenter;
 
 import java.util.ArrayList;
@@ -46,6 +46,7 @@ public class InfoMyPublishActivity extends BaseActivity implements BaseQuickAdap
      */
     private int mNextRequestPage = 1;
     private MomentAdapter mAdapter;
+    private ArrayList<FriendsShowBean> mDataList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,8 +69,7 @@ public class InfoMyPublishActivity extends BaseActivity implements BaseQuickAdap
         findDiscoveryObj.setMemberId(Long.parseLong(userId));
         findDiscoveryObj.setIsContent(true);
         findDiscoveryObj.setIsImg(true);
-        // TODO: 2018/8/20 0020 注意替换userId
-        findDiscoveryObj.setUserId("21211");
+        findDiscoveryObj.setUserId(userId);
         FindDiscoveryObj.PageBean pageBean = new FindDiscoveryObj.PageBean();
         pageBean.setPageIndex(mNextRequestPage);
         pageBean.setPageSize(Constant.PAGE_SIZE);
@@ -99,13 +99,23 @@ public class InfoMyPublishActivity extends BaseActivity implements BaseQuickAdap
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         switch (view.getId()) {
-            case R.id.tv_discovery_reply:
-                ToastUtils.showToast("跳转到详情");
-                break;
             case R.id.tv_delete:
-                ToastUtils.showToast("删除这个条目");
+                showAlertDialog(R.string.ensure_delete_reply, (dialog, which) -> {
+                    FriendsShowBean item = (FriendsShowBean) adapter.getItem(position);
+                    PyqFindIdObj obj = new PyqFindIdObj(item.getFindId());
+                    mPresenter.deleteFind(obj,item);
+                });
                 break;
         }
+    }
+
+    private void showAlertDialog(int messageId, DialogInterface.OnClickListener positiveListener) {
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setMessage(messageId)
+                .setPositiveButton(R.string.ensure, positiveListener)
+                .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
+                .create();
+        alertDialog.show();
     }
 
     @Override
@@ -124,7 +134,9 @@ public class InfoMyPublishActivity extends BaseActivity implements BaseQuickAdap
 
     @Override
     public void loadRecyclerData(ArrayList<FriendsShowBean> dataList) {
+        mDataList = dataList;
         mAdapter = new MomentAdapter(dataList, null);
+        mAdapter.setDeleteVisible(true);
         mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
@@ -147,5 +159,12 @@ public class InfoMyPublishActivity extends BaseActivity implements BaseQuickAdap
         if (mAdapter != null) {
             mAdapter.addData(dataList);
         }
+    }
+
+    @Override
+    public void deleteSuccess(FriendsShowBean item) {
+        //删除成功
+        mDataList.remove(item);
+        mAdapter.notifyDataSetChanged();
     }
 }

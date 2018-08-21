@@ -3,10 +3,13 @@ package com.yidao.platform.info.presenter;
 import com.allen.library.RxHttpUtils;
 import com.allen.library.interceptor.Transformer;
 import com.allen.library.observer.CommonObserver;
+import com.allen.library.observer.StringObserver;
 import com.yidao.platform.app.ApiService;
+import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.discovery.bean.FriendsListBean;
 import com.yidao.platform.discovery.bean.FriendsShowBean;
 import com.yidao.platform.discovery.model.FindDiscoveryObj;
+import com.yidao.platform.discovery.model.PyqFindIdObj;
 import com.yidao.platform.info.view.IViewMyPublishActivity;
 
 import java.util.ArrayList;
@@ -65,6 +68,27 @@ public class MyPublishActivityPresenter {
 
 
                         }
+                    }
+                });
+    }
+
+    /**
+     * 删除朋友圈
+     */
+    public void deleteFind(PyqFindIdObj obj, FriendsShowBean item) {
+        RxHttpUtils
+                .createApi(ApiService.class)
+                .deleteFind(obj)
+                .compose(Transformer.switchSchedulers())
+                .subscribe(new StringObserver() {
+                    @Override
+                    protected void onError(String errorMsg) {
+                        MyLogger.e(errorMsg);
+                    }
+
+                    @Override
+                    protected void onSuccess(String data) {
+                        mView.deleteSuccess(item);
                     }
                 });
     }

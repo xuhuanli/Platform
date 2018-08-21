@@ -12,4 +12,6 @@ public interface IViewMyPublishActivity {
     void loadRecyclerData(ArrayList<FriendsShowBean> dataList);
 
     void loadMoreData(ArrayList<FriendsShowBean> dataList);
+
+    void deleteSuccess(FriendsShowBean item);
 }

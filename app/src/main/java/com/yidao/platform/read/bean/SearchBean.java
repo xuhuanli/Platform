@@ -24,7 +24,7 @@ public class SearchBean {
 
     public static class ResultBean {
 
-        private int id;
+        private long id;
         private String title;
         private String createTime;
         private int status;
@@ -45,11 +45,11 @@ public class SearchBean {
         private String fromUrl;
         private String articleContent;
 
-        public int getId() {
+        public long getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(long id) {
             this.id = id;
         }
 

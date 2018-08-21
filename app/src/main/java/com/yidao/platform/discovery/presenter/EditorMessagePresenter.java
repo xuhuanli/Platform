@@ -10,7 +10,7 @@ import com.allen.library.observer.StringObserver;
 import com.allen.library.utils.ToastUtils;
 import com.yidao.platform.app.ApiService;
 import com.yidao.platform.app.utils.OssUploadUtil;
-import com.yidao.platform.discovery.bean.SendFindObj;
+import com.yidao.platform.discovery.model.SendFindObj;
 import com.yidao.platform.discovery.view.DiscoveryEditorMessageInterface;
 
 import org.json.JSONException;

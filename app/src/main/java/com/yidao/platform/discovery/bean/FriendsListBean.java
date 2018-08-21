@@ -40,44 +40,44 @@ public class FriendsListBean {
          * info :
          */
 
-        private int pageIndex;
-        private int pageSize;
-        private int total;
-        private int begIndex;
+        private long pageIndex;
+        private long pageSize;
+        private long total;
+        private long begIndex;
         private boolean status;
         private String errCode;
         private String info;
         private List<ListBean> list;
 
-        public int getPageIndex() {
+        public long getPageIndex() {
             return pageIndex;
         }
 
-        public void setPageIndex(int pageIndex) {
+        public void setPageIndex(long pageIndex) {
             this.pageIndex = pageIndex;
         }
 
-        public int getPageSize() {
+        public long getPageSize() {
             return pageSize;
         }
 
-        public void setPageSize(int pageSize) {
+        public void setPageSize(long pageSize) {
             this.pageSize = pageSize;
         }
 
-        public int getTotal() {
+        public long getTotal() {
             return total;
         }
 
-        public void setTotal(int total) {
+        public void setTotal(long total) {
             this.total = total;
         }
 
-        public int getBegIndex() {
+        public long getBegIndex() {
             return begIndex;
         }
 
-        public void setBegIndex(int begIndex) {
+        public void setBegIndex(long begIndex) {
             this.begIndex = begIndex;
         }
 
@@ -128,11 +128,11 @@ public class FriendsListBean {
              */
 
             private long findId;
-            private int likeAmount;
-            private int commAmount;
+            private long likeAmount;
+            private long commAmount;
             private String deployName;
             private String headImg;
-            private int deployId;
+            private long deployId;
             private String deployTime;
             private boolean isLike;
             private FindBean find;
@@ -146,19 +146,19 @@ public class FriendsListBean {
                 this.findId = findId;
             }
 
-            public int getLikeAmount() {
+            public long getLikeAmount() {
                 return likeAmount;
             }
 
-            public void setLikeAmount(int likeAmount) {
+            public void setLikeAmount(long likeAmount) {
                 this.likeAmount = likeAmount;
             }
 
-            public int getCommAmount() {
+            public long getCommAmount() {
                 return commAmount;
             }
 
-            public void setCommAmount(int commAmount) {
+            public void setCommAmount(long commAmount) {
                 this.commAmount = commAmount;
             }
 
@@ -178,11 +178,11 @@ public class FriendsListBean {
                 this.headImg = headImg;
             }
 
-            public int getDeployId() {
+            public long getDeployId() {
                 return deployId;
             }
 
-            public void setDeployId(int deployId) {
+            public void setDeployId(long deployId) {
                 this.deployId = deployId;
             }
 

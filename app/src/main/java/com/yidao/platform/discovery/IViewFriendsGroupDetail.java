@@ -8,4 +8,6 @@ public interface IViewFriendsGroupDetail {
     void update2DeleteComment(CommentsItem commentId);
 
     void showComments(ArrayList<CommentsItem> dataList);
+
+    void addCommentSuccess();
 }

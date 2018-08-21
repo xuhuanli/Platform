@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -27,12 +28,11 @@ import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
-import com.yidao.platform.discovery.bean.CommentItem;
 import com.yidao.platform.discovery.bean.CommentsItem;
-import com.yidao.platform.discovery.bean.DatasUtil;
 import com.yidao.platform.discovery.bean.FriendsShowBean;
 import com.yidao.platform.discovery.bean.User;
 import com.yidao.platform.discovery.model.PyqCommentsObj;
+import com.yidao.platform.discovery.model.PyqFindIdObj;
 import com.yidao.platform.discovery.presenter.FriendsGroupDetailPresenter;
 import com.yidao.platform.discovery.view.CommentListView;
 
@@ -46,7 +46,7 @@ import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class FriendsGroupDetailActivity extends BaseActivity implements View.OnClickListener, IViewFriendsGroupDetail, EasyPermissions.PermissionCallbacks, BGANinePhotoLayout.Delegate {
+public class FriendsGroupDetailActivity extends BaseActivity implements IViewFriendsGroupDetail, EasyPermissions.PermissionCallbacks, BGANinePhotoLayout.Delegate {
 
     private static final int PERM_PREVIEW_PHOTO = 1;
     @BindView(R.id.iv_discovery_icon)
@@ -87,6 +87,7 @@ public class FriendsGroupDetailActivity extends BaseActivity implements View.OnC
     private FriendsGroupDetailPresenter mPresenter;
     private FriendsShowBean friendsShowBean;
     private String userId;
+    private PyqFindIdObj obj;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -117,9 +118,9 @@ public class FriendsGroupDetailActivity extends BaseActivity implements View.OnC
     }
 
     private void initData() {
-        PyqCommentsObj obj = new PyqCommentsObj(friendsShowBean.getFindId());
+        obj = new PyqFindIdObj(friendsShowBean.getFindId());
         mPresenter.qryFindComms(obj);
-        addDisposable(RxView.clicks(mTvComment).subscribe(o -> showCommentDialog()));
+        addDisposable(RxView.clicks(mTvComment).subscribe(o -> showCommentDialog(Long.valueOf(userId),"0")));
     }
 
     private void showAlertDialog(int messageId, DialogInterface.OnClickListener positiveListener) {
@@ -137,7 +138,7 @@ public class FriendsGroupDetailActivity extends BaseActivity implements View.OnC
         return R.layout.discovery_activity_friends_group_detail;
     }
 
-    private void showCommentDialog() {
+    private void showCommentDialog(long ownerId, String deployId) {
         mCommentBottomSheetDialog = new BottomSheetDialog(this);
         mCommentBottomSheetDialog.setCanceledOnTouchOutside(true);
         @SuppressLint("InflateParams") View view = LayoutInflater.from(this).inflate(R.layout.layout_comment_fragment_dialog, null);
@@ -147,7 +148,20 @@ public class FriendsGroupDetailActivity extends BaseActivity implements View.OnC
         fillEditText();
         mCommentBottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         mCommentBottomSheetDialog.show();
-        mBtnSend.setOnClickListener(this);
+        mBtnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String content = mEtContent.getText().toString();
+                if (!TextUtils.isEmpty(content)) {
+                    PyqCommentsObj obj = new PyqCommentsObj();
+                    obj.setContent(content);
+                    obj.setDeployId(deployId);
+                    obj.setFindId(friendsShowBean.getFindId());
+                    obj.setOwnerId(ownerId);
+                    mPresenter.sendFindComm(obj);
+                }
+            }
+        });
         //when you invoke cancel() , callback to here .So  please use dialog.cancel() but not dialog.dismiss(), unless you setOnDismissListener
         mCommentBottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
@@ -166,28 +180,6 @@ public class FriendsGroupDetailActivity extends BaseActivity implements View.OnC
         mEtContent.requestFocus();
         mEtContent.setText(mTvComment.getText());
         mEtContent.setSelection(mTvComment.getText().length());
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_comment_send: //评论内容send按钮
-                // TODO: 2018/7/3 0003  当满足发送规则时，进行访问请求if success 清空et else 发送失败 doSomething
-                CommentItem item = new CommentItem();
-                item.setContent(mEtContent.getText().toString());
-                item.setId("100");
-                item.setUser(DatasUtil.getUser());
-                if (toReplyUser != null) {
-                    item.setToReplyUser(toReplyUser);
-                }
-                //mDataList.add(item);
-                commentList.notifyDataSetChanged();
-                //评论完以后把ReplyUser重新置空
-                toReplyUser = null;
-                mEtContent.setText("");
-                mCommentBottomSheetDialog.cancel();
-                break;
-        }
     }
 
     @Override
@@ -268,25 +260,29 @@ public class FriendsGroupDetailActivity extends BaseActivity implements View.OnC
         mDataList = dataList;
         commentList.setDatas(dataList);
         if (dataList.size() > 0) {
-            commentList.setOnItemClickListener(new CommentListView.OnItemClickListener() {
-                @Override
-                public void onItemClick(int position) {
-                    CommentsItem commentsItem = dataList.get(position);
-                    if (commentsItem.getDeployId() == 0) {  //单人的评论
-                        if (String.valueOf(commentsItem.getOwnerId()).equals(userId)) {
-                            showAlertDialog(R.string.ensure_delete_reply, (dialog, which) -> mPresenter.deleteComment(commentsItem));
-                        } else {
-                            showCommentDialog();
-                        }
-                    } else if (String.valueOf(commentsItem.getDeployId()).equals(userId)) {  //A回复B情况下 A是deployId
+            commentList.setOnItemClickListener(position -> {
+                CommentsItem commentsItem = dataList.get(position);
+                if (commentsItem.getDeployId() == 0) {  //单人的评论
+                    if (String.valueOf(commentsItem.getOwnerId()).equals(userId)) {
                         showAlertDialog(R.string.ensure_delete_reply, (dialog, which) -> mPresenter.deleteComment(commentsItem));
                     } else {
-                        showCommentDialog();
+                        showCommentDialog(commentsItem.getOwnerId(), userId);
                     }
+                } else if (String.valueOf(commentsItem.getDeployId()).equals(userId)) {  //A回复B情况下 A是deployId
+                    showAlertDialog(R.string.ensure_delete_reply, (dialog, which) -> mPresenter.deleteComment(commentsItem));
+                } else {
+                    showCommentDialog(commentsItem.getDeployId(),userId);
                 }
             });
         } else {
             commentList.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void addCommentSuccess() {
+        mEtContent.setText("");
+        mCommentBottomSheetDialog.cancel();
+        mPresenter.qryFindComms(obj);
     }
 }

@@ -27,7 +27,7 @@ public class CategoryArticleExtBean {
 
         private int pageIndex;
         private int pageSize;
-        private int total;
+        private long total;
         private int begIndex;
         private boolean status;
         private String errCode;
@@ -50,11 +50,11 @@ public class CategoryArticleExtBean {
             this.pageSize = pageSize;
         }
 
-        public int getTotal() {
+        public long getTotal() {
             return total;
         }
 
-        public void setTotal(int total) {
+        public void setTotal(long total) {
             this.total = total;
         }
 

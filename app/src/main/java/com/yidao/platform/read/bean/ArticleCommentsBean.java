@@ -25,7 +25,7 @@ public class ArticleCommentsBean {
     public static class ResultBean {
         private CmsArticleContentExtBean cmsArticleContentExt;
         private int shareAmount;
-        private int readAmount;
+        private long readAmount;
         private int likeAmount;
         private int commentAmount;
         private List<CmsArticleCommentDtosBean> cmsArticleCommentDtos;
@@ -46,11 +46,11 @@ public class ArticleCommentsBean {
             this.shareAmount = shareAmount;
         }
 
-        public int getReadAmount() {
+        public long getReadAmount() {
             return readAmount;
         }
 
-        public void setReadAmount(int readAmount) {
+        public void setReadAmount(long readAmount) {
             this.readAmount = readAmount;
         }
 

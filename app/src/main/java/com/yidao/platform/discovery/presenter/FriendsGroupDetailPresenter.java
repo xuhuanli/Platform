@@ -6,10 +6,10 @@ import com.allen.library.observer.CommonObserver;
 import com.yidao.platform.app.ApiService;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.discovery.IViewFriendsGroupDetail;
-import com.yidao.platform.discovery.bean.CommentItem;
 import com.yidao.platform.discovery.bean.CommentsItem;
 import com.yidao.platform.discovery.bean.PyqCommentsBean;
 import com.yidao.platform.discovery.model.PyqCommentsObj;
+import com.yidao.platform.discovery.model.PyqFindIdObj;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class FriendsGroupDetailPresenter {
      *
      * @param obj
      */
-    public void qryFindComms(PyqCommentsObj obj) {
+    public void qryFindComms(PyqFindIdObj obj) {
         RxHttpUtils
                 .createApi(ApiService.class)
                 .qryFindComms(obj)
@@ -62,6 +62,29 @@ public class FriendsGroupDetailPresenter {
                         } else {
                             MyLogger.e("加载评论失败");
                         }
+                    }
+                });
+    }
+
+    /**
+     * 发布朋友圈评论
+     *
+     * @param obj
+     */
+    public void sendFindComm(PyqCommentsObj obj) {
+        RxHttpUtils
+                .createApi(ApiService.class)
+                .sendFindComm(obj)
+                .compose(Transformer.switchSchedulers())
+                .subscribe(new CommonObserver<PyqCommentsBean>() {
+                    @Override
+                    protected void onError(String errorMsg) {
+                        MyLogger.e(errorMsg);
+                    }
+
+                    @Override
+                    protected void onSuccess(PyqCommentsBean pyqCommentsBean) {
+                        mView.addCommentSuccess();
                     }
                 });
     }

@@ -47,7 +47,7 @@ public class PyqCommentsBean {
         private long findId;
         private long ownerId;
         private String ownerName;
-        private int deployId;
+        private long deployId;
         private String deployName;
         private String content;
         private int status;
@@ -93,11 +93,11 @@ public class PyqCommentsBean {
             this.ownerName = ownerName;
         }
 
-        public int getDeployId() {
+        public long getDeployId() {
             return deployId;
         }
 
-        public void setDeployId(int deployId) {
+        public void setDeployId(long deployId) {
             this.deployId = deployId;
         }
 

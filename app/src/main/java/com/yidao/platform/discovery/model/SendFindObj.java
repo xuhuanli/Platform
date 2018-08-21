@@ -1,4 +1,4 @@
-package com.yidao.platform.discovery.bean;
+package com.yidao.platform.discovery.model;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ public class SendFindObj {
      */
 
     private String content;
-    private int userId;
+    private long userId;
     private List<String> imgUrls;
 
     public String getContent() {
@@ -22,11 +22,11 @@ public class SendFindObj {
         this.content = content;
     }
 
-    public int getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 

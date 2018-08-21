@@ -52,7 +52,7 @@ public class ArticleBean {
             private String homeImg;
             private int deployTime;
             private int type;
-            private int readAmount;
+            private long readAmount;
             private String articleContent;
 
             public String getArticleContent() {
@@ -111,11 +111,11 @@ public class ArticleBean {
                 this.type = type;
             }
 
-            public int getReadAmount() {
+            public long getReadAmount() {
                 return readAmount;
             }
 
-            public void setReadAmount(int readAmount) {
+            public void setReadAmount(long readAmount) {
                 this.readAmount = readAmount;
             }
 

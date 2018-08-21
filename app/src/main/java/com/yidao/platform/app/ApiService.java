@@ -3,10 +3,11 @@ package com.yidao.platform.app;
 import com.yidao.platform.discovery.bean.FriendsListBean;
 import com.yidao.platform.discovery.bean.PickBottleBean;
 import com.yidao.platform.discovery.bean.PyqCommentsBean;
-import com.yidao.platform.discovery.bean.SendFindObj;
+import com.yidao.platform.discovery.model.SendFindObj;
 import com.yidao.platform.discovery.model.DianZanObj;
 import com.yidao.platform.discovery.model.FindDiscoveryObj;
 import com.yidao.platform.discovery.model.PyqCommentsObj;
+import com.yidao.platform.discovery.model.PyqFindIdObj;
 import com.yidao.platform.discovery.model.ThrowBottleObj;
 import com.yidao.platform.info.model.UserCollectArtBean;
 import com.yidao.platform.info.model.UserReadRecordBean;
@@ -110,8 +111,21 @@ public interface ApiService {
      */
     @Headers({"Content-Type: application/json;charset=UTF-8"})
     @POST("find/qryFindComms")
-    Observable<PyqCommentsBean> qryFindComms(@Body PyqCommentsObj pyqCommentsObj);
+    Observable<PyqCommentsBean> qryFindComms(@Body PyqFindIdObj pyqCommentsObj);
 
+    /**
+     * 删除朋友圈 共用一下body
+     */
+    @Headers({"Content-Type: application/json;charset=UTF-8"})
+    @POST("edit/find/deleteFind")
+    Observable<String> deleteFind(@Body PyqFindIdObj pyqFindIdObj);
+
+    /**
+     * 发送朋友圈评论
+     */
+    @Headers({"Content-Type: application/json;charset=UTF-8"})
+    @POST("edit/find/sendFindComm")
+    Observable<PyqCommentsBean> sendFindComm(@Body PyqCommentsObj pyqCommentsObj);
     //----------文章模块------------
 
     /**
@@ -253,5 +267,5 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST("/home/article/listArticleCommentyList")
-    Observable<String> getLastComments(@Field("id") long artId, @Field("pageIndex") long pageIndex,@Field("pageSize") int pageSize);
+    Observable<String> getLastComments(@Field("id") long artId, @Field("pageIndex") long pageIndex, @Field("pageSize") int pageSize);
 }

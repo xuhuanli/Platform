@@ -23,20 +23,20 @@ public class UserReadRecordBean {
     }
 
     public static class ResultBean {
-        private int id;
+        private long id;
         private String title;
         private int status;
         private String homeImg;
         private int deployTime;
         private int type;
         private String articleContent;
-        private int readAmount;
+        private long readAmount;
 
-        public int getId() {
+        public long getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(long id) {
             this.id = id;
         }
 
@@ -88,11 +88,11 @@ public class UserReadRecordBean {
             this.articleContent = articleContent;
         }
 
-        public int getReadAmount() {
+        public long getReadAmount() {
             return readAmount;
         }
 
-        public void setReadAmount(int readAmount) {
+        public void setReadAmount(long readAmount) {
             this.readAmount = readAmount;
         }
     }
