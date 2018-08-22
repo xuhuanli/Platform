@@ -18,6 +18,7 @@ import com.squareup.leakcanary.LeakCanary;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.tinker.loader.app.DefaultApplicationLike;
+import com.umeng.commonsdk.UMConfigure;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.app.utils.FileUtil;
 import com.yidao.platform.app.utils.MyLogger;
@@ -48,6 +49,14 @@ public class MyApplicationLike extends DefaultApplicationLike {
         initBugly();
         initLeakCanary();
         initLogger();
+        initUmengAnalytics(appContext);
+    }
+
+    //初始化友盟统计
+    private void initUmengAnalytics(Context context) {
+        UMConfigure.init(context, UMConfigure.DEVICE_TYPE_PHONE, "");
+        //umeng调试开关，打包的时候记得此处设为false
+        UMConfigure.setLogEnabled(true);
     }
 
     private void initBugly() {

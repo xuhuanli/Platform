@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
+import com.umeng.analytics.MobclickAgent;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
@@ -15,6 +16,8 @@ import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.bingoogolapple.bgabanner.BGALocalImageSize;
 
 public class GuideActivity extends BaseActivity {
+
+    private static final String mPageName = "GuideActivity";
     private BGABanner mBackgroundBanner;
 
     @Override
@@ -61,10 +64,20 @@ public class GuideActivity extends BaseActivity {
 
         // 如果开发者的引导页主题是透明的，需要在界面可见时给背景 Banner 设置一个白色背景，避免滑动过程中两个 Banner 都设置透明度后能看到 Launcher
         mBackgroundBanner.setBackgroundResource(android.R.color.white);
+        MobclickAgent.onPageStart(mPageName);
+        MobclickAgent.onPause(this);
     }
 
     @Override
     protected int getLayoutId() {
         return R.layout.activity_guide;
+    }
+
+    @Override
+    protected void onPause() {
+        // TODO Auto-generated method stub
+        super.onPause();
+        MobclickAgent.onPageStart(mPageName);
+        MobclickAgent.onPause(this);
     }
 }
