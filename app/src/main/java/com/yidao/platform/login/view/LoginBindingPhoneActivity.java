@@ -21,8 +21,10 @@ import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
+import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.app.utils.PhoneRegUtil;
 import com.yidao.platform.container.ContainerActivity;
+import com.yidao.platform.login.model.BindPhoneObj;
 import com.yidao.platform.login.presenter.LoginBindingPhonePresenter;
 
 import java.util.concurrent.TimeUnit;
@@ -68,14 +70,13 @@ public class LoginBindingPhoneActivity extends BaseActivity implements IViewBind
     private void initView() {
         userId = getIntent().getStringExtra(Constant.STRING_USER_ID);
         addDisposable(RxView.clicks(btnEnsure).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
-            IPreference.prefHolder.getPreference(LoginBindingPhoneActivity.this).put(Constant.STRING_USER_ID, "21211");
-            startActivity(ContainerActivity.class);
+            String vCode = etVCode.getText().toString().trim();
+            BindPhoneObj obj = new BindPhoneObj(vCode, userId);
+            mPresenter.bindPhone(obj);
         }));
         Observable<Long> mObservableCountTime = RxView.clicks(btnVCode)
-                //防止重复点击
                 .throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS)
                 .subscribeOn(AndroidSchedulers.mainThread())
-                //判断手机号否为空
                 .flatMap((Function<Object, ObservableSource<Boolean>>) o -> {
                     String phone = etPhone.getText().toString();
                     if (TextUtils.isEmpty(phone)) {
@@ -90,6 +91,7 @@ public class LoginBindingPhoneActivity extends BaseActivity implements IViewBind
                 //将点击事件转换成倒计时事件
                 .flatMap((Function<Object, ObservableSource<Long>>) o -> {
                     //请求验证码
+                    MyLogger.e("参数："+userId);
                     mPresenter.requestVCode(etPhone.getText().toString(),userId);
                     //更新发送按钮的状态并初始化显现倒计时文字
                     btnVCode.setEnabled(false);
@@ -140,5 +142,11 @@ public class LoginBindingPhoneActivity extends BaseActivity implements IViewBind
     @Override
     public void sendCodeSuccess() {
         ToastUtils.showToast("验证码发送成功");
+    }
+
+    @Override
+    public void bindSuccess() {
+        IPreference.prefHolder.getPreference(this).put(Constant.STRING_USER_ID,userId);
+        startActivity(ContainerActivity.class);
     }
 }

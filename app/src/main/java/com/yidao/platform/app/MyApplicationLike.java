@@ -131,10 +131,11 @@ public class MyApplicationLike extends DefaultApplicationLike {
             @SuppressLint("LongLogTag")
             @Override
             public void onSuccess(String response) {
-                MyLogger.e("init cloudchannel success" + response);
                 String deviceId = pushService.getDeviceId();
                 MyLogger.e("当前设备对应的deviceId是-->" + deviceId);
-                IPreference.prefHolder.getPreference(getAppContext()).put(Constant.STRING_DEVICE_ID, deviceId);
+                if (!IPreference.prefHolder.getPreference(getAppContext()).contains(Constant.STRING_DEVICE_ID)) {
+                    IPreference.prefHolder.getPreference(getAppContext()).put(Constant.STRING_DEVICE_ID, deviceId);
+                }
             }
 
             @SuppressLint("LongLogTag")

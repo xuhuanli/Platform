@@ -29,6 +29,7 @@ public class WXEntryActivityPresenter {
         map.put("code", code);
         map.put("deviceId", deviceId);
         map.put("deviceType", android);
+        MyLogger.e(map.toString());
         RxHttpUtils
                 .createApi(ApiService.class)
                 .sendCodeToServer(map)

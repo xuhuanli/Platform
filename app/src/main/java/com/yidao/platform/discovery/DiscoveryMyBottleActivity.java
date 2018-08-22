@@ -11,38 +11,41 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
+import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.discovery.presenter.MyBottleAdapter;
-import com.yidao.platform.discovery.presenter.MyBottleInterface;
+import com.yidao.platform.discovery.presenter.IViewMyBottleActivity;
+import com.yidao.platform.discovery.presenter.MyBottlePresenter;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
-import io.reactivex.functions.Consumer;
 
-public class DiscoveryMyBottleActivity extends BaseActivity implements MyBottleInterface {
+public class DiscoveryMyBottleActivity extends BaseActivity implements IViewMyBottleActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+    private MyBottlePresenter mPresenter;
+    private String userId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
+        mPresenter = new MyBottlePresenter(this);
+        userId = IPreference.prefHolder.getPreference(this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
+        initData();
     }
 
-    @SuppressLint("CheckResult")
     private void initView() {
-        RxToolbar.navigationClicks(toolbar).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish());
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        initToolbar();
+        initRecyclerView();
         ArrayList<String> list = new ArrayList<>();
         //for (int i = 0; i < 10; i++) {
         //   list.add(String.valueOf(i));
@@ -62,8 +65,32 @@ public class DiscoveryMyBottleActivity extends BaseActivity implements MyBottleI
         });
     }
 
+    private void initRecyclerView() {
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+    }
+
+    @SuppressLint("CheckResult")
+    private void initToolbar() {
+        RxToolbar.navigationClicks(toolbar).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish());
+    }
+
+    private void initData() {
+        mPresenter.qryBottleList(userId);
+    }
+
     @Override
     protected int getLayoutId() {
         return R.layout.discovery_activity_my_bottle;
+    }
+
+    @Override
+    public void loadMyBottleList() {
+
+    }
+
+    @Override
+    public void errorNet() {
+
     }
 }

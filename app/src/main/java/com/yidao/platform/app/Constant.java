@@ -7,11 +7,11 @@ public class Constant {
     //徐ww
     //public static final String BASE_URL = "http://10.10.20.24:8080/";
     //徐ly
-    public static final String BASE_URL = "http://10.10.20.21:8080/";
+    //public static final String BASE_URL = "http://10.10.20.21:8080/";
     //张zk
     //public static final String BASE_URL = "http://10.10.20.10:8081/";
     //陈dq
-    //public static final String BASE_URL = "http://10.10.20.5:8080/platform-pc-web/";
+    public static final String BASE_URL = "http://10.10.20.3:8080/platform-pc-web/";
 
     /**
      * 全局debug模式开关 在release时候设置为false
@@ -31,11 +31,6 @@ public class Constant {
      */
     public static final String WX_LOGIN_APP_ID = "wx4bd23926604e2693";
 
-    // TODO: 2018/7/13 0013 记得删除secret 这个只是测试用
-    /**
-     * 微信AppSecret
-     */
-    public static final String WX_LOGIN_APP_SECRET = "d0ec01859e2f3b97f3deff38682cb181";
     /**
      * Bugly App ID
      */

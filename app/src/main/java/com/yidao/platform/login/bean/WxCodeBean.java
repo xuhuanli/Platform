@@ -39,7 +39,7 @@ public class WxCodeBean {
     }
 
     public static class ResultBean {
-        private long userId;
+        private String userId;
         private String nickname;
         private int sex;
         private String country;
@@ -52,11 +52,11 @@ public class WxCodeBean {
         private boolean firstLogin;
         private boolean bindPhone;
 
-        public long getUserId() {
+        public String getUserId() {
             return userId;
         }
 
-        public void setUserId(long userId) {
+        public void setUserId(String userId) {
             this.userId = userId;
         }
 
@@ -146,6 +146,24 @@ public class WxCodeBean {
 
         public void setBindPhone(boolean bindPhone) {
             this.bindPhone = bindPhone;
+        }
+
+        @Override
+        public String toString() {
+            return "ResultBean{" +
+                    "userId='" + userId + '\'' +
+                    ", nickname='" + nickname + '\'' +
+                    ", sex=" + sex +
+                    ", country='" + country + '\'' +
+                    ", province='" + province + '\'' +
+                    ", city='" + city + '\'' +
+                    ", headImgUrl='" + headImgUrl + '\'' +
+                    ", privilegeList='" + privilegeList + '\'' +
+                    ", token='" + token + '\'' +
+                    ", refreshToken='" + refreshToken + '\'' +
+                    ", firstLogin=" + firstLogin +
+                    ", bindPhone=" + bindPhone +
+                    '}';
         }
     }
 }

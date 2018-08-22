@@ -73,7 +73,7 @@ public class BottleActivityPresenter {
                 .subscribe(new CommonObserver<PickBottleBean>() {
                     @Override
                     protected void onError(String errorMsg) {
-
+                        MyLogger.e(errorMsg);
                     }
 
                     @Override
@@ -83,7 +83,7 @@ public class BottleActivityPresenter {
                          */
                         switch (pickBottleBean.getErrCode()) {
                             case "1000":
-                                MyLogger.e(pickBottleBean.getResult().toString());
+                                mView.getOneBottle(pickBottleBean.getResult());
                                 break;
                             case "1102":
                             case "1103":

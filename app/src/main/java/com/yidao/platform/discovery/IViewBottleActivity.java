@@ -1,5 +1,7 @@
 package com.yidao.platform.discovery;
 
+import com.yidao.platform.discovery.bean.PickBottleBean;
+
 public interface IViewBottleActivity {
     void pickAnim();
 
@@ -10,4 +12,6 @@ public interface IViewBottleActivity {
     void throwSuccess();
 
     void countLimit(String info);
+
+    void getOneBottle(PickBottleBean.ResultBean result);
 }

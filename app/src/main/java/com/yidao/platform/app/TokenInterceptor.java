@@ -71,8 +71,8 @@ public class TokenInterceptor implements Interceptor {
             MyLogger.e(resultStr);
             try {
                 JSONObject jsonObject = new JSONObject(resultStr);
-                String errorCode = jsonObject.getString("errorCode");
-                return dispatchErrorCode(errorCode);
+                String errCode = jsonObject.getString("errCode");
+                return dispatchErrorCode(errCode);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -116,7 +116,7 @@ public class TokenInterceptor implements Interceptor {
         MyLogger.e("保存。。。" + result);
         RequestCode requestCode = new Gson().fromJson(result, RequestCode.class);
         IPreference.prefHolder.getPreference(MyApplicationLike.getAppContext()).put(Constant.STRING_USER_TOKEN, requestCode.getResult().getToken());
-        if (requestCode.getErrCode().equals("1021")) {  //刷新TOKEN 过期
+        if ("1021".equals(requestCode.getErrCode())) {  //刷新TOKEN 过期
             mHandler.post(() -> {
                 ToastUtils.showToast("登录已过期,请重新登录");
                 jumpToLoginPage();
