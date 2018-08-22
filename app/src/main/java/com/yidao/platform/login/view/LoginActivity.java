@@ -8,6 +8,7 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.umeng.analytics.MobclickAgent;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
@@ -17,6 +18,8 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 
 public class LoginActivity extends BaseActivity {
+
+    private static final String mPageName = "LoginActivity";
 
     @BindView(R.id.btn_login_by_wechat)
     ImageView mBtnLogin;
@@ -63,5 +66,21 @@ public class LoginActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         //EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    protected void onResume() {
+        // TODO Auto-generated method stub
+        super.onResume();
+        MobclickAgent.onPageEnd(mPageName);
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        // TODO Auto-generated method stub
+        super.onPause();
+        MobclickAgent.onPageStart(mPageName);
+        MobclickAgent.onPause(this);
     }
 }
