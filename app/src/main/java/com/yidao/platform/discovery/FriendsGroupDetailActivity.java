@@ -148,27 +148,21 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
         fillEditText();
         mCommentBottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         mCommentBottomSheetDialog.show();
-        mBtnSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String content = mEtContent.getText().toString();
-                if (!TextUtils.isEmpty(content)) {
-                    PyqCommentsObj obj = new PyqCommentsObj();
-                    obj.setContent(content);
-                    obj.setDeployId(deployId);
-                    obj.setFindId(friendsShowBean.getFindId());
-                    obj.setOwnerId(ownerId);
-                    mPresenter.sendFindComm(obj);
-                }
+        mBtnSend.setOnClickListener(v -> {
+            String content = mEtContent.getText().toString();
+            if (!TextUtils.isEmpty(content)) {
+                PyqCommentsObj obj = new PyqCommentsObj();
+                obj.setContent(content);
+                obj.setDeployId(deployId);
+                obj.setFindId(friendsShowBean.getFindId());
+                obj.setOwnerId(ownerId);
+                mPresenter.sendFindComm(obj);
             }
         });
         //when you invoke cancel() , callback to here .So  please use dialog.cancel() but not dialog.dismiss(), unless you setOnDismissListener
-        mCommentBottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                //when dialog cancel state write content into textview.
-                mTvComment.setText(mEtContent.getText().toString());
-            }
+        mCommentBottomSheetDialog.setOnCancelListener(dialog -> {
+            //when dialog cancel state write content into textview.
+            mTvComment.setText(mEtContent.getText().toString());
         });
     }
 

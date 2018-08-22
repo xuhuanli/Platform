@@ -1,10 +1,12 @@
 package com.yidao.platform.discovery;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -13,14 +15,20 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.allen.library.utils.ToastUtils;
+import com.bumptech.glide.Glide;
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.discovery.bean.CommentItem;
 import com.yidao.platform.discovery.bean.DatasUtil;
+import com.yidao.platform.discovery.bean.PickBottleBean;
 import com.yidao.platform.discovery.bean.User;
+import com.yidao.platform.discovery.model.PyqCommentsObj;
+import com.yidao.platform.discovery.model.ReplyBottleObj;
 import com.yidao.platform.discovery.presenter.DiscoveryBottleDetailPresenter;
 import com.yidao.platform.discovery.view.CommentDialog;
 import com.yidao.platform.discovery.view.CommentListView;
@@ -68,31 +76,37 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
      */
     private User toReplyUser;
     private DiscoveryBottleDetailPresenter mPresenter;
+    private PickBottleBean.ResultBean result;
+    private String userId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPresenter = new DiscoveryBottleDetailPresenter(this);
+        Intent intent = getIntent();
+        userId = IPreference.prefHolder.getPreference(this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
+        result = intent.getParcelableExtra(Constant.STRING_BOTTLE);
         initView();
         initData();
     }
 
-    @SuppressLint("CheckResult")
     private void initView() {
         //瓶子不展示点赞和九宫格
-        RxToolbar.navigationClicks(toolbar).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish());
-        mTitle.setText("来自杭州的瓶子");
-        tvDiscoveryContent.setText("？？？来了");
+        addDisposable(RxToolbar.navigationClicks(toolbar).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish()));
         tvDiscoveryVote.setVisibility(View.GONE);
         nplItemMomentPhotos.setVisibility(View.GONE);
-        ivDiscoveryIcon.setImageResource(R.drawable.info_head_p);
-        tvDiscoveryName.setText("xhl");
+        commentList.setVisibility(View.GONE);
+        mTitle.setText("瓶子详情");
+        Glide.with(this).load(result.getImgUrl()).into(ivDiscoveryIcon);
+        tvDiscoveryContent.setText(result.getContent());
+        tvDiscoveryName.setText(result.getNickName());
+        tvDiscoveryTime.setText(result.getCreateTime());
     }
 
     private void initData() {
         mDataList = DatasUtil.createCommentItemList();
         //commentList.setDatas(mDataList);
-        addDisposable(RxView.clicks(tvPublishComment).subscribe(o -> showCommentDialog(null)));
+        addDisposable(RxView.clicks(tvPublishComment).subscribe(o -> showCommentDialog(1,null)));
         if (mDataList.size() > 0) {
             commentList.setOnItemClickListener(position -> {
                 CommentItem commentItem = mDataList.get(position);
@@ -103,7 +117,7 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
                 } else {  //回复别人
                     //回复当前条目的人,所以是getUser 不是getToReplyUser
                     User toReplyUser = commentItem.getUser();
-                    showCommentDialog(toReplyUser);
+                    //showCommentDialog(toReplyUser);
                 }
             });
             commentList.setOnItemLongClickListener(position -> {
@@ -117,8 +131,7 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
         }
     }
 
-    private void showCommentDialog(@Nullable User toReplyUser) {
-        this.toReplyUser = toReplyUser;
+    private void showCommentDialog(long ownerId, String deployId) {
         mCommentBottomSheetDialog = new BottomSheetDialog(this);
         mCommentBottomSheetDialog.setCanceledOnTouchOutside(true);
         @SuppressLint("InflateParams") View view = LayoutInflater.from(this).inflate(R.layout.layout_comment_fragment_dialog, null);
@@ -128,7 +141,21 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
         fillEditText();
         mCommentBottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         mCommentBottomSheetDialog.show();
-        mBtnSend.setOnClickListener(this);
+        mBtnSend.setOnClickListener(v -> {
+            String content = mEtContent.getText().toString();
+            if (!TextUtils.isEmpty(content)) {
+                ReplyBottleObj obj = new ReplyBottleObj();
+                obj.setBottleId(String.valueOf(result.getId()));
+                obj.setContent(content);
+                obj.setDeviceId(IPreference.prefHolder.getPreference(DiscoveryBottleDetailActivity.this).getString(Constant.STRING_DEVICE_ID));
+                obj.setParMessageId("0");
+                obj.setParUserId(String.valueOf(result.getUserId()));
+                obj.setSessionId("0");
+                obj.setSessionType("0");
+                obj.setUserId(userId);
+                mPresenter.replyBottle(obj);
+            }
+        });
         //when you invoke cancel() , callback to here .So  please use dialog.cancel() but not dialog.dismiss(), unless you setOnDismissListener
         mCommentBottomSheetDialog.setOnCancelListener(dialog -> {
             //when dialog cancel state write content into textview.
@@ -158,9 +185,35 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
     }
 
     @Override
+    public void showErrorInfo(String info) {
+        ToastUtils.showToast(info);
+    }
+
+    @Override
+    public void success() {
+
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_comment_send: //评论内容send按钮
+                String msg = mEtContent.getText().toString();
+                if (TextUtils.isEmpty(msg)) {
+                    return;
+                }
+                ReplyBottleObj obj = new ReplyBottleObj();
+                obj.setBottleId(String.valueOf(result.getId()));
+                obj.setContent(msg);
+                obj.setDeviceId(IPreference.prefHolder.getPreference(this).getString(Constant.STRING_DEVICE_ID));
+                obj.setParMessageId("0");
+                obj.setParUserId(String.valueOf(result.getUserId()));
+                obj.setSessionId("0");
+                obj.setSessionType("0");
+                obj.setUserId(userId);
+                mPresenter.replyBottle(obj);
+
+
                 // TODO: 2018/7/3 0003  当满足发送规则时，进行访问请求if success 清空et else 发送失败 doSomething
                 CommentItem item = new CommentItem();
                 item.setContent(mEtContent.getText().toString());

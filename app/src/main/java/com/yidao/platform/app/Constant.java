@@ -94,4 +94,5 @@ public class Constant {
     public static final String STRING_USER_BINDPHONE = "bindPhone";
 
     public static final String STRING_DEVICE_ID = "deviceId";
+    public static final String STRING_BOTTLE = "bottle";
 }

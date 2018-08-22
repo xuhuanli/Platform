@@ -90,7 +90,6 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity implements IVi
     private BottleActivityPresenter mPresenter;
     private String userId;
     private ImageView ivDriftBottle;
-    private View view;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -110,13 +109,7 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity implements IVi
             startActivityForResult(intent, PUSH_BOTTLE_REQUEST);
         }));
         //捡瓶子
-        addDisposable(RxView.clicks(mIvPullBottle).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) throws Exception {
-                // TODO: 2018/8/20 0020 替换成userId
-                mPresenter.pickBottle(userId);
-            }
-        }));
+        addDisposable(RxView.clicks(mIvPullBottle).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> mPresenter.pickBottle(userId)));
         /**
          * 我的瓶子
          */
@@ -301,7 +294,7 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity implements IVi
 
     @Override
     public void pushAnim() {
-        view = LayoutInflater.from(DiscoveryDriftingBottleActivity.this).inflate(R.layout.drift_bottle_anim, mClContainer, false);
+        View view = LayoutInflater.from(DiscoveryDriftingBottleActivity.this).inflate(R.layout.drift_bottle_anim, mClContainer, false);
         showBottlePopupWindow(view);
         ImageView IvDriftBottle = view.findViewById(R.id.iv_bottle);
         setPushAnimator(IvDriftBottle, new Animator.AnimatorListener() {
@@ -360,65 +353,75 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity implements IVi
             }
             View messageView = LayoutInflater.from(DiscoveryDriftingBottleActivity.this).inflate(R.layout.discovery_pull_bottle_popupwindow, mClContainer, false);
             showPopupWindow(messageView);
-            //test code
-            TextView tv_name = messageView.findViewById(R.id.tv_name);
-            TextView tv_location = messageView.findViewById(R.id.tv_location);
-            TextView tv_content = messageView.findViewById(R.id.tv_content);
-            ImageView iv_head_portrait = messageView.findViewById(R.id.iv_head_portrait);
-            tv_name.setText(result.getNickName());
-            tv_location.setText(result.getAddress());
-            tv_content.setText(result.getContent());
-            Glide.with(DiscoveryDriftingBottleActivity.this).load(result.getImgUrl()).into(iv_head_portrait);
-            Button backSea = messageView.findViewById(R.id.btn_backsea);
-            addDisposable(RxView.clicks(backSea).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o1 -> {
-                //点击扔回海里 飞船重现，对话框dismiss
-                if (mPopupWindow != null) {
-                    mPopupWindow.dismiss();
-                }
-                if (mSpaceShipWindow != null) {
-                    mSpaceShipWindow.showAtLocation(mClContainer, Gravity.CENTER, 0, 0);
-                }
-                ImageView ivDriftBottle = view.findViewById(R.id.iv_bottle);
-                setPushAnimator(ivDriftBottle, new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-                        mPushAnim = animation;
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        mRootView.setVisibility(View.VISIBLE);
-                        ActionBar actionBar = getSupportActionBar();
-                        actionBar.show();
-                        changeBackground(R.drawable.drift_bottle_has_bar);
-                        if (mSpaceShipWindow != null) {
-                            mSpaceShipWindow.dismiss();
-                        }
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animation) {
-
-                    }
-                });
-            }));
-            //回应
-            Button btnReply = messageView.findViewById(R.id.btn_reply);
-            addDisposable(RxView.clicks(btnReply).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o12 -> {
-                startActivity(DiscoveryBottleDetailActivity.class);
-                mRootView.setVisibility(View.VISIBLE);
-                ActionBar actionBar = getSupportActionBar();
-                actionBar.show();
-                changeBackground(R.drawable.drift_bottle_has_bar);
-                if (mPopupWindow != null) {
-                    mPopupWindow.dismiss();
-                }
-            }));
+            loadDetailView(messageView,result);
         });
+    }
+
+    private void loadDetailView(View messageView, PickBottleBean.ResultBean result) {
+        TextView tv_name = messageView.findViewById(R.id.tv_name);
+        TextView tv_location = messageView.findViewById(R.id.tv_location);
+        TextView tv_content = messageView.findViewById(R.id.tv_content);
+        ImageView iv_head_portrait = messageView.findViewById(R.id.iv_head_portrait);
+        tv_name.setText(result.getNickName());
+        tv_location.setText(result.getAddress());
+        tv_content.setText(result.getContent());
+        Glide.with(DiscoveryDriftingBottleActivity.this).load(result.getImgUrl()).into(iv_head_portrait);
+        Button backSea = messageView.findViewById(R.id.btn_backsea);
+        addDisposable(RxView.clicks(backSea).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o1 -> {
+            //点击扔回海里 飞船重现，对话框dismiss
+            if (mPopupWindow != null) {
+                mPopupWindow.dismiss();
+            }
+            if (mSpaceShipWindow != null) {
+                mSpaceShipWindow.showAtLocation(mClContainer, Gravity.CENTER, 0, 0);
+            }
+            setPushAnimator(ivDriftBottle, new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    mPushAnim = animation;
+                    ivDriftBottle.setEnabled(false);
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mRootView.setVisibility(View.VISIBLE);
+                    ActionBar actionBar = getSupportActionBar();
+                    actionBar.show();
+                    changeBackground(R.drawable.drift_bottle_has_bar);
+                    if (mSpaceShipWindow != null) {
+                        mSpaceShipWindow.dismiss();
+                    }
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
+        }));
+        //回应
+        Button btnReply = messageView.findViewById(R.id.btn_reply);
+        addDisposable(RxView.clicks(btnReply).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o12 -> {
+            Intent intent = new Intent(DiscoveryDriftingBottleActivity.this, DiscoveryBottleDetailActivity.class);
+            intent.putExtra(Constant.STRING_BOTTLE,result);
+            startActivity(intent);
+            mRootView.setVisibility(View.VISIBLE);
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.show();
+            changeBackground(R.drawable.drift_bottle_has_bar);
+            if (mPopupWindow != null) {
+                mPopupWindow.dismiss();
+            }
+        }));
+    }
+
+    @Override
+    public void errorStatus(String info) {
+        ToastUtils.showToast(info);
     }
 }

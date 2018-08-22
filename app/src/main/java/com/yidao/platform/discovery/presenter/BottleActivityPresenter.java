@@ -87,7 +87,7 @@ public class BottleActivityPresenter {
                                 break;
                             case "1102":
                             case "1103":
-                                ToastUtils.showToast(pickBottleBean.getInfo());
+                                mView.errorStatus(pickBottleBean.getInfo());
                                 break;
                         }
                     }

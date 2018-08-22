@@ -39,7 +39,7 @@ public class TokenInterceptor implements Interceptor {
         Request request = chain.request().newBuilder()
                 .header("token", accessToken)
                 .build();
-        MyLogger.e("发送出去的token" + accessToken);
+        MyLogger.e("发送出去的token: " + accessToken);
         Response response = chain.proceed(request);
         MediaType mediaType = response.body().contentType();
         if (isTokenExpired(response)) {

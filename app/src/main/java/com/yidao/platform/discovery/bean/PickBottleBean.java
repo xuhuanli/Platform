@@ -1,5 +1,8 @@
 package com.yidao.platform.discovery.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 public class PickBottleBean {
 
     /**
@@ -46,7 +49,7 @@ public class PickBottleBean {
         this.result = result;
     }
 
-    public static class ResultBean {
+    public static class ResultBean implements Parcelable {
         /**
          * error : null
          * result : 1
@@ -77,7 +80,7 @@ public class PickBottleBean {
         private int isDel;
         private int status;
         private String createTime;
-        private int labelId;
+        private long labelId;
         private String labelName;
         private long sessionId;
         private long userId;
@@ -159,11 +162,11 @@ public class PickBottleBean {
             this.createTime = createTime;
         }
 
-        public int getLabelId() {
+        public long getLabelId() {
             return labelId;
         }
 
-        public void setLabelId(int labelId) {
+        public void setLabelId(long labelId) {
             this.labelId = labelId;
         }
 
@@ -254,5 +257,68 @@ public class PickBottleBean {
                     ", sex=" + sex +
                     '}';
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(this.error);
+            dest.writeInt(this.result);
+            dest.writeLong(this.id);
+            dest.writeLong(this.authorId);
+            dest.writeString(this.content);
+            dest.writeInt(this.auditStatus);
+            dest.writeInt(this.isDel);
+            dest.writeInt(this.status);
+            dest.writeString(this.createTime);
+            dest.writeLong(this.labelId);
+            dest.writeString(this.labelName);
+            dest.writeLong(this.sessionId);
+            dest.writeLong(this.userId);
+            dest.writeString(this.nickName);
+            dest.writeString(this.imgUrl);
+            dest.writeString(this.address);
+            dest.writeInt(this.age);
+            dest.writeInt(this.sex);
+        }
+
+        public ResultBean() {
+        }
+
+        protected ResultBean(Parcel in) {
+            this.error = in.readString();
+            this.result = in.readInt();
+            this.id = in.readLong();
+            this.authorId = in.readLong();
+            this.content = in.readString();
+            this.auditStatus = in.readInt();
+            this.isDel = in.readInt();
+            this.status = in.readInt();
+            this.createTime = in.readString();
+            this.labelId = in.readLong();
+            this.labelName = in.readString();
+            this.sessionId = in.readLong();
+            this.userId = in.readLong();
+            this.nickName = in.readString();
+            this.imgUrl = in.readString();
+            this.address = in.readString();
+            this.age = in.readInt();
+            this.sex = in.readInt();
+        }
+
+        public static final Parcelable.Creator<ResultBean> CREATOR = new Parcelable.Creator<ResultBean>() {
+            @Override
+            public ResultBean createFromParcel(Parcel source) {
+                return new ResultBean(source);
+            }
+
+            @Override
+            public ResultBean[] newArray(int size) {
+                return new ResultBean[size];
+            }
+        };
     }
 }

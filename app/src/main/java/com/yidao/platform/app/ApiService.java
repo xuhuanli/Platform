@@ -7,6 +7,7 @@ import com.yidao.platform.discovery.model.DianZanObj;
 import com.yidao.platform.discovery.model.FindDiscoveryObj;
 import com.yidao.platform.discovery.model.PyqCommentsObj;
 import com.yidao.platform.discovery.model.PyqFindIdObj;
+import com.yidao.platform.discovery.model.ReplyBottleObj;
 import com.yidao.platform.discovery.model.SendFindObj;
 import com.yidao.platform.discovery.model.ThrowBottleObj;
 import com.yidao.platform.info.model.UserCollectArtBean;
@@ -293,4 +294,12 @@ public interface ApiService {
      */
     @GET("app/bottle/qryBottleList")
     Observable<String> qryBottleList(@Query("userId") String userId);
+
+    /**
+     * 瓶子回复
+     * @return
+     */
+    @Headers({"Content-Type: application/json;charset=UTF-8"})
+    @POST("app/bottle/replyBottle")
+    Observable<String> replyBottle(@Body ReplyBottleObj replyBottleObj);
 }
