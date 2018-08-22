@@ -276,6 +276,7 @@ public interface ApiService {
 
     /**
      * 扔瓶子
+     *
      * @param throwBottleObj
      * @return
      */
@@ -287,16 +288,23 @@ public interface ApiService {
      * 捡瓶子
      */
     @GET("app/bottle/pickBottle")
-    Observable<PickBottleBean> pickBottle(@Query("userId") String userId);
+    Observable<String> pickBottle(@Query("userId") String userId);
 
     /**
      * 查看漂流瓶列表
      */
     @GET("app/bottle/qryBottleList")
-    Observable<String> qryBottleList(@Query("userId") String userId);
+    Observable<String> qryBottleList(@Query("userId") String userId, @Query("index") String index, @Query("size") String size);
+
+    /**
+     * 删除瓶子
+     */
+    @GET("app/bottle/deleteBottle")
+    Observable<String> deleteBottle(@Query("bottleId") String bottleId, @Query("userId") String userId);
 
     /**
      * 瓶子回复
+     *
      * @return
      */
     @Headers({"Content-Type: application/json;charset=UTF-8"})

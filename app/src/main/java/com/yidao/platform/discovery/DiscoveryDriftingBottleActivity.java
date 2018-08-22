@@ -25,9 +25,6 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.allen.library.RxHttpUtils;
-import com.allen.library.interceptor.Transformer;
-import com.allen.library.observer.CommonObserver;
 import com.allen.library.utils.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -37,24 +34,20 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
+import com.yidao.platform.app.MyApplicationLike;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.app.utils.ScreenUtil;
-import com.yidao.platform.app.ApiService;
 import com.yidao.platform.discovery.bean.PickBottleBean;
 import com.yidao.platform.discovery.model.ThrowBottleObj;
 import com.yidao.platform.discovery.presenter.BottleActivityPresenter;
-import com.yidao.platform.testpackage.bean.TestBean;
 
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
-public class DiscoveryDriftingBottleActivity extends BaseActivity implements IViewBottleActivity{
+public class DiscoveryDriftingBottleActivity extends BaseActivity implements IViewBottleActivity {
     /**
      * 打开发布页请求code
      */
@@ -90,6 +83,8 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity implements IVi
     private BottleActivityPresenter mPresenter;
     private String userId;
     private ImageView ivDriftBottle;
+    private boolean isLimited;
+    private String info;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -109,7 +104,16 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity implements IVi
             startActivityForResult(intent, PUSH_BOTTLE_REQUEST);
         }));
         //捡瓶子
-        addDisposable(RxView.clicks(mIvPullBottle).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> mPresenter.pickBottle(userId)));
+        addDisposable(RxView.clicks(mIvPullBottle).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(Object o) throws Exception {
+                if (isLimited) {
+                    ToastUtils.showToast(info);
+                } else {
+                    mPresenter.pickBottle(userId);
+                }
+            }
+        }));
         /**
          * 我的瓶子
          */
@@ -211,11 +215,10 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity implements IVi
             //漂流瓶发布请求中，添加动画效果
             String bottleContent = data.getStringExtra("content");
             String bottleLabel = data.getStringExtra("label");
-            // TODO: 2018/8/18 0018 标签转成int LabelId
             ThrowBottleObj obj = new ThrowBottleObj();
-            obj.setAuthorId("9978363793506304");
+            obj.setAuthorId(userId);
             obj.setContent(bottleContent);
-            obj.setLabelId(1);
+            obj.setLabelId(MyApplicationLike.getLabelId(bottleLabel));
             obj.setType(0);
             mPresenter.throwBottle(obj);
         }
@@ -341,11 +344,6 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity implements IVi
     }
 
     @Override
-    public void countLimit(String info) {
-        ToastUtils.showToast(info);
-    }
-
-    @Override
     public void getOneBottle(PickBottleBean.ResultBean result) {
         ivDriftBottle.setOnClickListener(v -> {
             if (mSpaceShipWindow != null) {
@@ -353,7 +351,7 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity implements IVi
             }
             View messageView = LayoutInflater.from(DiscoveryDriftingBottleActivity.this).inflate(R.layout.discovery_pull_bottle_popupwindow, mClContainer, false);
             showPopupWindow(messageView);
-            loadDetailView(messageView,result);
+            loadDetailView(messageView, result);
         });
     }
 
@@ -408,7 +406,7 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity implements IVi
         Button btnReply = messageView.findViewById(R.id.btn_reply);
         addDisposable(RxView.clicks(btnReply).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o12 -> {
             Intent intent = new Intent(DiscoveryDriftingBottleActivity.this, DiscoveryBottleDetailActivity.class);
-            intent.putExtra(Constant.STRING_BOTTLE,result);
+            intent.putExtra(Constant.STRING_BOTTLE, result);
             startActivity(intent);
             mRootView.setVisibility(View.VISIBLE);
             ActionBar actionBar = getSupportActionBar();
@@ -421,7 +419,28 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity implements IVi
     }
 
     @Override
+    public void countLimit(String info) {
+        if (mSpaceShipWindow != null) {
+            mSpaceShipWindow.dismiss();
+        }
+        mRootView.setVisibility(View.VISIBLE);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.show();
+        changeBackground(R.drawable.drift_bottle_has_bar);
+        isLimited = true;
+        this.info = info;
+    }
+
+    @Override
     public void errorStatus(String info) {
-        ToastUtils.showToast(info);
+        if (mSpaceShipWindow != null) {
+            mSpaceShipWindow.dismiss();
+        }
+        mRootView.setVisibility(View.VISIBLE);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.show();
+        changeBackground(R.drawable.drift_bottle_has_bar);
+        isLimited = true;
+        this.info = info;
     }
 }

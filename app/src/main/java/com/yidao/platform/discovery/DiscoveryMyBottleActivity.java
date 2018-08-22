@@ -1,8 +1,10 @@
 package com.yidao.platform.discovery;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,63 +13,51 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
-import com.yidao.platform.discovery.presenter.MyBottleAdapter;
+import com.yidao.platform.discovery.bean.MyBottleBean;
 import com.yidao.platform.discovery.presenter.IViewMyBottleActivity;
+import com.yidao.platform.discovery.presenter.MyBottleAdapter;
 import com.yidao.platform.discovery.presenter.MyBottlePresenter;
+import com.yidao.platform.read.adapter.ErrorAdapter;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 
-public class DiscoveryMyBottleActivity extends BaseActivity implements IViewMyBottleActivity {
+public class DiscoveryMyBottleActivity extends BaseActivity implements IViewMyBottleActivity, BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemLongClickListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.recyclerView)
-    RecyclerView recyclerView;
+    RecyclerView mRecyclerView;
     private MyBottlePresenter mPresenter;
     private String userId;
+    private int mNextRequestPage = 1;
+    private MyBottleAdapter mAdapter;
+    private List<MyBottleBean.ListBean> mDataList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
         mPresenter = new MyBottlePresenter(this);
-        userId = IPreference.prefHolder.getPreference(this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
         initData();
     }
 
     private void initView() {
         initToolbar();
         initRecyclerView();
-        ArrayList<String> list = new ArrayList<>();
-        //for (int i = 0; i < 10; i++) {
-        //   list.add(String.valueOf(i));
-        //}
-        MyBottleAdapter adapter = new MyBottleAdapter(list);
-        recyclerView.setAdapter(adapter);
-        if (list.size() == 0) {
-            adapter.bindToRecyclerView(recyclerView);
-            View view = LayoutInflater.from(this).inflate(R.layout.info_no_msg_layout, recyclerView, false);
-            ((TextView)view.findViewById(R.id.tv_tips)).setText(R.string.no_bottle_message);
-            adapter.setEmptyView(view);
-            adapter.setNewData(null);
-        }
-        adapter.setOnItemClickListener((adapter1, view, position) -> {
-            // TODO: 2018/7/18 0018 单个瓶子内容
-            startActivity(DiscoveryBottleDetailActivity.class);
-        });
     }
 
     private void initRecyclerView() {
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
     }
 
     @SuppressLint("CheckResult")
@@ -76,7 +66,8 @@ public class DiscoveryMyBottleActivity extends BaseActivity implements IViewMyBo
     }
 
     private void initData() {
-        mPresenter.qryBottleList(userId);
+        userId = IPreference.prefHolder.getPreference(this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
+        mPresenter.qryBottleList(userId, String.valueOf(mNextRequestPage), String.valueOf(Constant.PAGE_SIZE));
     }
 
     @Override
@@ -85,12 +76,84 @@ public class DiscoveryMyBottleActivity extends BaseActivity implements IViewMyBo
     }
 
     @Override
-    public void loadMyBottleList() {
-
+    public void errorNet() {
+        ErrorAdapter adapter = new ErrorAdapter(null);
+        adapter.bindToRecyclerView(mRecyclerView);
+        View view = LayoutInflater.from(this).inflate(R.layout.info_no_msg_layout, mRecyclerView, false);
+        ((TextView) view.findViewById(R.id.tv_tips)).setText(R.string.connection_failed);
+        adapter.setEmptyView(view);
+        adapter.setNewData(null);
     }
 
     @Override
-    public void errorNet() {
+    public void loadMoreEnd(boolean b) {
+        if (mAdapter != null) {
+            mAdapter.loadMoreEnd(b);
+        }
+    }
 
+    @Override
+    public void loadMoreComplete() {
+        if (mAdapter != null) {
+            mAdapter.loadMoreComplete();
+        }
+    }
+
+    @Override
+    public void loadRecyclerData(List<MyBottleBean.ListBean> dataList) {
+        mDataList = dataList;
+        mAdapter = new MyBottleAdapter(mDataList);
+        mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
+        mRecyclerView.setAdapter(mAdapter);
+        if (dataList.size() == 0) {
+            mAdapter.bindToRecyclerView(mRecyclerView);
+            View view = LayoutInflater.from(this).inflate(R.layout.info_no_msg_layout, mRecyclerView, false);
+            ((TextView) view.findViewById(R.id.tv_tips)).setText(R.string.no_collection);
+            mAdapter.setEmptyView(view);
+            mAdapter.setNewData(null);
+        }
+        mAdapter.setOnItemClickListener(this);
+        mAdapter.setOnItemLongClickListener(this);
+    }
+
+    private void loadMore() {
+        mNextRequestPage++;
+        mPresenter.qryBottleList(userId, String.valueOf(mNextRequestPage), String.valueOf(Constant.PAGE_SIZE));
+    }
+
+    @Override
+    public void loadMoreData(List<MyBottleBean.ListBean> dataList) {
+        if (mAdapter != null) {
+            mAdapter.addData(dataList);
+        }
+    }
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        // TODO: 2018/8/22 0022 瓶子条目点击
+        startActivity(DiscoveryBottleDetailActivity.class);
+    }
+
+    @Override
+    public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+        showAlertDialog(R.string.ensure_delete_reply, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                MyBottleBean.ListBean item = (MyBottleBean.ListBean) adapter.getItem(position);
+                mPresenter.deleteBottle(String.valueOf(item.getBottleId()), userId);
+                mDataList.remove(item);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+        return false;
+    }
+
+    private void showAlertDialog(int messageId, DialogInterface.OnClickListener positiveListener) {
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setMessage(messageId)
+                .setPositiveButton(R.string.ensure, positiveListener)
+                .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
+                .create();
+        alertDialog.show();
     }
 }

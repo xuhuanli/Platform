@@ -1,40 +1,29 @@
 package com.yidao.platform.discovery;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.View;
+import android.text.TextUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.allen.library.RxHttpUtils;
-import com.allen.library.interceptor.Transformer;
-import com.allen.library.observer.StringObserver;
+import com.allen.library.utils.ToastUtils;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
-import com.contrarywind.view.WheelView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.yidao.platform.R;
-import com.yidao.platform.app.ApiService;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.app.utils.MyLogger;
-import com.yidao.platform.discovery.model.ThrowBottleObj;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
-import io.reactivex.functions.Consumer;
 
 public class BottlePushActivity extends BaseActivity {
 
@@ -49,6 +38,7 @@ public class BottlePushActivity extends BaseActivity {
     TextView mContentLength;
     @BindView(R.id.tv_bottle_label)
     TextView mTvLabel;
+    private OptionsPickerView<String> pickerView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,9 +51,19 @@ public class BottlePushActivity extends BaseActivity {
         addDisposable(RxView.clicks(tvBottleCancel).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish()));
         addDisposable(RxView.clicks(tvBottlePush).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
             // TODO: 2018/7/14 0014 if push success
+            String content = mBottleContent.getText().toString().trim();
+            String label = mTvLabel.getText().toString().trim();
+            if (TextUtils.isEmpty(label) || "添加标签".equals(label)) {
+                ToastUtils.showToast("请选择标签");
+                return;
+            }
+            if (content.length() < 6) {
+                ToastUtils.showToast("内容不能少于5个字");
+                return;
+            }
             Intent intent = new Intent();
-            intent.putExtra("content", "这是瓶子里面的内容");
-            intent.putExtra("label", "这是瓶子的标签");
+            intent.putExtra("content", content);
+            intent.putExtra("label", label);
             setResult(PUSH_SUCCESS, intent);
             finish();
         }));
@@ -71,7 +71,7 @@ public class BottlePushActivity extends BaseActivity {
             // TODO: 2018/8/8 0008 展示标签选择器
             InputMethodManager mImm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
             mImm.hideSoftInputFromWindow(mTvLabel.getWindowToken(), 0);
-            List<String> labelsList = Arrays.asList("商业计划书", "产品原型", "技术开发", "投融资需求", "资源对接", "项目评估", "路演/峰会", "项目投资");
+            List<String> labelsList = Arrays.asList("商业计划书", "产品原型", "技术开发", "投融资需求", "资源对接", "路演/峰会", "项目投资", "项目评估");
             setWheelView(labelsList, (options1, options2, options3, v) -> {
                 String s = labelsList.get(options1);
                 mTvLabel.setText(s);
@@ -79,8 +79,8 @@ public class BottlePushActivity extends BaseActivity {
         }));
     }
 
-    private void setWheelView(List<String> labelsList,OnOptionsSelectListener listener) {
-        OptionsPickerView<String> pickerView = new OptionsPickerBuilder(this, listener).build();
+    private void setWheelView(List<String> labelsList, OnOptionsSelectListener listener) {
+        pickerView = new OptionsPickerBuilder(this, listener).build();
         pickerView.setPicker(labelsList);
         pickerView.show();
     }

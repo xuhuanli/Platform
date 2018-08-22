@@ -24,11 +24,14 @@ import com.yidao.platform.app.utils.FileUtil;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.container.ContainerActivity;
 
+import java.util.HashMap;
+
 import okhttp3.OkHttpClient;
 
 public class MyApplicationLike extends DefaultApplicationLike {
     public static final String TAG = "Tinker.MyApplicationLike";
     private static Context appContext;
+    public static HashMap<String, Integer> labelMap = new HashMap<>();
 
     public MyApplicationLike(Application application, int tinkerFlags,
                              boolean tinkerLoadVerifyFlag, long applicationStartElapsedTime,
@@ -43,6 +46,7 @@ public class MyApplicationLike extends DefaultApplicationLike {
         // 这里实现SDK初始化，appId替换成你的在Bugly平台申请的appId
         // 调试时，将第三个参数改为true
         appContext = getApplication();
+        setLabelMap();
         //为了尽快拿到设备ID回调，请把阿里云推送放到最前面
         initCloudChannel(appContext);
         initRetrofit();
@@ -52,10 +56,25 @@ public class MyApplicationLike extends DefaultApplicationLike {
         initUmengAnalytics(appContext);
     }
 
+    private void setLabelMap(){
+        labelMap.put("商业计划书",1);
+        labelMap.put("产品原型",2);
+        labelMap.put("技术开发",3);
+        labelMap.put("投融资需求",4);
+        labelMap.put("资源对接",5);
+        labelMap.put("路演/峰会",6);
+        labelMap.put("项目投资",7);
+        labelMap.put("项目评估",8);
+    }
+
+    public static int getLabelId(String label){
+        return labelMap.get(label);
+    }
+
     //初始化友盟统计
     private void initUmengAnalytics(Context context) {
         UMConfigure.init(context, UMConfigure.DEVICE_TYPE_PHONE, "");
-        //umeng调试开关，打包的时候记得此处设为false
+        //TODO umeng调试开关，打包的时候记得此处设为false
         UMConfigure.setLogEnabled(true);
     }
 

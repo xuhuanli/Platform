@@ -5,6 +5,7 @@ import com.allen.library.interceptor.Transformer;
 import com.allen.library.observer.CommonObserver;
 import com.allen.library.observer.StringObserver;
 import com.allen.library.utils.ToastUtils;
+import com.google.gson.Gson;
 import com.yidao.platform.app.ApiService;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.discovery.IViewBottleActivity;
@@ -70,25 +71,33 @@ public class BottleActivityPresenter {
                 .pickBottle(userId)
                 .compose(Transformer.switchSchedulers())
                 .doOnSubscribe(disposable -> mView.pickAnim())
-                .subscribe(new CommonObserver<PickBottleBean>() {
+                .subscribe(new StringObserver() {
                     @Override
                     protected void onError(String errorMsg) {
                         MyLogger.e(errorMsg);
                     }
 
                     @Override
-                    protected void onSuccess(PickBottleBean pickBottleBean) {
-                        /**
-                         * 	1000,捡到一个瓶子；1102，捡瓶子机会用完；1103，没有发现漂流瓶
-                         */
-                        switch (pickBottleBean.getErrCode()) {
-                            case "1000":
-                                mView.getOneBottle(pickBottleBean.getResult());
-                                break;
-                            case "1102":
-                            case "1103":
-                                mView.errorStatus(pickBottleBean.getInfo());
-                                break;
+                    protected void onSuccess(String data) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(data);
+                            String errCode = (String) jsonObject.get("errCode");
+                            switch (errCode) {
+                                //1000,捡到一个瓶子；1102，捡瓶子机会用完；1103，没有发现漂流瓶
+                                case "1000":
+                                    String result = jsonObject.getString("result");
+                                    PickBottleBean.ResultBean resultBean = new Gson().fromJson(result, PickBottleBean.ResultBean.class);
+                                    mView.getOneBottle(resultBean);
+                                    break;
+                                case "1102":
+                                    mView.countLimit(jsonObject.getString("info"));
+                                    break;
+                                case "1103":
+                                    mView.errorStatus(jsonObject.getString("info"));
+                                    break;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
                     }
                 });
