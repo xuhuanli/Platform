@@ -16,4 +16,6 @@ public interface IViewBottleActivity {
     void getOneBottle(PickBottleBean.ResultBean result);
 
     void errorStatus(String info);
+
+    void netError();
 }

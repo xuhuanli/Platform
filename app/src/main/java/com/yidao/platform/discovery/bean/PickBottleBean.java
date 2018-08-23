@@ -8,7 +8,7 @@ public class PickBottleBean {
     /**
      * status : true
      * errCode : 1000
-     * info : success
+     * info : commentSuccess
      * result : {"error":null,"result":1,"id":9518371072245760,"authorId":9266129287118848,"content":"徐书记是tiangou,哈哈哈哈哈哈哈哈！","auditStatus":1,"isDel":0,"status":1,"createTime":"2018-08-15","labelId":111,"labelName":"扯淡","sessionId":null,"userId":9266129287118848,"nickName":"徐书记","imgUrl":"https://ydplatform.oss-cn-hangzhou.aliyuncs.com/headImg/smer.png","address":"浙江杭州","age":28,"sex":1}
      */
 

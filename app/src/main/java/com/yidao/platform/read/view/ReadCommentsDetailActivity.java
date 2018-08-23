@@ -146,7 +146,7 @@ public class ReadCommentsDetailActivity extends BaseActivity implements ReadComm
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_comment_send: //评论内容send按钮
-                // TODO: 2018/7/3 0003  当满足发送规则时，进行访问请求if success 清空et else 发送失败 doSomething
+                // TODO: 2018/7/3 0003  当满足发送规则时，进行访问请求if commentSuccess 清空et else 发送失败 doSomething
                 CommentItem item = new CommentItem();
                 item.setContent(mEtContent.getText().toString());
                 item.setId("100");

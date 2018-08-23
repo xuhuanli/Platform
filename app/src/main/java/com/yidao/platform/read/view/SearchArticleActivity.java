@@ -113,7 +113,6 @@ public class SearchArticleActivity extends BaseActivity implements IViewSearchAr
         //mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
         mRecyclerView.setAdapter(mAdapter);
         if (dataList.size() == 0) {
-            mAdapter.bindToRecyclerView(mRecyclerView);
             View view = LayoutInflater.from(this).inflate(R.layout.info_no_msg_layout, mRecyclerView, false);
             ((TextView) view.findViewById(R.id.tv_tips)).setText(R.string.no_data);
             mAdapter.setEmptyView(view);

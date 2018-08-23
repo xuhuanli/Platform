@@ -12,17 +12,18 @@ import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.ThreadPoolManager;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.app.utils.FileUtil;
 import com.yidao.platform.info.presenter.SettingsPresenter;
+import com.yidao.platform.login.view.LoginActivity;
 
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
-import io.reactivex.functions.Consumer;
 
 public class SettingsActivity extends BaseActivity implements SettingsViewInterface {
 
@@ -36,6 +37,8 @@ public class SettingsActivity extends BaseActivity implements SettingsViewInterf
     ProgressBar mProgressBar;
     @BindView(R.id.tv_settings_about_us_item)
     TextView tvAboutUs;
+    @BindView(R.id.sign_up)
+    TextView tvSignUp;
     private SettingsPresenter mPresenter;
     private Handler mHandler = new Handler();
 
@@ -51,11 +54,11 @@ public class SettingsActivity extends BaseActivity implements SettingsViewInterf
         initCacheTextView();
         initToolbar();
         addDisposable(RxView.clicks(mRlcache).subscribe(o -> clearAppCache()));
-        addDisposable(RxView.clicks(tvAboutUs).throttleFirst(Constant.THROTTLE_TIME,TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) throws Exception {
-                startActivity(AboutUsActivity.class);
-            }
+        addDisposable(RxView.clicks(tvAboutUs).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> startActivity(AboutUsActivity.class)));
+        addDisposable(RxView.clicks(tvSignUp).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
+            //退出登录:清除Sp下userId 跳转到登录页面
+            IPreference.prefHolder.getPreference(SettingsActivity.this).remove(Constant.STRING_USER_ID);
+            startActivity(LoginActivity.class);
         }));
     }
 

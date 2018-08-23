@@ -41,7 +41,6 @@ import com.yidao.platform.discovery.bean.PickBottleBean;
 import com.yidao.platform.discovery.model.ThrowBottleObj;
 import com.yidao.platform.discovery.presenter.BottleActivityPresenter;
 
-import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -406,7 +405,9 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity implements IVi
         Button btnReply = messageView.findViewById(R.id.btn_reply);
         addDisposable(RxView.clicks(btnReply).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o12 -> {
             Intent intent = new Intent(DiscoveryDriftingBottleActivity.this, DiscoveryBottleDetailActivity.class);
-            intent.putExtra(Constant.STRING_BOTTLE, result);
+            intent.putExtra(Constant.STRING_BOTTLE_ID, result.getId()+"");
+            intent.putExtra(Constant.STRING_SESSION_ID, "0");
+            intent.putExtra(Constant.STRING_BOTTLE_PAGE_FROM,"1");
             startActivity(intent);
             mRootView.setVisibility(View.VISIBLE);
             ActionBar actionBar = getSupportActionBar();
@@ -442,5 +443,16 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity implements IVi
         changeBackground(R.drawable.drift_bottle_has_bar);
         isLimited = true;
         this.info = info;
+    }
+
+    @Override
+    public void netError() {
+        if (mSpaceShipWindow != null) {
+            mSpaceShipWindow.dismiss();
+        }
+        mRootView.setVisibility(View.VISIBLE);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.show();
+        changeBackground(R.drawable.drift_bottle_has_bar);
     }
 }

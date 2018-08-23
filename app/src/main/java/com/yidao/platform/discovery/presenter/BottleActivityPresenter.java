@@ -74,7 +74,7 @@ public class BottleActivityPresenter {
                 .subscribe(new StringObserver() {
                     @Override
                     protected void onError(String errorMsg) {
-                        MyLogger.e(errorMsg);
+                        mView.netError();
                     }
 
                     @Override

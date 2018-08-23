@@ -1,16 +1,19 @@
 package com.yidao.platform.app;
 
+import com.yidao.platform.discovery.bean.BottleDtlBean;
 import com.yidao.platform.discovery.bean.FriendsListBean;
-import com.yidao.platform.discovery.bean.PickBottleBean;
 import com.yidao.platform.discovery.bean.PyqCommentsBean;
 import com.yidao.platform.discovery.model.DianZanObj;
 import com.yidao.platform.discovery.model.FindDiscoveryObj;
 import com.yidao.platform.discovery.model.PyqCommentsObj;
 import com.yidao.platform.discovery.model.PyqFindIdObj;
+import com.yidao.platform.discovery.model.ReplyBottleListObj;
 import com.yidao.platform.discovery.model.ReplyBottleObj;
 import com.yidao.platform.discovery.model.SendFindObj;
 import com.yidao.platform.discovery.model.ThrowBottleObj;
+import com.yidao.platform.info.model.MineInfoBean;
 import com.yidao.platform.info.model.UserCollectArtBean;
+import com.yidao.platform.info.model.UserInfoBean;
 import com.yidao.platform.info.model.UserReadRecordBean;
 import com.yidao.platform.login.bean.WxCodeBean;
 import com.yidao.platform.login.model.BindPhoneObj;
@@ -65,12 +68,28 @@ public interface ApiService {
     @POST("app/user/token-refresh")
     Observable<String> refreshToken();
 
+    //---------个人中心-------------
+
     /**
      * 修改个人信息 后期注意ip地址的修改
      */
     @FormUrlEncoded
     @POST("app/user/updateUserInfo")
     Observable<String> updateUserInfo(@FieldMap Map<String, String> options);
+
+    /**
+     * 按id查询用户明细
+     */
+    @GET("app/user/qryUserById")
+    Observable<UserInfoBean> qryUserById(@Query("id") String userId);
+
+    /**
+     * 获取'我的'页面参数
+     */
+    @GET("app/mine")
+    Observable<MineInfoBean> getMineInfo(@Query("userId") String userId);
+
+    //----------服务模块---------------
 
     /**
      * 申请 bp  后期注意ip地址的修改 10.10.20.27:8080
@@ -310,4 +329,19 @@ public interface ApiService {
     @Headers({"Content-Type: application/json;charset=UTF-8"})
     @POST("app/bottle/replyBottle")
     Observable<String> replyBottle(@Body ReplyBottleObj replyBottleObj);
+
+    /**
+     * 瓶子回复
+     *
+     * @return
+     */
+    @Headers({"Content-Type: application/json;charset=UTF-8"})
+    @POST("app/bottle/replyBottleList")
+    Observable<String> replyBottleList(@Body ReplyBottleListObj replyBottleListObj);
+
+    /**
+     * 查看漂流瓶详情
+     */
+    @GET("app/bottle/qryBottleDtl")
+    Observable<BottleDtlBean> qryBottleDtl(@Query("bottleId") String bottleId, @Query("sessionId") String sessionId);
 }

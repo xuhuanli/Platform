@@ -2,6 +2,7 @@ package com.yidao.platform.discovery;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -20,6 +21,7 @@ import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.discovery.bean.MyBottleBean;
+import com.yidao.platform.discovery.bean.PickBottleBean;
 import com.yidao.platform.discovery.presenter.IViewMyBottleActivity;
 import com.yidao.platform.discovery.presenter.MyBottleAdapter;
 import com.yidao.platform.discovery.presenter.MyBottlePresenter;
@@ -106,7 +108,6 @@ public class DiscoveryMyBottleActivity extends BaseActivity implements IViewMyBo
         mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
         mRecyclerView.setAdapter(mAdapter);
         if (dataList.size() == 0) {
-            mAdapter.bindToRecyclerView(mRecyclerView);
             View view = LayoutInflater.from(this).inflate(R.layout.info_no_msg_layout, mRecyclerView, false);
             ((TextView) view.findViewById(R.id.tv_tips)).setText(R.string.no_collection);
             mAdapter.setEmptyView(view);
@@ -130,20 +131,21 @@ public class DiscoveryMyBottleActivity extends BaseActivity implements IViewMyBo
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        // TODO: 2018/8/22 0022 瓶子条目点击
-        startActivity(DiscoveryBottleDetailActivity.class);
+        MyBottleBean.ListBean item = (MyBottleBean.ListBean) adapter.getItem(position);
+        Intent intent = new Intent(this, DiscoveryBottleDetailActivity.class);
+        intent.putExtra(Constant.STRING_BOTTLE_ID,item.getBottleId()+"");
+        intent.putExtra(Constant.STRING_SESSION_ID,item.getSessionId()+"");
+        intent.putExtra(Constant.STRING_BOTTLE_PAGE_FROM,"2");
+        startActivity(intent);
     }
 
     @Override
     public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
-        showAlertDialog(R.string.ensure_delete_reply, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                MyBottleBean.ListBean item = (MyBottleBean.ListBean) adapter.getItem(position);
-                mPresenter.deleteBottle(String.valueOf(item.getBottleId()), userId);
-                mDataList.remove(item);
-                mAdapter.notifyDataSetChanged();
-            }
+        showAlertDialog(R.string.ensure_delete_bottle, (dialog, which) -> {
+            MyBottleBean.ListBean item = (MyBottleBean.ListBean) adapter.getItem(position);
+            mPresenter.deleteBottle(String.valueOf(item.getBottleId()), userId);
+            mDataList.remove(item);
+            mAdapter.notifyDataSetChanged();
         });
         return false;
     }

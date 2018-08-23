@@ -24,6 +24,8 @@ import com.yidao.platform.app.utils.FileUtil;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.container.ContainerActivity;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.HashMap;
 
 import okhttp3.OkHttpClient;
@@ -163,6 +165,7 @@ public class MyApplicationLike extends DefaultApplicationLike {
                 MyLogger.e("当前设备对应的deviceId是-->" + deviceId);
                 if (!IPreference.prefHolder.getPreference(getAppContext()).contains(Constant.STRING_DEVICE_ID)) {
                     IPreference.prefHolder.getPreference(getAppContext()).put(Constant.STRING_DEVICE_ID, deviceId);
+                    EventBus.getDefault().post(new DeviceIdEvent());
                 }
             }
 

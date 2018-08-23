@@ -1,11 +1,12 @@
 package com.yidao.platform.discovery.view;
 
-import com.yidao.platform.discovery.bean.CommentItem;
+import com.yidao.platform.discovery.bean.BottleDtlBean;
 
 public interface DiscoveryBottleDetailInterface {
-    void update2DeleteComment(CommentItem commentId);
 
     void showErrorInfo(String info);
 
-    void success();
+    void commentSuccess();
+
+    void showBottleDtl(BottleDtlBean.ResultBean result);
 }

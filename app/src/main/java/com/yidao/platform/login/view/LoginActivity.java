@@ -1,6 +1,7 @@
 package com.yidao.platform.login.view;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -9,17 +10,22 @@ import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.umeng.analytics.MobclickAgent;
+import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
+import com.yidao.platform.app.DeviceIdEvent;
 import com.yidao.platform.app.base.BaseActivity;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.IllegalFormatCodePointException;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 
 public class LoginActivity extends BaseActivity {
-
-    private static final String mPageName = "LoginActivity";
 
     @BindView(R.id.btn_login_by_wechat)
     ImageView mBtnLogin;
@@ -28,8 +34,11 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //EventBus.getDefault().register(this);
+        EventBus.getDefault().register(this);
         regToWX();
+        if(!IPreference.prefHolder.getPreference(this).contains(Constant.STRING_DEVICE_ID)){
+            mBtnLogin.setVisibility(View.INVISIBLE);
+        }
         setListener();
     }
 
@@ -62,25 +71,14 @@ public class LoginActivity extends BaseActivity {
         mWxapi.sendReq(req);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(DeviceIdEvent event) {
+        mBtnLogin.setVisibility(View.VISIBLE);
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    protected void onResume() {
-        // TODO Auto-generated method stub
-        super.onResume();
-        MobclickAgent.onPageEnd(mPageName);
-        MobclickAgent.onResume(this);
-    }
-
-    @Override
-    protected void onPause() {
-        // TODO Auto-generated method stub
-        super.onPause();
-        MobclickAgent.onPageStart(mPageName);
-        MobclickAgent.onPause(this);
+        EventBus.getDefault().unregister(this);
     }
 }

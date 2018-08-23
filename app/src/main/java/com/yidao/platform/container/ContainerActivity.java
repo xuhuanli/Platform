@@ -84,20 +84,4 @@ public class ContainerActivity extends BaseActivity {
             }
         });
     }
-
-    @Override
-    protected void onResume() {
-        // TODO Auto-generated method stub
-        super.onResume();
-        MobclickAgent.onPageEnd(mPageName);
-        MobclickAgent.onResume(this);
-    }
-
-    @Override
-    protected void onPause() {
-        // TODO Auto-generated method stub
-        super.onPause();
-        MobclickAgent.onPageStart(mPageName);
-        MobclickAgent.onPause(this);
-    }
 }

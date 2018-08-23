@@ -30,7 +30,6 @@ import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.discovery.bean.CommentsItem;
 import com.yidao.platform.discovery.bean.FriendsShowBean;
-import com.yidao.platform.discovery.bean.User;
 import com.yidao.platform.discovery.model.PyqCommentsObj;
 import com.yidao.platform.discovery.model.PyqFindIdObj;
 import com.yidao.platform.discovery.presenter.FriendsGroupDetailPresenter;
@@ -80,10 +79,6 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
     private BottomSheetDialog mCommentBottomSheetDialog;
     private EditText mEtContent;
     private BGANinePhotoLayout mCurrentClickNpl;
-    /**
-     * 是否回复别人
-     */
-    private User toReplyUser;
     private FriendsGroupDetailPresenter mPresenter;
     private FriendsShowBean friendsShowBean;
     private String userId;
@@ -120,7 +115,7 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
     private void initData() {
         obj = new PyqFindIdObj(friendsShowBean.getFindId());
         mPresenter.qryFindComms(obj);
-        addDisposable(RxView.clicks(mTvComment).subscribe(o -> showCommentDialog(Long.valueOf(userId),"0")));
+        addDisposable(RxView.clicks(mTvComment).subscribe(o -> showCommentDialog(Long.valueOf(userId), "0")));
     }
 
     private void showAlertDialog(int messageId, DialogInterface.OnClickListener positiveListener) {
@@ -265,7 +260,7 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
                 } else if (String.valueOf(commentsItem.getDeployId()).equals(userId)) {  //A回复B情况下 A是deployId
                     showAlertDialog(R.string.ensure_delete_reply, (dialog, which) -> mPresenter.deleteComment(commentsItem));
                 } else {
-                    showCommentDialog(commentsItem.getDeployId(),userId);
+                    showCommentDialog(commentsItem.getDeployId(), userId);
                 }
             });
         } else {

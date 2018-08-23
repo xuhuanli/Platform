@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -33,6 +34,7 @@ import com.yidao.platform.app.utils.FileUtil;
 import com.yidao.platform.app.utils.OssUploadUtil;
 import com.yidao.platform.info.model.EventChangeInfo;
 import com.yidao.platform.info.model.EventTouXiangInfo;
+import com.yidao.platform.info.model.UserInfoBean;
 import com.yidao.platform.info.presenter.PersonInfomationActivityPresenter;
 
 import org.greenrobot.eventbus.EventBus;
@@ -63,7 +65,7 @@ public class PersonInfomationActivity extends BaseActivity implements View.OnCli
     @BindView(R.id.tv_nike_name)
     CustomTextView tvNikeName;
     @BindView(R.id.tv_location)
-    CustomTextView tvPhoneNumber;
+    CustomTextView tvLocation;
     @BindView(R.id.tv_status)
     CustomTextView tvStatus;
     private BottomSheetDialog mHeadPhotoDialog;
@@ -86,15 +88,19 @@ public class PersonInfomationActivity extends BaseActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         mPresenter = new PersonInfomationActivityPresenter(this);
         userId = IPreference.prefHolder.getPreference(this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
-        userId = "9266129287118848";
         initView();
         EventBus.getDefault().register(this);
     }
 
     @SuppressLint("CheckResult")
     private void initView() {
+        UserInfoBean.ResultBean resultBean = getIntent().getParcelableExtra(Constant.USER_INFO);
         RxToolbar.navigationClicks(toolbarInfo).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish());
-        Glide.with(this).load(R.drawable.info_head_p).into(headPortrait);
+        Glide.with(this).load(resultBean.getHeadImgUrl()).into(headPortrait);
+        tvUserId.setValue(resultBean.getId());
+        tvNikeName.setValue(resultBean.getNickname());
+        tvLocation.setValue(resultBean.getProvinceName()+" "+resultBean.getCityName());
+        tvStatus.setValue(resultBean.getIntroduction());
         RxView.clicks(rlHead).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> setDialog());
         RxView.clicks(tvNikeName).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
             Intent intent = new Intent(PersonInfomationActivity.this, ChangeInfoActivity.class);
@@ -250,8 +256,7 @@ public class PersonInfomationActivity extends BaseActivity implements View.OnCli
     }
 
     /**
-     * 修改完属性的事件bu
-     *
+     * 修改完属性的事件bus
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)

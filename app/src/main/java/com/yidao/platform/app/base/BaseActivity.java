@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.allen.library.RxHttpUtils;
+import com.umeng.analytics.MobclickAgent;
 import com.yidao.platform.app.utils.MyLogger;
 
 import butterknife.ButterKnife;
@@ -21,7 +22,6 @@ import io.reactivex.disposables.Disposable;
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
-    private static final String TAG = "BaseActivity";
     public CompositeDisposable mCompositeDisposable;
     private Unbinder mUnbinder;
 
@@ -59,6 +59,18 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     public void startActivity(Class<?> clz) {
         startActivity(clz, null);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override

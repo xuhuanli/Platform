@@ -23,15 +23,11 @@ import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
-import com.yidao.platform.discovery.bean.CommentItem;
-import com.yidao.platform.discovery.bean.DatasUtil;
-import com.yidao.platform.discovery.bean.PickBottleBean;
-import com.yidao.platform.discovery.bean.User;
-import com.yidao.platform.discovery.model.PyqCommentsObj;
+import com.yidao.platform.discovery.bean.BottleDtlBean;
+import com.yidao.platform.discovery.model.ReplyBottleListObj;
 import com.yidao.platform.discovery.model.ReplyBottleObj;
 import com.yidao.platform.discovery.presenter.DiscoveryBottleDetailPresenter;
-import com.yidao.platform.discovery.view.CommentDialog;
-import com.yidao.platform.discovery.view.CommentListView;
+import com.yidao.platform.discovery.view.CommentListViewForBottle;
 import com.yidao.platform.discovery.view.DiscoveryBottleDetailInterface;
 
 import java.util.List;
@@ -40,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
 
-public class DiscoveryBottleDetailActivity extends BaseActivity implements DiscoveryBottleDetailInterface, View.OnClickListener {
+public class DiscoveryBottleDetailActivity extends BaseActivity implements DiscoveryBottleDetailInterface {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.iv_discovery_icon)
@@ -58,53 +54,51 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
     @BindView(R.id.tv_delete)
     TextView tvDelete;
     @BindView(R.id.commentList)
-    CommentListView commentList;
+    CommentListViewForBottle commentList;
     @BindView(R.id.iv_comment)
     ImageView ivComment;
     @BindView(R.id.tv_publish_comment)
     TextView tvPublishComment;
     @BindView(R.id.tv_title)
     TextView mTitle;
-    /**
-     * 评论数据集合
-     */
-    private List<CommentItem> mDataList;
+
     private BottomSheetDialog mCommentBottomSheetDialog;
     private EditText mEtContent;
-    /**
-     * 是否回复别人
-     */
-    private User toReplyUser;
     private DiscoveryBottleDetailPresenter mPresenter;
-    private PickBottleBean.ResultBean result;
     private String userId;
+    private String bottleId;
+    private String sessionId;
+    private BottleDtlBean.ResultBean result;
+    private String flag;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPresenter = new DiscoveryBottleDetailPresenter(this);
-        Intent intent = getIntent();
-        userId = IPreference.prefHolder.getPreference(this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
-        result = intent.getParcelableExtra(Constant.STRING_BOTTLE);
         initView();
         initData();
     }
 
     private void initView() {
+        initToolbar();
+        Intent intent = getIntent();
+        bottleId = intent.getStringExtra(Constant.STRING_BOTTLE_ID);
+        sessionId = intent.getStringExtra(Constant.STRING_SESSION_ID);
+        flag = intent.getStringExtra(Constant.STRING_BOTTLE_PAGE_FROM);
+        userId = IPreference.prefHolder.getPreference(this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
         //瓶子不展示点赞和九宫格
-        addDisposable(RxToolbar.navigationClicks(toolbar).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish()));
         tvDiscoveryVote.setVisibility(View.GONE);
         nplItemMomentPhotos.setVisibility(View.GONE);
-        commentList.setVisibility(View.GONE);
+    }
+
+    private void initToolbar() {
+        addDisposable(RxToolbar.navigationClicks(toolbar).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish()));
         mTitle.setText("瓶子详情");
-        Glide.with(this).load(result.getImgUrl()).into(ivDiscoveryIcon);
-        tvDiscoveryContent.setText(result.getContent());
-        tvDiscoveryName.setText(result.getNickName());
-        tvDiscoveryTime.setText(result.getCreateTime());
     }
 
     private void initData() {
-        mDataList = DatasUtil.createCommentItemList();
+        mPresenter.qryBottleDtl(bottleId, sessionId);
+        /*mDataList = DatasUtil.createCommentItemList();
         //commentList.setDatas(mDataList);
         addDisposable(RxView.clicks(tvPublishComment).subscribe(o -> showCommentDialog(1,null)));
         if (mDataList.size() > 0) {
@@ -128,10 +122,10 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
             });
         } else {
             commentList.setVisibility(View.GONE);
-        }
+        }*/
     }
 
-    private void showCommentDialog(long ownerId, String deployId) {
+    private void showCommentDialog(String parMessageId, String parUserId, String sessionId ) {
         mCommentBottomSheetDialog = new BottomSheetDialog(this);
         mCommentBottomSheetDialog.setCanceledOnTouchOutside(true);
         @SuppressLint("InflateParams") View view = LayoutInflater.from(this).inflate(R.layout.layout_comment_fragment_dialog, null);
@@ -145,15 +139,45 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
             String content = mEtContent.getText().toString();
             if (!TextUtils.isEmpty(content)) {
                 ReplyBottleObj obj = new ReplyBottleObj();
-                obj.setBottleId(String.valueOf(result.getId()));
+                obj.setBottleId(result.getBottleId());
                 obj.setContent(content);
                 obj.setDeviceId(IPreference.prefHolder.getPreference(DiscoveryBottleDetailActivity.this).getString(Constant.STRING_DEVICE_ID));
-                obj.setParMessageId("0");
-                obj.setParUserId(String.valueOf(result.getUserId()));
-                obj.setSessionId("0");
+                obj.setParMessageId(parMessageId);
+                obj.setParUserId(parUserId);
+                obj.setSessionId(sessionId);
                 obj.setSessionType("0");
                 obj.setUserId(userId);
                 mPresenter.replyBottle(obj);
+            }
+        });
+        //when you invoke cancel() , callback to here .So  please use dialog.cancel() but not dialog.dismiss(), unless you setOnDismissListener
+        mCommentBottomSheetDialog.setOnCancelListener(dialog -> {
+            //when dialog cancel state write content into textview.
+            tvPublishComment.setText(mEtContent.getText().toString());
+        });
+    }
+
+    private void showCommentDialog() {
+        mCommentBottomSheetDialog = new BottomSheetDialog(this);
+        mCommentBottomSheetDialog.setCanceledOnTouchOutside(true);
+        @SuppressLint("InflateParams") View view = LayoutInflater.from(this).inflate(R.layout.layout_comment_fragment_dialog, null);
+        mEtContent = view.findViewById(R.id.et_comment_content);
+        Button mBtnSend = view.findViewById(R.id.btn_comment_send);
+        mCommentBottomSheetDialog.setContentView(view);
+        fillEditText();
+        mCommentBottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        mCommentBottomSheetDialog.show();
+        mBtnSend.setOnClickListener(v -> {
+            String content = mEtContent.getText().toString();
+            if (!TextUtils.isEmpty(content)) {
+                ReplyBottleListObj obj = new ReplyBottleListObj();
+                obj.setContent(content);
+                obj.setDeviceId(IPreference.prefHolder.getPreference(DiscoveryBottleDetailActivity.this).getString(Constant.STRING_DEVICE_ID));
+                obj.setSessionId(sessionId);
+                obj.setSessionType("0");
+                obj.setUserId(userId);
+                obj.setBottleId(bottleId);
+                mPresenter.replyBottleList(obj);
             }
         });
         //when you invoke cancel() , callback to here .So  please use dialog.cancel() but not dialog.dismiss(), unless you setOnDismissListener
@@ -179,56 +203,40 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
     }
 
     @Override
-    public void update2DeleteComment(CommentItem commentItem) {
-        mDataList.remove(commentItem);
-        commentList.notifyDataSetChanged();
-    }
-
-    @Override
     public void showErrorInfo(String info) {
         ToastUtils.showToast(info);
     }
 
     @Override
-    public void success() {
-
+    public void commentSuccess() {
+        mEtContent.setText("");
+        mCommentBottomSheetDialog.cancel();
+        if (TextUtils.equals(flag, "1")) {
+            ToastUtils.showToast("回复成功");
+            finish();
+        }else {
+            mPresenter.qryBottleDtl(bottleId, sessionId);
+        }
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_comment_send: //评论内容send按钮
-                String msg = mEtContent.getText().toString();
-                if (TextUtils.isEmpty(msg)) {
-                    return;
-                }
-                ReplyBottleObj obj = new ReplyBottleObj();
-                obj.setBottleId(String.valueOf(result.getId()));
-                obj.setContent(msg);
-                obj.setDeviceId(IPreference.prefHolder.getPreference(this).getString(Constant.STRING_DEVICE_ID));
-                obj.setParMessageId("0");
-                obj.setParUserId(String.valueOf(result.getUserId()));
-                obj.setSessionId("0");
-                obj.setSessionType("0");
-                obj.setUserId(userId);
-                mPresenter.replyBottle(obj);
-
-
-                // TODO: 2018/7/3 0003  当满足发送规则时，进行访问请求if success 清空et else 发送失败 doSomething
-                CommentItem item = new CommentItem();
-                item.setContent(mEtContent.getText().toString());
-                item.setId("100");
-                item.setUser(DatasUtil.getUser());
-                if (toReplyUser != null) {
-                    item.setToReplyUser(toReplyUser);
-                }
-                mDataList.add(item);
-                commentList.notifyDataSetChanged();
-                //评论完以后把ReplyUser重新置空
-                toReplyUser = null;
-                mEtContent.setText("");
-                mCommentBottomSheetDialog.cancel();
-                break;
+    public void showBottleDtl(BottleDtlBean.ResultBean result) {
+        this.result = result;
+        Glide.with(this).load(result.getHeadImg()).into(ivDiscoveryIcon);
+        tvDiscoveryContent.setText(result.getContent());
+        tvDiscoveryName.setText(result.getUserName());
+        tvDiscoveryTime.setText(result.getTimeStamp());
+        List<BottleDtlBean.ResultBean.MessBean> mess = result.getMess();
+        if (mess.size() == 0) {
+            commentList.setVisibility(View.GONE);
+        } else {
+            commentList.setDatas(mess);
+        }
+        if (TextUtils.equals(flag, "1")) { //来自捞瓶子
+            addDisposable(RxView.clicks(tvPublishComment).subscribe(o -> showCommentDialog("0", result.getAuthorId(), "0")));
+        } else {
+            // TODO: 2018/8/22 0022
+            addDisposable(RxView.clicks(tvPublishComment).subscribe(o -> showCommentDialog()));
         }
     }
 

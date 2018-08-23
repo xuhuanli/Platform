@@ -50,7 +50,7 @@ public class BottlePushActivity extends BaseActivity {
         addDisposable(RxTextView.textChanges(mBottleContent).subscribe(charSequence -> mContentLength.setText(String.format("%d%s", charSequence.length(), "/150"))));
         addDisposable(RxView.clicks(tvBottleCancel).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish()));
         addDisposable(RxView.clicks(tvBottlePush).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
-            // TODO: 2018/7/14 0014 if push success
+            // TODO: 2018/7/14 0014 if push commentSuccess
             String content = mBottleContent.getText().toString().trim();
             String label = mTvLabel.getText().toString().trim();
             if (TextUtils.isEmpty(label) || "添加标签".equals(label)) {

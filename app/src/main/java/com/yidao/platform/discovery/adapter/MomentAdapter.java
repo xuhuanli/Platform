@@ -40,10 +40,12 @@ public class MomentAdapter extends BaseQuickAdapter<FriendsShowBean, BaseViewHol
         if (delegate != null) {
             ninePhotoLayout.setDelegate(delegate);
         }
-        ninePhotoLayout.setData(item.getImgUrls());
+        if (item.getImgUrls() != null) {
+            ninePhotoLayout.setData(item.getImgUrls());
+        }
     }
 
-    public void setDeleteVisible(boolean b){
+    public void setDeleteVisible(boolean b) {
         visible = b;
     }
 }

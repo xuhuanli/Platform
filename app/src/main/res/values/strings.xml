@@ -62,8 +62,9 @@
     <string name="discovery_pyq_title">动态详情</string>
     <string name="publish_comment">发布评论</string>
     <string name="ensure_delete_reply">确定要删除回复吗?</string>
+    <string name="ensure_delete_bottle">确定要删除瓶子吗?</string>
     <string name="not_sign_in">未登录</string>
-    <string name="sign_tips">登录发现新世界~</string>
+    <string name="sign_tips">暂无简介</string>
     <string name="hot_search">热门搜索</string>
     <string name="personal_profile">个人资料</string>
     <string name="head_portrait">头像</string>

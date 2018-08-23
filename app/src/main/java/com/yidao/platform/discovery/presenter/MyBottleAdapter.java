@@ -1,7 +1,9 @@
 package com.yidao.platform.discovery.presenter;
 
 import android.support.annotation.Nullable;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.yidao.platform.R;
@@ -17,9 +19,9 @@ public class MyBottleAdapter extends BaseQuickAdapter<MyBottleBean.ListBean, Bas
     @Override
     protected void convert(BaseViewHolder helper, MyBottleBean.ListBean item) {
         helper
-                .setImageResource(R.id.iv_touxiang, R.drawable.info_head_p)
-                .setText(R.id.tv_name, "xhl")
-                .setText(R.id.tv_comment_content, "这是瓶子的消息")
-                .setText(R.id.tv_comment_time, "1小时前");
+                .setText(R.id.tv_name, item.getNickName())
+                .setText(R.id.tv_comment_content, item.getContent())
+                .setText(R.id.tv_comment_time, item.getTimeStamp());
+        Glide.with(mContext).load(item.getHeadImg()).into((ImageView) helper.getView(R.id.iv_touxiang));
     }
 }

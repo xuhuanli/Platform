@@ -10,7 +10,6 @@ import com.yidao.platform.R;
 import com.yidao.platform.app.utils.ConvertFormatUtil;
 import com.yidao.platform.read.bean.ReadNewsBean;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 public class ReadItemMoreAdapter extends BaseQuickAdapter<ReadNewsBean, BaseViewHolder> {
