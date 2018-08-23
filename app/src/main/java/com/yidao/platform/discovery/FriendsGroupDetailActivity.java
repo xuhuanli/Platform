@@ -32,6 +32,7 @@ import com.yidao.platform.discovery.bean.CommentsItem;
 import com.yidao.platform.discovery.bean.FriendsShowBean;
 import com.yidao.platform.discovery.model.PyqCommentsObj;
 import com.yidao.platform.discovery.model.PyqFindIdObj;
+import com.yidao.platform.discovery.model.QryFindContentObj;
 import com.yidao.platform.discovery.presenter.FriendsGroupDetailPresenter;
 import com.yidao.platform.discovery.view.CommentListView;
 
@@ -80,9 +81,9 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
     private EditText mEtContent;
     private BGANinePhotoLayout mCurrentClickNpl;
     private FriendsGroupDetailPresenter mPresenter;
-    private FriendsShowBean friendsShowBean;
     private String userId;
     private PyqFindIdObj obj;
+    private String findId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -96,15 +97,7 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
         initToolbar();
         Intent intent = getIntent();
         userId = IPreference.prefHolder.getPreference(this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
-        friendsShowBean = intent.getParcelableExtra("friendsShowBean");
-        Glide.with(this).load(friendsShowBean.getHeadImg()).apply(new RequestOptions().placeholder(R.drawable.info_head_p)).into(ivDiscoveryIcon);
-        tvDiscoveryName.setText(friendsShowBean.getDeployName());
-        tvDiscoveryTime.setText(friendsShowBean.getDeployTime());
-        tvDiscoveryVote.setText(String.valueOf(friendsShowBean.getLikeAmount()));
-        tvDiscoveryVote.setCompoundDrawablesWithIntrinsicBounds(friendsShowBean.isLike() ? R.drawable.dianzan_small_done : R.drawable.dianzan_small, 0, 0, 0);
-        tvDiscoveryContent.setText(friendsShowBean.getContent());
-        nplItemMomentPhotos.setData(friendsShowBean.getImgUrls());
-        nplItemMomentPhotos.setDelegate(this);
+        findId = intent.getStringExtra(Constant.STRING_FIND_ID);
     }
 
     private void initToolbar() {
@@ -113,7 +106,9 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
     }
 
     private void initData() {
-        obj = new PyqFindIdObj(friendsShowBean.getFindId());
+        QryFindContentObj findContentObj = new QryFindContentObj(findId, userId);
+        mPresenter.qryFindContent(findContentObj);
+        obj = new PyqFindIdObj(findId);
         mPresenter.qryFindComms(obj);
         addDisposable(RxView.clicks(mTvComment).subscribe(o -> showCommentDialog(Long.valueOf(userId), "0")));
     }
@@ -149,7 +144,7 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
                 PyqCommentsObj obj = new PyqCommentsObj();
                 obj.setContent(content);
                 obj.setDeployId(deployId);
-                obj.setFindId(friendsShowBean.getFindId());
+                obj.setFindId(findId);
                 obj.setOwnerId(ownerId);
                 mPresenter.sendFindComm(obj);
             }
@@ -273,5 +268,17 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
         mEtContent.setText("");
         mCommentBottomSheetDialog.cancel();
         mPresenter.qryFindComms(obj);
+    }
+
+    @Override
+    public void showDetail(FriendsShowBean showBean) {
+        Glide.with(this).load(showBean.getHeadImg()).apply(new RequestOptions().placeholder(R.drawable.info_head_p)).into(ivDiscoveryIcon);
+        tvDiscoveryName.setText(showBean.getDeployName());
+        tvDiscoveryTime.setText(showBean.getDeployTime());
+        tvDiscoveryVote.setText(String.valueOf(showBean.getLikeAmount()));
+        tvDiscoveryVote.setCompoundDrawablesWithIntrinsicBounds(showBean.isLike() ? R.drawable.dianzan_small_done : R.drawable.dianzan_small, 0, 0, 0);
+        tvDiscoveryContent.setText(showBean.getContent());
+        nplItemMomentPhotos.setData(showBean.getImgUrls());
+        nplItemMomentPhotos.setDelegate(this);
     }
 }

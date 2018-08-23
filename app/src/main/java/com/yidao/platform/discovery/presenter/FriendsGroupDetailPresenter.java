@@ -7,9 +7,12 @@ import com.yidao.platform.app.ApiService;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.discovery.IViewFriendsGroupDetail;
 import com.yidao.platform.discovery.bean.CommentsItem;
+import com.yidao.platform.discovery.bean.FindContentBean;
+import com.yidao.platform.discovery.bean.FriendsShowBean;
 import com.yidao.platform.discovery.bean.PyqCommentsBean;
 import com.yidao.platform.discovery.model.PyqCommentsObj;
 import com.yidao.platform.discovery.model.PyqFindIdObj;
+import com.yidao.platform.discovery.model.QryFindContentObj;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,6 +88,40 @@ public class FriendsGroupDetailPresenter {
                     @Override
                     protected void onSuccess(PyqCommentsBean pyqCommentsBean) {
                         mView.addCommentSuccess();
+                    }
+                });
+    }
+
+    /**
+     * 查询朋友圈详情
+     * @param findContentObj
+     */
+    public void qryFindContent(QryFindContentObj findContentObj) {
+        RxHttpUtils
+                .createApi(ApiService.class)
+                .qryFindContent(findContentObj)
+                .compose(Transformer.switchSchedulers())
+                .subscribe(new CommonObserver<FindContentBean>() {
+                    @Override
+                    protected void onError(String errorMsg) {
+
+                    }
+
+                    @Override
+                    protected void onSuccess(FindContentBean findContentBean) {
+                        if (findContentBean.isStatus()) {
+                            FindContentBean.ResultBean result = findContentBean.getResult();
+                            FriendsShowBean showBean = new FriendsShowBean();
+                            showBean.setLike(result.isIsLike());
+                            showBean.setFindId(result.getId());
+                            showBean.setContent(result.getContent());
+                            showBean.setDeployTime(result.getCreateTime());
+                            showBean.setDeployName(result.getUserName());
+                            showBean.setHeadImg(result.getHeadImg());
+                            showBean.setLikeAmount(result.getLikeAmount());
+                            showBean.setImgUrls((ArrayList<String>) result.getImgs());
+                            mView.showDetail(showBean);
+                        }
                     }
                 });
     }

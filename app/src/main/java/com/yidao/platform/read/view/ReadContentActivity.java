@@ -101,10 +101,10 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         regToWX();
-        mPresenter = new ReadContentActivityPresenter(this);
-        initData();
-        initView();
         EventBus.getDefault().register(this);
+        mPresenter = new ReadContentActivityPresenter(this);
+        initView();
+        initData();
     }
 
     @Override
@@ -120,13 +120,14 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void initData() {
+
+    }
+
+    private void initView() {
         Intent intent = getIntent();
         url = intent.getStringExtra(Constant.STRING_URL);
         artId = intent.getLongExtra(Constant.STRING_ART_ID, 0L);
         userId = IPreference.prefHolder.getPreference(this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
-    }
-
-    private void initView() {
         ib_comment = findViewById(R.id.ib_comment);
         ib_vote = findViewById(R.id.ib_vote);
         ib_favorite = findViewById(R.id.ib_favorite);

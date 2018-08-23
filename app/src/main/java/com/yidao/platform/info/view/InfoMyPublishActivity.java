@@ -141,8 +141,7 @@ public class InfoMyPublishActivity extends BaseActivity implements BaseQuickAdap
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             Intent intent = new Intent(this, FriendsGroupDetailActivity.class);
-            //传一个序列化的对象到下一页 就不去请求接口了
-            intent.putExtra("friendsShowBean", (FriendsShowBean) adapter.getItem(position));
+            intent.putExtra(Constant.STRING_FIND_ID, ((FriendsShowBean) adapter.getItem(position)).getFindId());
             startActivity(intent);
         });
         mAdapter.setOnItemChildClickListener(this);

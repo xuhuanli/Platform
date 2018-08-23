@@ -132,21 +132,16 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
      */
     private void initBanner() {
         banner.setImageLoader(new GlideImageLoader());
-        //设置banner样式
         banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
-        //设置图片加载器
         banner.setImageLoader(new GlideImageLoader());
         banner.setOffscreenPageLimit(5);
-        BannerViewPager bannerViewPager = (BannerViewPager) banner.findViewById(com.youth.banner.R.id.bannerViewPager);
+        BannerViewPager bannerViewPager = banner.findViewById(com.youth.banner.R.id.bannerViewPager);
         bannerViewPager.setPageMargin(ScreenUtil.dip2px(getContext(), 16));
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) bannerViewPager.getLayoutParams();
         lp.setMargins(ScreenUtil.dip2px(getContext(), 16), 0, ScreenUtil.dip2px(getContext(), 16), 0);
         bannerViewPager.setLayoutParams(lp);
-        //设置自动轮播，默认为true
         banner.isAutoPlay(true);
-        //设置轮播时间
         banner.setDelayTime(5000);
-        //设置指示器位置（当banner模式中有指示器时）
         banner.setIndicatorGravity(BannerConfig.CENTER);
     }
 

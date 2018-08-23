@@ -1,16 +1,20 @@
 package com.yidao.platform.app;
 
 import com.yidao.platform.discovery.bean.BottleDtlBean;
+import com.yidao.platform.discovery.bean.FindContentBean;
 import com.yidao.platform.discovery.bean.FriendsListBean;
 import com.yidao.platform.discovery.bean.PyqCommentsBean;
 import com.yidao.platform.discovery.model.DianZanObj;
 import com.yidao.platform.discovery.model.FindDiscoveryObj;
 import com.yidao.platform.discovery.model.PyqCommentsObj;
 import com.yidao.platform.discovery.model.PyqFindIdObj;
+import com.yidao.platform.discovery.model.QryFindContentObj;
 import com.yidao.platform.discovery.model.ReplyBottleListObj;
 import com.yidao.platform.discovery.model.ReplyBottleObj;
 import com.yidao.platform.discovery.model.SendFindObj;
 import com.yidao.platform.discovery.model.ThrowBottleObj;
+import com.yidao.platform.info.model.BottleMsgBean;
+import com.yidao.platform.info.model.FindMsgBean;
 import com.yidao.platform.info.model.MineInfoBean;
 import com.yidao.platform.info.model.UserCollectArtBean;
 import com.yidao.platform.info.model.UserInfoBean;
@@ -89,6 +93,23 @@ public interface ApiService {
     @GET("app/mine")
     Observable<MineInfoBean> getMineInfo(@Query("userId") String userId);
 
+    /**
+     * 查看漂流瓶消息
+     */
+    @GET("app/message/qryBottleMess")
+    Observable<BottleMsgBean> qryBottleMess(@Query("userId") String userId, @Query("index") int index, @Query("size") int size);
+
+    /**
+     * 查看朋友圈消息
+     */
+    @GET("app/message/qryFindMess")
+    Observable<FindMsgBean> qryFindMess(@Query("userId") String userId, @Query("index") int index, @Query("size") int size);
+
+    /**
+     * 更新消息为已读
+     */
+    @GET("app/message/upMessageStat")
+    Observable<String> upMessageStat(@Query("messageId") String messageId);
     //----------服务模块---------------
 
     /**
@@ -148,6 +169,13 @@ public interface ApiService {
     @Headers({"Content-Type: application/json;charset=UTF-8"})
     @POST("edit/find/sendFindComm")
     Observable<PyqCommentsBean> sendFindComm(@Body PyqCommentsObj pyqCommentsObj);
+
+    /**
+     * 发送朋友圈评论
+     */
+    @Headers({"Content-Type: application/json;charset=UTF-8"})
+    @POST("find/qryFindContent")
+    Observable<FindContentBean> qryFindContent(@Body QryFindContentObj qryFindContentObj );
     //----------文章模块------------
 
     /**

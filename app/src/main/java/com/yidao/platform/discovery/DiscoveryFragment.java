@@ -238,13 +238,11 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             Intent intent = new Intent(getActivity(), FriendsGroupDetailActivity.class);
-            //传一个序列化的对象到下一页 就不去请求接口了
-            intent.putExtra("friendsShowBean", (FriendsShowBean) adapter.getItem(position));
+            intent.putExtra(Constant.STRING_FIND_ID, ((FriendsShowBean) adapter.getItem(position)).getFindId());
             startActivity(intent);
         });
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             FriendsShowBean item = (FriendsShowBean) adapter.getItem(position);
-            // TODO: 2018/8/20 0020 替换userId
             boolean isLike = item.isLike();
             if (dianZanObj == null) {
                 dianZanObj = new DianZanObj();

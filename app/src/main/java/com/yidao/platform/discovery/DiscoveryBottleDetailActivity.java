@@ -86,7 +86,6 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
         sessionId = intent.getStringExtra(Constant.STRING_SESSION_ID);
         flag = intent.getStringExtra(Constant.STRING_BOTTLE_PAGE_FROM);
         userId = IPreference.prefHolder.getPreference(this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
-        //瓶子不展示点赞和九宫格
         tvDiscoveryVote.setVisibility(View.GONE);
         nplItemMomentPhotos.setVisibility(View.GONE);
     }
@@ -98,31 +97,6 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
 
     private void initData() {
         mPresenter.qryBottleDtl(bottleId, sessionId);
-        /*mDataList = DatasUtil.createCommentItemList();
-        //commentList.setDatas(mDataList);
-        addDisposable(RxView.clicks(tvPublishComment).subscribe(o -> showCommentDialog(1,null)));
-        if (mDataList.size() > 0) {
-            commentList.setOnItemClickListener(position -> {
-                CommentItem commentItem = mDataList.get(position);
-                if (DatasUtil.curUser.getId().equals(commentItem.getUser().getId())) {//复制或者删除自己的评论
-                    // TODO: 2018/7/17 0017 长按
-                    CommentDialog dialog = new CommentDialog(DiscoveryBottleDetailActivity.this, mPresenter, commentItem);
-                    dialog.show();
-                } else {  //回复别人
-                    //回复当前条目的人,所以是getUser 不是getToReplyUser
-                    User toReplyUser = commentItem.getUser();
-                    //showCommentDialog(toReplyUser);
-                }
-            });
-            commentList.setOnItemLongClickListener(position -> {
-                CommentItem commentItem = mDataList.get(position);
-                //长按进行复制或者删除
-                CommentDialog dialog = new CommentDialog(DiscoveryBottleDetailActivity.this, mPresenter, commentItem);
-                dialog.show();
-            });
-        } else {
-            commentList.setVisibility(View.GONE);
-        }*/
     }
 
     private void showCommentDialog(String parMessageId, String parUserId, String sessionId ) {

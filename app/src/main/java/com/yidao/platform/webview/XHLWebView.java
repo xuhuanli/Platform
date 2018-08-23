@@ -5,15 +5,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-
-import com.yidao.platform.R;
-import com.yidao.platform.app.utils.MyLogger;
 
 public class XHLWebView extends WebView {
 
@@ -23,11 +16,11 @@ public class XHLWebView extends WebView {
     private WebViewCallback callback;
 
     public XHLWebView(Context context) {
-        this(context,null);
+        this(context, null);
     }
 
     public XHLWebView(Context context, AttributeSet attrs) {
-        this(context, attrs,0);
+        this(context, attrs, 0);
     }
 
     public XHLWebView(Context context, AttributeSet attrs, int defStyleAttr) {

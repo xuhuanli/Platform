@@ -32,8 +32,6 @@ public class SearchArticleActivity extends BaseActivity implements IViewSearchAr
     SearchView searchView;
     @BindView(R.id.tv_cancel)
     TextView tvCancel;
-    //    @BindView(R.id.rv_hot_search)
-//    RecyclerView mRvResult;
     @BindView(R.id.recycler_result)
     RecyclerView mRecyclerView;
     private SearchArticleActivityPresenter mPresenter;
@@ -74,17 +72,6 @@ public class SearchArticleActivity extends BaseActivity implements IViewSearchAr
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
     }
-
-    /*private void initRecyclerView() {
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 4));
-        ArrayList<String> data = new ArrayList<>();
-        for (int i = 0; i < 8; i++) {
-            data.add("蛤蛤");
-        }
-        SearchWordAdapter adapter = new SearchWordAdapter(data);
-        mRecyclerView.setAdapter(adapter);
-        //adapter.setOnItemClickListener((adapter1, view, position) -> searchArticle(((TextView) view).getText()));
-    }*/
 
     private void searchArticle(String text) {
         searchView.setQuery(text, false);
