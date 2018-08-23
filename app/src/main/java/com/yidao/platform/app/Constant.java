@@ -11,7 +11,8 @@ public class Constant {
     //张zk
     //public static final String BASE_URL = "http://10.10.20.10:8081/";
     //陈dq
-    public static final String BASE_URL = "http://10.10.20.3:8080/platform-pc-web/";
+    //public static final String BASE_URL = "http://10.10.20.3:8080/platform-pc-web/";
+    public static final String BASE_URL = "http://192.168.1.92:8082/";
 
     /**
      * 全局debug模式开关 在release时候设置为false
@@ -96,8 +97,8 @@ public class Constant {
     public static final String STRING_DEVICE_ID = "deviceId";
     public static final String STRING_BOTTLE = "bottle";
     public static final String STRING_BOTTLE_ID = "bottleId";
-    public static final String STRING_SESSION_ID= "sessionId";
-    public static final String STRING_FIND_ID= "findId";
+    public static final String STRING_SESSION_ID = "sessionId";
+    public static final String STRING_FIND_ID = "findId";
 
     public static final String STRING_BOTTLE_PAGE_FROM = "bottle_from";
     public static final String USER_INFO = "user_info";

@@ -20,6 +20,7 @@ public class ServiceFragmentPresenter {
 
     /**
      * BP 申请
+     *
      * @param bpObj
      */
     public void sendBpApply(BpObj bpObj) {
@@ -30,28 +31,26 @@ public class ServiceFragmentPresenter {
                 .subscribe(new StringObserver() {
                     @Override
                     protected void onError(String errorMsg) {
-                        showError();
+
                     }
 
                     @Override
                     protected void onSuccess(String data) {
                         try {
                             JSONObject jsonObject = new JSONObject(data);
-                            int code = (int) jsonObject.get("code");
-                            if (code == 200) {
-                                ToastUtils.showToast("申请成功");
-                                mView.applySuccess();
-                            } else {
-                                ToastUtils.showToast((String) jsonObject.get("msg"));
+                            switch (jsonObject.getString("errCode")) {
+                                case "1000":
+                                    ToastUtils.showToast("申请成功");
+                                    mView.applySuccess();
+                                    break;
+                                default:
+                                    ToastUtils.showToast("申请失败,请稍后再试");
+                                    break;
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
                 });
-    }
-
-    private void showError() {
-        ToastUtils.showToast("网络连接失败，请查看网络");
     }
 }

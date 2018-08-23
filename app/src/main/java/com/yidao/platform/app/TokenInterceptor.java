@@ -2,10 +2,7 @@ package com.yidao.platform.app;
 
 import android.content.Intent;
 import android.os.Handler;
-import android.text.TextUtils;
 
-import com.allen.library.utils.ToastUtils;
-import com.google.gson.Gson;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.login.view.LoginActivity;
@@ -53,6 +50,8 @@ public class TokenInterceptor implements Interceptor {
                         .build();
                 //重新请求上次的接口
                 return chain.proceed(newRequest.newBuilder().build());
+            } else {
+                return null;
             }
         }
         Response build = response.newBuilder().body(ResponseBody.create(mediaType, resultStr)).build();
@@ -114,19 +113,27 @@ public class TokenInterceptor implements Interceptor {
         Response response = client.newCall(request).execute();
         String result = response.body().string();
         MyLogger.e("保存。。。" + result);
-        RequestCode requestCode = new Gson().fromJson(result, RequestCode.class);
-        IPreference.prefHolder.getPreference(MyApplicationLike.getAppContext()).put(Constant.STRING_USER_TOKEN, requestCode.getResult().getToken());
-        if ("1021".equals(requestCode.getErrCode())) {  //刷新TOKEN 过期
-            mHandler.post(() -> {
-                ToastUtils.showToast("登录已过期,请重新登录");
-                jumpToLoginPage();
-            });
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            switch (jsonObject.getString("errCode")) {
+                case "1000":
+                    String token = jsonObject.getJSONObject("result").getString("token");
+                    IPreference.prefHolder.getPreference(MyApplicationLike.getAppContext()).put(Constant.STRING_USER_TOKEN, token);
+                    response.body().close();
+                    return token;
+                case "1021":
+                    mHandler.post(() -> jumpToLoginPage());
+                    break;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
         response.body().close();
-        return requestCode.getResult().getToken();
+        return null;
     }
 
     private void jumpToLoginPage() {
+        IPreference.prefHolder.getPreference(MyApplicationLike.getAppContext()).remove(Constant.STRING_USER_ID);
         Intent intent = new Intent(MyApplicationLike.getAppContext(), LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         MyApplicationLike.getAppContext().startActivity(intent);
