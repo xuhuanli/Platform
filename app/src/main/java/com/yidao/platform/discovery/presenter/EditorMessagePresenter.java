@@ -6,9 +6,11 @@ import android.support.annotation.Nullable;
 
 import com.allen.library.RxHttpUtils;
 import com.allen.library.interceptor.Transformer;
+import com.allen.library.observer.CommonObserver;
 import com.allen.library.observer.StringObserver;
 import com.allen.library.utils.ToastUtils;
 import com.yidao.platform.app.ApiService;
+import com.yidao.platform.app.OssBean;
 import com.yidao.platform.app.utils.OssUploadUtil;
 import com.yidao.platform.discovery.model.SendFindObj;
 import com.yidao.platform.discovery.view.DiscoveryEditorMessageInterface;
@@ -23,9 +25,9 @@ public class EditorMessagePresenter {
     private DiscoveryEditorMessageInterface mView;
     private final OssUploadUtil ossUploadUtil;
 
-    public EditorMessagePresenter(DiscoveryEditorMessageInterface view, Context context) {
+    public EditorMessagePresenter(DiscoveryEditorMessageInterface view, Context context,String ossId, String ossSecret, String ossToken) {
         mView = view;
-        ossUploadUtil = new OssUploadUtil(context);
+        ossUploadUtil = new OssUploadUtil(context,ossId, ossSecret, ossToken);
     }
 
     public void uploadFile(String filePath, @Nullable final Handler handler) {
@@ -65,5 +67,28 @@ public class EditorMessagePresenter {
 
     private void showError() {
         ToastUtils.showToast("网络连接失败，请查看网络");
+    }
+
+    /**
+     * 获取认证(oss)
+     */
+    public void getOssAccess() {
+        RxHttpUtils
+                .createApi(ApiService.class)
+                .getUploadMsg()
+                .compose(Transformer.switchSchedulers())
+                .subscribe(new CommonObserver<OssBean>() {
+                    @Override
+                    protected void onError(String errorMsg) {
+
+                    }
+
+                    @Override
+                    protected void onSuccess(OssBean ossBean) {
+                        if (ossBean.isStatus()) {
+                            mView.saveOss(ossBean.getResult());
+                        }
+                    }
+                });
     }
 }

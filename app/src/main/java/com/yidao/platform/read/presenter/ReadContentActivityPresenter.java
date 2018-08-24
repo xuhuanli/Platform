@@ -2,15 +2,23 @@ package com.yidao.platform.read.presenter;
 
 import com.allen.library.RxHttpUtils;
 import com.allen.library.interceptor.Transformer;
+import com.allen.library.observer.CommonObserver;
 import com.allen.library.observer.StringObserver;
 import com.allen.library.utils.ToastUtils;
 import com.yidao.platform.app.ApiService;
+import com.yidao.platform.read.adapter.ReadNewsDetailBean;
+import com.yidao.platform.read.bean.HotCommentsBean;
+import com.yidao.platform.read.bean.LastCommentsBean;
 import com.yidao.platform.read.view.IViewReadContentActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
+import static com.yidao.platform.read.adapter.ReadNewsDetailBean.ITEM_COMMENTS;
 
 public class ReadContentActivityPresenter {
     private IViewReadContentActivity mView;
@@ -66,9 +74,9 @@ public class ReadContentActivityPresenter {
      *
      * @param commentId
      */
-    public void deleteMineComment(long commentId) {
+    public void deleteMineComment(String commentId) {
         HashMap<String, String> map = new HashMap<>();
-        map.put("commentId", String.valueOf(commentId));
+        map.put("commentId", commentId);
         RxHttpUtils.createApi(ApiService.class)
                 .delComment(map)
                 .compose(Transformer.switchSchedulers())
@@ -152,9 +160,88 @@ public class ReadContentActivityPresenter {
     public void sendReadRecordInfo(long artId, String userId) {
         HashMap<String, String> map = new HashMap<>();
         map.put("artId", String.valueOf(artId));
-        map.put("userId", String.valueOf(userId));
+        map.put("userId", userId);
         RxHttpUtils.createApi(ApiService.class)
                 .pushHasRead(map)
+                .compose(Transformer.switchSchedulers())
+                .subscribe();
+    }
+
+    /**
+     * 热门
+     *
+     * @param id
+     */
+    public void getHotComments(long id) {
+        RxHttpUtils
+                .createApi(ApiService.class)
+                .getHotComments(id)
+                .compose(Transformer.switchSchedulers())
+                .subscribe(new CommonObserver<HotCommentsBean>() {
+                    @Override
+                    protected void onError(String errorMsg) {
+
+                    }
+
+                    @Override
+                    protected void onSuccess(HotCommentsBean hotCommentsBean) {
+                        if (hotCommentsBean.isStatus()) {
+                            mView.showHotComment(hotCommentsBean.getResult());
+                        }
+                    }
+                });
+    }
+
+    /**
+     * 最新
+     */
+    public void getLastestComments(long artId, long pageIndex, int pageSize) {
+        RxHttpUtils
+                .createApi(ApiService.class)
+                .getLastComments(artId, pageIndex, pageSize)
+                .compose(Transformer.switchSchedulers())
+                .subscribe(new CommonObserver<LastCommentsBean>() {
+                    @Override
+                    protected void onError(String errorMsg) {
+
+                    }
+
+                    @Override
+                    protected void onSuccess(LastCommentsBean lastCommentsBean) {
+                        if (lastCommentsBean.isStatus()) {
+                            List<LastCommentsBean.ResultBean.ListBean> list = lastCommentsBean.getResult().getList();
+                            if (list != null && list.size() < lastCommentsBean.getResult().getPageSize()) {  //所得数目< pageSize =>到底了
+                                mView.loadMoreEnd(false);
+                            } else {
+                                mView.loadMoreComplete();
+                            }
+                            ArrayList<ReadNewsDetailBean> dataList = new ArrayList<>();
+                            for (LastCommentsBean.ResultBean.ListBean listBean : list) {
+                                ReadNewsDetailBean bean = new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_COMMENTS);
+                                bean.setContent(listBean.getContent());
+                                bean.setHeadImg(listBean.getCommentUserHeadImgUrl());
+                                bean.setNickName(listBean.getNickname());
+                                bean.setId(listBean.getId());
+                                bean.setLikeCount(listBean.getLikeCount());
+                                bean.setTimeSamp(listBean.getTime());
+                                bean.setUserId(listBean.getUserId());
+                                dataList.add(bean);
+                            }
+                            mView.loadMoreData(dataList);
+                        }
+                    }
+                });
+    }
+
+    /**
+     * 点赞评论
+     * @param id
+     * @param userId
+     */
+    public void userLikeComment(String id, String userId) {
+        RxHttpUtils
+                .createApi(ApiService.class)
+                .userLikeComment(id,userId)
                 .compose(Transformer.switchSchedulers())
                 .subscribe();
     }

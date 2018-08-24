@@ -2,9 +2,10 @@ package com.yidao.platform.info.presenter;
 
 import com.allen.library.RxHttpUtils;
 import com.allen.library.interceptor.Transformer;
+import com.allen.library.observer.CommonObserver;
 import com.allen.library.observer.StringObserver;
-import com.allen.library.utils.ToastUtils;
 import com.yidao.platform.app.ApiService;
+import com.yidao.platform.app.OssBean;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.info.view.IViewPersonInfomationActivity;
 
@@ -46,4 +47,25 @@ public class PersonInfomationActivityPresenter {
                     }
                 });
     }
+
+    public void getOssAccess() {
+        RxHttpUtils
+                .createApi(ApiService.class)
+                .getUploadMsg()
+                .compose(Transformer.switchSchedulers())
+                .subscribe(new CommonObserver<OssBean>() {
+                    @Override
+                    protected void onError(String errorMsg) {
+
+                    }
+
+                    @Override
+                    protected void onSuccess(OssBean ossBean) {
+                        if (ossBean.isStatus()) {
+                            mView.saveOss(ossBean.getResult());
+                        }
+                    }
+                });
+    }
 }
+

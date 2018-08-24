@@ -88,6 +88,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler, IVi
             //已绑定，需要写入userId
             IPreference.prefHolder.getPreference(this).put(Constant.STRING_USER_ID,result.getUserId());
             startActivity(new Intent(this, ContainerActivity.class));
+            finish();
         }else {  //没绑定， 跳转到绑定页 绑定成功后写入userId
             Intent intent = new Intent(this, LoginBindingPhoneActivity.class);
             intent.putExtra(Constant.STRING_USER_ID,result.getUserId());

@@ -148,5 +148,6 @@ public class LoginBindingPhoneActivity extends BaseActivity implements IViewBind
     public void bindSuccess() {
         IPreference.prefHolder.getPreference(this).put(Constant.STRING_USER_ID,userId);
         startActivity(ContainerActivity.class);
+        finish();
     }
 }

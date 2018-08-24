@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
@@ -36,6 +37,7 @@ import com.yidao.platform.app.utils.BitmapUtil;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.read.adapter.MultipleReadDetailAdapter;
 import com.yidao.platform.read.adapter.ReadNewsDetailBean;
+import com.yidao.platform.read.bean.HotCommentsBean;
 import com.yidao.platform.read.bus.WebViewLoadEvent;
 import com.yidao.platform.read.presenter.ReadContentActivityPresenter;
 
@@ -49,6 +51,8 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import cn.bingoogolapple.badgeview.BGABadgeImageButton;
+
+import static com.yidao.platform.read.adapter.ReadNewsDetailBean.ITEM_COMMENTS;
 
 public class ReadContentActivity extends BaseActivity implements View.OnClickListener, IViewReadContentActivity {
 
@@ -96,6 +100,8 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
      * 是否对点赞有操作
      */
     private boolean isOperateLike = false;
+    private int mNextRequestPage = 1;
+    private List<ReadNewsDetailBean> list = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -108,9 +114,10 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
         //告知服务器阅读记录
+        MyLogger.e(artId + "  " + userId);
         mPresenter.sendReadRecordInfo(artId, userId);
     }
 
@@ -120,7 +127,9 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void initData() {
-
+        mPresenter.getHotComments(artId);
+        // TODO: 2018/8/24 0024 测试id
+        //mPresenter.getLastestComments(artId, mNextRequestPage, Constant.PAGE_SIZE);
     }
 
     private void initView() {
@@ -133,43 +142,18 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         ib_favorite = findViewById(R.id.ib_favorite);
         ib_share = findViewById(R.id.ib_share);
         //在载入文章前展示progressbar
-        mRecyclerView.setVisibility(View.INVISIBLE);
-        mCommentBar.setVisibility(View.INVISIBLE);
-        mProgressBar.setVisibility(View.VISIBLE);
+//        mRecyclerView.setVisibility(View.INVISIBLE);
+//        mCommentBar.setVisibility(View.INVISIBLE);
+//        mProgressBar.setVisibility(View.VISIBLE);
         //-------------------------
         ib_comment.setOnClickListener(this);
         ib_vote.setOnClickListener(this);
         ib_favorite.setOnClickListener(this);
         ib_share.setOnClickListener(this);
-        layoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(layoutManager);
-        List<ReadNewsDetailBean> list = new ArrayList<>();
-        list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_WEBVIEW));
-        list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_HOT_COMMENT));
-        for (int i = 0; i < 2; i++) {
-            list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_COMMENTS));
-        }
-        list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_BOTTOM));
-        mAdapter = new MultipleReadDetailAdapter(this, list);
-        mAdapter.setWebViewUrl(url);
-        mRecyclerView.setAdapter(mAdapter);
+        initRecyclerView();
         //展开评论框
         addDisposable(RxView.clicks(mTvComment).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> showCommentDialog()));
         addDisposable(RxView.clicks(ivBack).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish()));
-        mAdapter.setOnItemLongClickListener((adapter, view, position) -> {
-            int itemViewType = adapter.getItemViewType(position);
-            // TODO: 2018/7/25 0025 还需要判断是否为本人评论 ignored
-            if (itemViewType == ReadNewsDetailBean.ITEM_COMMENTS) {
-                showAlertDialog(R.string.ensure_delete, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mPresenter.deleteMineComment(0L);
-                    }
-                });
-            }
-            return false;
-        });
-
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -192,6 +176,11 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
+    }
+
+    private void initRecyclerView() {
+        layoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(layoutManager);
     }
 
     private void showAlertDialog(int messageId, DialogInterface.OnClickListener positiveListener) {
@@ -307,8 +296,8 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         WXWebpageObject webpage = new WXWebpageObject();
         webpage.webpageUrl = url;
         WXMediaMessage msg = new WXMediaMessage(webpage);
-        msg.title = "WebPage Title WebPage Title WebPage Title WebPage Title WebPage Title WebPage Title WebPage Title WebPage Title WebPage Title Very Long Very Long Very Long Very Long Very Long Very Long Very Long Very Long Very Long Very Long";
-        msg.description = "WebPage Description WebPage Description WebPage Description WebPage Description WebPage Description WebPage Description WebPage Description WebPage Description WebPage Description Very Long Very Long Very Long Very Long Very Long Very Long Very Long";
+        msg.title = "Title";
+        msg.description = "Content";
         Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.info_head_p);
         Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, THUMB_SIZE, THUMB_SIZE, true);
         bmp.recycle();
@@ -332,9 +321,9 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(WebViewLoadEvent event) {
-        mRecyclerView.setVisibility(View.VISIBLE);
-        mCommentBar.setVisibility(View.VISIBLE);
-        mProgressBar.setVisibility(View.GONE);
+//        mRecyclerView.setVisibility(View.VISIBLE);
+//        mCommentBar.setVisibility(View.VISIBLE);
+//        mProgressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -355,5 +344,76 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void pushCommentFail() {
         MyLogger.e("发布失败");
+    }
+
+    @Override
+    public void showHotComment(HotCommentsBean.ResultBean resultBean) {
+        ib_comment.showTextBadge(resultBean.getCommentAmount());
+        ib_favorite.showTextBadge(resultBean.getLikeAmount());
+        List<HotCommentsBean.ResultBean.CmsArticleCommentDtosBean> commentDtos = resultBean.getCmsArticleCommentDtos();
+        list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_WEBVIEW));
+        list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_HOT_COMMENT));
+        if (commentDtos != null) {
+            for (HotCommentsBean.ResultBean.CmsArticleCommentDtosBean commentDto : commentDtos) {
+                ReadNewsDetailBean bean = new ReadNewsDetailBean(ITEM_COMMENTS);
+                bean.setContent(commentDto.getContent());
+                bean.setHeadImg(commentDto.getCommentUserHeadImgUrl());
+                bean.setNickName(commentDto.getNickname());
+                bean.setId(commentDto.getId());
+                bean.setUserId(commentDto.getUserId());
+                bean.setLikeCount(commentDto.getLikeCount());
+                bean.setTimeSamp(commentDto.getTime());
+                list.add(bean);
+            }
+        }
+        if (mAdapter == null) {
+            mAdapter = new MultipleReadDetailAdapter(list);
+        }
+        mAdapter.setWebViewUrl(url);
+        mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
+        mAdapter.setOnItemLongClickListener((adapter, view, position) -> {
+            ReadNewsDetailBean item = (ReadNewsDetailBean) adapter.getItem(position);
+            int itemViewType = adapter.getItemViewType(position);
+            if (TextUtils.equals(item.getUserId(),userId) && itemViewType == ReadNewsDetailBean.ITEM_COMMENTS) {
+                showAlertDialog(R.string.ensure_delete, (dialog, which) -> mPresenter.deleteMineComment(item.getId()));
+            }
+            return false;
+        });
+        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                ReadNewsDetailBean item = (ReadNewsDetailBean) adapter.getItem(position);
+                TextView textView = view.findViewById(R.id.tv_detail_vote);
+                textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.dianzan_small_done,0,0,0);
+                mPresenter.userLikeComment(item.getId(),userId);
+            }
+        });
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void loadMoreData(List<ReadNewsDetailBean> dataList) {
+        if (mAdapter != null) {
+            mAdapter.addData(dataList);
+        }
+    }
+
+    @Override
+    public void loadMoreEnd(boolean b) {
+        if (mAdapter != null) {
+            mAdapter.loadMoreEnd(b);
+        }
+    }
+
+    @Override
+    public void loadMoreComplete() {
+        if (mAdapter != null) {
+            mAdapter.loadMoreComplete();
+        }
+    }
+
+    private void loadMore() {
+        mPresenter.getLastestComments(artId, mNextRequestPage, Constant.PAGE_SIZE);
+        mNextRequestPage++;
     }
 }

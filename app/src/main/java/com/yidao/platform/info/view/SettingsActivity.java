@@ -59,6 +59,7 @@ public class SettingsActivity extends BaseActivity implements SettingsViewInterf
             //退出登录:清除Sp下userId 跳转到登录页面
             IPreference.prefHolder.getPreference(SettingsActivity.this).remove(Constant.STRING_USER_ID);
             startActivity(LoginActivity.class);
+            finish();
         }));
     }
 

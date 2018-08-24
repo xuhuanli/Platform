@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -29,6 +28,7 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
+import com.yidao.platform.app.OssBean;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.app.utils.FileUtil;
 import com.yidao.platform.app.utils.OssUploadUtil;
@@ -82,14 +82,15 @@ public class PersonInfomationActivity extends BaseActivity implements View.OnCli
     private static final int REQUEST_CHANGE_INFO = 102;
     private PersonInfomationActivityPresenter mPresenter;
     private String userId;
+    private OssBean.ResultBean mOss;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPresenter = new PersonInfomationActivityPresenter(this);
         userId = IPreference.prefHolder.getPreference(this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
-        initView();
         EventBus.getDefault().register(this);
+        initView();
     }
 
     @SuppressLint("CheckResult")
@@ -99,7 +100,7 @@ public class PersonInfomationActivity extends BaseActivity implements View.OnCli
         Glide.with(this).load(resultBean.getHeadImgUrl()).into(headPortrait);
         tvUserId.setValue(resultBean.getId());
         tvNikeName.setValue(resultBean.getNickname());
-        tvLocation.setValue(resultBean.getProvinceName()+" "+resultBean.getCityName());
+        tvLocation.setValue(resultBean.getProvinceName() + " " + resultBean.getCityName());
         tvStatus.setValue(resultBean.getIntroduction());
         RxView.clicks(rlHead).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> setDialog());
         RxView.clicks(tvNikeName).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
@@ -114,6 +115,7 @@ public class PersonInfomationActivity extends BaseActivity implements View.OnCli
             intent.putExtra(Constant.STRING_VALUE, tvStatus.getValue());
             startActivityForResult(intent, REQUEST_CHANGE_INFO);
         });
+        mPresenter.getOssAccess();
     }
 
     private void setDialog() {
@@ -204,21 +206,21 @@ public class PersonInfomationActivity extends BaseActivity implements View.OnCli
                     String path = app_photo.getAbsolutePath();
                     Glide.with(PersonInfomationActivity.this).load(path).into(headPortrait);
                     //不刷新相册 拍照的图片不会在相册显示
-                    upload2Oss(path);
+                    upload2Oss(path,mOss.getAccessKeyId(),mOss.getAccessKeySecret(),mOss.getSecurityToken());
                     break;
                 case REQUEST_CHOOSE_PICTURE:
                     ArrayList<String> photos = BGAPhotoPickerActivity.getSelectedPhotos(data);
                     Glide.with(PersonInfomationActivity.this).load(photos.get(0)).into(headPortrait);
                     if (photos.size() == 1) {
-                        upload2Oss(photos.get(0));
+                        upload2Oss(photos.get(0),mOss.getAccessKeyId(),mOss.getAccessKeySecret(),mOss.getSecurityToken());
                     }
                     break;
             }
         }
     }
 
-    private void upload2Oss(String path) {
-        OssUploadUtil ossUploadUtil = new OssUploadUtil(this);
+    private void upload2Oss(String path,String ossId, String ossSecret, String ossToken) {
+        OssUploadUtil ossUploadUtil = new OssUploadUtil(this,ossId,ossSecret,ossToken);
         if (!needCompress(Constant.NEED_COMPRESS_SIZE, path)) {
             //<300K时，直传
             ossUploadUtil.uploadFile(path, null);
@@ -257,6 +259,7 @@ public class PersonInfomationActivity extends BaseActivity implements View.OnCli
 
     /**
      * 修改完属性的事件bus
+     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -308,5 +311,10 @@ public class PersonInfomationActivity extends BaseActivity implements View.OnCli
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void saveOss(OssBean.ResultBean result) {
+        mOss = result;
     }
 }

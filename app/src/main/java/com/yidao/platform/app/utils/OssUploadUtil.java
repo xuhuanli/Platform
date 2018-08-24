@@ -34,6 +34,17 @@ public class OssUploadUtil {
         ossClient = new OSSClient(context, Constant.OSS_ENDPOINT, credentialProvider, conf);
     }
 
+    public OssUploadUtil(Context context, String ossId, String ossSecret, String ossToken) {
+        //初始化主要完成Endpoint设置、鉴权方式设置、Client参数设置
+        ClientConfiguration conf = new ClientConfiguration();
+        conf.setConnectionTimeout(15 * 1000); // 连接超时，默认15秒
+        conf.setSocketTimeout(15 * 1000); // socket超时，默认15秒
+        conf.setMaxConcurrentRequest(5); // 最大并发请求书，默认5个
+        conf.setMaxErrorRetry(2); // 失败后最大重试次数，默认2次
+        OSSStsTokenCredentialProvider credentialProvider = new OSSStsTokenCredentialProvider(ossId, ossSecret, ossToken);
+        ossClient = new OSSClient(context, Constant.OSS_ENDPOINT, credentialProvider, conf);
+    }
+
     public void uploadFile(final String filePath, @Nullable final Handler handler) {
         String objectKey = "test/IMG_" + FileUtil.formateTime();
         PutObjectRequest put = new PutObjectRequest(Constant.OSS_BUCKET_NAME, objectKey, filePath);

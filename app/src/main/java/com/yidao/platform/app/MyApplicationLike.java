@@ -48,14 +48,14 @@ public class MyApplicationLike extends DefaultApplicationLike {
         // 这里实现SDK初始化，appId替换成你的在Bugly平台申请的appId
         // 调试时，将第三个参数改为true
         appContext = getApplication();
-        setLabelMap();
         //为了尽快拿到设备ID回调，请把阿里云推送放到最前面
-        initCloudChannel(appContext);
         initRetrofit();
+        initCloudChannel(appContext);
         initBugly();
         initLeakCanary();
         initLogger();
         initUmengAnalytics(appContext);
+        setLabelMap();
     }
 
     private void setLabelMap(){
@@ -113,11 +113,8 @@ public class MyApplicationLike extends DefaultApplicationLike {
     }
 
     private OkHttpClient initOkHttpClient() {
-        //HashMap<String, Object> headers = new HashMap<>();
-        //headers.put("token", IPreference.prefHolder.getPreference(getAppContext()).getString(Constant.STRING_USER_TOKEN));
         OkHttpClient okHttpClient = new OkHttpConfig
                 .Builder()
-                //全局的请求头信息
                 //.setHeaders(headerMaps)
                 .setCachePath(FileUtil.getDiskCacheDir(getAppContext(), "http_cache").getPath())
                 //开启缓存策略(默认false)
@@ -127,9 +124,7 @@ public class MyApplicationLike extends DefaultApplicationLike {
                 //.setHeaders(headers)
                 //全局持久话cookie,保存本地每次都会携带在header中（默认false）
                 .setSaveCookie(false)
-                //添加自己的拦截器 基于DiskLruCache
-                //.setAddInterceptor(new MyCacheInterceptor())
-                .setAddInterceptor(new TokenInterceptor())
+                //.setAddInterceptor(new TokenInterceptor())
                 //全局ssl证书认证
                 //1、信任所有证书,不安全有风险（默认信任所有证书）
                 //.setSslSocketFactory()

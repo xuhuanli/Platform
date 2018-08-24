@@ -17,6 +17,7 @@ import com.allen.library.utils.ToastUtils;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
+import com.yidao.platform.app.OssBean;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.discovery.presenter.EditorMessagePresenter;
 import com.yidao.platform.discovery.view.DiscoveryEditorMessageInterface;
@@ -44,6 +45,7 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
     @BindView(R.id.et_editor)
     EditText mEtEditor;
     private BGASortableNinePhotoLayout mPhotosSnpl;
+    private OssBean.ResultBean mOss;
     /**
      * 选择拍照
      */
@@ -97,7 +99,7 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresenter = new EditorMessagePresenter(this, this);
+        mPresenter = new EditorMessagePresenter(this, this,mOss.getAccessKeyId(),mOss.getAccessKeySecret(),mOss.getSecurityToken());
         userId = IPreference.prefHolder.getPreference(DiscoveryEditorMessageActivity.this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
         mPhotosSnpl = findViewById(R.id.snpl_moment_add_photos);
         mPhotosSnpl.setDelegate(this);
@@ -112,6 +114,7 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
         if (choose_picture_path != null) {
             mPhotosSnpl.setData(choose_picture_path);
         }
+        mPresenter.getOssAccess();
     }
 
     private void initView() {
@@ -284,5 +287,10 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
         //mEtEditor.setText("");
         ToastUtils.showToast("发布成功");
         finish();
+    }
+
+    @Override
+    public void saveOss(OssBean.ResultBean bean) {
+        mOss = bean;
     }
 }

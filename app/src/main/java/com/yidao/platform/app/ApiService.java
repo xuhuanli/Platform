@@ -26,6 +26,8 @@ import com.yidao.platform.read.bean.BannerBean;
 import com.yidao.platform.read.bean.CategoryArticleExtBean;
 import com.yidao.platform.read.bean.ChannelBean;
 import com.yidao.platform.read.bean.CommonArticleBean;
+import com.yidao.platform.read.bean.HotCommentsBean;
+import com.yidao.platform.read.bean.LastCommentsBean;
 import com.yidao.platform.read.bean.SearchBean;
 import com.yidao.platform.service.model.BpObj;
 
@@ -45,6 +47,11 @@ import retrofit2.http.QueryMap;
 public interface ApiService {
 
     //-------------登录模块---------------
+    /**
+     * 发送code到server
+     */
+    @GET("home/article/getUploadMsg")
+    Observable<OssBean> getUploadMsg();
 
     /**
      * 发送code到server
@@ -304,9 +311,8 @@ public interface ApiService {
      * @param artId
      * @return
      */
-    @FormUrlEncoded
-    @POST("/home/article/listArticleCommenty")
-    Observable<String> getHotComments(@Field("id") long artId);
+    @GET("home/article/listArticleCommenty")
+    Observable<HotCommentsBean> getHotComments(@Query("id") long artId);
 
     /**
      * 获取文章最新评论
@@ -314,10 +320,17 @@ public interface ApiService {
      * @param artId
      * @return
      */
-    @FormUrlEncoded
-    @POST("/home/article/listArticleCommentyList")
-    Observable<String> getLastComments(@Field("id") long artId, @Field("pageIndex") long pageIndex, @Field("pageSize") int pageSize);
+    @GET("home/article/listArticleCommentyList")
+    Observable<LastCommentsBean> getLastComments(@Query("id") long artId, @Query("pageIndex") long pageIndex, @Query("pageSize") int pageSize);
 
+    /**
+     * 文章评论点赞
+     * @param commentId
+     * @param userId
+     * @return
+     */
+    @GET("user/center/userLikeComment")
+    Observable<String> userLikeComment(@Query("commentId") String commentId, @Query("userId") String userId);
     //-------------漂流瓶----------------
 
     /**

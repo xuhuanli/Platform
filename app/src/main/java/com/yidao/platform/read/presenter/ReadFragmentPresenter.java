@@ -66,7 +66,6 @@ public class ReadFragmentPresenter {
                     protected void onError(String errorMsg) {
                         mView.setEnableLoadMore(true);
                         mView.setRefreshing(false);
-                        MyLogger.e("执行了");
                         showError();
                     }
 
@@ -180,6 +179,6 @@ public class ReadFragmentPresenter {
 
     private void showError() {
         mView.showError();
-        ToastUtils.showToast("网络连接失败，请查看网络");
+        ToastUtils.showToast("服务器连接失败");
     }
 }

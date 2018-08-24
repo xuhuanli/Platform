@@ -59,6 +59,7 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
     private MultipleReadAdapter mAdapter;
     private ReadFragmentPresenter mPresenter;
     private ArrayList<ChannelBean.ResultBean> mChannelBean;
+    private View headerView;
 
     @Override
     protected void initView() {
@@ -66,6 +67,8 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
         mPresenter = new ReadFragmentPresenter(this);
         initRecyclerView();
         initSwipeRefreshLayout();
+        headerView = getHeaderView();
+        //refresh();
     }
 
     private void initToolbar() {
@@ -88,6 +91,7 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
             mAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
         }
         mPresenter.getMainArticleData();
+        mPresenter.getListCategories();
     }
 
     @Override
@@ -121,10 +125,9 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
     }
 
     private View getHeaderView() {
-        View view = getLayoutInflater().inflate(R.layout.read_mainpage_banner, (ViewGroup) mRecyclerView.getParent(), false);
+        View view = getLayoutInflater().inflate(R.layout.read_mainpage_banner, null);
         banner = view.findViewById(R.id.banner);
         initBanner();
-        mPresenter.getBannerData();
         return view;
     }
 
@@ -214,7 +217,7 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
     public void showMainArticle(List<ReadNewsBean> dataList) {
         if (mAdapter == null) {
             mAdapter = new MultipleReadAdapter(getActivity(), dataList);
-            mAdapter.addHeaderView(getHeaderView());
+            mAdapter.addHeaderView(headerView);
             mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
             mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
                 switch (view.getId()) {
@@ -243,6 +246,7 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
         } else {
             mAdapter.setNewData(dataList);
         }
+        mPresenter.getBannerData();
     }
 
     @Override
