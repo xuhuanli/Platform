@@ -19,6 +19,7 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseFragment;
+import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.app.utils.ScreenUtil;
 import com.yidao.platform.read.adapter.ErrorAdapter;
 import com.yidao.platform.read.adapter.MultipleReadAdapter;
@@ -97,7 +98,7 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
     @Override
     protected void initData() {
         //第一次进入加载Banner
-        mPresenter.getBannerData();
+        //mPresenter.getBannerData();
         //加载首页类目文章
         mPresenter.getMainArticleData();
         //请求所有id&name类目做保存

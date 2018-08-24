@@ -11,7 +11,7 @@ public class SendFindObj {
      */
 
     private String content;
-    private long userId;
+    private String userId;
     private List<String> imgUrls;
 
     public String getContent() {
@@ -22,11 +22,11 @@ public class SendFindObj {
         this.content = content;
     }
 
-    public long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

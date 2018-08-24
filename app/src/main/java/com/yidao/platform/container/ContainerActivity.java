@@ -9,6 +9,7 @@ import android.view.WindowManager;
 import com.umeng.analytics.MobclickAgent;
 import com.yidao.platform.R;
 import com.yidao.platform.app.base.BaseActivity;
+import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.discovery.DiscoveryFragment;
 import com.yidao.platform.info.view.MyInfoFragment;
 import com.yidao.platform.read.view.ReadFragment;

@@ -5,6 +5,7 @@ import com.allen.library.interceptor.Transformer;
 import com.allen.library.observer.CommonObserver;
 import com.allen.library.utils.ToastUtils;
 import com.yidao.platform.app.ApiService;
+import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.read.bean.ArticleBean;
 import com.yidao.platform.read.bean.BannerBean;
 import com.yidao.platform.read.bean.ChannelBean;
@@ -56,7 +57,8 @@ public class ReadFragmentPresenter {
      * 首页18篇热门文章
      */
     public void getMainArticleData() {
-        RxHttpUtils.createApi(ApiService.class)
+        RxHttpUtils
+                .createApi(ApiService.class)
                 .getMainArticle()
                 .compose(Transformer.switchSchedulers())
                 .subscribe(new CommonObserver<ArticleBean>() {
@@ -64,43 +66,46 @@ public class ReadFragmentPresenter {
                     protected void onError(String errorMsg) {
                         mView.setEnableLoadMore(true);
                         mView.setRefreshing(false);
+                        MyLogger.e("执行了");
                         showError();
                     }
 
                     @Override
                     protected void onSuccess(ArticleBean articleBean) {
+                        MyLogger.e("执行了");
                         mView.setEnableLoadMore(true);
                         mView.setRefreshing(false);
                         if (articleBean.isStatus()) {
                             List<ArticleBean.ResultBean> result = articleBean.getResult();
-                            //把数据保存到list
                             List<ReadNewsBean> dataList = new ArrayList<>();
                             for (ArticleBean.ResultBean resultBean : result) {
                                 List<ArticleBean.ResultBean.ArticleExtListBean> articleExtList = resultBean.getArticleExtList();
-                                for (ArticleBean.ResultBean.ArticleExtListBean articleExtListBean : articleExtList) {
-                                    int type = articleExtListBean.getType();
-                                    if (type == 2) { //0为普通 1为精选 2为类目
-                                        ReadNewsBean readNewsBean = new ReadNewsBean(ReadNewsBean.ITEM_ONE);
-                                        readNewsBean.setCategoryId(resultBean.getCategoryId());
-                                        readNewsBean.setDeployTime(articleExtListBean.getDeployTime());
-                                        readNewsBean.setHomeImg(articleExtListBean.getHomeImg());
-                                        readNewsBean.setId(articleExtListBean.getId());
-                                        readNewsBean.setReadAmount(articleExtListBean.getReadAmount());
-                                        readNewsBean.setTitle(articleExtListBean.getTitle());
-                                        readNewsBean.setArticleContent(articleExtListBean.getArticleContent());
-                                        readNewsBean.setType(articleExtListBean.getType());
-                                        dataList.add(readNewsBean);
-                                    } else if (type == 1) {
-                                        ReadNewsBean readNewsBean = new ReadNewsBean(ReadNewsBean.ITEM_TWO);
-                                        readNewsBean.setCategoryId(resultBean.getCategoryId());
-                                        readNewsBean.setDeployTime(articleExtListBean.getDeployTime());
-                                        readNewsBean.setHomeImg(articleExtListBean.getHomeImg());
-                                        readNewsBean.setId(articleExtListBean.getId());
-                                        readNewsBean.setReadAmount(articleExtListBean.getReadAmount());
-                                        readNewsBean.setTitle(articleExtListBean.getTitle());
-                                        readNewsBean.setType(articleExtListBean.getType());
-                                        readNewsBean.setArticleContent(articleExtListBean.getArticleContent());
-                                        dataList.add(readNewsBean);
+                                if (articleExtList != null) {
+                                    for (ArticleBean.ResultBean.ArticleExtListBean articleExtListBean : articleExtList) {
+                                        int type = articleExtListBean.getType();
+                                        if (type == 2) { //0为普通 1为精选 2为类目
+                                            ReadNewsBean readNewsBean = new ReadNewsBean(ReadNewsBean.ITEM_ONE);
+                                            readNewsBean.setCategoryId(resultBean.getCategoryId());
+                                            readNewsBean.setDeployTime(articleExtListBean.getDeployTime());
+                                            readNewsBean.setHomeImg(articleExtListBean.getHomeImg());
+                                            readNewsBean.setId(articleExtListBean.getId());
+                                            readNewsBean.setReadAmount(articleExtListBean.getReadAmount());
+                                            readNewsBean.setTitle(articleExtListBean.getTitle());
+                                            readNewsBean.setArticleContent(articleExtListBean.getArticleContent());
+                                            readNewsBean.setType(articleExtListBean.getType());
+                                            dataList.add(readNewsBean);
+                                        } else if (type == 1) {
+                                            ReadNewsBean readNewsBean = new ReadNewsBean(ReadNewsBean.ITEM_TWO);
+                                            readNewsBean.setCategoryId(resultBean.getCategoryId());
+                                            readNewsBean.setDeployTime(articleExtListBean.getDeployTime());
+                                            readNewsBean.setHomeImg(articleExtListBean.getHomeImg());
+                                            readNewsBean.setId(articleExtListBean.getId());
+                                            readNewsBean.setReadAmount(articleExtListBean.getReadAmount());
+                                            readNewsBean.setTitle(articleExtListBean.getTitle());
+                                            readNewsBean.setType(articleExtListBean.getType());
+                                            readNewsBean.setArticleContent(articleExtListBean.getArticleContent());
+                                            dataList.add(readNewsBean);
+                                        }
                                     }
                                 }
                             }

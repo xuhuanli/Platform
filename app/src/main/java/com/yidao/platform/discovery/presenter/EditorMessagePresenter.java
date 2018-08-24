@@ -35,7 +35,7 @@ public class EditorMessagePresenter {
 
     public void sendMsg2Server(String userId, String content, @Nullable ArrayList<String> mUpLoadPicList) {
         SendFindObj sendFindObj = new SendFindObj();
-        sendFindObj.setUserId(Integer.parseInt(userId));
+        sendFindObj.setUserId(userId);
         sendFindObj.setContent(content);
         sendFindObj.setImgUrls(mUpLoadPicList);
         RxHttpUtils

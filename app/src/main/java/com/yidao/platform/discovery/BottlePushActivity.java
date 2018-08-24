@@ -57,7 +57,7 @@ public class BottlePushActivity extends BaseActivity {
                 ToastUtils.showToast("请选择标签");
                 return;
             }
-            if (content.length() < 6) {
+            if (content.length() < 5) {
                 ToastUtils.showToast("内容不能少于5个字");
                 return;
             }
