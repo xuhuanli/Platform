@@ -68,7 +68,7 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
         initRecyclerView();
         initSwipeRefreshLayout();
         headerView = getHeaderView();
-        //refresh();
+        refresh();
     }
 
     private void initToolbar() {
@@ -104,9 +104,9 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
         //第一次进入加载Banner
         //mPresenter.getBannerData();
         //加载首页类目文章
-        mPresenter.getMainArticleData();
+        //mPresenter.getMainArticleData();
         //请求所有id&name类目做保存
-        mPresenter.getListCategories();
+        //mPresenter.getListCategories();
     }
 
     private void initRecyclerView() {

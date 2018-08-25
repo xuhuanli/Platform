@@ -197,7 +197,7 @@ public interface ApiService {
      * 首页18篇文章
      * @return Observable
      */
-    @POST("home/article/listCategoryAndArticle")
+    @GET("home/article/listCategoryAndArticle")
     Observable<ArticleBean> getMainArticle();
 
     /**

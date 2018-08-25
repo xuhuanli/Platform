@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ReadFragmentPresenter {
-    IViewReadFragment mView;
+    private IViewReadFragment mView;
 
     public ReadFragmentPresenter(IViewReadFragment view) {
         mView = view;
