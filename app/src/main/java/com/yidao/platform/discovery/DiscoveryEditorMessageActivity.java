@@ -99,7 +99,7 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresenter = new EditorMessagePresenter(this, this,mOss.getAccessKeyId(),mOss.getAccessKeySecret(),mOss.getSecurityToken());
+        mPresenter = new EditorMessagePresenter(this);
         userId = IPreference.prefHolder.getPreference(DiscoveryEditorMessageActivity.this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
         mPhotosSnpl = findViewById(R.id.snpl_moment_add_photos);
         mPhotosSnpl.setDelegate(this);
@@ -210,7 +210,7 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
                 finish();
                 break;
             case R.id.btn_publish:
-                //mPresenter.uploadFile();
+                mPresenter.getOssInstance(this,mOss.getAccessKeyId(),mOss.getAccessKeySecret(),mOss.getSecurityToken());
                 mUpLoadPicList = mPhotosSnpl.getData();
                 if (mUpLoadPicList.size() > 0) {
                     for (String datum : mUpLoadPicList) {

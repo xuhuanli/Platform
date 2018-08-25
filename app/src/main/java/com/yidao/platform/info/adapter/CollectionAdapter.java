@@ -17,7 +17,7 @@ public class CollectionAdapter extends BaseQuickAdapter<ReadNewsBean, BaseViewHo
 
     @Override
     protected void convert(BaseViewHolder helper, ReadNewsBean item) {
-        String time = ConvertFormatUtil.convertTime(item.getDeployTime());
+        String time = item.getDeployTime();
         helper.setText(R.id.tv_collection_title, item.getTitle())
         .setText(R.id.textView,time);
     }

@@ -23,17 +23,6 @@ public class OssUploadUtil {
 
     private final OSSClient ossClient;
 
-    public OssUploadUtil(Context context) {
-        //初始化主要完成Endpoint设置、鉴权方式设置、Client参数设置
-        ClientConfiguration conf = new ClientConfiguration();
-        conf.setConnectionTimeout(15 * 1000); // 连接超时，默认15秒
-        conf.setSocketTimeout(15 * 1000); // socket超时，默认15秒
-        conf.setMaxConcurrentRequest(5); // 最大并发请求书，默认5个
-        conf.setMaxErrorRetry(2); // 失败后最大重试次数，默认2次
-        OSSStsTokenCredentialProvider credentialProvider = new OSSStsTokenCredentialProvider(Constant.OSS_ID, Constant.OSS_SECRET, Constant.OSS_TOKEN);
-        ossClient = new OSSClient(context, Constant.OSS_ENDPOINT, credentialProvider, conf);
-    }
-
     public OssUploadUtil(Context context, String ossId, String ossSecret, String ossToken) {
         //初始化主要完成Endpoint设置、鉴权方式设置、Client参数设置
         ClientConfiguration conf = new ClientConfiguration();
@@ -46,14 +35,14 @@ public class OssUploadUtil {
     }
 
     public void uploadFile(final String filePath, @Nullable final Handler handler) {
-        String objectKey = "test/IMG_" + FileUtil.formateTime();
+        String objectKey = "Find/IMG_" + FileUtil.formateTime();
         PutObjectRequest put = new PutObjectRequest(Constant.OSS_BUCKET_NAME, objectKey, filePath);
         // 异步上传时可以设置进度回调
         /*put.setProgressCallback((request, currentSize, totalSize) -> MyLogger.d("currentSize: " + currentSize + " totalSize: " + totalSize + "文件目录 = " + filePath));*/
         OSSAsyncTask<PutObjectResult> task = ossClient.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
             @Override
             public void onSuccess(PutObjectRequest request, PutObjectResult result) {
-                String pathOnOss = Constant.OSS_ENDPOINT + objectKey;
+                String pathOnOss = "https://ydplatform.oss-cn-hangzhou.aliyuncs.com/" + objectKey;
                 if (handler != null) { //import : 计数oss成功counter handler一般是给发布朋友圈多图
                     Message msg = Message.obtain();
                     msg.what = 0;

@@ -3,7 +3,7 @@ package com.yidao.platform.app;
 public class Constant {
 
     //王鹏
-    //public static final String BASE_URL = "http://10.10.20.8:8060/";
+    public static final String BASE_URL = "http://10.10.20.8:8060/";
     //徐ww
     //public static final String BASE_URL = "http://10.10.20.24:8080/";
     //徐ly
@@ -12,7 +12,7 @@ public class Constant {
     //public static final String BASE_URL = "http://10.10.20.10:8081/";
     //陈dq
     //public static final String BASE_URL = "http://10.10.20.3:8080/platform-pc-web/";
-    public static final String BASE_URL = "http://192.168.1.92:8082/";
+    //public static final String BASE_URL = "http://192.168.1.92:8082/";
 
     /**
      * 全局debug模式开关 在release时候设置为false
@@ -41,18 +41,6 @@ public class Constant {
      * 图片压缩的最小KB
      */
     public static final int NEED_COMPRESS_SIZE = 300;
-    /**
-     * oss_id
-     */
-    public static final String OSS_ID = "STS.NJxAgpPpyN3b8zzmvxZQGH2Bq";
-    /**
-     * OSS_Secret
-     */
-    public static final String OSS_SECRET = "HTWvqV1DzHL2rNmLVVofUPZNGpUFZF64k1ddjBxxAUf";
-    /**
-     * OSS_Token
-     */
-    public static final String OSS_TOKEN = "CAISoQJ1q6Ft5B2yfSjIr4nNCt3Eva9Y+fGJOlzLiXYtVt5rp/fpkzz2IH5Oe3VtBe8WsvU/mm9Y7fYflqVoRoReREvCKMBt9YgPQu457DGF6aKP9rUhpMCPFAr6UmzzvqL7Z+H+U6mqGJOEYEzFkSle2KbzcS7YMXWuLZyOj+wIDLkQRRLqL0AYZrFsKxBltdUROFbIKP+pKWSKuGfLC1dysQcO+wEP4K+kkMqH8Uic3h+o2+MNo43tLJ++ao4uHu8mD4fqhLItKfGfinABu0Mazsos0vwYowWgl8qGHlxc7y+BN+fp6dB1JGd7HPNkQfEY8aSjxaEp6rKMx9+nlgw+NOVUQjnZQ5u73MzHFeWmO9A0b7/nPG7X1dSCJn9lU+XshshxGoABbyKk2qQMOzvsJ/+XKLmT3w5r/S+39OG80QfbcK2McfBxk3GwK60UOa4bETFLyneE/W3gAYhCT+Ruw4Q4hKHjf8WDfqV4Tg4xXhYoWVEx52nR5KKIdtng80rYZCPek+/Y8SIjR1EIaFizHPwjsHsUTzUuBWKEBPTLtFZ31nEfLe4=";
     /**
      * OSS_ENDPOINT
      */

@@ -101,7 +101,7 @@ public class UserCollectArtBean {
             private String title;
             private int status;
             private String homeImg;
-            private int deployTime;
+            private String deployTime;
             private int type;
             private String articleContent;
             private int readAmount;
@@ -138,11 +138,11 @@ public class UserCollectArtBean {
                 this.homeImg = homeImg;
             }
 
-            public int getDeployTime() {
+            public String getDeployTime() {
                 return deployTime;
             }
 
-            public void setDeployTime(int deployTime) {
+            public void setDeployTime(String deployTime) {
                 this.deployTime = deployTime;
             }
 

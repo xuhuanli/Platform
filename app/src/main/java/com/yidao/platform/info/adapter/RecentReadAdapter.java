@@ -22,7 +22,7 @@ public class RecentReadAdapter extends BaseQuickAdapter<ReadNewsBean, BaseViewHo
     protected void convert(BaseViewHolder helper, ReadNewsBean item) {
         helper.setText(R.id.read_list_content, item.getTitle())
                 .setText(R.id.tv_read_count, ConvertFormatUtil.convertCount(item.getReadAmount()))
-                .setText(R.id.tv_news_time, ConvertFormatUtil.convertTime(item.getDeployTime()));
+                .setText(R.id.tv_news_time, item.getDeployTime());
         Glide.with(mContext).load(item.getHomeImg()).apply(new RequestOptions().placeholder(R.drawable.info_head_p).error(R.drawable.info_head_p)).into((ImageView) helper.getView(R.id.read_list_image));
     }
 }

@@ -104,7 +104,7 @@ public class CategoryArticleExtBean {
             private String title;
             private int status;
             private String homeImg;
-            private int deployTime;
+            private String deployTime;
             private int type;
             private int readAmount;
             private String articleContent;
@@ -149,11 +149,11 @@ public class CategoryArticleExtBean {
                 this.homeImg = homeImg;
             }
 
-            public int getDeployTime() {
+            public String getDeployTime() {
                 return deployTime;
             }
 
-            public void setDeployTime(int deployTime) {
+            public void setDeployTime(String deployTime) {
                 this.deployTime = deployTime;
             }
 

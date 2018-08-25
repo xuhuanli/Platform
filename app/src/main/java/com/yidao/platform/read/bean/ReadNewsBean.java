@@ -26,7 +26,7 @@ public class ReadNewsBean implements MultiItemEntity {
     /**
      * 文章发布时间
      */
-    private int deployTime;
+    private String deployTime;
     /**
      *  文章类型
      */
@@ -81,11 +81,11 @@ public class ReadNewsBean implements MultiItemEntity {
         this.homeImg = homeImg;
     }
 
-    public int getDeployTime() {
+    public String getDeployTime() {
         return deployTime;
     }
 
-    public void setDeployTime(int deployTime) {
+    public void setDeployTime(String deployTime) {
         this.deployTime = deployTime;
     }
 

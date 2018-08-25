@@ -23,7 +23,7 @@ public class ReadItemMoreAdapter extends BaseQuickAdapter<ReadNewsBean, BaseView
         helper.setGone(R.id.iv_hot, false);
 
         String readAmount = ConvertFormatUtil.convertCount(item.getReadAmount());
-        String deployTime = ConvertFormatUtil.convertTime(item.getDeployTime());
+        String deployTime = item.getDeployTime();
         helper.setText(R.id.read_list_content, item.getTitle())
                 .setText(R.id.tv_read_count, readAmount)
                 .setText(R.id.tv_news_time, deployTime);

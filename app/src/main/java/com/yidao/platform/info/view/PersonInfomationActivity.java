@@ -146,6 +146,7 @@ public class PersonInfomationActivity extends BaseActivity implements View.OnCli
                     String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
                     if (EasyPermissions.hasPermissions(PersonInfomationActivity.this, perms)) {
                         openCamera();
+                        mHeadPhotoDialog.cancel();
                     } else {
                         EasyPermissions.requestPermissions(PersonInfomationActivity.this, getString(R.string.rationable_ask), PERM_OPEN_CAMERA, perms);
                     }
@@ -156,6 +157,7 @@ public class PersonInfomationActivity extends BaseActivity implements View.OnCli
                     String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
                     if (EasyPermissions.hasPermissions(this, perms)) {
                         openAlbum();
+                        mHeadPhotoDialog.cancel();
                     } else {
                         EasyPermissions.requestPermissions(this, getString(R.string.rationable_ask), PERM_OPEN_ALBUM, perms);
                     }
@@ -292,12 +294,14 @@ public class PersonInfomationActivity extends BaseActivity implements View.OnCli
             case PERM_OPEN_ALBUM:
                 if (perms.size() == 2) {
                     openAlbum();
+                    mHeadPhotoDialog.cancel();
                 }
                 break;
             case PERM_OPEN_CAMERA:
                 //Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA
                 if (perms.size() == 2) {
                     openCamera();
+                    mHeadPhotoDialog.cancel();
                 }
         }
     }

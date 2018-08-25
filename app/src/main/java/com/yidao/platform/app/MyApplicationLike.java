@@ -124,7 +124,7 @@ public class MyApplicationLike extends DefaultApplicationLike {
                 //.setHeaders(headers)
                 //全局持久话cookie,保存本地每次都会携带在header中（默认false）
                 .setSaveCookie(false)
-                //.setAddInterceptor(new TokenInterceptor())
+                .setAddInterceptor(new TokenInterceptor())
                 //全局ssl证书认证
                 //1、信任所有证书,不安全有风险（默认信任所有证书）
                 //.setSslSocketFactory()

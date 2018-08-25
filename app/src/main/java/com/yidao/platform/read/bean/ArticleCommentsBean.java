@@ -245,15 +245,15 @@ public class ArticleCommentsBean {
 
         public static class CmsArticleCommentDtosBean {
             private int id;
-            private Object topCommId;
-            private Object artId;
-            private Object parId;
+            private String topCommId;
+            private String artId;
+            private String parId;
             private String content;
-            private int userId;
-            private Object parUserId;
+            private long userId;
+            private String parUserId;
             private int status;
             private String createTime;
-            private Object updateTime;
+            private String updateTime;
             private int likeCount;
 
             public int getId() {
@@ -264,27 +264,27 @@ public class ArticleCommentsBean {
                 this.id = id;
             }
 
-            public Object getTopCommId() {
+            public String getTopCommId() {
                 return topCommId;
             }
 
-            public void setTopCommId(Object topCommId) {
+            public void setTopCommId(String topCommId) {
                 this.topCommId = topCommId;
             }
 
-            public Object getArtId() {
+            public String getArtId() {
                 return artId;
             }
 
-            public void setArtId(Object artId) {
+            public void setArtId(String artId) {
                 this.artId = artId;
             }
 
-            public Object getParId() {
+            public String getParId() {
                 return parId;
             }
 
-            public void setParId(Object parId) {
+            public void setParId(String parId) {
                 this.parId = parId;
             }
 
@@ -296,19 +296,19 @@ public class ArticleCommentsBean {
                 this.content = content;
             }
 
-            public int getUserId() {
+            public long getUserId() {
                 return userId;
             }
 
-            public void setUserId(int userId) {
+            public void setUserId(long userId) {
                 this.userId = userId;
             }
 
-            public Object getParUserId() {
+            public String getParUserId() {
                 return parUserId;
             }
 
-            public void setParUserId(Object parUserId) {
+            public void setParUserId(String parUserId) {
                 this.parUserId = parUserId;
             }
 
@@ -328,11 +328,11 @@ public class ArticleCommentsBean {
                 this.createTime = createTime;
             }
 
-            public Object getUpdateTime() {
+            public String getUpdateTime() {
                 return updateTime;
             }
 
-            public void setUpdateTime(Object updateTime) {
+            public void setUpdateTime(String updateTime) {
                 this.updateTime = updateTime;
             }
 

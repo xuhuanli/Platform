@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_login_success_info"
             android:layout_width="55dp"
             android:layout_height="55dp"
@@ -92,7 +92,7 @@
         <TextView
             android:id="@+id/tv_collection_count"
             style="@style/Info_Number_Style"
-            android:text="1" />
+            android:text="0" />
 
         <TextView
             style="@style/Info_Text_Style"
@@ -112,7 +112,7 @@
         <TextView
             android:id="@+id/tv_publish_count"
             style="@style/Info_Number_Style"
-            android:text="1" />
+            android:text="0" />
 
         <TextView
             style="@style/Info_Text_Style"
@@ -132,7 +132,7 @@
         <TextView
             android:id="@+id/tv_msg_count"
             style="@style/Info_Number_Style"
-            android:text="1" />
+            android:text="0" />
 
         <TextView
             style="@style/Info_Text_Style"

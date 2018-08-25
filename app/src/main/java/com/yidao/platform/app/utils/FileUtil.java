@@ -5,6 +5,7 @@ import android.os.Environment;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Random;
 
 public class FileUtil {
 
@@ -67,7 +68,8 @@ public class FileUtil {
     }
 
     public static String formateTime() {
-        SimpleDateFormat dateformat = new SimpleDateFormat("yyyyMMdd_HHmmss");
-        return dateformat.format(System.currentTimeMillis());
+        //SimpleDateFormat dateformat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        //return dateformat.format(System.currentTimeMillis());
+        return System.currentTimeMillis()+"_"+new Random().nextInt(100);
     }
 }

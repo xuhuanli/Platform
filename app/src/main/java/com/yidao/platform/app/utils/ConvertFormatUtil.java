@@ -1,12 +1,11 @@
 package com.yidao.platform.app.utils;
 
-import java.text.DecimalFormat;
-
 public class ConvertFormatUtil {
 
     public static String convertCount(long count) {
-        DecimalFormat df = new DecimalFormat("0.0");
-        return count > 1000f ? df.format(count / 1000D) + "K阅" : count + "阅";
+        /*DecimalFormat df = new DecimalFormat("0.0");
+        return count > 1000f ? df.format(count / 1000D) + "K阅" : count + "阅";*/
+        return count + "阅";
     }
 
     public static String convertTime(int hour) {

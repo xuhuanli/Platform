@@ -142,9 +142,9 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         ib_favorite = findViewById(R.id.ib_favorite);
         ib_share = findViewById(R.id.ib_share);
         //在载入文章前展示progressbar
-//        mRecyclerView.setVisibility(View.INVISIBLE);
-//        mCommentBar.setVisibility(View.INVISIBLE);
-//        mProgressBar.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.INVISIBLE);
+        mCommentBar.setVisibility(View.INVISIBLE);
+        mProgressBar.setVisibility(View.VISIBLE);
         //-------------------------
         ib_comment.setOnClickListener(this);
         ib_vote.setOnClickListener(this);
@@ -321,9 +321,9 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(WebViewLoadEvent event) {
-//        mRecyclerView.setVisibility(View.VISIBLE);
-//        mCommentBar.setVisibility(View.VISIBLE);
-//        mProgressBar.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.VISIBLE);
+        mCommentBar.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -379,14 +379,11 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
             }
             return false;
         });
-        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                ReadNewsDetailBean item = (ReadNewsDetailBean) adapter.getItem(position);
-                TextView textView = view.findViewById(R.id.tv_detail_vote);
-                textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.dianzan_small_done,0,0,0);
-                mPresenter.userLikeComment(item.getId(),userId);
-            }
+        mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+            ReadNewsDetailBean item = (ReadNewsDetailBean) adapter.getItem(position);
+            TextView textView = view.findViewById(R.id.tv_detail_vote);
+            textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.dianzan_small_done,0,0,0);
+            mPresenter.userLikeComment(item.getId(),userId);
         });
         mRecyclerView.setAdapter(mAdapter);
     }

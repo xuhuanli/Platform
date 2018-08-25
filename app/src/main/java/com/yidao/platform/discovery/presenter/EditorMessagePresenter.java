@@ -23,10 +23,13 @@ import java.util.ArrayList;
 public class EditorMessagePresenter {
 
     private DiscoveryEditorMessageInterface mView;
-    private final OssUploadUtil ossUploadUtil;
+    private OssUploadUtil ossUploadUtil;
 
-    public EditorMessagePresenter(DiscoveryEditorMessageInterface view, Context context,String ossId, String ossSecret, String ossToken) {
+    public EditorMessagePresenter(DiscoveryEditorMessageInterface view) {
         mView = view;
+    }
+
+    public void getOssInstance(Context context,String ossId, String ossSecret, String ossToken){
         ossUploadUtil = new OssUploadUtil(context,ossId, ossSecret, ossToken);
     }
 

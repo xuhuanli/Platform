@@ -145,7 +145,7 @@ public class LastCommentsBean {
             private String likeCount;
             private String commentUserName;
             private String commentUserHeadImgUrl;
-            private int time;
+            private String time;
             private String nickname;
 
             public String getId() {
@@ -252,11 +252,11 @@ public class LastCommentsBean {
                 this.commentUserHeadImgUrl = commentUserHeadImgUrl;
             }
 
-            public int getTime() {
+            public String getTime() {
                 return time;
             }
 
-            public void setTime(int time) {
+            public void setTime(String time) {
                 this.time = time;
             }
 

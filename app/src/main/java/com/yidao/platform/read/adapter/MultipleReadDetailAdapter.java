@@ -46,7 +46,7 @@ public class MultipleReadDetailAdapter extends BaseMultiItemQuickAdapter<ReadNew
                 helper.setText(R.id.tv_detail_name, item.getNickName())
                         .setText(R.id.tv_detail_comment, item.getContent())
                         .setText(R.id.tv_detail_vote, item.getLikeCount())
-                        .setText(R.id.tv_detail_time, ConvertFormatUtil.convertTime(item.getTimeSamp()));
+                        .setText(R.id.tv_detail_time, item.getTimeSamp());
                 helper.addOnClickListener(R.id.tv_detail_vote);
                 break;
         }

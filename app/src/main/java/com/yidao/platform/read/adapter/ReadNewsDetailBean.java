@@ -11,7 +11,7 @@ public class ReadNewsDetailBean implements MultiItemEntity {
     private String url;
     private String headImg;
     private String nickName;
-    private int timeSamp;
+    private String timeSamp;
     private String likeCount;
     private String content;
     private String id;
@@ -45,11 +45,11 @@ public class ReadNewsDetailBean implements MultiItemEntity {
         this.nickName = nickName;
     }
 
-    public int getTimeSamp() {
+    public String getTimeSamp() {
         return timeSamp;
     }
 
-    public void setTimeSamp(int timeSamp) {
+    public void setTimeSamp(String timeSamp) {
         this.timeSamp = timeSamp;
     }
 

@@ -1,10 +1,12 @@
 package com.yidao.platform.receiver;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.alibaba.sdk.android.push.MessageReceiver;
 import com.alibaba.sdk.android.push.notification.CPushMessage;
 import com.yidao.platform.app.utils.MyLogger;
+import com.yidao.platform.info.view.InfoMyMessageActivity;
 
 import java.util.Map;
 
@@ -79,6 +81,8 @@ public class AliyunPushReceiver extends MessageReceiver {
     @Override
     public void onNotificationOpened(Context context, String title, String summary, String extraMap) {
         MyLogger.i(REC_TAG, "onNotificationOpened ： " + " : " + title + " : " + summary + " : " + extraMap);
+        Intent intent = new Intent(context, InfoMyMessageActivity.class);
+        context.startActivity(intent);
     }
 
     /**
