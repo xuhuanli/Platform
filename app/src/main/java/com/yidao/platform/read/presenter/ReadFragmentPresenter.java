@@ -17,6 +17,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
 public class ReadFragmentPresenter {
     private IViewReadFragment mView;
 
@@ -28,17 +33,19 @@ public class ReadFragmentPresenter {
      * get banner data from server
      */
     public void getBannerData() {
-        RxHttpUtils.createApi(ApiService.class)
+        RxHttpUtils
+                .createApi(ApiService.class)
                 .getBanner()
-                .compose(Transformer.<BannerBean>switchSchedulers())
-                .subscribe(new CommonObserver<BannerBean>() {
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BannerBean>() {
                     @Override
-                    protected void onError(String errorMsg) {
-                        showError();
+                    public void onSubscribe(Disposable d) {
+
                     }
 
                     @Override
-                    protected void onSuccess(BannerBean bannerBean) {
+                    public void onNext(BannerBean bannerBean) {
                         if (bannerBean.isStatus()) {
                             List<BannerBean.ResultBean> result = bannerBean.getResult();
                             List<String> imageUrls = new ArrayList<>();
@@ -50,6 +57,16 @@ public class ReadFragmentPresenter {
                             mView.showBanner(imageUrls, bannerTitles);
                         }
                     }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
                 });
     }
 
@@ -60,18 +77,17 @@ public class ReadFragmentPresenter {
         RxHttpUtils
                 .createApi(ApiService.class)
                 .getMainArticle()
-                .compose(Transformer.switchSchedulers())
-                .subscribe(new CommonObserver<ArticleBean>() {
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ArticleBean>() {
                     @Override
-                    protected void onError(String errorMsg) {
-                        mView.setEnableLoadMore(true);
-                        mView.setRefreshing(false);
-                        showError();
+                    public void onSubscribe(Disposable d) {
+                        MyLogger.e("onSubscribe");
                     }
 
                     @Override
-                    protected void onSuccess(ArticleBean articleBean) {
-                        MyLogger.e("执行了");
+                    public void onNext(ArticleBean articleBean) {
+                        MyLogger.e("首页18篇热门文章:onNext");
                         mView.setEnableLoadMore(true);
                         mView.setRefreshing(false);
                         if (articleBean.isStatus()) {
@@ -110,6 +126,16 @@ public class ReadFragmentPresenter {
                             }
                             mView.showMainArticle(dataList);
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        MyLogger.e(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        MyLogger.e("onComplete");
                     }
                 });
     }
@@ -157,22 +183,37 @@ public class ReadFragmentPresenter {
                 });
     }
 
+    /**
+     * 获取文章类目
+     */
     public void getListCategories() {
         RxHttpUtils.createApi(ApiService.class)
                 .getListCategories()
-                .compose(Transformer.switchSchedulers())
-                .subscribe(new CommonObserver<ChannelBean>() {
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ChannelBean>() {
                     @Override
-                    protected void onError(String errorMsg) {
-                        showError();
+                    public void onSubscribe(Disposable d) {
+
                     }
 
                     @Override
-                    protected void onSuccess(ChannelBean channelBean) {
+                    public void onNext(ChannelBean channelBean) {
+                        MyLogger.e("获取文章类目: onNext");
                         if (channelBean.isStatus()) {
                             ArrayList<ChannelBean.ResultBean> result = (ArrayList<ChannelBean.ResultBean>) channelBean.getResult();
                             mView.saveChannelData(result);
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }

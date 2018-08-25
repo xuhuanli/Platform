@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -68,7 +67,7 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
         initRecyclerView();
         initSwipeRefreshLayout();
         headerView = getHeaderView();
-        refresh();
+        //refresh();
     }
 
     private void initToolbar() {
@@ -91,7 +90,8 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
             mAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
         }
         mPresenter.getMainArticleData();
-        mPresenter.getListCategories();
+        //mPresenter.getListCategories();
+        //mPresenter.getBannerData();
     }
 
     @Override
@@ -104,9 +104,9 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
         //第一次进入加载Banner
         //mPresenter.getBannerData();
         //加载首页类目文章
-        //mPresenter.getMainArticleData();
+        mPresenter.getMainArticleData();
         //请求所有id&name类目做保存
-        //mPresenter.getListCategories();
+        mPresenter.getListCategories();
     }
 
     private void initRecyclerView() {
@@ -218,6 +218,7 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
         if (mAdapter == null) {
             mAdapter = new MultipleReadAdapter(getActivity(), dataList);
             mAdapter.addHeaderView(headerView);
+            mPresenter.getBannerData();
             mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
             mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
                 switch (view.getId()) {
@@ -246,7 +247,6 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
         } else {
             mAdapter.setNewData(dataList);
         }
-        mPresenter.getBannerData();
     }
 
     @Override

@@ -3,7 +3,7 @@ package com.yidao.platform.app;
 public class Constant {
 
     //王鹏
-    public static final String BASE_URL = "http://10.10.20.8:8060/";
+    //public static final String BASE_URL = "http://10.10.20.8:8060/";
     //徐ww
     //public static final String BASE_URL = "http://10.10.20.24:8080/";
     //徐ly
@@ -12,7 +12,7 @@ public class Constant {
     //public static final String BASE_URL = "http://10.10.20.10:8081/";
     //陈dq
     //public static final String BASE_URL = "http://10.10.20.3:8080/platform-pc-web/";
-    //public static final String BASE_URL = "http://192.168.1.92:8082/";
+    public static final String BASE_URL = "http://192.168.1.92:8082/";
 
     /**
      * 全局debug模式开关 在release时候设置为false

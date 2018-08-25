@@ -142,9 +142,9 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         ib_favorite = findViewById(R.id.ib_favorite);
         ib_share = findViewById(R.id.ib_share);
         //在载入文章前展示progressbar
-        mRecyclerView.setVisibility(View.INVISIBLE);
-        mCommentBar.setVisibility(View.INVISIBLE);
-        mProgressBar.setVisibility(View.VISIBLE);
+        //mRecyclerView.setVisibility(View.INVISIBLE);
+        //mCommentBar.setVisibility(View.INVISIBLE);
+        //mProgressBar.setVisibility(View.VISIBLE);
         //-------------------------
         ib_comment.setOnClickListener(this);
         ib_vote.setOnClickListener(this);
