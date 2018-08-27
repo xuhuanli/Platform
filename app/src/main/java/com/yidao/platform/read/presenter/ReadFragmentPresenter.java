@@ -200,6 +200,7 @@ public class ReadFragmentPresenter {
                     @Override
                     public void onNext(ChannelBean channelBean) {
                         MyLogger.e("获取文章类目: onNext");
+                        MyLogger.e("ChannelBean toString := "+channelBean.getResult().toString());
                         if (channelBean.isStatus()) {
                             ArrayList<ChannelBean.ResultBean> result = (ArrayList<ChannelBean.ResultBean>) channelBean.getResult();
                             mView.saveChannelData(result);

@@ -22,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
@@ -37,7 +36,6 @@ import com.yidao.platform.app.utils.BitmapUtil;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.read.adapter.MultipleReadDetailAdapter;
 import com.yidao.platform.read.adapter.ReadNewsDetailBean;
-import com.yidao.platform.read.bean.HotCommentsBean;
 import com.yidao.platform.read.bus.WebViewLoadEvent;
 import com.yidao.platform.read.presenter.ReadContentActivityPresenter;
 
@@ -51,8 +49,6 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import cn.bingoogolapple.badgeview.BGABadgeImageButton;
-
-import static com.yidao.platform.read.adapter.ReadNewsDetailBean.ITEM_COMMENTS;
 
 public class ReadContentActivity extends BaseActivity implements View.OnClickListener, IViewReadContentActivity {
 
@@ -126,9 +122,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void initData() {
-        mPresenter.getHotComments(artId,userId);
-        // TODO: 2018/8/24 0024 测试id
-        //mPresenter.getLastestComments(artId, mNextRequestPage, Constant.PAGE_SIZE);
+        mPresenter.getHotComments(artId, userId);
     }
 
     private void initView() {
@@ -168,6 +162,32 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
+        list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_WEBVIEW));
+        mAdapter = new MultipleReadDetailAdapter(list);
+        mAdapter.setWebViewUrl(url);
+        mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
+        mAdapter.setOnItemLongClickListener((adapter, view, position) -> {
+            ReadNewsDetailBean item = (ReadNewsDetailBean) adapter.getItem(position);
+            int itemViewType = adapter.getItemViewType(position);
+            if (TextUtils.equals(item.getUserId(), userId) && itemViewType == ReadNewsDetailBean.ITEM_COMMENTS) {
+                showAlertDialog(R.string.ensure_delete, (dialog, which) -> mPresenter.deleteMineComment(item.getId()));
+            }
+            return false;
+        });
+        mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+            ReadNewsDetailBean item = (ReadNewsDetailBean) adapter.getItem(position);
+            boolean isLike = item.isLikedCommed();
+            if (isLike) {
+                mPresenter.userUnlikeComment(item.getId(), userId);
+                item.setLikeCount(String.valueOf(Long.parseLong(item.getLikeCount()) - 1));
+            } else {
+                mPresenter.userLikeComment(item.getId(), userId);
+                item.setLikeCount(String.valueOf(Long.parseLong(item.getLikeCount()) + 1));
+            }
+            item.setLikedCommed(!isLike);
+            mAdapter.notifyItemChanged(position);
+        });
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void configCommentBar() {
@@ -350,64 +370,27 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
-    public void showHotComment(HotCommentsBean.ResultBean resultBean) {
-        ib_comment.showTextBadge(resultBean.getCommentAmount());
-        ib_favorite.showTextBadge(resultBean.getLikeAmount());
-        List<HotCommentsBean.ResultBean.CmsArticleCommentDtosBean> commentDtos = resultBean.getCmsArticleCommentDtos();
-        list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_WEBVIEW));
-        list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_HOT_COMMENT));
-        if (commentDtos != null) {
-            for (HotCommentsBean.ResultBean.CmsArticleCommentDtosBean commentDto : commentDtos) {
-                ReadNewsDetailBean bean = new ReadNewsDetailBean(ITEM_COMMENTS);
-                bean.setContent(commentDto.getContent());
-                bean.setHeadImg(commentDto.getCommentUserHeadImgUrl());
-                bean.setNickName(commentDto.getNickname());
-                bean.setId(commentDto.getId());
-                bean.setUserId(commentDto.getUserId());
-                bean.setLikeCount(commentDto.getLikeCount());
-                bean.setTimeSamp(commentDto.getTime());
-                bean.setLikedCommed(commentDto.isLikedCommed());
-                list.add(bean);
-            }
+    public void showHotComment(String commentAmount, String likeAmount, ArrayList<ReadNewsDetailBean> dataList) {
+        ib_comment.showTextBadge(commentAmount);
+        ib_favorite.showTextBadge(likeAmount);
+        if (dataList.size() > 0) {
+            list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_HOT_COMMENT));
+            list.addAll(dataList);
+            mAdapter.notifyDataSetChanged();
         }
-        if (mAdapter == null) {
-            mAdapter = new MultipleReadDetailAdapter(list);
-        }
-        mAdapter.setWebViewUrl(url);
-        mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
-        mAdapter.setOnItemLongClickListener((adapter, view, position) -> {
-            ReadNewsDetailBean item = (ReadNewsDetailBean) adapter.getItem(position);
-            int itemViewType = adapter.getItemViewType(position);
-            if (TextUtils.equals(item.getUserId(),userId) && itemViewType == ReadNewsDetailBean.ITEM_COMMENTS) {
-                showAlertDialog(R.string.ensure_delete, (dialog, which) -> mPresenter.deleteMineComment(item.getId()));
-            }
-            return false;
-        });
-        mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
-            ReadNewsDetailBean item = (ReadNewsDetailBean) adapter.getItem(position);
-            boolean isLike = item.isLikedCommed();
-            if (isLike) {
-                mPresenter.userUnlikeComment(item.getId(),userId);
-                item.setLikeCount(String.valueOf(Long.parseLong(item.getLikeCount())-1));
-            }else {
-                mPresenter.userLikeComment(item.getId(),userId);
-                item.setLikeCount(String.valueOf(Long.parseLong(item.getLikeCount())+1));
-            }
-            item.setLikedCommed(!isLike);
-            mAdapter.notifyItemChanged(position);
-        });
-        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
     public void loadMoreData(List<ReadNewsDetailBean> dataList) {
         if (isFirstGetNewComment) {
-            if (dataList.size()>0) {
+            if (dataList.size() > 0) {
                 list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_LAST_COMMENT));
                 list.addAll(dataList);
+            }else {
+                mAdapter.loadMoreEnd(true);
             }
             isFirstGetNewComment = false;
-        }else {
+        } else {
             list.addAll(dataList);
         }
         mAdapter.notifyDataSetChanged();
@@ -428,7 +411,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void loadMore() {
-        mPresenter.getLastestComments(artId, mNextRequestPage, Constant.PAGE_SIZE,userId);
+        mPresenter.getLastestComments(artId, mNextRequestPage, Constant.PAGE_SIZE, userId);
         mNextRequestPage++;
     }
 }

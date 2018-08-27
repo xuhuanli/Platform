@@ -348,6 +348,14 @@ public interface ApiService {
      */
     @GET("user/center/userUnLikeComment")
     Observable<String> userUnLikeComment(@Query("commentId") String commentId, @Query("userId") String userId);
+
+    /**
+     * 获取分享文章的内容
+     * @param commentId
+     * @return
+     */
+    @GET("home/article/selectArt")
+    Observable<String> getShareContent(@Query("id") String commentId);
     //-------------漂流瓶----------------
 
     /**

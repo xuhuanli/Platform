@@ -3,6 +3,7 @@ package com.yidao.platform.read.view;
 import com.yidao.platform.read.adapter.ReadNewsDetailBean;
 import com.yidao.platform.read.bean.HotCommentsBean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface IViewReadContentActivity {
@@ -14,12 +15,11 @@ public interface IViewReadContentActivity {
 
     void pushCommentFail();
 
-    void showHotComment(HotCommentsBean.ResultBean resultBean);
-
     void loadMoreData(List<ReadNewsDetailBean> bean);
 
     void loadMoreEnd(boolean b);
 
     void loadMoreComplete();
 
+    void showHotComment(String commentAmount, String likeAmount, ArrayList<ReadNewsDetailBean> dataList);
 }

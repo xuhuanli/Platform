@@ -186,7 +186,23 @@ public class ReadContentActivityPresenter {
                     @Override
                     protected void onSuccess(HotCommentsBean hotCommentsBean) {
                         if (hotCommentsBean.isStatus()) {
-                            mView.showHotComment(hotCommentsBean.getResult());
+                            String commentAmount = hotCommentsBean.getResult().getCommentAmount();
+                            String likeAmount = hotCommentsBean.getResult().getLikeAmount();
+                            List<HotCommentsBean.ResultBean.CmsArticleCommentDtosBean> commentDtos = hotCommentsBean.getResult().getCmsArticleCommentDtos();
+                            ArrayList<ReadNewsDetailBean> dataList = new ArrayList<>();
+                            for (HotCommentsBean.ResultBean.CmsArticleCommentDtosBean commentDto : commentDtos) {
+                                ReadNewsDetailBean bean = new ReadNewsDetailBean(ITEM_COMMENTS);
+                                bean.setContent(commentDto.getContent());
+                                bean.setHeadImg(commentDto.getCommentUserHeadImgUrl());
+                                bean.setNickName(commentDto.getNickname());
+                                bean.setId(commentDto.getId());
+                                bean.setUserId(commentDto.getUserId());
+                                bean.setLikeCount(commentDto.getLikeCount());
+                                bean.setTimeSamp(commentDto.getTime());
+                                bean.setLikedCommed(commentDto.isLikedCommed());
+                                dataList.add(bean);
+                            }
+                            mView.showHotComment(commentAmount,likeAmount,dataList);
                         }
                     }
                 });

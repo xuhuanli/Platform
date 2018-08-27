@@ -3,7 +3,7 @@ package com.yidao.platform.app;
 public class Constant {
 
     //王鹏
-    //public static final String BASE_URL = "http://10.10.20.8:8060/";
+    //public static final String BASE_URL = "http://10.10.20.5:8060/";
     //徐ww
     //public static final String BASE_URL = "http://10.10.20.24:8080/";
     //徐ly
