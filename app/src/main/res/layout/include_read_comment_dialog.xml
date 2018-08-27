@@ -35,6 +35,7 @@
         android:id="@+id/ib_comment"
         style="@style/Bottom_Bar_Icon"
         android:src="@drawable/comment"
+        app:badge_gravity="rightTop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintLeft_toLeftOf="@+id/guideline_comment"
@@ -45,6 +46,7 @@
         android:id="@+id/ib_vote"
         style="@style/Bottom_Bar_Icon"
         android:src="@drawable/selector_vote"
+        app:badge_gravity="rightTop"
         app:layout_constraintBottom_toBottomOf="@+id/ib_comment"
         app:layout_constraintLeft_toRightOf="@+id/ib_comment"
         app:layout_constraintRight_toLeftOf="@+id/ib_favorite" />
@@ -53,6 +55,7 @@
         android:id="@+id/ib_favorite"
         style="@style/Bottom_Bar_Icon"
         android:src="@drawable/selector_dianzan"
+        app:badge_gravity="rightTop"
         app:layout_constraintBottom_toBottomOf="@+id/ib_vote"
         app:layout_constraintLeft_toRightOf="@+id/ib_vote"
         app:layout_constraintRight_toLeftOf="@+id/ib_share" />
@@ -61,6 +64,7 @@
         android:id="@+id/ib_share"
         style="@style/Bottom_Bar_Icon"
         android:src="@drawable/fenxiang"
+        app:badge_gravity="rightTop"
         app:layout_constraintBottom_toBottomOf="@+id/ib_favorite"
         app:layout_constraintLeft_toRightOf="@+id/ib_favorite"
         app:layout_constraintRight_toRightOf="parent" />

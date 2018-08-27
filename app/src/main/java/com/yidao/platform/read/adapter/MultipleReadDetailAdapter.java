@@ -1,12 +1,12 @@
 package com.yidao.platform.read.adapter;
 
 import android.webkit.WebView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.yidao.platform.R;
-import com.yidao.platform.app.utils.ConvertFormatUtil;
 import com.yidao.platform.webview.XHLWebChromeClient;
 import com.yidao.platform.webview.XHLWebView;
 import com.yidao.platform.webview.XHLWebViewClient;
@@ -25,7 +25,7 @@ public class MultipleReadDetailAdapter extends BaseMultiItemQuickAdapter<ReadNew
         addItemType(ReadNewsDetailBean.ITEM_WEBVIEW, R.layout.read_detail_webview_item);
         addItemType(ReadNewsDetailBean.ITEM_HOT_COMMENT, R.layout.read_detail_hot_comment_item);
         addItemType(ReadNewsDetailBean.ITEM_COMMENTS, R.layout.read_detail_comment_item);
-        addItemType(ReadNewsDetailBean.ITEM_BOTTOM, R.layout.read_detail_bottom_item);
+        addItemType(ReadNewsDetailBean.ITEM_LAST_COMMENT, R.layout.read_detail_last_comment_item);
     }
 
     @Override
@@ -45,9 +45,13 @@ public class MultipleReadDetailAdapter extends BaseMultiItemQuickAdapter<ReadNew
                 Glide.with(mContext).load(item.getHeadImg()).into((CircleImageView) helper.getView(R.id.iv_detail_icon));
                 helper.setText(R.id.tv_detail_name, item.getNickName())
                         .setText(R.id.tv_detail_comment, item.getContent())
-                        .setText(R.id.tv_detail_vote, item.getLikeCount())
                         .setText(R.id.tv_detail_time, item.getTimeSamp());
+                TextView dianZan = helper.getView(R.id.tv_detail_vote);
+                dianZan.setText(item.getLikeCount());
+                dianZan.setCompoundDrawablesWithIntrinsicBounds(item.isLikedCommed() ? R.drawable.dianzan_small_done : R.drawable.dianzan_small, 0, 0, 0);
                 helper.addOnClickListener(R.id.tv_detail_vote);
+                break;
+            case ReadNewsDetailBean.ITEM_LAST_COMMENT:
                 break;
         }
     }

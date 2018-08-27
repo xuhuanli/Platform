@@ -172,10 +172,10 @@ public class ReadContentActivityPresenter {
      *
      * @param id
      */
-    public void getHotComments(long id) {
+    public void getHotComments(long id,String curUserId) {
         RxHttpUtils
                 .createApi(ApiService.class)
-                .getHotComments(id)
+                .getHotComments(id,curUserId)
                 .compose(Transformer.switchSchedulers())
                 .subscribe(new CommonObserver<HotCommentsBean>() {
                     @Override
@@ -195,10 +195,10 @@ public class ReadContentActivityPresenter {
     /**
      * 最新
      */
-    public void getLastestComments(long artId, long pageIndex, int pageSize) {
+    public void getLastestComments(long artId, long pageIndex, int pageSize,String cruId) {
         RxHttpUtils
                 .createApi(ApiService.class)
-                .getLastComments(artId, pageIndex, pageSize)
+                .getLastComments(artId, pageIndex, pageSize,cruId)
                 .compose(Transformer.switchSchedulers())
                 .subscribe(new CommonObserver<LastCommentsBean>() {
                     @Override
@@ -225,6 +225,7 @@ public class ReadContentActivityPresenter {
                                 bean.setLikeCount(listBean.getLikeCount());
                                 bean.setTimeSamp(listBean.getTime());
                                 bean.setUserId(listBean.getUserId());
+                                bean.setLikedCommed(listBean.isLikedCommed());
                                 dataList.add(bean);
                             }
                             mView.loadMoreData(dataList);
@@ -242,6 +243,19 @@ public class ReadContentActivityPresenter {
         RxHttpUtils
                 .createApi(ApiService.class)
                 .userLikeComment(id,userId)
+                .compose(Transformer.switchSchedulers())
+                .subscribe();
+    }
+
+    /**
+     * 取消评论点赞
+     * @param id
+     * @param userId
+     */
+    public void userUnlikeComment(String id, String userId) {
+        RxHttpUtils
+                .createApi(ApiService.class)
+                .userUnLikeComment(id,userId)
                 .compose(Transformer.switchSchedulers())
                 .subscribe();
     }

@@ -11,6 +11,9 @@ import com.yidao.platform.info.view.IViewMyMessage;
 
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
 public class MyMessageActivityPresenter {
     private IViewMyMessage mView;
 
@@ -29,7 +32,8 @@ public class MyMessageActivityPresenter {
         RxHttpUtils
                 .createApi(ApiService.class)
                 .qryBottleMess(userId, mNextRequestPage, pageSize)
-                .compose(Transformer.switchSchedulers())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CommonObserver<BottleMsgBean>() {
                     @Override
                     protected void onError(String errorMsg) {
@@ -62,7 +66,8 @@ public class MyMessageActivityPresenter {
         RxHttpUtils
                 .createApi(ApiService.class)
                 .qryFindMess(userId, mNextRequestPage, pageSize)
-                .compose(Transformer.switchSchedulers())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CommonObserver<FindMsgBean>() {
                     @Override
                     protected void onError(String errorMsg) {

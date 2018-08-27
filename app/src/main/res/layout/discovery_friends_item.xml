@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="16dp">
+    android:layout_marginTop="14dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_discovery_icon"
@@ -21,6 +21,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:textStyle="bold"
+        android:textSize="16sp"
         android:textColor="@color/colorBlack"
         app:layout_constraintStart_toEndOf="@+id/iv_discovery_icon"
         app:layout_constraintTop_toTopOf="@+id/iv_discovery_icon"
@@ -31,6 +33,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tv_discovery_time"
         app:layout_constraintTop_toBottomOf="@+id/iv_discovery_icon"
@@ -41,6 +44,7 @@
         android:id="@+id/tv_discovery_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/iv_discovery_icon"
         app:layout_constraintStart_toStartOf="@+id/tv_discovery_name"
         tools:text="10分钟前" />
@@ -54,6 +58,7 @@
         android:drawablePadding="2dp"
         android:gravity="center"
         android:paddingBottom="8dp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="100999" />

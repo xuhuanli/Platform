@@ -35,7 +35,6 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -47,6 +46,7 @@ import retrofit2.http.QueryMap;
 public interface ApiService {
 
     //-------------登录模块---------------
+
     /**
      * 发送code到server
      */
@@ -58,6 +58,12 @@ public interface ApiService {
      */
     @GET("app/user/login/wx")
     Observable<WxCodeBean> sendCodeToServer(@QueryMap Map<String, String> options);
+
+    /**
+     * 分享回调
+     */
+    @GET("user/center/shareResult")
+    Observable<String> shareResult(@Query("artId") String artId, @Query("userId") String userId);
 
     /**
      * 发送验证码
@@ -182,7 +188,7 @@ public interface ApiService {
      */
     @Headers({"Content-Type: application/json;charset=UTF-8"})
     @POST("find/qryFindContent")
-    Observable<FindContentBean> qryFindContent(@Body QryFindContentObj qryFindContentObj );
+    Observable<FindContentBean> qryFindContent(@Body QryFindContentObj qryFindContentObj);
     //----------文章模块------------
 
     /**
@@ -195,6 +201,7 @@ public interface ApiService {
 
     /**
      * 首页18篇文章
+     *
      * @return Observable
      */
     @GET("home/article/listCategoryAndArticle")
@@ -312,7 +319,7 @@ public interface ApiService {
      * @return
      */
     @GET("home/article/listArticleCommenty")
-    Observable<HotCommentsBean> getHotComments(@Query("id") long artId);
+    Observable<HotCommentsBean> getHotComments(@Query("id") long artId, @Query("curUserId") String curUserId);
 
     /**
      * 获取文章最新评论
@@ -321,16 +328,26 @@ public interface ApiService {
      * @return
      */
     @GET("home/article/listArticleCommentyList")
-    Observable<LastCommentsBean> getLastComments(@Query("id") long artId, @Query("pageIndex") long pageIndex, @Query("pageSize") int pageSize);
+    Observable<LastCommentsBean> getLastComments(@Query("id") long artId, @Query("pageIndex") long pageIndex, @Query("pageSize") int pageSize, @Query("cruId") String cruId);
 
     /**
      * 文章评论点赞
+     *
      * @param commentId
      * @param userId
      * @return
      */
     @GET("user/center/userLikeComment")
     Observable<String> userLikeComment(@Query("commentId") String commentId, @Query("userId") String userId);
+
+    /**
+     * 评论取消点赞
+     * @param commentId
+     * @param userId
+     * @return
+     */
+    @GET("user/center/userUnLikeComment")
+    Observable<String> userUnLikeComment(@Query("commentId") String commentId, @Query("userId") String userId);
     //-------------漂流瓶----------------
 
     /**

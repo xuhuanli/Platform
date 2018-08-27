@@ -127,6 +127,15 @@ public class HotCommentsBean {
             private String commentUserHeadImgUrl;
             private String time;
             private String nickname;
+            private boolean isLikedCommed;
+
+            public boolean isLikedCommed() {
+                return isLikedCommed;
+            }
+
+            public void setLikedCommed(boolean likedCommed) {
+                isLikedCommed = likedCommed;
+            }
 
             public String getId() {
                 return id;

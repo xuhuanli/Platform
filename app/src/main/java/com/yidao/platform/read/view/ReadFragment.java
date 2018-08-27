@@ -27,6 +27,7 @@ import com.yidao.platform.read.bean.ReadNewsBean;
 import com.yidao.platform.read.presenter.ReadFragmentPresenter;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
+import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.view.BannerViewPager;
 
 import java.util.ArrayList;
@@ -154,6 +155,7 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
         if (banner != null) {
             banner.setImages(imageUrls);
             banner.setBannerTitles(bannerTitles);
+            banner.setOnBannerListener(position -> MyLogger.e("position = "+position));
             banner.start();
         }
     }

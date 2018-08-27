@@ -10,6 +10,10 @@ import com.yidao.platform.login.bean.WxCodeBean;
 
 import java.util.HashMap;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+
 public class WXEntryActivityPresenter {
     private IViewWXEntryActivity mView;
 
@@ -54,5 +58,19 @@ public class WXEntryActivityPresenter {
                         }
                     }
                 });
+    }
+
+    /**
+     * 分享回调
+     * @param artId
+     * @param userId
+     */
+    public void updateShareData(String artId, String userId) {
+        RxHttpUtils
+                .createApi(ApiService.class)
+                .shareResult(artId,userId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 }

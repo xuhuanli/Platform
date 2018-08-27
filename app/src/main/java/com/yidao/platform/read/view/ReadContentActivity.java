@@ -102,6 +102,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     private boolean isOperateLike = false;
     private int mNextRequestPage = 1;
     private List<ReadNewsDetailBean> list = new ArrayList<>();
+    private boolean isFirstGetNewComment = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -116,8 +117,6 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onResume() {
         super.onResume();
-        //告知服务器阅读记录
-        MyLogger.e(artId + "  " + userId);
         mPresenter.sendReadRecordInfo(artId, userId);
     }
 
@@ -127,7 +126,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void initData() {
-        mPresenter.getHotComments(artId);
+        mPresenter.getHotComments(artId,userId);
         // TODO: 2018/8/24 0024 测试id
         //mPresenter.getLastestComments(artId, mNextRequestPage, Constant.PAGE_SIZE);
     }
@@ -137,19 +136,12 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         url = intent.getStringExtra(Constant.STRING_URL);
         artId = intent.getLongExtra(Constant.STRING_ART_ID, 0L);
         userId = IPreference.prefHolder.getPreference(this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
-        ib_comment = findViewById(R.id.ib_comment);
-        ib_vote = findViewById(R.id.ib_vote);
-        ib_favorite = findViewById(R.id.ib_favorite);
-        ib_share = findViewById(R.id.ib_share);
+        configCommentBar();
         //在载入文章前展示progressbar
         //mRecyclerView.setVisibility(View.INVISIBLE);
         //mCommentBar.setVisibility(View.INVISIBLE);
         //mProgressBar.setVisibility(View.VISIBLE);
         //-------------------------
-        ib_comment.setOnClickListener(this);
-        ib_vote.setOnClickListener(this);
-        ib_favorite.setOnClickListener(this);
-        ib_share.setOnClickListener(this);
         initRecyclerView();
         //展开评论框
         addDisposable(RxView.clicks(mTvComment).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> showCommentDialog()));
@@ -176,6 +168,17 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
+    }
+
+    private void configCommentBar() {
+        ib_comment = findViewById(R.id.ib_comment);
+        ib_vote = findViewById(R.id.ib_vote);
+        ib_favorite = findViewById(R.id.ib_favorite);
+        ib_share = findViewById(R.id.ib_share);
+        ib_comment.setOnClickListener(this);
+        ib_vote.setOnClickListener(this);
+        ib_favorite.setOnClickListener(this);
+        ib_share.setOnClickListener(this);
     }
 
     private void initRecyclerView() {
@@ -321,9 +324,9 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(WebViewLoadEvent event) {
-        mRecyclerView.setVisibility(View.VISIBLE);
-        mCommentBar.setVisibility(View.VISIBLE);
-        mProgressBar.setVisibility(View.GONE);
+        //mRecyclerView.setVisibility(View.VISIBLE);
+        //mCommentBar.setVisibility(View.VISIBLE);
+        //mProgressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -363,6 +366,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
                 bean.setUserId(commentDto.getUserId());
                 bean.setLikeCount(commentDto.getLikeCount());
                 bean.setTimeSamp(commentDto.getTime());
+                bean.setLikedCommed(commentDto.isLikedCommed());
                 list.add(bean);
             }
         }
@@ -381,18 +385,32 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         });
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             ReadNewsDetailBean item = (ReadNewsDetailBean) adapter.getItem(position);
-            TextView textView = view.findViewById(R.id.tv_detail_vote);
-            textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.dianzan_small_done,0,0,0);
-            mPresenter.userLikeComment(item.getId(),userId);
+            boolean isLike = item.isLikedCommed();
+            if (isLike) {
+                mPresenter.userUnlikeComment(item.getId(),userId);
+                item.setLikeCount(String.valueOf(Long.parseLong(item.getLikeCount())-1));
+            }else {
+                mPresenter.userLikeComment(item.getId(),userId);
+                item.setLikeCount(String.valueOf(Long.parseLong(item.getLikeCount())+1));
+            }
+            item.setLikedCommed(!isLike);
+            mAdapter.notifyItemChanged(position);
         });
         mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
     public void loadMoreData(List<ReadNewsDetailBean> dataList) {
-        if (mAdapter != null) {
-            mAdapter.addData(dataList);
+        if (isFirstGetNewComment) {
+            if (dataList.size()>0) {
+                list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_LAST_COMMENT));
+                list.addAll(dataList);
+            }
+            isFirstGetNewComment = false;
+        }else {
+            list.addAll(dataList);
         }
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -410,7 +428,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void loadMore() {
-        mPresenter.getLastestComments(artId, mNextRequestPage, Constant.PAGE_SIZE);
+        mPresenter.getLastestComments(artId, mNextRequestPage, Constant.PAGE_SIZE,userId);
         mNextRequestPage++;
     }
 }
