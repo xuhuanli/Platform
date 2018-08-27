@@ -11,10 +11,6 @@ import com.yidao.platform.read.view.IViewItemChannelActivity;
 
 import java.util.List;
 
-/**
- * @Deprecated 类目选择转移到首页去获取 然后保存在内存中
- */
-@Deprecated
 public class ItemChannelActivityPresenter {
     private IViewItemChannelActivity mView;
 
@@ -36,7 +32,7 @@ public class ItemChannelActivityPresenter {
                     protected void onSuccess(ChannelBean channelBean) {
                         if (channelBean.isStatus()) {
                             List<ChannelBean.ResultBean> result = channelBean.getResult();
-                            //mView.loadChannel(result);
+                            mView.loadChannel(result);
                         }
                     }
                 });

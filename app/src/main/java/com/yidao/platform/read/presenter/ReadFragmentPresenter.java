@@ -36,7 +36,7 @@ public class ReadFragmentPresenter {
         RxHttpUtils
                 .createApi(ApiService.class)
                 .getBanner()
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BannerBean>() {
                     @Override
@@ -189,7 +189,7 @@ public class ReadFragmentPresenter {
     public void getListCategories() {
         RxHttpUtils.createApi(ApiService.class)
                 .getListCategories()
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ChannelBean>() {
                     @Override

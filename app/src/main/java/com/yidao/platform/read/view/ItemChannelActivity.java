@@ -13,8 +13,9 @@ import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.read.adapter.ChannelAdapter;
 import com.yidao.platform.read.bean.ChannelBean;
+import com.yidao.platform.read.presenter.ItemChannelActivityPresenter;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -25,28 +26,19 @@ public class ItemChannelActivity extends BaseActivity implements IViewItemChanne
     RecyclerView mRecyclerView;
     @BindView(R.id.imageButton)
     ImageView mBackIB;
-    //private ItemChannelActivityPresenter mPresenter;
+    private ItemChannelActivityPresenter mPresenter;
     private ChannelAdapter mAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //mPresenter = new ItemChannelActivityPresenter(this);
+        mPresenter = new ItemChannelActivityPresenter(this);
         initView();
         initData();
     }
 
     private void initData() {
-        ArrayList<ChannelBean.ResultBean> channel = getIntent().getParcelableArrayListExtra("channel");
-        mAdapter = new ChannelAdapter(channel);
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener((adapter, view, position) -> {
-            ChannelBean.ResultBean data = (ChannelBean.ResultBean) adapter.getData().get(position);
-            Intent intent = new Intent(ItemChannelActivity.this, ReadItemMoreActivity.class);
-            intent.putExtra("categoryId", data.getId());
-            intent.putExtra("categoryName", data.getName());
-            startActivity(intent);
-        });
+        mPresenter.getListCategories();
     }
 
     private void initView() {
@@ -58,5 +50,18 @@ public class ItemChannelActivity extends BaseActivity implements IViewItemChanne
     @Override
     protected int getLayoutId() {
         return R.layout.read_activity_channel_select;
+    }
+
+    @Override
+    public void loadChannel(List<ChannelBean.ResultBean> result) {
+        mAdapter = new ChannelAdapter(result);
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener((adapter, view, position) -> {
+            ChannelBean.ResultBean data = (ChannelBean.ResultBean) adapter.getData().get(position);
+            Intent intent = new Intent(ItemChannelActivity.this, ReadItemMoreActivity.class);
+            intent.putExtra("categoryId", data.getId());
+            intent.putExtra("categoryName", data.getName());
+            startActivity(intent);
+        });
     }
 }

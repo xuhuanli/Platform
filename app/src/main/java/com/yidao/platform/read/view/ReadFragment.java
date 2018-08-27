@@ -102,12 +102,7 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
 
     @Override
     protected void initData() {
-        //第一次进入加载Banner
-        //mPresenter.getBannerData();
-        //加载首页类目文章
         mPresenter.getMainArticleData();
-        //请求所有id&name类目做保存
-        mPresenter.getListCategories();
     }
 
     private void initRecyclerView() {
@@ -121,7 +116,6 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
      */
     private void showChannelUI() {
         Intent intent = new Intent(getActivity(), ItemChannelActivity.class);
-        intent.putParcelableArrayListExtra("channel", mChannelBean);
         startActivity(intent);
     }
 
@@ -152,6 +146,7 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
 
     @Override
     public void showBanner(List<String> imageUrls, List<String> bannerTitles) {
+        mPresenter.getListCategories();
         if (banner != null) {
             banner.setImages(imageUrls);
             banner.setBannerTitles(bannerTitles);

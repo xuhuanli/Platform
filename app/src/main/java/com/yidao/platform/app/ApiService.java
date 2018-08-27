@@ -50,7 +50,7 @@ public interface ApiService {
     /**
      * 发送code到server
      */
-    @GET("home/article/getUploadMsg")
+    @GET("app/user/getOssToken")
     Observable<OssBean> getUploadMsg();
 
     /**
