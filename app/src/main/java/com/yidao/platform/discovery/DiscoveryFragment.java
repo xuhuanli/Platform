@@ -34,8 +34,6 @@ import com.yidao.platform.discovery.model.DianZanObj;
 import com.yidao.platform.discovery.model.FindDiscoveryObj;
 import com.yidao.platform.discovery.presenter.DiscoveryPresenter;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -251,10 +249,10 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
             dianZanObj.setFindId(item.getFindId());
             if (isLike) {  //已点赞，点击后变成不点赞 传服务器
                 mPresenter.cancelFindLike(dianZanObj);
-                item.setLikeAmount(item.getLikeAmount()-1);
+                item.setLikeAmount(item.getLikeAmount() - 1);
             } else {
                 mPresenter.sendFindLike(dianZanObj);
-                item.setLikeAmount(item.getLikeAmount()+1);
+                item.setLikeAmount(item.getLikeAmount() + 1);
             }
             item.setLike(!isLike);
             mAdapter.notifyItemChanged(position);

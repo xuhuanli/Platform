@@ -27,7 +27,7 @@ public class MomentAdapter extends BaseQuickAdapter<FriendsShowBean, BaseViewHol
     @Override
     protected void convert(BaseViewHolder helper, FriendsShowBean item) {
         helper.setText(R.id.tv_discovery_name, item.getDeployName())
-                .setText(R.id.tv_discovery_time, item.getDeployTime())
+                .setText(R.id.tv_discovery_time, item.getTimeStamp())
                 .setText(R.id.tv_discovery_content, item.getContent())
                 .setVisible(R.id.tv_delete, visible);
         TextView dianZan = helper.getView(R.id.tv_discovery_vote);

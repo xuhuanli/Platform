@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.allen.library.utils.ToastUtils;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
@@ -26,11 +27,13 @@ import com.yidao.platform.login.view.WaitDialog;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerPreviewActivity;
 import cn.bingoogolapple.photopicker.widget.BGASortableNinePhotoLayout;
+import io.reactivex.functions.Consumer;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 import top.zibin.luban.Luban;
@@ -114,8 +117,47 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
     }
 
     private void initView() {
-        mBtnCancel.setOnClickListener(this);
-        mBtnPublish.setOnClickListener(this);
+        addDisposable(RxView.clicks(mBtnCancel).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish()));
+        addDisposable(RxView.clicks(mBtnPublish).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> CompressPicAndPushToOss()));
+    }
+
+    private void CompressPicAndPushToOss() {
+        mPresenter.getOssInstance(DiscoveryEditorMessageActivity.this,mOss.getAccessKeyId(),mOss.getAccessKeySecret(),mOss.getSecurityToken());
+        mUpLoadPicList = mPhotosSnpl.getData();
+        if (mUpLoadPicList.size() > 0) {
+            ArrayList<String> picPathList = new ArrayList<>();
+            for (String datum : mUpLoadPicList) {
+                if (!needCompress(Constant.NEED_COMPRESS_SIZE, datum)) { //<300K时，直传
+                    mPresenter.uploadFile(datum, mHandler);
+                } else { //>300K时，进行压缩处理
+                    Luban.with(DiscoveryEditorMessageActivity.this)
+                            .load(datum)
+                            .setTargetDir(getExternalCacheDir().getAbsolutePath())
+                            .setCompressListener(new OnCompressListener() {
+                                @Override
+                                public void onStart() {
+                                }
+
+                                @Override
+                                public void onSuccess(File file) {
+                                    mPresenter.uploadFile(file.getAbsolutePath(), mHandler);
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    uploadPicFailed();  //这里其实是压缩图片失败，偷懒了QWQ
+                                    return;  //有一张压缩失败，就表示这次发布朋友圈failed
+                                }
+                            })
+                            .launch();
+                }
+            }
+        } else { //纯文本
+            String content = mEtEditor.getText().toString().trim();
+            if (!TextUtils.isEmpty(content)) {
+                mPresenter.sendMsg2Server(userId, content, null);
+            }
+        }
     }
 
     @Override
@@ -206,41 +248,7 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
                 finish();
                 break;
             case R.id.btn_publish:
-                mPresenter.getOssInstance(this,mOss.getAccessKeyId(),mOss.getAccessKeySecret(),mOss.getSecurityToken());
-                mUpLoadPicList = mPhotosSnpl.getData();
-                if (mUpLoadPicList.size() > 0) {
-                    for (String datum : mUpLoadPicList) {
-                        if (!needCompress(Constant.NEED_COMPRESS_SIZE, datum)) { //<300K时，直传
-                            mPresenter.uploadFile(datum, mHandler);
-                        } else { //>300K时，进行压缩处理
-                            Luban.with(this)
-                                    .load(datum)
-                                    .setTargetDir(getExternalCacheDir().getAbsolutePath())
-                                    .setCompressListener(new OnCompressListener() {
-                                        @Override
-                                        public void onStart() {
-                                        }
 
-                                        @Override
-                                        public void onSuccess(File file) {
-                                            mPresenter.uploadFile(file.getAbsolutePath(), mHandler);
-                                        }
-
-                                        @Override
-                                        public void onError(Throwable e) {
-                                            uploadPicFailed();  //这里其实是压缩图片失败，偷懒了QWQ
-                                            return;  //有一张压缩失败，就表示这次发布朋友圈failed
-                                        }
-                                    })
-                                    .launch();
-                        }
-                    }
-                } else { //纯文本
-                    String content = mEtEditor.getText().toString().trim();
-                    if (!TextUtils.isEmpty(content)) {
-                        mPresenter.sendMsg2Server(userId, content, null);
-                    }
-                }
                 break;
         }
     }

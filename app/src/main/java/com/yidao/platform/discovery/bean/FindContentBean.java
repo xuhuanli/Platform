@@ -53,7 +53,16 @@ public class FindContentBean {
         private boolean isLike;
         private int likeAmount;
         private int commAmount;
+        private String timeStamp;
         private List<String> imgs;
+
+        public String getTimeStamp() {
+            return timeStamp;
+        }
+
+        public void setTimeStamp(String timeStamp) {
+            this.timeStamp = timeStamp;
+        }
 
         public String getId() {
             return id;

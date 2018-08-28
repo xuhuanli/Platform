@@ -136,7 +136,16 @@ public class FriendsListBean {
             private String deployTime;
             private boolean isLike;
             private FindBean find;
+            private String timeStamp;
             private List<String> imgs;
+
+            public String getTimeStamp() {
+                return timeStamp;
+            }
+
+            public void setTimeStamp(String timeStamp) {
+                this.timeStamp = timeStamp;
+            }
 
             public long getFindId() {
                 return findId;

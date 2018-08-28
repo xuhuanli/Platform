@@ -17,6 +17,7 @@ import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
+import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.discovery.DiscoveryBottleDetailActivity;
 import com.yidao.platform.discovery.FriendsGroupDetailActivity;
 import com.yidao.platform.info.adapter.BottleViewAdapter;
@@ -61,6 +62,14 @@ public class InfoMyMessageActivity extends BaseActivity implements IViewMyMessag
         userId = IPreference.prefHolder.getPreference(this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
         initView();
         initData();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        MyLogger.e("onNewIntent executed");
+        mPresenter.qryBottleMess(userId, mNextRequestPage, Integer.MAX_VALUE);
+        mPresenter.qryFindMess(userId, mNextRequestPage, Integer.MAX_VALUE);
     }
 
     private void initView() {

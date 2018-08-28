@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * 朋友圈的展示Bean 类似于新闻ReadNewsBean
  */
-public class FriendsShowBean implements Parcelable {
+public class FriendsShowBean {
     /**
      * 朋友圈ID
      */
@@ -38,9 +38,21 @@ public class FriendsShowBean implements Parcelable {
      */
     private String content;
     /**
+     * 展示时间
+     */
+    private String timeStamp;
+    /**
      * 图片地址
      */
     private ArrayList<String> imgUrls;
+
+    public String getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(String timeStamp) {
+        this.timeStamp = timeStamp;
+    }
 
     public boolean isLike() {
         return isLike;
@@ -105,47 +117,6 @@ public class FriendsShowBean implements Parcelable {
     public void setImgUrls(ArrayList<String> imgUrls) {
         this.imgUrls = imgUrls;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.findId);
-        dest.writeString(this.headImg);
-        dest.writeString(this.deployName);
-        dest.writeString(this.deployTime);
-        dest.writeLong(this.likeAmount);
-        dest.writeString(this.content);
-        dest.writeStringList(this.imgUrls);
-    }
-
-    public FriendsShowBean() {
-    }
-
-    protected FriendsShowBean(Parcel in) {
-        this.findId = in.readString();
-        this.headImg = in.readString();
-        this.deployName = in.readString();
-        this.deployTime = in.readString();
-        this.likeAmount = in.readLong();
-        this.content = in.readString();
-        this.imgUrls = in.createStringArrayList();
-    }
-
-    public static final Parcelable.Creator<FriendsShowBean> CREATOR = new Parcelable.Creator<FriendsShowBean>() {
-        @Override
-        public FriendsShowBean createFromParcel(Parcel source) {
-            return new FriendsShowBean(source);
-        }
-
-        @Override
-        public FriendsShowBean[] newArray(int size) {
-            return new FriendsShowBean[size];
-        }
-    };
 
     @Override
     public String toString() {

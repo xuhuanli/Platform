@@ -118,6 +118,8 @@ public class FriendsGroupDetailPresenter {
                             showBean.setDeployTime(result.getCreateTime());
                             showBean.setDeployName(result.getUserName());
                             showBean.setHeadImg(result.getHeadImg());
+                            // TODO: 2018/8/28 0028 新增字段
+                            showBean.setTimeStamp(result.getTimeStamp());
                             showBean.setLikeAmount(result.getLikeAmount());
                             showBean.setImgUrls((ArrayList<String>) result.getImgs());
                             mView.showDetail(showBean);

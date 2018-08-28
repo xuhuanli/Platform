@@ -71,7 +71,8 @@
         <activity android:name=".discovery.DiscoveryMyBottleActivity" />
         <activity android:name=".discovery.DiscoveryBottleDetailActivity" />
         <activity android:name=".info.view.InfoMyPublishActivity" />
-        <activity android:name=".info.view.InfoMyMessageActivity" />
+        <activity android:name=".info.view.InfoMyMessageActivity"
+            android:launchMode="singleTop"/>
         <activity android:name=".login.view.LoginBindingPhoneActivity" />
         <activity android:name=".read.view.ReadItemMoreActivity" />
         <activity android:name=".info.view.RecentlyReadActivity" />

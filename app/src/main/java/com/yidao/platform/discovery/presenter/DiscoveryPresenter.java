@@ -128,6 +128,7 @@ public class DiscoveryPresenter {
                                 bean.setImgUrls((ArrayList<String>) listBean.getImgs());
                                 bean.setFindId(String.valueOf(listBean.getFindId()));
                                 bean.setLike(listBean.isIsLike());
+                                bean.setTimeStamp(listBean.getTimeStamp());
                                 dataList.add(bean);
                             }
 

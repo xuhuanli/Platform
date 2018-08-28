@@ -106,10 +106,10 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
     }
 
     private void initData() {
+        // TODO: 2018/8/28 0028 多个网络访问存在问题
         QryFindContentObj findContentObj = new QryFindContentObj(findId, userId);
         mPresenter.qryFindContent(findContentObj);
         obj = new PyqFindIdObj(findId);
-        mPresenter.qryFindComms(obj);
         addDisposable(RxView.clicks(mTvComment).subscribe(o -> showCommentDialog(Long.valueOf(userId), "0")));
     }
 
@@ -272,9 +272,10 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
 
     @Override
     public void showDetail(FriendsShowBean showBean) {
+        mPresenter.qryFindComms(obj);
         Glide.with(this).load(showBean.getHeadImg()).apply(new RequestOptions().placeholder(R.drawable.info_head_p)).into(ivDiscoveryIcon);
         tvDiscoveryName.setText(showBean.getDeployName());
-        tvDiscoveryTime.setText(showBean.getDeployTime());
+        tvDiscoveryTime.setText(showBean.getTimeStamp());
         tvDiscoveryVote.setText(String.valueOf(showBean.getLikeAmount()));
         tvDiscoveryVote.setCompoundDrawablesWithIntrinsicBounds(showBean.isLike() ? R.drawable.dianzan_small_done : R.drawable.dianzan_small, 0, 0, 0);
         tvDiscoveryContent.setText(showBean.getContent());
