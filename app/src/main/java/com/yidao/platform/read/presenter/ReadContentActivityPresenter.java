@@ -176,10 +176,10 @@ public class ReadContentActivityPresenter {
      *
      * @param id
      */
-    public void getHotComments(long id,String curUserId) {
+    public void getHotComments(long id, String curUserId) {
         RxHttpUtils
                 .createApi(ApiService.class)
-                .getHotComments(id,curUserId)
+                .getHotComments(id, curUserId)
                 .compose(Transformer.switchSchedulers())
                 .subscribe(new CommonObserver<HotCommentsBean>() {
                     @Override
@@ -206,7 +206,7 @@ public class ReadContentActivityPresenter {
                                 bean.setLikedCommed(commentDto.isLikedCommed());
                                 dataList.add(bean);
                             }
-                            mView.showHotComment(commentAmount,likeAmount,dataList);
+                            mView.showHotComment(commentAmount, likeAmount, dataList);
                         }
                     }
                 });
@@ -215,10 +215,10 @@ public class ReadContentActivityPresenter {
     /**
      * 最新
      */
-    public void getLastestComments(long artId, long pageIndex, int pageSize,String cruId) {
+    public void getLastestComments(long artId, long pageIndex, int pageSize, String cruId) {
         RxHttpUtils
                 .createApi(ApiService.class)
-                .getLastComments(artId, pageIndex, pageSize,cruId)
+                .getLastComments(artId, pageIndex, pageSize, cruId)
                 .compose(Transformer.switchSchedulers())
                 .subscribe(new Observer<LastCommentsBean>() {
                     @Override
@@ -231,31 +231,33 @@ public class ReadContentActivityPresenter {
                         MyLogger.e("获取最新评论executed");
                         if (lastCommentsBean.isStatus()) {
                             List<LastCommentsBean.ResultBean.ListBean> list = lastCommentsBean.getResult().getList();
-                            if (list.size() < lastCommentsBean.getResult().getPageSize()) {  //所得数目< pageSize =>到底了
-                                mView.loadMoreEnd(false);
+                            if (list != null) {
+                                if (list.size() < lastCommentsBean.getResult().getPageSize()) {  //所得数目< pageSize =>到底了
+                                    mView.loadMoreEnd(false);
+                                }
+                                ArrayList<ReadNewsDetailBean> dataList = new ArrayList<>();
+                                for (LastCommentsBean.ResultBean.ListBean listBean : list) {
+                                    ReadNewsDetailBean bean = new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_COMMENTS);
+                                    bean.setContent(listBean.getContent());
+                                    bean.setHeadImg(listBean.getCommentUserHeadImgUrl());
+                                    bean.setNickName(listBean.getNickname());
+                                    bean.setId(listBean.getId());
+                                    bean.setLikeCount(listBean.getLikeCount());
+                                    bean.setTimeSamp(listBean.getTime());
+                                    bean.setUserId(listBean.getUserId());
+                                    bean.setLikedCommed(listBean.isLikedCommed());
+                                    dataList.add(bean);
+                                }
+                                mView.loadMoreData(dataList);
                             } else {
-                                mView.loadMoreComplete();
+                                mView.loadMoreEnd(true);
                             }
-                            ArrayList<ReadNewsDetailBean> dataList = new ArrayList<>();
-                            for (LastCommentsBean.ResultBean.ListBean listBean : list) {
-                                ReadNewsDetailBean bean = new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_COMMENTS);
-                                bean.setContent(listBean.getContent());
-                                bean.setHeadImg(listBean.getCommentUserHeadImgUrl());
-                                bean.setNickName(listBean.getNickname());
-                                bean.setId(listBean.getId());
-                                bean.setLikeCount(listBean.getLikeCount());
-                                bean.setTimeSamp(listBean.getTime());
-                                bean.setUserId(listBean.getUserId());
-                                bean.setLikedCommed(listBean.isLikedCommed());
-                                dataList.add(bean);
-                            }
-                            mView.loadMoreData(dataList);
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        MyLogger.e("获取最新评论onError: = "+e.getMessage());
+                        MyLogger.e("获取最新评论onError: = " + e.getMessage());
                     }
 
                     @Override
@@ -265,13 +267,11 @@ public class ReadContentActivityPresenter {
                 });
         /**
          * new CommonObserver<LastCommentsBean>() {
-        @Override
-        protected void onError(String errorMsg) {
+        @Override protected void onError(String errorMsg) {
 
         }
 
-        @Override
-        protected void onSuccess(LastCommentsBean lastCommentsBean) {
+        @Override protected void onSuccess(LastCommentsBean lastCommentsBean) {
 
         }
          */
@@ -279,26 +279,28 @@ public class ReadContentActivityPresenter {
 
     /**
      * 点赞评论
+     *
      * @param id
      * @param userId
      */
     public void userLikeComment(String id, String userId) {
         RxHttpUtils
                 .createApi(ApiService.class)
-                .userLikeComment(id,userId)
+                .userLikeComment(id, userId)
                 .compose(Transformer.switchSchedulers())
                 .subscribe();
     }
 
     /**
      * 取消评论点赞
+     *
      * @param id
      * @param userId
      */
     public void userUnlikeComment(String id, String userId) {
         RxHttpUtils
                 .createApi(ApiService.class)
-                .userUnLikeComment(id,userId)
+                .userUnLikeComment(id, userId)
                 .compose(Transformer.switchSchedulers())
                 .subscribe();
     }

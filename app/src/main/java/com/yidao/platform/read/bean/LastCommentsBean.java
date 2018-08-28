@@ -10,6 +10,25 @@ public class LastCommentsBean {
      */
 
     private boolean status;
+    private String errCode;
+    private String info;
+
+    public String getErrCode() {
+        return errCode;
+    }
+
+    public void setErrCode(String errCode) {
+        this.errCode = errCode;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
     private ResultBean result;
 
     public boolean isStatus() {
