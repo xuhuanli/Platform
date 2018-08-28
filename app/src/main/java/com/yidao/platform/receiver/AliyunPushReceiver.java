@@ -80,7 +80,6 @@ public class AliyunPushReceiver extends MessageReceiver {
      */
     @Override
     public void onNotificationOpened(Context context, String title, String summary, String extraMap) {
-        MyLogger.i(REC_TAG, "onNotificationOpened ： " + " : " + title + " : " + summary + " : " + extraMap);
         Intent intent = new Intent(context, InfoMyMessageActivity.class);
         context.startActivity(intent);
     }
