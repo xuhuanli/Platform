@@ -150,7 +150,12 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
         if (banner != null) {
             banner.setImages(imageUrls);
             banner.setBannerTitles(bannerTitles);
-            banner.setOnBannerListener(position -> MyLogger.e("position = "+position));
+            banner.setOnBannerListener(new OnBannerListener() {
+                @Override
+                public void OnBannerClick(int position) {
+                    MyLogger.e("position = " + position);
+                }
+            });
             banner.start();
         }
     }

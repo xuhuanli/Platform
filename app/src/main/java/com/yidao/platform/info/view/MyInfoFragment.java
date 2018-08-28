@@ -112,7 +112,6 @@ public class MyInfoFragment extends BaseFragment implements IViewMineInfo {
     protected void initData() {
         //这边不去拉信息，重写setUserVisibleHint
         mPresenter.qryUserById(userId);
-        mPresenter.getMineInfo(userId);
     }
 
     @Override
@@ -124,6 +123,7 @@ public class MyInfoFragment extends BaseFragment implements IViewMineInfo {
 
     @Override
     public void successInfo(UserInfoBean.ResultBean result) {
+        mPresenter.getMineInfo(userId);
         this.result = result;
         Glide.with(this)
                 .load(result.getHeadImgUrl())

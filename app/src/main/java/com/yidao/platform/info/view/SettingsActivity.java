@@ -1,6 +1,7 @@
 package com.yidao.platform.info.view;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -18,8 +19,11 @@ import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.ThreadPoolManager;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.app.utils.FileUtil;
+import com.yidao.platform.events.SignUpEvent;
 import com.yidao.platform.info.presenter.SettingsPresenter;
 import com.yidao.platform.login.view.LoginActivity;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.concurrent.TimeUnit;
 
@@ -58,7 +62,7 @@ public class SettingsActivity extends BaseActivity implements SettingsViewInterf
         addDisposable(RxView.clicks(tvSignUp).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
             //退出登录:清除Sp下userId 跳转到登录页面
             IPreference.prefHolder.getPreference(SettingsActivity.this).remove(Constant.STRING_USER_ID);
-            startActivity(LoginActivity.class);
+            EventBus.getDefault().post(new SignUpEvent());
             finish();
         }));
     }

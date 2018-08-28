@@ -6,7 +6,7 @@
     style="@style/Padding_LR16"
     android:layout_height="wrap_content">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_touxiang"
         android:layout_width="48dp"
         android:layout_height="48dp"

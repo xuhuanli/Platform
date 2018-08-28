@@ -83,10 +83,6 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
             //当上传成功数 == 选中图片数时，告知服务器上传成功
             if (mUpLoadPicList.size() == uploadPicCounter) {
                 String content = mEtEditor.getText().toString().trim();
-                // TODO: 2018/8/17 0017  服务器的一个bug 当有图片时，内容也不能为空
-                if (TextUtils.isEmpty(content)) {
-                    content = " ";
-                }
                 mPresenter.sendMsg2Server(userId, content, picPathList);
                 //重置数量
                 uploadPicCounter = 0;

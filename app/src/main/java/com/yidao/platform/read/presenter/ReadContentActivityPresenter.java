@@ -6,6 +6,7 @@ import com.allen.library.observer.CommonObserver;
 import com.allen.library.observer.StringObserver;
 import com.allen.library.utils.ToastUtils;
 import com.yidao.platform.app.ApiService;
+import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.read.adapter.ReadNewsDetailBean;
 import com.yidao.platform.read.bean.HotCommentsBean;
 import com.yidao.platform.read.bean.LastCommentsBean;
@@ -17,6 +18,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 import static com.yidao.platform.read.adapter.ReadNewsDetailBean.ITEM_COMMENTS;
 
@@ -216,17 +220,18 @@ public class ReadContentActivityPresenter {
                 .createApi(ApiService.class)
                 .getLastComments(artId, pageIndex, pageSize,cruId)
                 .compose(Transformer.switchSchedulers())
-                .subscribe(new CommonObserver<LastCommentsBean>() {
+                .subscribe(new Observer<LastCommentsBean>() {
                     @Override
-                    protected void onError(String errorMsg) {
+                    public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    protected void onSuccess(LastCommentsBean lastCommentsBean) {
+                    public void onNext(LastCommentsBean lastCommentsBean) {
+                        MyLogger.e("获取最新评论executed");
                         if (lastCommentsBean.isStatus()) {
                             List<LastCommentsBean.ResultBean.ListBean> list = lastCommentsBean.getResult().getList();
-                            if (list != null && list.size() < lastCommentsBean.getResult().getPageSize()) {  //所得数目< pageSize =>到底了
+                            if (list.size() < lastCommentsBean.getResult().getPageSize()) {  //所得数目< pageSize =>到底了
                                 mView.loadMoreEnd(false);
                             } else {
                                 mView.loadMoreComplete();
@@ -247,7 +252,29 @@ public class ReadContentActivityPresenter {
                             mView.loadMoreData(dataList);
                         }
                     }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        MyLogger.e("获取最新评论onError: = "+e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        MyLogger.e("获取最新评论onCompleted");
+                    }
                 });
+        /**
+         * new CommonObserver<LastCommentsBean>() {
+        @Override
+        protected void onError(String errorMsg) {
+
+        }
+
+        @Override
+        protected void onSuccess(LastCommentsBean lastCommentsBean) {
+
+        }
+         */
     }
 
     /**

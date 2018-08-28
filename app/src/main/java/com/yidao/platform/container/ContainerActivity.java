@@ -6,14 +6,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.WindowManager;
 
-import com.umeng.analytics.MobclickAgent;
 import com.yidao.platform.R;
 import com.yidao.platform.app.base.BaseActivity;
-import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.discovery.DiscoveryFragment;
+import com.yidao.platform.events.SignUpEvent;
 import com.yidao.platform.info.view.MyInfoFragment;
 import com.yidao.platform.read.view.ReadFragment;
 import com.yidao.platform.service.ServiceFragment;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -37,6 +40,7 @@ public class ContainerActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        EventBus.getDefault().register(this);
         initView();
         loadTabData();
     }
@@ -84,5 +88,17 @@ public class ContainerActivity extends BaseActivity {
 
             }
         });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onChangeInfoEvent(SignUpEvent event) {
+        finish();
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

@@ -113,6 +113,11 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
         mPresenter.sendReadRecordInfo(artId, userId);
     }
 

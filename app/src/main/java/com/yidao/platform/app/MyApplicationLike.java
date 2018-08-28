@@ -76,8 +76,7 @@ public class MyApplicationLike extends DefaultApplicationLike {
     //初始化友盟统计
     private void initUmengAnalytics(Context context) {
         UMConfigure.init(context, UMConfigure.DEVICE_TYPE_PHONE, "");
-        //TODO umeng调试开关，打包的时候记得此处设为false
-        UMConfigure.setLogEnabled(true);
+        UMConfigure.setLogEnabled(Constant.IS_DEBUG);
     }
 
     private void initBugly() {

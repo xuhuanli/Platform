@@ -42,16 +42,9 @@
             android:configChanges="keyboardHidden|orientation|screenSize|locale"
             android:theme="@android:style/Theme.Translucent" />
         <activity android:name=".container.ContainerActivity" />
-        <!--启动引导页-->
-        <activity
-            android:name=".login.view.GuideActivity"
-            android:theme="@style/YiDao_WelCome">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity
+            android:name=".login.view.GuideActivity"/>
         <activity android:name=".login.view.LoginActivity" />
         <activity
             android:name=".read.view.ReadContentActivity"
@@ -161,6 +154,16 @@
             android:value="5b7cca73f43e4810d4000011" />
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="xiaomi" />
+            android:value="huawei" />
+        <!--启动引导页-->
+        <activity
+            android:name=".login.view.SplashActivity"
+            android:theme="@style/Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 </manifest>

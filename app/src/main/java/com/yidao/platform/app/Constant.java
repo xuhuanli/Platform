@@ -12,12 +12,15 @@ public class Constant {
     //public static final String BASE_URL = "http://10.10.20.10:8081/";
     //陈dq
     //public static final String BASE_URL = "http://10.10.20.3:8080/platform-pc-web/";
+    //debug ip
     //public static final String BASE_URL = "http://192.168.1.92:8082/";
+    //release ip
+    //public static final String BASE_URL = "http://47.96.122.73:8082/";
 
     /**
      * 全局debug模式开关 在release时候设置为false
      */
-    public static final boolean IS_DEBUG = true;
+    public static final boolean IS_DEBUG = false;
     /**
      * button防抖时间
      */

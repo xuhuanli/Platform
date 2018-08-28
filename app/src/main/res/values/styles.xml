@@ -1,12 +1,19 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- App启动页 -->
+    <style name="Splash" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorWhite</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <!--驿道背景-->
+        <item name="android:windowBackground">@drawable/splash_huawei</item>
+    </style>
+
     <style name="YiDao_WelCome" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorWhite</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <!--整体的背景颜色为白色-->
-        <item name="android:windowBackground">@drawable/launcher</item>
+        <!--驿道背景-->
+        <item name="android:windowBackground">@color/colorWhite</item>
     </style>
 
     <!-- Base application theme. -->
