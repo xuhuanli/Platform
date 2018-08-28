@@ -22,6 +22,7 @@ import com.umeng.commonsdk.UMConfigure;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.app.utils.FileUtil;
 import com.yidao.platform.app.utils.MyLogger;
+import com.yidao.platform.app.utils.PingFangSCUtil;
 import com.yidao.platform.container.ContainerActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -56,6 +57,7 @@ public class MyApplicationLike extends DefaultApplicationLike {
         initLogger();
         initUmengAnalytics(appContext);
         setLabelMap();
+        //PingFangSCUtil.setDefaultFont(getAppContext(),"DEFAULT","fonts/PingFang-SC-Regular.ttf");
     }
 
     private void setLabelMap(){

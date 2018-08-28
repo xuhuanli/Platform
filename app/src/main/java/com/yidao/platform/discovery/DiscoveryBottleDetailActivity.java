@@ -35,6 +35,7 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
+import io.reactivex.functions.Consumer;
 
 public class DiscoveryBottleDetailActivity extends BaseActivity implements DiscoveryBottleDetailInterface {
     @BindView(R.id.toolbar)
@@ -99,7 +100,7 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
         mPresenter.qryBottleDtl(bottleId, sessionId);
     }
 
-    private void showCommentDialog(String parMessageId, String parUserId, String sessionId ) {
+    private void showCommentDialog(String parMessageId, String parUserId, String sessionId) {
         mCommentBottomSheetDialog = new BottomSheetDialog(this);
         mCommentBottomSheetDialog.setCanceledOnTouchOutside(true);
         @SuppressLint("InflateParams") View view = LayoutInflater.from(this).inflate(R.layout.layout_comment_fragment_dialog, null);
@@ -141,7 +142,7 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
         fillEditText();
         mCommentBottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         mCommentBottomSheetDialog.show();
-        mBtnSend.setOnClickListener(v -> {
+        addDisposable(RxView.clicks(mBtnSend).throttleFirst(Constant.THROTTLE_TIME,TimeUnit.MILLISECONDS).subscribe(o -> {
             String content = mEtContent.getText().toString();
             if (!TextUtils.isEmpty(content)) {
                 ReplyBottleListObj obj = new ReplyBottleListObj();
@@ -153,7 +154,7 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
                 obj.setBottleId(bottleId);
                 mPresenter.replyBottleList(obj);
             }
-        });
+        }));
         //when you invoke cancel() , callback to here .So  please use dialog.cancel() but not dialog.dismiss(), unless you setOnDismissListener
         mCommentBottomSheetDialog.setOnCancelListener(dialog -> {
             //when dialog cancel state write content into textview.
@@ -186,9 +187,9 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
         mEtContent.setText("");
         mCommentBottomSheetDialog.cancel();
         if (TextUtils.equals(flag, "1")) {
-            ToastUtils.showToast("回复成功");
+            ToastUtils.showToast("回复成功,请到我的瓶子查看对话");
             finish();
-        }else {
+        } else {
             mPresenter.qryBottleDtl(bottleId, sessionId);
         }
     }
@@ -206,12 +207,20 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
         } else {
             commentList.setDatas(mess);
         }
-        if (TextUtils.equals(flag, "1")) { //来自捞瓶子
-            addDisposable(RxView.clicks(tvPublishComment).subscribe(o -> showCommentDialog("0", result.getAuthorId(), "0")));
-        } else {
-            // TODO: 2018/8/22 0022
-            addDisposable(RxView.clicks(tvPublishComment).subscribe(o -> showCommentDialog()));
-        }
+        addDisposable(RxView.clicks(tvPublishComment).subscribe(o -> {
+            if (TextUtils.equals(flag, "1")) {//来自捞瓶子
+                showCommentDialog("0", result.getAuthorId(), "0");
+            } else {
+                showCommentDialog();
+            }
+        }));
+        addDisposable(RxView.clicks(ivComment).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
+            if (TextUtils.equals(flag, "1")) {//来自捞瓶子
+                showCommentDialog("0", result.getAuthorId(), "0");
+            } else {
+                showCommentDialog();
+            }
+        }));
     }
 
     @Override

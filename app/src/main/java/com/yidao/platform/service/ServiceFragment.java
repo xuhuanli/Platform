@@ -76,13 +76,10 @@ public class ServiceFragment extends BaseFragment implements IViewServiceFragmen
         });
         addDisposable(RxTextView.textChanges(etEnterpriseIntroduction).subscribe(charSequence -> tvContentLength.setText(String.format("%d%s", charSequence.length(), "/100"))));
         //setCheckBox();
-        addDisposable(RxView.clicks(btnCommit).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) throws Exception {
-                BpObj json = assemblyJson();
-                if (json != null) {
-                    mPresenter.sendBpApply(json);
-                }
+        addDisposable(RxView.clicks(btnCommit).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
+            BpObj json = assemblyJson();
+            if (json != null) {
+                mPresenter.sendBpApply(json);
             }
         }));
     }
@@ -120,22 +117,6 @@ public class ServiceFragment extends BaseFragment implements IViewServiceFragmen
         tvValuation.setInputType(InputType.TYPE_CLASS_NUMBER);
         etEquity.setFilters(new InputFilter[]{new InputFilterMinMax()});
     }
-
-    /*private void setCheckBox() {
-        String str = getString(R.string.bp_protocol);
-        SpannableStringBuilder builder = new SpannableStringBuilder(str);
-        ClickableSpan clickableSpan = new ClickableSpan() {
-            @Override
-            public void onClick(View widget) {
-                ToastUtils.showToast("跳转到协议page");
-            }
-        };
-        builder.setSpan(clickableSpan,7,str.length(),Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-        ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#009ad6"));
-        builder.setSpan(colorSpan, 7, str.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        tvProtocol.setText(builder);
-        tvProtocol.setMovementMethod(LinkMovementMethod.getInstance());
-    }*/
 
     @Override
     protected int getLayoutId() {

@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/iv_back_comment_dialog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
         android:paddingEnd="8dp"
         android:paddingStart="4dp"
         android:src="@drawable/jiantou_black"
@@ -26,7 +26,7 @@
         android:gravity="center_vertical"
         android:hint="@string/comment_hint"
         android:maxLines="1"
-        android:paddingLeft="@dimen/size_4dp"
+        android:paddingLeft="@dimen/size_10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_comment"
         app:layout_constraintTop_toTopOf="parent" />

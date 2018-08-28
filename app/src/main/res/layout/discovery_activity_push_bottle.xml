@@ -26,7 +26,7 @@
         android:layout_marginTop="16dp"
         android:padding="4dp"
         android:text="@string/publish"
-        android:textColor="#ff3f81ff"
+        android:textColor="#ff007aff"
         android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

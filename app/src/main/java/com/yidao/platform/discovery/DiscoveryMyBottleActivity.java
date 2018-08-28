@@ -1,11 +1,11 @@
 package com.yidao.platform.discovery;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,7 +21,6 @@ import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.discovery.bean.MyBottleBean;
-import com.yidao.platform.discovery.bean.PickBottleBean;
 import com.yidao.platform.discovery.presenter.IViewMyBottleActivity;
 import com.yidao.platform.discovery.presenter.MyBottleAdapter;
 import com.yidao.platform.discovery.presenter.MyBottlePresenter;
@@ -133,9 +132,9 @@ public class DiscoveryMyBottleActivity extends BaseActivity implements IViewMyBo
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         MyBottleBean.ListBean item = (MyBottleBean.ListBean) adapter.getItem(position);
         Intent intent = new Intent(this, DiscoveryBottleDetailActivity.class);
-        intent.putExtra(Constant.STRING_BOTTLE_ID,item.getBottleId()+"");
-        intent.putExtra(Constant.STRING_SESSION_ID,item.getSessionId()+"");
-        intent.putExtra(Constant.STRING_BOTTLE_PAGE_FROM,"2");
+        intent.putExtra(Constant.STRING_BOTTLE_ID, item.getBottleId() + "");
+        intent.putExtra(Constant.STRING_SESSION_ID, item.getSessionId() + "");
+        intent.putExtra(Constant.STRING_BOTTLE_PAGE_FROM, "2");
         startActivity(intent);
     }
 

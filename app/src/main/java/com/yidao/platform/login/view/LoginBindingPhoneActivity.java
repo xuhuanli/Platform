@@ -37,7 +37,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
-public class LoginBindingPhoneActivity extends BaseActivity implements IViewBindingPhoneActivity{
+public class LoginBindingPhoneActivity extends BaseActivity implements IViewBindingPhoneActivity {
 
     //最大倒计时长
     private static final long MAX_COUNT_TIME = 60;
@@ -51,6 +51,8 @@ public class LoginBindingPhoneActivity extends BaseActivity implements IViewBind
     TextView tvRegisterProtocol;
     @BindView(R.id.btn_ensure)
     Button btnEnsure;
+    @BindView(R.id.tv_user_protocol)
+    TextView tvUserProtocol;
     private LoginBindingPhonePresenter mPresenter;
     private String userId;
 
@@ -59,12 +61,6 @@ public class LoginBindingPhoneActivity extends BaseActivity implements IViewBind
         super.onCreate(savedInstanceState);
         mPresenter = new LoginBindingPhonePresenter(this);
         initView();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        setProtocol();
     }
 
     private void initView() {
@@ -91,8 +87,8 @@ public class LoginBindingPhoneActivity extends BaseActivity implements IViewBind
                 //将点击事件转换成倒计时事件
                 .flatMap((Function<Object, ObservableSource<Long>>) o -> {
                     //请求验证码
-                    MyLogger.e("参数："+userId);
-                    mPresenter.requestVCode(etPhone.getText().toString(),userId);
+                    MyLogger.e("参数：" + userId);
+                    mPresenter.requestVCode(etPhone.getText().toString(), userId);
                     //更新发送按钮的状态并初始化显现倒计时文字
                     btnVCode.setEnabled(false);
                     btnVCode.setBackgroundColor(Color.GRAY);
@@ -116,6 +112,11 @@ public class LoginBindingPhoneActivity extends BaseActivity implements IViewBind
             }
         };
         addDisposable(mObservableCountTime.subscribe(mConsumerCountTime));
+        initProtocol();
+    }
+
+    private void initProtocol() {
+        addDisposable(RxView.clicks(tvUserProtocol).throttleFirst(Constant.THROTTLE_TIME,TimeUnit.MILLISECONDS).subscribe(o -> MyLogger.e("跳转到协议page")));
     }
 
     private void setProtocol() {
@@ -146,7 +147,7 @@ public class LoginBindingPhoneActivity extends BaseActivity implements IViewBind
 
     @Override
     public void bindSuccess() {
-        IPreference.prefHolder.getPreference(this).put(Constant.STRING_USER_ID,userId);
+        IPreference.prefHolder.getPreference(this).put(Constant.STRING_USER_ID, userId);
         startActivity(ContainerActivity.class);
         finish();
     }

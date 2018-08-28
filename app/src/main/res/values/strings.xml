@@ -115,9 +115,11 @@
     <string name="instant_open">立即开启</string>
     <string name="yidao">驿道</string>
     <string name="slogan">你的梦想才是我的梦想</string>
-    <string name="user_protocol">查看驿道用户协议</string>
+    <string name="user_protocol">查看瓶什么用户协议</string>
     <string name="no_data">没有数据</string>
     <string name="wx_public_number">yidaozhizhou</string>
     <string name="url">www.edaochina.com</string>
     <string name="last_comments">最新评论</string>
+    <string name="tv_user_protocol">《用户协议》</string>
+    <string name="bind_phone_hint">点击注册即表示您同意</string>
 </resources>

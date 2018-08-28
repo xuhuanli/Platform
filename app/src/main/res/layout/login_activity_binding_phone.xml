@@ -32,9 +32,9 @@
             android:id="@+id/et_phone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:backgroundTint="#ffd9d9d9"
             android:hint="@string/phone_number"
             android:inputType="phone"
-            android:backgroundTint="#ffd9d9d9"
             android:maxLength="11"
             android:maxLines="1" />
     </android.support.design.widget.TextInputLayout>
@@ -69,9 +69,9 @@
             android:id="@+id/et_v_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="#ffd9d9d9"
             android:hint="@string/verification_code"
             android:inputType="number"
-            android:backgroundTint="#ffd9d9d9"
             android:maxLength="6"
             android:maxLines="1" />
     </android.support.design.widget.TextInputLayout>
@@ -85,7 +85,7 @@
         android:textSize="13sp"
         app:layout_constraintStart_toStartOf="@+id/text_input_layout2"
         app:layout_constraintTop_toBottomOf="@+id/text_input_layout2"
-        tools:text="点击注册即表示您同意《用户协议》" />
+        android:text="@string/bind_phone_hint" />
 
     <Button
         android:id="@+id/btn_ensure"
@@ -102,5 +102,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_register_protocol" />
+
+    <TextView
+        android:id="@+id/tv_user_protocol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#007AFF"
+        android:textSize="13sp"
+        android:text="@string/tv_user_protocol"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_register_protocol"
+        app:layout_constraintStart_toEndOf="@+id/tv_register_protocol"
+        app:layout_constraintTop_toTopOf="@+id/tv_register_protocol" />
 
 </android.support.constraint.ConstraintLayout>

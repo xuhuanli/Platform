@@ -58,6 +58,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_yd" />
 
     <TextView
+        android:visibility="invisible"
         android:id="@+id/tv_user_protocol"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -65,9 +66,8 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="@string/user_protocol"
-        android:textColor="#ff848e98"
-        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        style="@style/Text_Sp12_Color848e98" />
 </android.support.constraint.ConstraintLayout>

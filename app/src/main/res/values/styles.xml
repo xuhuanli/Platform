@@ -5,7 +5,7 @@
         <item name="colorPrimary">@color/colorWhite</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <!--驿道背景-->
-        <item name="android:windowBackground">@drawable/splash_huawei</item>
+        <item name="android:windowBackground">@drawable/splash_xiaomi</item>
     </style>
 
     <style name="YiDao_WelCome" parent="Theme.AppCompat.Light.NoActionBar">
@@ -177,5 +177,31 @@
         <item name="android:paddingTop">@dimen/size_16dp</item>
         <item name="android:textColor">#ff007aff</item>
         <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="Text_Sp16_Color33_Bold">
+        <item name="android:textSize">@dimen/sp_16</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/FF333333</item>
+    </style>
+
+    <style name="Text_Sp12_Color99">
+        <item name="android:textSize">@dimen/sp_12</item>
+        <item name="android:textColor">@color/FF999999</item>
+    </style>
+
+    <style name="Text_Sp14_Color66">
+        <item name="android:textColor">@color/FF666666</item>
+        <item name="android:textSize">@dimen/sp_14</item>
+    </style>
+
+    <style name="Text_Sp12_Color848e98">
+        <item name="android:textColor">#ff848e98</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Text_Sp14_Color99">
+        <item name="android:textColor">@color/FF999999</item>
+        <item name="android:textSize">14sp</item>
     </style>
 </resources>
