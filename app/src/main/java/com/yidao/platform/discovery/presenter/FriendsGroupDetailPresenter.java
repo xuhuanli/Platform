@@ -4,8 +4,10 @@ import com.allen.library.RxHttpUtils;
 import com.allen.library.interceptor.Transformer;
 import com.allen.library.observer.CommonObserver;
 import com.allen.library.observer.StringObserver;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.yidao.platform.app.ApiService;
 import com.yidao.platform.app.utils.MyLogger;
+import com.yidao.platform.discovery.model.DeletePyqObj;
 import com.yidao.platform.discovery.model.DianZanObj;
 import com.yidao.platform.discovery.view.IViewFriendsGroupDetail;
 import com.yidao.platform.discovery.bean.CommentsItem;
@@ -27,8 +29,26 @@ public class FriendsGroupDetailPresenter {
         this.mView = view;
     }
 
-    public void deleteComment(CommentsItem commentsItem) {
-        mView.update2DeleteComment(commentsItem);
+    /**
+     * 删除朋友圈评论
+     * @param obj
+     */
+    public void deleteComment(DeletePyqObj obj) {
+        RxHttpUtils
+                .createApi(ApiService.class)
+                .deleteFindComm(obj)
+                .compose(Transformer.switchSchedulers())
+                .subscribe(new StringObserver() {
+                    @Override
+                    protected void onError(String errorMsg) {
+
+                    }
+
+                    @Override
+                    protected void onSuccess(String data) {
+                        mView.update2DeleteComment(data);
+                    }
+                });
     }
 
     /**

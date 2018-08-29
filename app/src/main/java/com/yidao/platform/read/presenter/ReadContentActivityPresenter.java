@@ -10,6 +10,7 @@ import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.read.adapter.ReadNewsDetailBean;
 import com.yidao.platform.read.bean.HotCommentsBean;
 import com.yidao.platform.read.bean.LastCommentsBean;
+import com.yidao.platform.read.bean.ShareBean;
 import com.yidao.platform.read.view.IViewReadContentActivity;
 
 import org.json.JSONException;
@@ -21,6 +22,7 @@ import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 import static com.yidao.platform.read.adapter.ReadNewsDetailBean.ITEM_COMMENTS;
 
@@ -307,5 +309,31 @@ public class ReadContentActivityPresenter {
                 .userUnLikeComment(id, userId)
                 .compose(Transformer.switchSchedulers())
                 .subscribe();
+    }
+
+    /**
+     * 获取分享所需(文章)
+     * @param artId
+     */
+    public void getShareContent(String artId) {
+        RxHttpUtils
+                .createApi(ApiService.class)
+                .getShareContent(artId)
+                .compose(Transformer.switchSchedulers())
+                .subscribe(new CommonObserver<ShareBean>() {
+                    @Override
+                    protected void onError(String errorMsg) {
+
+                    }
+
+                    @Override
+                    protected void onSuccess(ShareBean shareBean) {
+                        switch (shareBean.getErrCode()) {
+                            case "1000":
+                                mView.setShareContent(shareBean.getResult());
+                                break;
+                        }
+                    }
+                });
     }
 }

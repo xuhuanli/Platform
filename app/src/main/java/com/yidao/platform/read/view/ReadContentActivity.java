@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetDialog;
@@ -22,6 +24,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
@@ -34,8 +40,10 @@ import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.app.utils.BitmapUtil;
 import com.yidao.platform.app.utils.MyLogger;
+import com.yidao.platform.events.ThumbEvent;
 import com.yidao.platform.read.adapter.MultipleReadDetailAdapter;
 import com.yidao.platform.read.adapter.ReadNewsDetailBean;
+import com.yidao.platform.read.bean.ShareBean;
 import com.yidao.platform.read.bus.WebViewLoadEvent;
 import com.yidao.platform.read.presenter.ReadContentActivityPresenter;
 
@@ -45,6 +53,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -237,25 +246,6 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         });
     }
 
-    private void showShareDialog() {
-        mShareBottomSheetDialog = new BottomSheetDialog(this);
-        mShareBottomSheetDialog.setCanceledOnTouchOutside(true);
-        @SuppressLint("InflateParams") View view = LayoutInflater.from(this).inflate(R.layout.layout_share_fragment_dialog, null);
-        mShareBottomSheetDialog.setContentView(view);
-        mShareBottomSheetDialog.show();
-        view.findViewById(R.id.iv_share_msg).setOnClickListener(v -> {
-            //分享到session界面
-            weChatShare(SendMessageToWX.Req.WXSceneSession);
-        });
-        view.findViewById(R.id.iv_share_group).setOnClickListener(v -> {
-            //分享到朋友圈
-            weChatShare(SendMessageToWX.Req.WXSceneTimeline);
-        });
-        view.findViewById(R.id.tv_cancel).setOnClickListener(v -> {
-            mShareBottomSheetDialog.cancel();
-        });
-    }
-
     //内容回显
     private void fillEditText() {
         // 为 EditText 获取焦点
@@ -288,7 +278,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
                 isLike = !isLike;
                 break;
             case R.id.ib_share: //分享icon
-                showShareDialog();
+                mPresenter.getShareContent(String.valueOf(artId));
                 break;
             case R.id.btn_comment_send: //评论内容send按钮
                 String context = mEtContent.getText().toString().trim();
@@ -319,27 +309,9 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         EventBus.getDefault().unregister(this);
     }
 
-    private void weChatShare(int mTargetScene) {
-        WXWebpageObject webpage = new WXWebpageObject();
-        webpage.webpageUrl = url;
-        WXMediaMessage msg = new WXMediaMessage(webpage);
-        msg.title = "Title";
-        msg.description = "Content";
-        Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.info_head_p);
-        Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, THUMB_SIZE, THUMB_SIZE, true);
-        bmp.recycle();
-        msg.thumbData = BitmapUtil.bmpToByteArray(thumbBmp, true);
-
-        SendMessageToWX.Req req = new SendMessageToWX.Req();
-        req.transaction = buildTransaction("webpage");
-        req.message = msg;
-        req.scene = mTargetScene;
-        mWxapi.sendReq(req);
-    }
-
-    private String buildTransaction(final String type) {
+    /*private String buildTransaction(final String type) {
         return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
-    }
+    }*/
 
     private void regToWX() {
         mWxapi = WXAPIFactory.createWXAPI(this, Constant.WX_LOGIN_APP_ID, Constant.IS_DEBUG);
@@ -385,6 +357,57 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
             mAdapter.notifyDataSetChanged();
         }
         mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
+    }
+
+    private void showShareDialog(String title,String content,Bitmap bitmap) {
+        mShareBottomSheetDialog = new BottomSheetDialog(this);
+        mShareBottomSheetDialog.setCanceledOnTouchOutside(true);
+        @SuppressLint("InflateParams") View view = LayoutInflater.from(this).inflate(R.layout.layout_share_fragment_dialog, null);
+        mShareBottomSheetDialog.setContentView(view);
+        mShareBottomSheetDialog.show();
+        view.findViewById(R.id.iv_share_msg).setOnClickListener(v -> {
+            //分享到session界面
+            weChatShare(SendMessageToWX.Req.WXSceneSession,title,content,bitmap);
+        });
+        view.findViewById(R.id.iv_share_group).setOnClickListener(v -> {
+            //分享到朋友圈
+            weChatShare(SendMessageToWX.Req.WXSceneTimeline,title,content,bitmap);
+        });
+        view.findViewById(R.id.tv_cancel).setOnClickListener(v -> {
+            mShareBottomSheetDialog.cancel();
+        });
+    }
+
+    private void weChatShare(int mTargetScene,String title,String content,Bitmap bitmap) {
+        WXWebpageObject webpage = new WXWebpageObject();
+        webpage.webpageUrl = url;
+        WXMediaMessage msg = new WXMediaMessage(webpage);
+        msg.title = title;
+        msg.description = content;
+        msg.thumbData = BitmapUtil.bitmapBytes(bitmap, 32);
+
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = String.valueOf(artId);
+        req.message = msg;
+        req.scene = mTargetScene;
+        mWxapi.sendReq(req);
+    }
+
+    @Override
+    public void setShareContent(ShareBean.ResultBean result) {
+        new Thread(() -> {
+            try {
+                Bitmap bitmap = Glide.with(ReadContentActivity.this).asBitmap().load(result.getHomeImg()).submit(THUMB_SIZE, THUMB_SIZE).get();
+                EventBus.getDefault().post(new ThumbEvent(bitmap,result.getTitle(),result.getSubtitle()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void getThumbEvent(ThumbEvent event){
+        showShareDialog(event.getTitle(),event.getSubTitle(),event.getBitmap());
     }
 
     @Override

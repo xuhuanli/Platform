@@ -60,8 +60,9 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler, IVi
                     case RETURN_MSG_TYPE_SHARE:  //type = 2 表示分享
                         //分享成功后结束掉回调activity
                         //((SendAuth.Resp) baseResp)
+                        String artId = baseResp.transaction;
                         String userId = IPreference.prefHolder.getPreference(this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
-                        mPresenter.updateShareData("",userId);
+                        mPresenter.updateShareData(artId,userId);
                         finish();
                         break;
                 }

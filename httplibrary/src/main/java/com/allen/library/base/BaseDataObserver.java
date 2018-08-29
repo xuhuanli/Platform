@@ -23,7 +23,7 @@ public abstract class BaseDataObserver<T> implements Observer<BaseData<T>>, IDat
      * @return
      */
     protected boolean isHideToast() {
-        return false;
+        return true;
     }
 
     @Override

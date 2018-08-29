@@ -22,7 +22,7 @@ public abstract class BaseStringObserver implements Observer<String>, IStringSub
      * @return
      */
     protected boolean isHideToast() {
-        return false;
+        return true;
     }
 
     @Override

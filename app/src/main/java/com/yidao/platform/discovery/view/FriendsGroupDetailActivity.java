@@ -30,6 +30,7 @@ import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.discovery.bean.CommentsItem;
 import com.yidao.platform.discovery.bean.FriendsShowBean;
+import com.yidao.platform.discovery.model.DeletePyqObj;
 import com.yidao.platform.discovery.model.DianZanObj;
 import com.yidao.platform.discovery.model.PyqCommentsObj;
 import com.yidao.platform.discovery.model.PyqFindIdObj;
@@ -44,6 +45,7 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
+import io.reactivex.functions.Consumer;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class FriendsGroupDetailActivity extends BaseActivity implements IViewFriendsGroupDetail, EasyPermissions.PermissionCallbacks, BGANinePhotoLayout.Delegate {
@@ -138,7 +140,7 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
         fillEditText();
         mCommentBottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         mCommentBottomSheetDialog.show();
-        mBtnSend.setOnClickListener(v -> {
+        addDisposable(RxView.clicks(mBtnSend).throttleFirst(Constant.THROTTLE_TIME,TimeUnit.MILLISECONDS).subscribe(o -> {
             String content = mEtContent.getText().toString();
             if (!TextUtils.isEmpty(content)) {
                 PyqCommentsObj obj = new PyqCommentsObj();
@@ -148,7 +150,7 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
                 obj.setOwnerId(ownerId);
                 mPresenter.sendFindComm(obj);
             }
-        });
+        }));
         //when you invoke cancel() , callback to here .So  please use dialog.cancel() but not dialog.dismiss(), unless you setOnDismissListener
         mCommentBottomSheetDialog.setOnCancelListener(dialog -> {
             //when dialog cancel state write content into textview.
@@ -234,9 +236,8 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
     }
 
     @Override
-    public void update2DeleteComment(CommentsItem commentsItem) {
-        mDataList.remove(commentsItem);
-        commentList.notifyDataSetChanged();
+    public void update2DeleteComment(String data) {
+        mPresenter.qryFindComms(obj);
     }
 
     @Override
@@ -244,16 +245,23 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
         mDataList = dataList;
         commentList.setDatas(dataList);
         if (dataList.size() > 0) {
+            commentList.setVisibility(View.VISIBLE);
             commentList.setOnItemClickListener(position -> {
                 CommentsItem commentsItem = dataList.get(position);
                 if (commentsItem.getDeployId() == 0) {  //单人的评论
                     if (String.valueOf(commentsItem.getOwnerId()).equals(userId)) {
-                        showAlertDialog(R.string.ensure_delete_reply, (dialog, which) -> mPresenter.deleteComment(commentsItem));
+                        showAlertDialog(R.string.ensure_delete_reply, (dialog, which) -> {
+                            DeletePyqObj obj = new DeletePyqObj(String.valueOf(commentsItem.getCommentId()), userId);
+                            mPresenter.deleteComment(obj);
+                        });
                     } else {
                         showCommentDialog(commentsItem.getOwnerId(), userId);
                     }
                 } else if (String.valueOf(commentsItem.getDeployId()).equals(userId)) {  //A回复B情况下 A是deployId
-                    showAlertDialog(R.string.ensure_delete_reply, (dialog, which) -> mPresenter.deleteComment(commentsItem));
+                    showAlertDialog(R.string.ensure_delete_reply, (dialog, which) -> {
+                        DeletePyqObj obj = new DeletePyqObj(String.valueOf(commentsItem.getCommentId()), userId);
+                        mPresenter.deleteComment(obj);
+                    });
                 } else {
                     showCommentDialog(commentsItem.getDeployId(), userId);
                 }
@@ -261,6 +269,7 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
         } else {
             commentList.setVisibility(View.GONE);
         }
+        commentList.notifyDataSetChanged();
     }
 
     @Override

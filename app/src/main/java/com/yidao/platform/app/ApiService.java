@@ -4,6 +4,7 @@ import com.yidao.platform.discovery.bean.BottleDtlBean;
 import com.yidao.platform.discovery.bean.FindContentBean;
 import com.yidao.platform.discovery.bean.FriendsListBean;
 import com.yidao.platform.discovery.bean.PyqCommentsBean;
+import com.yidao.platform.discovery.model.DeletePyqObj;
 import com.yidao.platform.discovery.model.DianZanObj;
 import com.yidao.platform.discovery.model.FindDiscoveryObj;
 import com.yidao.platform.discovery.model.PyqCommentsObj;
@@ -29,6 +30,7 @@ import com.yidao.platform.read.bean.CommonArticleBean;
 import com.yidao.platform.read.bean.HotCommentsBean;
 import com.yidao.platform.read.bean.LastCommentsBean;
 import com.yidao.platform.read.bean.SearchBean;
+import com.yidao.platform.read.bean.ShareBean;
 import com.yidao.platform.service.model.BpObj;
 
 import java.util.Map;
@@ -184,7 +186,14 @@ public interface ApiService {
     Observable<PyqCommentsBean> sendFindComm(@Body PyqCommentsObj pyqCommentsObj);
 
     /**
-     * 发送朋友圈评论
+     * 删除朋友圈评论
+     */
+    @Headers({"Content-Type: application/json;charset=UTF-8"})
+    @POST("edit/find/deleteFindComm")
+    Observable<String> deleteFindComm(@Body DeletePyqObj deletePyqObj);
+
+    /**
+     * 查询朋友圈详情
      */
     @Headers({"Content-Type: application/json;charset=UTF-8"})
     @POST("find/qryFindContent")
@@ -342,6 +351,7 @@ public interface ApiService {
 
     /**
      * 评论取消点赞
+     *
      * @param commentId
      * @param userId
      * @return
@@ -351,11 +361,12 @@ public interface ApiService {
 
     /**
      * 获取分享文章的内容
-     * @param commentId
+     *
+     * @param artId
      * @return
      */
     @GET("home/article/selectArt")
-    Observable<String> getShareContent(@Query("id") String commentId);
+    Observable<ShareBean> getShareContent(@Query("id") String artId);
     //-------------漂流瓶----------------
 
     /**
