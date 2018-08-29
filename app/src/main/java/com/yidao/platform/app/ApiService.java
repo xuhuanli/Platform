@@ -151,6 +151,12 @@ public interface ApiService {
     Observable<FriendsListBean> getFriendsList(@Body FindDiscoveryObj findDiscoveryObj);
 
     /**
+     * 获取朋友圈列表
+     */
+    @GET("/app/find/qryFindLatest")
+    Observable<FriendsListBean> getFriendsList(String size);
+
+    /**
      * 朋友圈点赞
      */
     @Headers({"Content-Type: application/json;charset=UTF-8"})
