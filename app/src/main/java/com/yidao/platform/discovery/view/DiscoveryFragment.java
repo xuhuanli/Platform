@@ -183,7 +183,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     }
 
     /**
-     * 需要刷新列表的事件
+     * 需要刷新列表的时间
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)

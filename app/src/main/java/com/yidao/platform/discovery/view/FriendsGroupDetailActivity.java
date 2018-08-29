@@ -35,9 +35,6 @@ import com.yidao.platform.discovery.model.PyqCommentsObj;
 import com.yidao.platform.discovery.model.PyqFindIdObj;
 import com.yidao.platform.discovery.model.QryFindContentObj;
 import com.yidao.platform.discovery.presenter.FriendsGroupDetailPresenter;
-import com.yidao.platform.events.RefreshDiscoveryEvent;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -47,7 +44,6 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
-import io.reactivex.functions.Consumer;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class FriendsGroupDetailActivity extends BaseActivity implements IViewFriendsGroupDetail, EasyPermissions.PermissionCallbacks, BGANinePhotoLayout.Delegate {
@@ -111,7 +107,6 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
     }
 
     private void initData() {
-        // TODO: 2018/8/28 0028 多个网络访问存在问题
         QryFindContentObj findContentObj = new QryFindContentObj(findId, userId);
         mPresenter.qryFindContent(findContentObj);
         obj = new PyqFindIdObj(findId);
@@ -169,12 +164,6 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
         mEtContent.requestFocus();
         mEtContent.setText(mTvComment.getText());
         mEtContent.setSelection(mTvComment.getText().length());
-    }
-
-    @Override
-    protected void onStop() {
-        EventBus.getDefault().post(new RefreshDiscoveryEvent());
-        super.onStop();
     }
 
     @Override
@@ -289,7 +278,7 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
         tvDiscoveryTime.setText(showBean.getTimeStamp());
         tvDiscoveryVote.setText(String.valueOf(showBean.getLikeAmount()));
         tvDiscoveryVote.setCompoundDrawablesWithIntrinsicBounds(showBean.isLike() ? R.drawable.dianzan_small_done : R.drawable.dianzan_small, 0, 0, 0);
-        addDisposable(RxView.clicks(tvDiscoveryVote).throttleFirst(Constant.THROTTLE_TIME,TimeUnit.MILLISECONDS).subscribe(o -> {
+        addDisposable(RxView.clicks(tvDiscoveryVote).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
             if (dianZanObj == null) {
                 dianZanObj = new DianZanObj();
                 dianZanObj.setUserId(userId);
@@ -297,14 +286,14 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
             }
             boolean isLike = showBean.isLike();
             if (isLike) {  //已点赞，点击后变成不点赞 传服务器
-                tvDiscoveryVote.setCompoundDrawablesWithIntrinsicBounds(R.drawable.dianzan_small,0,0,0);
-                tvDiscoveryVote.setText(String.valueOf(showBean.getLikeAmount()-1));
-                showBean.setLikeAmount(showBean.getLikeAmount()-1);
+                tvDiscoveryVote.setCompoundDrawablesWithIntrinsicBounds(R.drawable.dianzan_small, 0, 0, 0);
+                tvDiscoveryVote.setText(String.valueOf(showBean.getLikeAmount() - 1));
+                showBean.setLikeAmount(showBean.getLikeAmount() - 1);
                 mPresenter.cancelFindLike(dianZanObj);
             } else {
-                tvDiscoveryVote.setCompoundDrawablesWithIntrinsicBounds(R.drawable.dianzan_small_done,0,0,0);
-                tvDiscoveryVote.setText(String.valueOf(showBean.getLikeAmount()+1));
-                showBean.setLikeAmount(showBean.getLikeAmount()+1);
+                tvDiscoveryVote.setCompoundDrawablesWithIntrinsicBounds(R.drawable.dianzan_small_done, 0, 0, 0);
+                tvDiscoveryVote.setText(String.valueOf(showBean.getLikeAmount() + 1));
+                showBean.setLikeAmount(showBean.getLikeAmount() + 1);
                 mPresenter.sendFindLike(dianZanObj);
             }
             showBean.setLike(!isLike);

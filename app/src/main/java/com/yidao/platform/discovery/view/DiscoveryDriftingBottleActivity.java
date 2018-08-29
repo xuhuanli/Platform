@@ -419,6 +419,19 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity implements IVi
         }));
     }
 
+    /**
+     * 扔瓶子上限
+     * @param info
+     */
+    @Override
+    public void throwLimited(String info) {
+        ToastUtils.showToast(info);
+    }
+
+    /**
+     * 捡瓶子上限
+     * @param info
+     */
     @Override
     public void countLimit(String info) {
         if (mSpaceShipWindow != null) {

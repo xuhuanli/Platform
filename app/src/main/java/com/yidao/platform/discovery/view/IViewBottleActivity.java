@@ -18,4 +18,6 @@ public interface IViewBottleActivity {
     void errorStatus(String info);
 
     void netError();
+
+    void throwLimited(String info);
 }

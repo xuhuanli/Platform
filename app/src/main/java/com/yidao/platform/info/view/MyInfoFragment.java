@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.allen.library.utils.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.jakewharton.rxbinding2.view.RxView;
@@ -28,7 +27,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
-import io.reactivex.functions.Consumer;
 
 public class MyInfoFragment extends BaseFragment implements IViewMineInfo {
 
@@ -61,7 +59,6 @@ public class MyInfoFragment extends BaseFragment implements IViewMineInfo {
     TextView tvMsgCount;
     private MyInfoFragmentPresenter mPresenter;
     private String userId;
-    private UserInfoBean.ResultBean result;
 
     @Override
     protected void initView() {
@@ -70,11 +67,8 @@ public class MyInfoFragment extends BaseFragment implements IViewMineInfo {
         userId = IPreference.prefHolder.getPreference(getActivity()).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
         //click 个人属性
         addDisposable(RxView.clicks(cl_container).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
-            if (result != null) {
-                Intent intent = new Intent(getActivity(), PersonInfomationActivity.class);
-                intent.putExtra(Constant.USER_INFO,result);
-                startActivity(intent);
-            }
+            Intent intent = new Intent(getActivity(), PersonInfomationActivity.class);
+            startActivity(intent);
         }));
         //click 设置
         addDisposable(RxView.clicks(tvSettings).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
@@ -110,7 +104,6 @@ public class MyInfoFragment extends BaseFragment implements IViewMineInfo {
 
     @Override
     protected void initData() {
-        //这边不去拉信息，重写setUserVisibleHint
         mPresenter.qryUserById(userId);
     }
 
@@ -124,7 +117,6 @@ public class MyInfoFragment extends BaseFragment implements IViewMineInfo {
     @Override
     public void successInfo(UserInfoBean.ResultBean result) {
         mPresenter.getMineInfo(userId);
-        this.result = result;
         Glide.with(this)
                 .load(result.getHeadImgUrl())
                 .apply(RequestOptions.circleCropTransform().placeholder(R.drawable.info_head_p))
@@ -137,7 +129,6 @@ public class MyInfoFragment extends BaseFragment implements IViewMineInfo {
 
     @Override
     public void showError(String info) {
-        ToastUtils.showToast(info);
     }
 
     @Override

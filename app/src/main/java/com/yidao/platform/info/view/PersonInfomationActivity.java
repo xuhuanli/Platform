@@ -91,17 +91,16 @@ public class PersonInfomationActivity extends BaseActivity implements View.OnCli
         userId = IPreference.prefHolder.getPreference(this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
         EventBus.getDefault().register(this);
         initView();
+        initData();
+    }
+
+    private void initData() {
+        mPresenter.qryUserById(userId);
     }
 
     @SuppressLint("CheckResult")
     private void initView() {
-        UserInfoBean.ResultBean resultBean = getIntent().getParcelableExtra(Constant.USER_INFO);
         RxToolbar.navigationClicks(toolbarInfo).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish());
-        Glide.with(this).load(resultBean.getHeadImgUrl()).into(headPortrait);
-        tvUserId.setValue(resultBean.getId());
-        tvNikeName.setValue(resultBean.getNickname());
-        tvLocation.setValue(resultBean.getProvinceName() + " " + resultBean.getCityName());
-        tvStatus.setValue(resultBean.getIntroduction());
         RxView.clicks(rlHead).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> setDialog());
         RxView.clicks(tvNikeName).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
             Intent intent = new Intent(PersonInfomationActivity.this, ChangeInfoActivity.class);
@@ -115,10 +114,10 @@ public class PersonInfomationActivity extends BaseActivity implements View.OnCli
             intent.putExtra(Constant.STRING_VALUE, tvStatus.getValue());
             startActivityForResult(intent, REQUEST_CHANGE_INFO);
         });
-        mPresenter.getOssAccess();
     }
 
     private void setDialog() {
+        mPresenter.getOssAccess();
         mHeadPhotoDialog = new BottomSheetDialog(this);
         mHeadPhotoDialog.setCanceledOnTouchOutside(true);
         @SuppressLint("InflateParams") View view = LayoutInflater.from(this).inflate(R.layout.layout_head_photo_dialog, null);
@@ -313,12 +312,26 @@ public class PersonInfomationActivity extends BaseActivity implements View.OnCli
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 
     @Override
     public void saveOss(OssBean.ResultBean result) {
         mOss = result;
+    }
+
+    @Override
+    public void successInfo(UserInfoBean.ResultBean resultBean) {
+        Glide.with(this).load(resultBean.getHeadImgUrl()).into(headPortrait);
+        tvUserId.setValue(resultBean.getId());
+        tvNikeName.setValue(resultBean.getNickname());
+        tvLocation.setValue(resultBean.getProvinceName() + " " + resultBean.getCityName());
+        tvStatus.setValue(resultBean.getIntroduction());
+    }
+
+    @Override
+    public void showError(String info) {
+
     }
 }

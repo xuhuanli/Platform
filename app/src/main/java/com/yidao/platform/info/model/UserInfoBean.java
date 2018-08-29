@@ -49,7 +49,7 @@ public class UserInfoBean {
         this.result = result;
     }
 
-    public static class ResultBean implements Parcelable {
+    public static class ResultBean {
         /**
          * id : 69624474959872
          * name :
@@ -253,72 +253,5 @@ public class UserInfoBean {
         public void setIntroduction(String introduction) {
             this.introduction = introduction;
         }
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            dest.writeString(this.id);
-            dest.writeString(this.name);
-            dest.writeString(this.country);
-            dest.writeString(this.provinceName);
-            dest.writeString(this.cityName);
-            dest.writeString(this.areaName);
-            dest.writeString(this.address);
-            dest.writeString(this.phoneNum);
-            dest.writeString(this.nickname);
-            dest.writeString(this.sex);
-            dest.writeString(this.headImgUrl);
-            dest.writeString(this.gmtCreate);
-            dest.writeString(this.gmtModified);
-            dest.writeString(this.lastLoginTime);
-            dest.writeInt(this.status);
-            dest.writeString(this.isDel);
-            dest.writeString(this.firstDeviceType);
-            dest.writeString(this.firstLoginTime);
-            dest.writeString(this.commentStatus);
-            dest.writeString(this.introduction);
-        }
-
-        public ResultBean() {
-        }
-
-        protected ResultBean(Parcel in) {
-            this.id = in.readString();
-            this.name = in.readString();
-            this.country = in.readString();
-            this.provinceName = in.readString();
-            this.cityName = in.readString();
-            this.areaName = in.readString();
-            this.address = in.readString();
-            this.phoneNum = in.readString();
-            this.nickname = in.readString();
-            this.sex = in.readString();
-            this.headImgUrl = in.readString();
-            this.gmtCreate = in.readString();
-            this.gmtModified = in.readString();
-            this.lastLoginTime = in.readString();
-            this.status = in.readInt();
-            this.isDel = in.readString();
-            this.firstDeviceType = in.readString();
-            this.firstLoginTime = in.readString();
-            this.commentStatus = in.readString();
-            this.introduction = in.readString();
-        }
-
-        public static final Parcelable.Creator<ResultBean> CREATOR = new Parcelable.Creator<ResultBean>() {
-            @Override
-            public ResultBean createFromParcel(Parcel source) {
-                return new ResultBean(source);
-            }
-
-            @Override
-            public ResultBean[] newArray(int size) {
-                return new ResultBean[size];
-            }
-        };
     }
 }

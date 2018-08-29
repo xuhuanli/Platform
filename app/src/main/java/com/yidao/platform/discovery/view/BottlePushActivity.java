@@ -38,7 +38,6 @@ public class BottlePushActivity extends BaseActivity {
     TextView mContentLength;
     @BindView(R.id.tv_bottle_label)
     TextView mTvLabel;
-    private OptionsPickerView<String> pickerView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,7 +49,6 @@ public class BottlePushActivity extends BaseActivity {
         addDisposable(RxTextView.textChanges(mBottleContent).subscribe(charSequence -> mContentLength.setText(String.format("%d%s", charSequence.length(), "/150"))));
         addDisposable(RxView.clicks(tvBottleCancel).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish()));
         addDisposable(RxView.clicks(tvBottlePush).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
-            // TODO: 2018/7/14 0014 if push commentSuccess
             String content = mBottleContent.getText().toString().trim();
             String label = mTvLabel.getText().toString().trim();
             if (TextUtils.isEmpty(label) || "添加标签".equals(label)) {
@@ -68,7 +66,6 @@ public class BottlePushActivity extends BaseActivity {
             finish();
         }));
         addDisposable(RxView.clicks(mTvLabel).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
-            // TODO: 2018/8/8 0008 展示标签选择器
             InputMethodManager mImm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
             mImm.hideSoftInputFromWindow(mTvLabel.getWindowToken(), 0);
             List<String> labelsList = Arrays.asList("商业计划书", "产品原型", "技术开发", "投融资需求", "资源对接", "路演/峰会", "项目投资", "项目评估");
@@ -80,7 +77,7 @@ public class BottlePushActivity extends BaseActivity {
     }
 
     private void setWheelView(List<String> labelsList, OnOptionsSelectListener listener) {
-        pickerView = new OptionsPickerBuilder(this, listener).build();
+        OptionsPickerView<String> pickerView = new OptionsPickerBuilder(this, listener).build();
         pickerView.setPicker(labelsList);
         pickerView.show();
     }

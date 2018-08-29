@@ -7,6 +7,7 @@ import com.allen.library.observer.StringObserver;
 import com.yidao.platform.app.ApiService;
 import com.yidao.platform.app.OssBean;
 import com.yidao.platform.app.utils.MyLogger;
+import com.yidao.platform.info.model.UserInfoBean;
 import com.yidao.platform.info.view.IViewPersonInfomationActivity;
 
 import org.json.JSONException;
@@ -63,6 +64,35 @@ public class PersonInfomationActivityPresenter {
                     protected void onSuccess(OssBean ossBean) {
                         if (ossBean.isStatus()) {
                             mView.saveOss(ossBean.getResult());
+                        }
+                    }
+                });
+    }
+
+    /**
+     * 查询用户
+     * @param userId
+     */
+    public void qryUserById(String userId) {
+        RxHttpUtils
+                .createApi(ApiService.class)
+                .qryUserById(userId)
+                .compose(Transformer.switchSchedulers())
+                .subscribe(new CommonObserver<UserInfoBean>() {
+                    @Override
+                    protected void onError(String errorMsg) {
+
+                    }
+
+                    @Override
+                    protected void onSuccess(UserInfoBean userInfoBean) {
+                        switch (userInfoBean.getErrCode()) {
+                            case "200":
+                                mView.successInfo(userInfoBean.getResult());
+                                break;
+                            default:
+                                mView.showError(userInfoBean.getInfo());
+                                break;
                         }
                     }
                 });

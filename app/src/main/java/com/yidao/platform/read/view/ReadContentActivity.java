@@ -170,7 +170,6 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_WEBVIEW));
         mAdapter = new MultipleReadDetailAdapter(list);
         mAdapter.setWebViewUrl(url);
-        mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
         mAdapter.setOnItemLongClickListener((adapter, view, position) -> {
             ReadNewsDetailBean item = (ReadNewsDetailBean) adapter.getItem(position);
             int itemViewType = adapter.getItemViewType(position);
@@ -383,6 +382,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
             list.addAll(dataList);
             mAdapter.notifyDataSetChanged();
         }
+        mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
     }
 
     @Override

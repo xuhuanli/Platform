@@ -234,6 +234,8 @@ public class ReadContentActivityPresenter {
                             if (list != null) {
                                 if (list.size() < lastCommentsBean.getResult().getPageSize()) {  //所得数目< pageSize =>到底了
                                     mView.loadMoreEnd(false);
+                                }else {
+                                    mView.loadMoreComplete();
                                 }
                                 ArrayList<ReadNewsDetailBean> dataList = new ArrayList<>();
                                 for (LastCommentsBean.ResultBean.ListBean listBean : list) {

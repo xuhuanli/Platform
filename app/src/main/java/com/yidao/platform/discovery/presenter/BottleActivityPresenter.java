@@ -48,7 +48,7 @@ public class BottleActivityPresenter {
                                     mView.throwSuccess();
                                     break;
                                 case "1101":
-                                    mView.countLimit((String)jsonObject.get("info"));
+                                    mView.throwLimited((String)jsonObject.get("info"));
                                     break;
                             }
                         } catch (JSONException e) {
