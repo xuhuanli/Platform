@@ -154,13 +154,9 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     }
 
     private void initToolbar() {
-        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
-        addDisposable(RxView.clicks(mIvIcon).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) throws Exception {
-                Intent intent = new Intent(getActivity(), DiscoveryEditorMessageActivity.class);
-                startActivity(intent);
-            }
+        addDisposable(RxView.clicks(mIvIcon).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
+            Intent intent = new Intent(getActivity(), DiscoveryEditorMessageActivity.class);
+            startActivity(intent);
         }));
     }
 

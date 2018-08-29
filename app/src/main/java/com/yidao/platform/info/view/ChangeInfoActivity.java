@@ -55,14 +55,14 @@ public class ChangeInfoActivity extends BaseActivity {
             public void accept(Object o) throws Exception {
                 String newValue = etValue.getText().toString().trim();
                 if (TextUtils.equals(title, "昵称")) {
-                    if (newValue.length()>12) {
-                        ToastUtils.showToast("昵称不能超过12个字");
+                    if (newValue.length()>15) {
+                        ToastUtils.showToast("昵称不能超过15个字");
                         return;
                     }
                 }
                 if (TextUtils.equals(title, "简介")) {
-                    if (newValue.length()>24) {
-                        ToastUtils.showToast("简介不能超过24个字");
+                    if (newValue.length()>30) {
+                        ToastUtils.showToast("简介不能超过30个字");
                         return;
                     }
                 }

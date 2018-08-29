@@ -319,7 +319,7 @@ public interface ApiService {
      * @return
      */
     @GET("home/article/listArticleCommenty")
-    Observable<HotCommentsBean> getHotComments(@Query("id") long artId, @Query("curUserId") String curUserId);
+    Observable<HotCommentsBean> getHotComments(@Query("id") long artId, @Query("cruId") String cruId);
 
     /**
      * 获取文章最新评论

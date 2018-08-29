@@ -374,7 +374,9 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
-    public void showHotComment(String commentAmount, String likeAmount, ArrayList<ReadNewsDetailBean> dataList) {
+    public void showHotComment(boolean isCollectArt,String commentAmount, String likeAmount, ArrayList<ReadNewsDetailBean> dataList) {
+        isCollection = isCollectArt;
+        ib_vote.setSelected(isCollectArt);
         ib_comment.showTextBadge(commentAmount);
         ib_favorite.showTextBadge(likeAmount);
         if (dataList.size() > 0) {

@@ -16,12 +16,12 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"
             android:text="@string/bp_apply"
             android:textColor="#ff333333"
-            android:textSize="17sp" />
+            android:textStyle="bold"
+            android:textSize="18sp" />
     </android.support.v7.widget.Toolbar>
 
     <android.support.v4.widget.NestedScrollView

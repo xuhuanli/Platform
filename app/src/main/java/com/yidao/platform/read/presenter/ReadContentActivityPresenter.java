@@ -189,9 +189,11 @@ public class ReadContentActivityPresenter {
 
                     @Override
                     protected void onSuccess(HotCommentsBean hotCommentsBean) {
+                        MyLogger.e("最热评论");
                         if (hotCommentsBean.isStatus()) {
                             String commentAmount = hotCommentsBean.getResult().getCommentAmount();
                             String likeAmount = hotCommentsBean.getResult().getLikeAmount();
+                            boolean isCollectArt = hotCommentsBean.getResult().isCollectArt();
                             List<HotCommentsBean.ResultBean.CmsArticleCommentDtosBean> commentDtos = hotCommentsBean.getResult().getCmsArticleCommentDtos();
                             ArrayList<ReadNewsDetailBean> dataList = new ArrayList<>();
                             for (HotCommentsBean.ResultBean.CmsArticleCommentDtosBean commentDto : commentDtos) {
@@ -206,7 +208,7 @@ public class ReadContentActivityPresenter {
                                 bean.setLikedCommed(commentDto.isLikedCommed());
                                 dataList.add(bean);
                             }
-                            mView.showHotComment(commentAmount, likeAmount, dataList);
+                            mView.showHotComment(isCollectArt,commentAmount, likeAmount, dataList);
                         }
                     }
                 });

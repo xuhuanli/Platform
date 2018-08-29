@@ -21,5 +21,5 @@ public interface IViewReadContentActivity {
 
     void loadMoreComplete();
 
-    void showHotComment(String commentAmount, String likeAmount, ArrayList<ReadNewsDetailBean> dataList);
+    void showHotComment(boolean isCollectArt,String commentAmount, String likeAmount, ArrayList<ReadNewsDetailBean> dataList);
 }

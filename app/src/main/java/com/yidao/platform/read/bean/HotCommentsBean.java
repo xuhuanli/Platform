@@ -43,6 +43,7 @@ public class HotCommentsBean {
         private String readAmount;
         private String likeAmount;
         private String commentAmount;
+        private boolean isCollectArt;
         private List<CmsArticleCommentDtosBean> cmsArticleCommentDtos;
 
         public String getArticleContent() {
@@ -51,6 +52,14 @@ public class HotCommentsBean {
 
         public void setArticleContent(String articleContent) {
             this.articleContent = articleContent;
+        }
+
+        public boolean isCollectArt() {
+            return isCollectArt;
+        }
+
+        public void setCollectArt(boolean collectArt) {
+            isCollectArt = collectArt;
         }
 
         public String getShareAmount() {

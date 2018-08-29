@@ -72,7 +72,6 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
     }
 
     private void initToolbar() {
-        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
         addDisposable(RxView.clicks(mSelectItem).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> showChannelUI()));
         addDisposable(RxView.clicks(mIvSearch).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
             Intent intent = new Intent(getActivity(), SearchArticleActivity.class);
