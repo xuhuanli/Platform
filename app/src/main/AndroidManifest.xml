@@ -54,9 +54,9 @@
         <activity android:name=".login.view.LoginInterestingActivity" />
         <activity android:name=".webview.PhotoBrowserActivity" />
         <activity
-            android:name=".discovery.DiscoveryDriftingBottleActivity"
+            android:name=".discovery.view.DiscoveryDriftingBottleActivity"
             android:theme="@style/DriftBottleTheme" />
-        <activity android:name=".discovery.DiscoveryEditorMessageActivity" />
+        <activity android:name=".discovery.view.DiscoveryEditorMessageActivity" />
         <activity android:name=".info.view.InfoMyCollectionActivity" />
 
         <!--微信登录回调界面-->
@@ -66,10 +66,10 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBarTransparent" />
         <activity android:name=".read.view.ItemChannelActivity" />
-        <activity android:name=".discovery.BottlePushActivity" />
-        <activity android:name=".discovery.FriendsGroupDetailActivity" />
-        <activity android:name=".discovery.DiscoveryMyBottleActivity" />
-        <activity android:name=".discovery.DiscoveryBottleDetailActivity" />
+        <activity android:name=".discovery.view.BottlePushActivity" />
+        <activity android:name=".discovery.view.FriendsGroupDetailActivity" />
+        <activity android:name=".discovery.view.DiscoveryMyBottleActivity" />
+        <activity android:name=".discovery.view.DiscoveryBottleDetailActivity" />
         <activity android:name=".info.view.InfoMyPublishActivity" />
         <activity android:name=".info.view.InfoMyMessageActivity"
             android:launchMode="singleTop"/>

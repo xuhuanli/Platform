@@ -18,7 +18,7 @@ import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
-import com.yidao.platform.discovery.FriendsGroupDetailActivity;
+import com.yidao.platform.discovery.view.FriendsGroupDetailActivity;
 import com.yidao.platform.discovery.adapter.MomentAdapter;
 import com.yidao.platform.discovery.bean.FriendsShowBean;
 import com.yidao.platform.discovery.model.FindDiscoveryObj;

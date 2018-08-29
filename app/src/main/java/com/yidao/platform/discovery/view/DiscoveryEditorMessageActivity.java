@@ -1,4 +1,4 @@
-package com.yidao.platform.discovery;
+package com.yidao.platform.discovery.view;
 
 import android.Manifest;
 import android.content.Intent;
@@ -9,6 +9,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.SparseArray;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -20,9 +21,12 @@ import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.OssBean;
 import com.yidao.platform.app.base.BaseActivity;
+import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.discovery.presenter.EditorMessagePresenter;
-import com.yidao.platform.discovery.view.DiscoveryEditorMessageInterface;
+import com.yidao.platform.events.RefreshDiscoveryEvent;
 import com.yidao.platform.login.view.WaitDialog;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -33,7 +37,6 @@ import butterknife.BindView;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerPreviewActivity;
 import cn.bingoogolapple.photopicker.widget.BGASortableNinePhotoLayout;
-import io.reactivex.functions.Consumer;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 import top.zibin.luban.Luban;
@@ -62,14 +65,11 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
      */
     private static final int PERMISSION_PHOTO_PICKER = 1;
     private EditorMessagePresenter mPresenter;
-    /**
-     * 需要上传的图片集合
-     */
-    private ArrayList<String> mUpLoadPicList;
     private WaitDialog mProgressDialog;
     private ArrayList<String> picPathList = new ArrayList<>();
     private int uploadPicCounter = 0;  //上传到Oss成功的图片计数器
     private String userId;
+    private SparseArray<String> picMap = new SparseArray<>();
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
@@ -77,19 +77,26 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
                 case 0:
                     //每上传成功1张，计数+1
                     uploadPicCounter++;
-                    picPathList.add((String) msg.obj);
+                    Bundle data = msg.getData();
+                    int index = data.getInt("index");
+                    String pathOnOss = data.getString("pathOnOss");
+                    picMap.put(index, pathOnOss);
+                    //当上传成功数 == 选中图片数时，告知服务器上传成功
+                    if (picMap.size() == uploadPicCounter) {
+                        String content = mEtEditor.getText().toString().trim();
+                        MyLogger.e("picmap size = " + picMap.size() + ", picPathList size = " + picPathList.size());
+                        for (int i = 0; i < picMap.size(); i++) {
+                            picPathList.add(picMap.get(i));
+                        }
+                        mPresenter.sendMsg2Server(userId, content, picPathList);
+                        //重置数量
+                        uploadPicCounter = 0;
+                        mProgressDialog.dismiss();
+                    }
                     break;
                 case 1:
                     uploadPicFailed();
                     break;
-            }
-            //当上传成功数 == 选中图片数时，告知服务器上传成功
-            if (mUpLoadPicList.size() == uploadPicCounter) {
-                String content = mEtEditor.getText().toString().trim();
-                mPresenter.sendMsg2Server(userId, content, picPathList);
-                //重置数量
-                uploadPicCounter = 0;
-                mProgressDialog.dismiss();
             }
             return false;
         }
@@ -122,16 +129,18 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
     }
 
     private void CompressPicAndPushToOss() {
-        mPresenter.getOssInstance(DiscoveryEditorMessageActivity.this,mOss.getAccessKeyId(),mOss.getAccessKeySecret(),mOss.getSecurityToken());
-        mUpLoadPicList = mPhotosSnpl.getData();
+        mPresenter.getOssInstance(DiscoveryEditorMessageActivity.this, mOss.getAccessKeyId(), mOss.getAccessKeySecret(), mOss.getSecurityToken());
+        ArrayList<String> mUpLoadPicList = mPhotosSnpl.getData();
         if (mUpLoadPicList.size() > 0) {
-            ArrayList<String> picPathList = new ArrayList<>();
-            for (String datum : mUpLoadPicList) {
-                if (!needCompress(Constant.NEED_COMPRESS_SIZE, datum)) { //<300K时，直传
-                    mPresenter.uploadFile(datum, mHandler);
-                } else { //>300K时，进行压缩处理
+            for (int i = 0; i < mUpLoadPicList.size(); i++) {
+                String thisPath = mUpLoadPicList.get(i);
+                picMap.put(i, thisPath);
+                if (!needCompress(Constant.NEED_COMPRESS_SIZE, thisPath)) { //<300K时，直传
+                    mPresenter.uploadFile(i, thisPath, mHandler);
+                } else {
+                    int finalI = i;
                     Luban.with(DiscoveryEditorMessageActivity.this)
-                            .load(datum)
+                            .load(thisPath)
                             .setTargetDir(getExternalCacheDir().getAbsolutePath())
                             .setCompressListener(new OnCompressListener() {
                                 @Override
@@ -140,13 +149,13 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
 
                                 @Override
                                 public void onSuccess(File file) {
-                                    mPresenter.uploadFile(file.getAbsolutePath(), mHandler);
+                                    mPresenter.uploadFile(finalI, file.getAbsolutePath(), mHandler);
                                 }
 
                                 @Override
                                 public void onError(Throwable e) {
-                                    uploadPicFailed();  //这里其实是压缩图片失败，偷懒了QWQ
-                                    return;  //有一张压缩失败，就表示这次发布朋友圈failed
+                                    //压缩失败就直传了
+                                    mPresenter.uploadFile(finalI, thisPath, mHandler);
                                 }
                             })
                             .launch();
@@ -156,6 +165,8 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
             String content = mEtEditor.getText().toString().trim();
             if (!TextUtils.isEmpty(content)) {
                 mPresenter.sendMsg2Server(userId, content, null);
+            }else {
+                ToastUtils.showToast("写点什么好呢....");
             }
         }
     }
@@ -287,8 +298,7 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
 
     @Override
     public void uploadSuccess() {
-        //mPhotosSnpl.setData(null);
-        //mEtEditor.setText("");
+        EventBus.getDefault().post(new RefreshDiscoveryEvent());
         ToastUtils.showToast("发布成功");
         finish();
     }
@@ -296,5 +306,12 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
     @Override
     public void saveOss(OssBean.ResultBean bean) {
         mOss = bean;
+    }
+
+    @Override
+    public void uploadFailed() {
+        picPathList.clear();
+        uploadPicCounter = 0;
+        picMap.clear();
     }
 }

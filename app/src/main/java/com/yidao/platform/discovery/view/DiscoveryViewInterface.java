@@ -1,4 +1,4 @@
-package com.yidao.platform.discovery;
+package com.yidao.platform.discovery.view;
 
 import android.graphics.Bitmap;
 import android.widget.ImageView;

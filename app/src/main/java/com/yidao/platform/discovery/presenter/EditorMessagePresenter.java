@@ -38,6 +38,11 @@ public class EditorMessagePresenter {
         ossUploadUtil.uploadFile(filePath, handler);
     }
 
+    public void uploadFile(int index,String filePath, @Nullable final Handler handler) {
+        mView.showDialog();
+        ossUploadUtil.uploadFile(index,filePath, handler);
+    }
+
     public void sendMsg2Server(String userId, String content, @Nullable ArrayList<String> mUpLoadPicList) {
         SendFindObj sendFindObj = new SendFindObj();
         sendFindObj.setUserId(userId);
@@ -60,6 +65,8 @@ public class EditorMessagePresenter {
                             Boolean status = (Boolean) jsonObject.get("status");
                             if (status) {
                                 mView.uploadSuccess();
+                            }else {
+                                mView.uploadFailed();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

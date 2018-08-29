@@ -1,4 +1,4 @@
-package com.yidao.platform.discovery;
+package com.yidao.platform.discovery.view;
 
 import com.yidao.platform.discovery.bean.PickBottleBean;
 

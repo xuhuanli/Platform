@@ -1,4 +1,4 @@
-package com.yidao.platform.discovery;
+package com.yidao.platform.discovery.view;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -27,15 +27,12 @@ import com.yidao.platform.discovery.bean.BottleDtlBean;
 import com.yidao.platform.discovery.model.ReplyBottleListObj;
 import com.yidao.platform.discovery.model.ReplyBottleObj;
 import com.yidao.platform.discovery.presenter.DiscoveryBottleDetailPresenter;
-import com.yidao.platform.discovery.view.CommentListViewForBottle;
-import com.yidao.platform.discovery.view.DiscoveryBottleDetailInterface;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
-import io.reactivex.functions.Consumer;
 
 public class DiscoveryBottleDetailActivity extends BaseActivity implements DiscoveryBottleDetailInterface {
     @BindView(R.id.toolbar)

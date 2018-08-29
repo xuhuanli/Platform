@@ -1,4 +1,4 @@
-package com.yidao.platform.discovery;
+package com.yidao.platform.discovery.view;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -34,7 +34,6 @@ import com.yidao.platform.discovery.model.PyqCommentsObj;
 import com.yidao.platform.discovery.model.PyqFindIdObj;
 import com.yidao.platform.discovery.model.QryFindContentObj;
 import com.yidao.platform.discovery.presenter.FriendsGroupDetailPresenter;
-import com.yidao.platform.discovery.view.CommentListView;
 
 import java.io.File;
 import java.util.ArrayList;

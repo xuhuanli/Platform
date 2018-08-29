@@ -11,15 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.app.utils.MyLogger;
-import com.yidao.platform.discovery.DiscoveryBottleDetailActivity;
-import com.yidao.platform.discovery.FriendsGroupDetailActivity;
+import com.yidao.platform.discovery.view.DiscoveryBottleDetailActivity;
+import com.yidao.platform.discovery.view.FriendsGroupDetailActivity;
 import com.yidao.platform.info.adapter.BottleViewAdapter;
 import com.yidao.platform.info.adapter.CommentViewAdapter;
 import com.yidao.platform.info.adapter.SystemViewAdapter;

@@ -1,4 +1,4 @@
-package com.yidao.platform.discovery;
+package com.yidao.platform.discovery.view;
 
 import android.Manifest;
 import android.content.Context;
@@ -33,6 +33,11 @@ import com.yidao.platform.discovery.bean.FriendsShowBean;
 import com.yidao.platform.discovery.model.DianZanObj;
 import com.yidao.platform.discovery.model.FindDiscoveryObj;
 import com.yidao.platform.discovery.presenter.DiscoveryPresenter;
+import com.yidao.platform.events.RefreshDiscoveryEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -88,7 +93,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     @Override
     protected void initView() {
         mPresenter = new DiscoveryPresenter(this);
-        //EventBus.getDefault().register(this);
+        EventBus.getDefault().register(this);
         initToolbar();
         initRecyclerView();
         initSwipeRefreshLayout();
@@ -126,7 +131,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //EventBus.getDefault().unregister(this);
+        EventBus.getDefault().unregister(this);
     }
 
     private void createObj() {
@@ -175,6 +180,11 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
             mAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
         }
         mPresenter.getFriendsList(findDiscoveryObj);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onRefrshEvent(RefreshDiscoveryEvent event){
+        refresh();
     }
 
     @Override

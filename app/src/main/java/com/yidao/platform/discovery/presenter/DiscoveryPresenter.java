@@ -18,7 +18,7 @@ import com.allen.library.observer.StringObserver;
 import com.yidao.platform.R;
 import com.yidao.platform.app.ApiService;
 import com.yidao.platform.app.utils.MyLogger;
-import com.yidao.platform.discovery.DiscoveryViewInterface;
+import com.yidao.platform.discovery.view.DiscoveryViewInterface;
 import com.yidao.platform.discovery.bean.FriendsListBean;
 import com.yidao.platform.discovery.bean.FriendsShowBean;
 import com.yidao.platform.discovery.model.DianZanObj;

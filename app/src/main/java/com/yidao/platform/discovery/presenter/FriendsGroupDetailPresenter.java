@@ -5,7 +5,7 @@ import com.allen.library.interceptor.Transformer;
 import com.allen.library.observer.CommonObserver;
 import com.yidao.platform.app.ApiService;
 import com.yidao.platform.app.utils.MyLogger;
-import com.yidao.platform.discovery.IViewFriendsGroupDetail;
+import com.yidao.platform.discovery.view.IViewFriendsGroupDetail;
 import com.yidao.platform.discovery.bean.CommentsItem;
 import com.yidao.platform.discovery.bean.FindContentBean;
 import com.yidao.platform.discovery.bean.FriendsShowBean;

@@ -10,4 +10,6 @@ public interface DiscoveryEditorMessageInterface {
     void uploadSuccess();
 
     void saveOss(OssBean.ResultBean bean);
+
+    void uploadFailed();
 }

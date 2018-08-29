@@ -1,6 +1,7 @@
 package com.yidao.platform.app.utils;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
@@ -47,6 +48,40 @@ public class OssUploadUtil {
                     Message msg = Message.obtain();
                     msg.what = 0;
                     msg.obj = pathOnOss;
+                    handler.sendMessage(msg);
+                } else {  //发布一个String的event
+                    EventTouXiangInfo info = new EventTouXiangInfo(true, pathOnOss);
+                    EventBus.getDefault().post(info);
+                }
+            }
+
+            @Override
+            public void onFailure(PutObjectRequest request, ClientException clientException, ServiceException serviceException) {
+                // 请求异常
+                if (handler != null) { //import : 计数oss成功counter handler一般是给发布朋友圈多图
+                    handler.sendEmptyMessage(1);
+                } else {  //发布一个String的event
+                    EventTouXiangInfo info = new EventTouXiangInfo(false, "");
+                    EventBus.getDefault().post(info);
+                }
+            }
+        });
+    }
+
+    public void uploadFile(int index,final String filePath, @Nullable final Handler handler) {
+        String objectKey = "Find/IMG_" + FileUtil.formateTime();
+        PutObjectRequest put = new PutObjectRequest(Constant.OSS_BUCKET_NAME, objectKey, filePath);
+        OSSAsyncTask<PutObjectResult> task = ossClient.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
+            @Override
+            public void onSuccess(PutObjectRequest request, PutObjectResult result) {
+                String pathOnOss = "https://ydplatform.oss-cn-hangzhou.aliyuncs.com/" + objectKey;
+                if (handler != null) { //import : 计数oss成功counter handler一般是给发布朋友圈多图
+                    Message msg = Message.obtain();
+                    msg.what = 0;
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("index",index);
+                    bundle.putString("pathOnOss",pathOnOss);
+                    msg.setData(bundle);
                     handler.sendMessage(msg);
                 } else {  //发布一个String的event
                     EventTouXiangInfo info = new EventTouXiangInfo(true, pathOnOss);
