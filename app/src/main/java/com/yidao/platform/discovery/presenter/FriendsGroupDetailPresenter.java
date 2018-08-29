@@ -3,8 +3,10 @@ package com.yidao.platform.discovery.presenter;
 import com.allen.library.RxHttpUtils;
 import com.allen.library.interceptor.Transformer;
 import com.allen.library.observer.CommonObserver;
+import com.allen.library.observer.StringObserver;
 import com.yidao.platform.app.ApiService;
 import com.yidao.platform.app.utils.MyLogger;
+import com.yidao.platform.discovery.model.DianZanObj;
 import com.yidao.platform.discovery.view.IViewFriendsGroupDetail;
 import com.yidao.platform.discovery.bean.CommentsItem;
 import com.yidao.platform.discovery.bean.FindContentBean;
@@ -118,12 +120,55 @@ public class FriendsGroupDetailPresenter {
                             showBean.setDeployTime(result.getCreateTime());
                             showBean.setDeployName(result.getUserName());
                             showBean.setHeadImg(result.getHeadImg());
-                            // TODO: 2018/8/28 0028 新增字段
                             showBean.setTimeStamp(result.getTimeStamp());
                             showBean.setLikeAmount(result.getLikeAmount());
                             showBean.setImgUrls((ArrayList<String>) result.getImgs());
                             mView.showDetail(showBean);
                         }
+                    }
+                });
+    }
+
+    /**
+     * 取消朋友圈点赞
+     * @param dianZanObj
+     */
+    public void cancelFindLike(DianZanObj dianZanObj) {
+        RxHttpUtils
+                .createApi(ApiService.class)
+                .cancelFindLike(dianZanObj)
+                .compose(Transformer.switchSchedulers())
+                .subscribe(new StringObserver() {
+                    @Override
+                    protected void onError(String errorMsg) {
+                        MyLogger.e(errorMsg);
+                    }
+
+                    @Override
+                    protected void onSuccess(String data) {
+                        MyLogger.e(data);
+                    }
+                });
+    }
+
+    /**
+     * 朋友圈点赞
+     * @param dianZanObj
+     */
+    public void sendFindLike(DianZanObj dianZanObj) {
+        RxHttpUtils
+                .createApi(ApiService.class)
+                .sendFindLike(dianZanObj)
+                .compose(Transformer.switchSchedulers())
+                .subscribe(new StringObserver() {
+                    @Override
+                    protected void onError(String errorMsg) {
+                        MyLogger.e(errorMsg);
+                    }
+
+                    @Override
+                    protected void onSuccess(String data) {
+                        MyLogger.e(data);
                     }
                 });
     }

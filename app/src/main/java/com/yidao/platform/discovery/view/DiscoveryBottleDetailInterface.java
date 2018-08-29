@@ -9,4 +9,6 @@ public interface DiscoveryBottleDetailInterface {
     void commentSuccess();
 
     void showBottleDtl(BottleDtlBean.ResultBean result);
+
+    void replyLimited();
 }

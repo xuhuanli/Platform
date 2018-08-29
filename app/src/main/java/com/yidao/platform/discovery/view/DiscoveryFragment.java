@@ -182,6 +182,10 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
         mPresenter.getFriendsList(findDiscoveryObj);
     }
 
+    /**
+     * 需要刷新列表的事件
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onRefrshEvent(RefreshDiscoveryEvent event){
         refresh();

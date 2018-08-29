@@ -46,6 +46,9 @@ public class DiscoveryBottleDetailPresenter {
                                 case "1000":
                                     mView.commentSuccess();
                                     break;
+                                case "1104":
+                                    mView.replyLimited();
+                                    break;
                                 default:
                                     mView.showErrorInfo(jsonObject.getString("info"));
                                     break;

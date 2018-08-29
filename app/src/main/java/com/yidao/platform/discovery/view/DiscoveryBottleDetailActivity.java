@@ -33,6 +33,7 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
+import io.reactivex.functions.Consumer;
 
 public class DiscoveryBottleDetailActivity extends BaseActivity implements DiscoveryBottleDetailInterface {
     @BindView(R.id.toolbar)
@@ -107,7 +108,7 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
         fillEditText();
         mCommentBottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         mCommentBottomSheetDialog.show();
-        mBtnSend.setOnClickListener(v -> {
+        addDisposable(RxView.clicks(mBtnSend).throttleFirst(Constant.THROTTLE_TIME,TimeUnit.MILLISECONDS).subscribe(o -> {
             String content = mEtContent.getText().toString();
             if (!TextUtils.isEmpty(content)) {
                 ReplyBottleObj obj = new ReplyBottleObj();
@@ -121,7 +122,7 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
                 obj.setUserId(userId);
                 mPresenter.replyBottle(obj);
             }
-        });
+        }));
         //when you invoke cancel() , callback to here .So  please use dialog.cancel() but not dialog.dismiss(), unless you setOnDismissListener
         mCommentBottomSheetDialog.setOnCancelListener(dialog -> {
             //when dialog cancel state write content into textview.
@@ -189,6 +190,13 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
         } else {
             mPresenter.qryBottleDtl(bottleId, sessionId);
         }
+    }
+
+    @Override
+    public void replyLimited() {
+        mEtContent.setText("");
+        mCommentBottomSheetDialog.cancel();
+        finish();
     }
 
     @Override

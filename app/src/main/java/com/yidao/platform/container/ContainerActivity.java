@@ -94,7 +94,7 @@ public class ContainerActivity extends BaseActivity {
         list.add(new ServiceFragment());
         list.add(new MyInfoFragment());
         mViewPager.setAdapter(new ViewpagerAdapter(getSupportFragmentManager(), list));
-        mViewPager.setOffscreenPageLimit(1);
+        mViewPager.setOffscreenPageLimit(3);
         //smoothScroll  true:在点击tablayout时，vp会有滑动效果 false : 取消平滑效果
         //mViewPager.setCurrentItem(0, false);
     }
