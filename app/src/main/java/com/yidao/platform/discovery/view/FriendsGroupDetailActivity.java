@@ -75,10 +75,6 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
     Toolbar mToolbar;
     @BindView(R.id.tv_title)
     TextView mTitle;
-    /**
-     * 评论数据集合
-     */
-    private List<CommentsItem> mDataList;
     private BottomSheetDialog mCommentBottomSheetDialog;
     private EditText mEtContent;
     private BGANinePhotoLayout mCurrentClickNpl;
@@ -242,7 +238,6 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
 
     @Override
     public void showComments(ArrayList<CommentsItem> dataList) {
-        mDataList = dataList;
         commentList.setDatas(dataList);
         if (dataList.size() > 0) {
             commentList.setVisibility(View.VISIBLE);

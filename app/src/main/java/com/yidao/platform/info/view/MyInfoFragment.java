@@ -1,20 +1,26 @@
 package com.yidao.platform.info.view;
 
-import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.allen.library.RxHttpUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
-import com.yidao.platform.app.base.BaseFragment;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.info.model.EventChangeInfo;
 import com.yidao.platform.info.model.EventTouXiangInfo;
@@ -29,8 +35,12 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
-public class MyInfoFragment extends BaseFragment implements IViewMineInfo {
+public class MyInfoFragment extends Fragment implements IViewMineInfo {
 
     @BindView(R.id.info_container)
     ConstraintLayout cl_container;
@@ -61,15 +71,57 @@ public class MyInfoFragment extends BaseFragment implements IViewMineInfo {
     TextView tvMsgCount;
     private MyInfoFragmentPresenter mPresenter;
     private String userId;
-    private boolean isFirstDisplay;
 
+    private boolean isViewCreated;
+    private boolean isUIVisible;
+    private Unbinder mUnbinder;
+    public CompositeDisposable mCompositeDisposable;
+
+    @Nullable
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        isFirstDisplay = true;
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(getLayoutId(), container, false);
+        mUnbinder = ButterKnife.bind(this, view);
+        initView();
+        return view;
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        isViewCreated = true;
+        lazyLoad();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            isUIVisible = true;
+            lazyLoad();
+        } else {
+            isUIVisible = false;
+        }
+    }
+
+    public void lazyLoad() {
+        //在Fragment的View创建并且可见后加载当前fragment内容
+        if (isViewCreated && isUIVisible) {
+            MyLogger.e("片段可见,加载数据");
+            initData();
+        }
+    }
+
+    /**
+     * 添加订阅
+     */
+    public void addDisposable(Disposable mDisposable) {
+        if (mCompositeDisposable == null) {
+            mCompositeDisposable = new CompositeDisposable();
+        }
+        mCompositeDisposable.add(mDisposable);
+    }
+
     protected void initView() {
         EventBus.getDefault().register(this);
         mPresenter = new MyInfoFragmentPresenter(this);
@@ -106,19 +158,12 @@ public class MyInfoFragment extends BaseFragment implements IViewMineInfo {
         }));
     }
 
-    @Override
     protected int getLayoutId() {
         return R.layout.info_fragment_content;
     }
 
-    @Override
     protected void initData() {
         mPresenter.qryUserById(userId);
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
     }
 
 
@@ -146,14 +191,8 @@ public class MyInfoFragment extends BaseFragment implements IViewMineInfo {
     public void showError(String info) {
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void helloEventBus(EventTouXiangInfo info) {
+    public void headImageEventBus(EventTouXiangInfo info) {
         if (info.isStatus) {
             Glide.with(this).load(info.path).into(ivLoginSuccessInfo);
         }
@@ -167,5 +206,21 @@ public class MyInfoFragment extends BaseFragment implements IViewMineInfo {
         if (TextUtils.equals(event.title, "简介")) {
             tvLoginHint.setText(event.value);
         }
+    }
+
+    private void clearDisposable() {
+        if (mCompositeDisposable != null) {
+            mCompositeDisposable.clear();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+        isViewCreated = isUIVisible = false;
+        clearDisposable();
+        RxHttpUtils.clearAllCompositeDisposable();
+        mUnbinder.unbind();
     }
 }

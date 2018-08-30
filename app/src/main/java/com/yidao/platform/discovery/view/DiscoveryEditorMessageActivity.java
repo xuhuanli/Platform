@@ -170,6 +170,7 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
             if (!TextUtils.isEmpty(content)) {
                 mPresenter.sendMsg2Server(userId, content, null);
             }else {
+                mBtnPublish.setEnabled(true);
                 ToastUtils.showToast("写点什么好呢....");
             }
         }

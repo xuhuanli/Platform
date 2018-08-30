@@ -2,13 +2,12 @@ package com.yidao.platform.read.view;
 
 import com.yidao.platform.read.bean.ChannelBean;
 import com.yidao.platform.read.bean.ReadNewsBean;
-import com.yidao.platform.read.bean.CommonArticleBean;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public interface IViewReadFragment {
-    void showBanner(List<String> imageUrls, List<String> bannerTitles);
+    void showBanner(List<String> imageUrls, List<String> bannerTitles, List<String> artUrls, List<Long> artIds);
 
     void loadMoreFail();
 

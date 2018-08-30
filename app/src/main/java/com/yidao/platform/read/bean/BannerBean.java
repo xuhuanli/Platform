@@ -41,6 +41,7 @@ public class BannerBean {
          * uploadId : 1
          */
 
+        private Long artId;
         private long id;
         private String imageUrl;
         private String title;
@@ -49,7 +50,15 @@ public class BannerBean {
         private int isDelete;
         private int isLight;
         private String sort;
-        private int uploadId;
+        private String uploadId;
+
+        public Long getArtId() {
+            return artId;
+        }
+
+        public void setArtId(Long artId) {
+            this.artId = artId;
+        }
 
         public long getId() {
             return id;
@@ -115,11 +124,11 @@ public class BannerBean {
             this.sort = sort;
         }
 
-        public int getUploadId() {
+        public String getUploadId() {
             return uploadId;
         }
 
-        public void setUploadId(int uploadId) {
+        public void setUploadId(String uploadId) {
             this.uploadId = uploadId;
         }
     }

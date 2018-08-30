@@ -3,7 +3,6 @@ package com.yidao.platform.read.view;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -142,18 +141,24 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
         banner.setDelayTime(5000);
         banner.setIndicatorGravity(BannerConfig.CENTER);
     }
-
     @Override
-    public void showBanner(List<String> imageUrls, List<String> bannerTitles) {
+    public void showBanner(List<String> imageUrls, List<String> bannerTitles, List<String> artUrls, List<Long> artIds) {
         mPresenter.getListCategories();
         if (banner != null) {
             banner.setImages(imageUrls);
             banner.setBannerTitles(bannerTitles);
-            banner.setOnBannerListener(new OnBannerListener() {
-                @Override
-                public void OnBannerClick(int position) {
-                    MyLogger.e("position = " + position);
+            banner.setOnBannerListener(position -> {
+                Intent intent = new Intent(getActivity(),ReadContentActivity.class);
+                String artUrl = artUrls.get(position);
+                Long artId = artIds.get(position);
+                if (artId != null) {
+                    if (artId == 200L || artUrl.equals(" ")) {
+                        return;
+                    }
                 }
+                intent.putExtra(Constant.STRING_URL, artUrl);
+                intent.putExtra(Constant.STRING_ART_ID, artId);
+                startActivity(intent);
             });
             banner.start();
         }

@@ -7,13 +7,13 @@ public class Constant {
     //徐ww
     //public static final String BASE_URL = "http://10.10.20.24:8080/";
     //徐ly
-    public static final String BASE_URL = "http://10.10.20.13:8080/";
+    //public static final String BASE_URL = "http://10.10.20.13:8080/";
     //张zk
     //public static final String BASE_URL = "http://10.10.20.10:8081/";
     //陈dq
     //public static final String BASE_URL = "http://10.10.20.4:8080/platform-pc-web/";
     //debug ip
-    //public static final String BASE_URL = "http://10.10.20.200:8082/";
+    public static final String BASE_URL = "http://10.10.20.200:8082/";
     //release ip
     //public static final String BASE_URL = "http://47.96.122.73:8082/";
 

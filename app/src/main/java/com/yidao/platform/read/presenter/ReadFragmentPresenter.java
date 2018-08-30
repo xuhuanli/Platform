@@ -50,11 +50,15 @@ public class ReadFragmentPresenter {
                             List<BannerBean.ResultBean> result = bannerBean.getResult();
                             List<String> imageUrls = new ArrayList<>();
                             List<String> bannerTitles = new ArrayList<>();
+                            List<String> artUrls = new ArrayList<>();
+                            List<Long> artIds = new ArrayList<>();
                             for (BannerBean.ResultBean resultBean : result) {
                                 imageUrls.add(resultBean.getImageUrl());
                                 bannerTitles.add(resultBean.getTitle());
+                                artUrls.add(resultBean.getUrl());
+                                artIds.add(resultBean.getArtId());
                             }
-                            mView.showBanner(imageUrls, bannerTitles);
+                            mView.showBanner(imageUrls, bannerTitles,artUrls,artIds);
                         }
                     }
 
@@ -87,7 +91,6 @@ public class ReadFragmentPresenter {
 
                     @Override
                     public void onNext(ArticleBean articleBean) {
-                        MyLogger.e("首页18篇热门文章:onNext");
                         mView.setEnableLoadMore(true);
                         mView.setRefreshing(false);
                         if (articleBean.isStatus()) {
@@ -135,7 +138,7 @@ public class ReadFragmentPresenter {
 
                     @Override
                     public void onComplete() {
-                        MyLogger.e("onComplete");
+
                     }
                 });
     }
