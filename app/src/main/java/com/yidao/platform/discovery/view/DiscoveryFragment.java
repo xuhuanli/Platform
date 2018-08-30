@@ -124,8 +124,8 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
 
     @Override
     protected void initData() {
-        createObj();
-        mPresenter.getFriendsList(findDiscoveryObj);
+        //createObj();
+        mPresenter.getFriendsList(Constant.PAGE_SIZE);
     }
 
     @Override
@@ -166,16 +166,16 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     }
 
     private void refresh() {
-        mNextRequestPage = 1;
+        /*mNextRequestPage = 1;
         if (findDiscoveryObj == null) {
             createObj();
         } else {
             findDiscoveryObj.getPage().setPageIndex(mNextRequestPage);
-        }
+        }*/
         if (mAdapter != null) {
             mAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
         }
-        mPresenter.getFriendsList(findDiscoveryObj);
+        mPresenter.getFriendsList(Constant.PAGE_SIZE);
     }
 
     /**
@@ -241,6 +241,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
 
     @Override
     public void loadRecyclerData(ArrayList<FriendsShowBean> dataList) {
+
         mAdapter = new MomentAdapter(dataList, this);
         mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
         mRecyclerView.setAdapter(mAdapter);
@@ -269,10 +270,17 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
         });
     }
 
-    private void loadMore() {
+    /*private void loadMore() {
         mNextRequestPage++;
         findDiscoveryObj.getPage().setPageIndex(mNextRequestPage);
         mPresenter.getFriendsList(findDiscoveryObj);
+    }*/
+
+    private void loadMore() {
+        List<FriendsShowBean> dataList = mAdapter.getData();
+        FriendsShowBean bean = mAdapter.getData().get(dataList.size()-1);
+        String findId = bean.getFindId();
+        mPresenter.qryFindHis(Constant.PAGE_SIZE,findId);
     }
 
     @Override

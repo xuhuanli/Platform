@@ -17,12 +17,13 @@ import com.allen.library.observer.CommonObserver;
 import com.allen.library.observer.StringObserver;
 import com.yidao.platform.R;
 import com.yidao.platform.app.ApiService;
+import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.utils.MyLogger;
-import com.yidao.platform.discovery.view.DiscoveryViewInterface;
 import com.yidao.platform.discovery.bean.FriendsListBean;
 import com.yidao.platform.discovery.bean.FriendsShowBean;
 import com.yidao.platform.discovery.model.DianZanObj;
 import com.yidao.platform.discovery.model.FindDiscoveryObj;
+import com.yidao.platform.discovery.view.DiscoveryViewInterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -145,6 +146,61 @@ public class DiscoveryPresenter {
     }
 
     /**
+     * 获取朋友圈列表
+     */
+    public void getFriendsList(int size) {
+        RxHttpUtils
+                .createApi(ApiService.class)
+                .getFriendsList(size)
+                .compose(Transformer.switchSchedulers())
+                .subscribe(new CommonObserver<FriendsListBean>() {
+                    @Override
+                    protected void onError(String errorMsg) {
+                        mView.setEnableLoadMore(true);
+                        mView.setRefreshing(false);
+                    }
+
+                    @Override
+                    protected void onSuccess(FriendsListBean friendsListBean) {
+                        mView.setEnableLoadMore(true);
+                        mView.setRefreshing(false);
+                        if (friendsListBean.isStatus()) {
+                            FriendsListBean.ResultBean result = friendsListBean.getResult();
+
+                            if (result != null && result.getList().size() < Constant.PAGE_SIZE) {  //所得数目< pageSize =>到底了
+                                mView.loadMoreEnd(false);
+                            } else {
+                                mView.loadMoreComplete();
+                            }
+
+                            List<FriendsListBean.ResultBean.ListBean> list = result.getList();
+                            ArrayList<FriendsShowBean> dataList = new ArrayList<>();
+                            for (FriendsListBean.ResultBean.ListBean listBean : list) {
+                                FriendsShowBean bean = new FriendsShowBean();
+                                bean.setHeadImg(listBean.getHeadImg());
+                                bean.setDeployName(listBean.getDeployName());
+                                bean.setDeployTime(listBean.getDeployTime());
+                                bean.setLikeAmount(listBean.getLikeAmount());
+                                bean.setContent(listBean.getFind().getContent());
+                                bean.setImgUrls((ArrayList<String>) listBean.getImgs());
+                                bean.setFindId(String.valueOf(listBean.getFindId()));
+                                bean.setLike(listBean.isIsLike());
+                                bean.setTimeStamp(listBean.getTimeStamp());
+                                dataList.add(bean);
+                            }
+                            mView.loadRecyclerData(dataList);
+                            /*
+                            if (result.getPageIndex() == 1) {  //page = 1时，表示初始列表值
+                                mView.loadRecyclerData(dataList);
+                            } else {
+                                mView.loadMoreData(dataList);
+                            }*/
+                        }
+                    }
+                });
+    }
+
+    /**
      * 点赞
      */
     public void sendFindLike(DianZanObj obj) {
@@ -167,6 +223,7 @@ public class DiscoveryPresenter {
 
     /**
      * 取消点赞
+     *
      * @param obj
      */
     public void cancelFindLike(DianZanObj obj) {
@@ -183,6 +240,57 @@ public class DiscoveryPresenter {
                     @Override
                     protected void onSuccess(String data) {
                         MyLogger.e(data);
+                    }
+                });
+    }
+
+    /**
+     * 加载更多朋友圈
+     *
+     * @param pageSize
+     * @param findId
+     */
+    public void qryFindHis(int pageSize, String findId) {
+        RxHttpUtils
+                .createApi(ApiService.class)
+                .qryFindHis(pageSize, findId)
+                .compose(Transformer.switchSchedulers())
+                .subscribe(new CommonObserver<FriendsListBean>() {
+                    @Override
+                    protected void onError(String errorMsg) {
+
+                    }
+
+                    @Override
+                    protected void onSuccess(FriendsListBean friendsListBean) {
+                        mView.setEnableLoadMore(true);
+                        mView.setRefreshing(false);
+                        if (friendsListBean.isStatus()) {
+                            FriendsListBean.ResultBean result = friendsListBean.getResult();
+
+                            if (result != null && result.getList().size() < Constant.PAGE_SIZE) {  //所得数目< pageSize =>到底了
+                                mView.loadMoreEnd(false);
+                            } else {
+                                mView.loadMoreComplete();
+                            }
+
+                            List<FriendsListBean.ResultBean.ListBean> list = result.getList();
+                            ArrayList<FriendsShowBean> dataList = new ArrayList<>();
+                            for (FriendsListBean.ResultBean.ListBean listBean : list) {
+                                FriendsShowBean bean = new FriendsShowBean();
+                                bean.setHeadImg(listBean.getHeadImg());
+                                bean.setDeployName(listBean.getDeployName());
+                                bean.setDeployTime(listBean.getDeployTime());
+                                bean.setLikeAmount(listBean.getLikeAmount());
+                                bean.setContent(listBean.getFind().getContent());
+                                bean.setImgUrls((ArrayList<String>) listBean.getImgs());
+                                bean.setFindId(String.valueOf(listBean.getFindId()));
+                                bean.setLike(listBean.isIsLike());
+                                bean.setTimeStamp(listBean.getTimeStamp());
+                                dataList.add(bean);
+                            }
+                            mView.loadMoreData(dataList);
+                        }
                     }
                 });
     }

@@ -140,7 +140,7 @@ public interface ApiService {
      * 发布朋友圈图片上传路径到公司服务器 后期注意ip地址的修改
      */
     @Headers({"Content-Type: application/json;charset=UTF-8"})
-    @POST("edit/find/sendFind")
+    @POST("app/edit/find/sendFind")
     Observable<String> sendFind(@Body SendFindObj sendFindObj);
 
     /**
@@ -153,56 +153,62 @@ public interface ApiService {
     /**
      * 获取朋友圈列表
      */
-    @GET("/app/find/qryFindLatest")
-    Observable<FriendsListBean> getFriendsList(String size);
+    @GET("/platform-pc-web/app/find/qryFindLatest")
+    Observable<FriendsListBean> getFriendsList(@Query("size") int size);
+
+    /**
+     * 获取朋友圈加载更多
+     */
+    @GET("/platform-pc-web/app/find/qryFindHis")
+    Observable<FriendsListBean> qryFindHis(@Query("size") int size,@Query("lastFindId")String lastFindId);
 
     /**
      * 朋友圈点赞
      */
     @Headers({"Content-Type: application/json;charset=UTF-8"})
-    @POST("edit/find/sendFindLike")
+    @POST("app/edit/find/sendFindLike")
     Observable<String> sendFindLike(@Body DianZanObj dianZanObj);
 
     /**
      * 取消朋友圈点赞
      */
     @Headers({"Content-Type: application/json;charset=UTF-8"})
-    @POST("edit/find/cancelFindLike")
+    @POST("app/edit/find/cancelFindLike")
     Observable<String> cancelFindLike(@Body DianZanObj dianZanObj);
 
     /**
      * 获取朋友圈评论详情 testId = 695106241363968
      */
     @Headers({"Content-Type: application/json;charset=UTF-8"})
-    @POST("find/qryFindComms")
+    @POST("app/find/qryFindComms")
     Observable<PyqCommentsBean> qryFindComms(@Body PyqFindIdObj pyqCommentsObj);
 
     /**
      * 删除朋友圈 共用一下body
      */
     @Headers({"Content-Type: application/json;charset=UTF-8"})
-    @POST("edit/find/deleteFind")
+    @POST("app/edit/find/deleteFind")
     Observable<String> deleteFind(@Body PyqFindIdObj pyqFindIdObj);
 
     /**
      * 发送朋友圈评论
      */
     @Headers({"Content-Type: application/json;charset=UTF-8"})
-    @POST("edit/find/sendFindComm")
+    @POST("app/edit/find/sendFindComm")
     Observable<PyqCommentsBean> sendFindComm(@Body PyqCommentsObj pyqCommentsObj);
 
     /**
      * 删除朋友圈评论
      */
     @Headers({"Content-Type: application/json;charset=UTF-8"})
-    @POST("edit/find/deleteFindComm")
+    @POST("app/edit/find/deleteFindComm")
     Observable<String> deleteFindComm(@Body DeletePyqObj deletePyqObj);
 
     /**
      * 查询朋友圈详情
      */
     @Headers({"Content-Type: application/json;charset=UTF-8"})
-    @POST("find/qryFindContent")
+    @POST("app/find/qryFindContent")
     Observable<FindContentBean> qryFindContent(@Body QryFindContentObj qryFindContentObj);
     //----------文章模块------------
 
