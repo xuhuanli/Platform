@@ -52,12 +52,14 @@ public class LoginBindingPhonePresenter {
 
                     @Override
                     protected void onSuccess(String data) {
-                        MyLogger.d("bind phone 13645876734 ：："+data);
                         try {
                             JSONObject object = new JSONObject(data);
-                            // TODO: 2018/8/21 0021 昨天的工作位置
-                            //object.get("errorCode")
-                            mView.bindSuccess();
+                            String errCode = (String) object.get("errCode");
+                            switch (errCode) {
+                                case "1000":
+                                    mView.bindSuccess();
+                                    break;
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

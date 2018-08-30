@@ -24,10 +24,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.allen.library.utils.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
@@ -88,7 +90,6 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     private ReadContentActivityPresenter mPresenter;
     private long artId;
     private String userId;
-    // TODO: 2018/8/16 0016  获取文章时刷新这个flag
     /**
      * 这个文章是否被用户收藏flag 这个flag状态会在获取文章详情时被刷新一次
      */
@@ -309,10 +310,6 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         EventBus.getDefault().unregister(this);
     }
 
-    /*private String buildTransaction(final String type) {
-        return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
-    }*/
-
     private void regToWX() {
         mWxapi = WXAPIFactory.createWXAPI(this, Constant.WX_LOGIN_APP_ID, Constant.IS_DEBUG);
         mWxapi.registerApp(Constant.WX_LOGIN_APP_ID);
@@ -323,6 +320,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         //mRecyclerView.setVisibility(View.VISIBLE);
         //mCommentBar.setVisibility(View.VISIBLE);
         //mProgressBar.setVisibility(View.GONE);
+        MyLogger.e("获取到浏览器加载完毕回调");
     }
 
     @Override
@@ -337,12 +335,19 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void pushCommentSuccess() {
         // TODO: 2018/8/16 0016 发布成功后需要刷新评论list数据 添加评论id的数据(推荐)或者重新获取
-        MyLogger.e("发布成功");
+        /*ReadNewsDetailBean firstData = list.get(0);
+        list.clear();
+        list.add(firstData);
+        mNextRequestPage = 0;  //初始化为0
+        isFirstGetNewComment = true; //初始化为true
+        mAdapter.loadMoreEnd(false); //开启加载更多
+        mPresenter.getHotComments(artId,userId);
+        MyLogger.e("发布成功");*/
     }
 
     @Override
     public void pushCommentFail() {
-        MyLogger.e("发布失败");
+        ToastUtils.showToast("评论发布失败");
     }
 
     @Override
@@ -357,6 +362,22 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
             mAdapter.notifyDataSetChanged();
         }
         mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
+    }
+
+    @Override
+    public void loadMoreData(List<ReadNewsDetailBean> dataList) {
+        if (isFirstGetNewComment) {
+            if (dataList.size() > 0) {
+                list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_LAST_COMMENT));
+                list.addAll(dataList);
+            }else {
+                mAdapter.loadMoreEnd(true);
+            }
+            isFirstGetNewComment = false;
+        } else {
+            list.addAll(dataList);
+        }
+        mAdapter.notifyDataSetChanged();
     }
 
     private void showShareDialog(String title,String content,Bitmap bitmap) {
@@ -408,22 +429,6 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void getThumbEvent(ThumbEvent event){
         showShareDialog(event.getTitle(),event.getSubTitle(),event.getBitmap());
-    }
-
-    @Override
-    public void loadMoreData(List<ReadNewsDetailBean> dataList) {
-        if (isFirstGetNewComment) {
-            if (dataList.size() > 0) {
-                list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_LAST_COMMENT));
-                list.addAll(dataList);
-            }else {
-                mAdapter.loadMoreEnd(true);
-            }
-            isFirstGetNewComment = false;
-        } else {
-            list.addAll(dataList);
-        }
-        mAdapter.notifyDataSetChanged();
     }
 
     @Override

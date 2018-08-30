@@ -191,7 +191,6 @@ public class ReadContentActivityPresenter {
 
                     @Override
                     protected void onSuccess(HotCommentsBean hotCommentsBean) {
-                        MyLogger.e("最热评论");
                         if (hotCommentsBean.isStatus()) {
                             String commentAmount = hotCommentsBean.getResult().getCommentAmount();
                             String likeAmount = hotCommentsBean.getResult().getLikeAmount();
@@ -232,7 +231,6 @@ public class ReadContentActivityPresenter {
 
                     @Override
                     public void onNext(LastCommentsBean lastCommentsBean) {
-                        MyLogger.e("获取最新评论executed");
                         if (lastCommentsBean.isStatus()) {
                             List<LastCommentsBean.ResultBean.ListBean> list = lastCommentsBean.getResult().getList();
                             if (list != null) {

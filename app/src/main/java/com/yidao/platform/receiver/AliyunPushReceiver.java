@@ -32,15 +32,6 @@ public class AliyunPushReceiver extends MessageReceiver {
      */
     @Override
     public void onNotification(Context context, String title, String summary, Map<String, String> extraMap) {
-        // TODO 处理推送通知
-        if (null != extraMap) {
-            for (Map.Entry<String, String> entry : extraMap.entrySet()) {
-                MyLogger.i(REC_TAG, "@Get diy param : Key=" + entry.getKey() + " , Value=" + entry.getValue());
-            }
-        } else {
-            MyLogger.i(REC_TAG, "@收到通知 && 自定义消息为空");
-        }
-        MyLogger.i(REC_TAG, "收到一条推送通知 ： " + title + ", summary:" + summary);
     }
 
     /**
