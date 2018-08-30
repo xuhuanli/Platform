@@ -48,35 +48,6 @@ public class DiscoveryPresenter {
         mView.openAlbum();
     }
 
-    public void handleImage(Context context, Intent data, ImageView imageView) {
-        String imagePath = null;
-        Uri uri = data.getData();
-        if (DocumentsContract.isDocumentUri(context, uri)) {
-            //如果document类型Uri 通过docId处理
-            String docId = DocumentsContract.getDocumentId(uri);
-            if (uri.getAuthority().equals("com.android.providers.media.documents")) {
-                String id = docId.split(":")[1];
-                String selection = MediaStore.Images.Media._ID + "=" + id;
-                imagePath = getImagePath(context, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
-            } else if (uri.getAuthority().equals("com.android.providers.download.documents")) {
-                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(docId));
-                imagePath = getImagePath(context, contentUri, null);
-            }
-        } else if ("content".equalsIgnoreCase(uri.getScheme())) {
-            //content类型Uri 普通方式处理
-            imagePath = getImagePath(context, uri, null);
-        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
-            //file类型Uri 直接获取图片路径
-            imagePath = uri.getPath();
-        }
-        if (imagePath != null) {
-            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-            mView.showImage(bitmap, imageView);
-        } else {
-            mView.showToast(context.getString(R.string.failed_to_get_image));
-        }
-    }
-
     private String getImagePath(Context context, Uri uri, String selection) {
         String path = null;
         Cursor cursor = context.getContentResolver().query(uri, null, selection, null, null);
@@ -90,63 +61,7 @@ public class DiscoveryPresenter {
     }
 
     /**
-     * 获取朋友圈列表
-     */
-    public void getFriendsList(FindDiscoveryObj findDiscoveryObj) {
-        RxHttpUtils
-                .createApi(ApiService.class)
-                .getFriendsList(findDiscoveryObj)
-                .compose(Transformer.switchSchedulers())
-                .subscribe(new CommonObserver<FriendsListBean>() {
-                    @Override
-                    protected void onError(String errorMsg) {
-                        mView.setEnableLoadMore(true);
-                        mView.setRefreshing(false);
-                    }
-
-                    @Override
-                    protected void onSuccess(FriendsListBean friendsListBean) {
-                        mView.setEnableLoadMore(true);
-                        mView.setRefreshing(false);
-                        if (friendsListBean.isStatus()) {
-                            FriendsListBean.ResultBean result = friendsListBean.getResult();
-
-                            if (result != null && result.getList().size() < result.getPageSize()) {  //所得数目< pageSize =>到底了
-                                mView.loadMoreEnd(false);
-                            } else {
-                                mView.loadMoreComplete();
-                            }
-
-                            List<FriendsListBean.ResultBean.ListBean> list = result.getList();
-                            ArrayList<FriendsShowBean> dataList = new ArrayList<>();
-                            for (FriendsListBean.ResultBean.ListBean listBean : list) {
-                                FriendsShowBean bean = new FriendsShowBean();
-                                bean.setHeadImg(listBean.getHeadImg());
-                                bean.setDeployName(listBean.getDeployName());
-                                bean.setDeployTime(listBean.getDeployTime());
-                                bean.setLikeAmount(listBean.getLikeAmount());
-                                bean.setContent(listBean.getFind().getContent());
-                                bean.setImgUrls((ArrayList<String>) listBean.getImgs());
-                                bean.setFindId(String.valueOf(listBean.getFindId()));
-                                bean.setLike(listBean.isIsLike());
-                                bean.setTimeStamp(listBean.getTimeStamp());
-                                dataList.add(bean);
-                            }
-
-                            if (result.getPageIndex() == 1) {  //page = 1时，表示初始列表值
-                                mView.loadRecyclerData(dataList);
-                            } else {
-                                mView.loadMoreData(dataList);
-                            }
-
-
-                        }
-                    }
-                });
-    }
-
-    /**
-     * 获取朋友圈列表
+     * 获取朋友圈列表新的接口
      */
     public void getFriendsList(int size) {
         RxHttpUtils
@@ -166,35 +81,31 @@ public class DiscoveryPresenter {
                         mView.setRefreshing(false);
                         if (friendsListBean.isStatus()) {
                             FriendsListBean.ResultBean result = friendsListBean.getResult();
-
-                            if (result != null && result.getList().size() < Constant.PAGE_SIZE) {  //所得数目< pageSize =>到底了
-                                mView.loadMoreEnd(false);
-                            } else {
-                                mView.loadMoreComplete();
-                            }
-
-                            List<FriendsListBean.ResultBean.ListBean> list = result.getList();
-                            ArrayList<FriendsShowBean> dataList = new ArrayList<>();
-                            for (FriendsListBean.ResultBean.ListBean listBean : list) {
-                                FriendsShowBean bean = new FriendsShowBean();
-                                bean.setHeadImg(listBean.getHeadImg());
-                                bean.setDeployName(listBean.getDeployName());
-                                bean.setDeployTime(listBean.getDeployTime());
-                                bean.setLikeAmount(listBean.getLikeAmount());
-                                bean.setContent(listBean.getFind().getContent());
-                                bean.setImgUrls((ArrayList<String>) listBean.getImgs());
-                                bean.setFindId(String.valueOf(listBean.getFindId()));
-                                bean.setLike(listBean.isIsLike());
-                                bean.setTimeStamp(listBean.getTimeStamp());
-                                dataList.add(bean);
-                            }
-                            mView.loadRecyclerData(dataList);
-                            /*
-                            if (result.getPageIndex() == 1) {  //page = 1时，表示初始列表值
+                            if (result != null) {
+                                if (result.getList().size() < Constant.PAGE_SIZE) {  //所得数目< pageSize =>到底了
+                                    mView.loadMoreEnd(false);
+                                } else {
+                                    mView.loadMoreComplete();
+                                }
+                                List<FriendsListBean.ResultBean.ListBean> list = result.getList();
+                                ArrayList<FriendsShowBean> dataList = new ArrayList<>();
+                                for (FriendsListBean.ResultBean.ListBean listBean : list) {
+                                    FriendsShowBean bean = new FriendsShowBean();
+                                    bean.setHeadImg(listBean.getHeadImg());
+                                    bean.setDeployName(listBean.getDeployName());
+                                    bean.setDeployTime(listBean.getDeployTime());
+                                    bean.setLikeAmount(listBean.getLikeAmount());
+                                    bean.setContent(listBean.getFind().getContent());
+                                    bean.setImgUrls((ArrayList<String>) listBean.getImgs());
+                                    bean.setFindId(String.valueOf(listBean.getFindId()));
+                                    bean.setLike(listBean.isIsLike());
+                                    bean.setTimeStamp(listBean.getTimeStamp());
+                                    dataList.add(bean);
+                                }
                                 mView.loadRecyclerData(dataList);
-                            } else {
-                                mView.loadMoreData(dataList);
-                            }*/
+                            }else {
+                                mView.loadMoreEnd(false);
+                            }
                         }
                     }
                 });
@@ -267,29 +178,31 @@ public class DiscoveryPresenter {
                         mView.setRefreshing(false);
                         if (friendsListBean.isStatus()) {
                             FriendsListBean.ResultBean result = friendsListBean.getResult();
-
-                            if (result != null && result.getList().size() < Constant.PAGE_SIZE) {  //所得数目< pageSize =>到底了
+                            if (result != null) {
+                                if (result.getList().size() == 0) {  //所得数目< pageSize =>到底了
+                                    mView.loadMoreEnd(false);
+                                } else {
+                                    mView.loadMoreComplete();
+                                }
+                                List<FriendsListBean.ResultBean.ListBean> list = result.getList();
+                                ArrayList<FriendsShowBean> dataList = new ArrayList<>();
+                                for (FriendsListBean.ResultBean.ListBean listBean : list) {
+                                    FriendsShowBean bean = new FriendsShowBean();
+                                    bean.setHeadImg(listBean.getHeadImg());
+                                    bean.setDeployName(listBean.getDeployName());
+                                    bean.setDeployTime(listBean.getDeployTime());
+                                    bean.setLikeAmount(listBean.getLikeAmount());
+                                    bean.setContent(listBean.getFind().getContent());
+                                    bean.setImgUrls((ArrayList<String>) listBean.getImgs());
+                                    bean.setFindId(String.valueOf(listBean.getFindId()));
+                                    bean.setLike(listBean.isIsLike());
+                                    bean.setTimeStamp(listBean.getTimeStamp());
+                                    dataList.add(bean);
+                                }
+                                mView.loadMoreData(dataList);
+                            }else {
                                 mView.loadMoreEnd(false);
-                            } else {
-                                mView.loadMoreComplete();
                             }
-
-                            List<FriendsListBean.ResultBean.ListBean> list = result.getList();
-                            ArrayList<FriendsShowBean> dataList = new ArrayList<>();
-                            for (FriendsListBean.ResultBean.ListBean listBean : list) {
-                                FriendsShowBean bean = new FriendsShowBean();
-                                bean.setHeadImg(listBean.getHeadImg());
-                                bean.setDeployName(listBean.getDeployName());
-                                bean.setDeployTime(listBean.getDeployTime());
-                                bean.setLikeAmount(listBean.getLikeAmount());
-                                bean.setContent(listBean.getFind().getContent());
-                                bean.setImgUrls((ArrayList<String>) listBean.getImgs());
-                                bean.setFindId(String.valueOf(listBean.getFindId()));
-                                bean.setLike(listBean.isIsLike());
-                                bean.setTimeStamp(listBean.getTimeStamp());
-                                dataList.add(bean);
-                            }
-                            mView.loadMoreData(dataList);
                         }
                     }
                 });

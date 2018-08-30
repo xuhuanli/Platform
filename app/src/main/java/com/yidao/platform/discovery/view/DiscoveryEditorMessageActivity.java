@@ -92,6 +92,8 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
                         //重置数量
                         uploadPicCounter = 0;
                         mProgressDialog.dismiss();
+                    }else {
+                        mBtnPublish.setEnabled(true);
                     }
                     break;
                 case 1:
@@ -129,6 +131,8 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
     }
 
     private void CompressPicAndPushToOss() {
+        //在压缩和发布之间不能再次点击
+        mBtnPublish.setEnabled(false);
         mPresenter.getOssInstance(DiscoveryEditorMessageActivity.this, mOss.getAccessKeyId(), mOss.getAccessKeySecret(), mOss.getSecurityToken());
         ArrayList<String> mUpLoadPicList = mPhotosSnpl.getData();
         if (mUpLoadPicList.size() > 0) {
@@ -281,6 +285,7 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
 
     @Override
     public void uploadPicFailed() {
+        mBtnPublish.setEnabled(true);
         if (mProgressDialog != null) {
             mProgressDialog.dismiss();
             ToastUtils.showToast("图片上传失败,请重试");
@@ -298,6 +303,7 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
 
     @Override
     public void uploadSuccess() {
+        mBtnPublish.setEnabled(true);
         EventBus.getDefault().post(new RefreshDiscoveryEvent());
         ToastUtils.showToast("发布成功");
         finish();
@@ -312,6 +318,7 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
     public void uploadFailed() {
         picPathList.clear();
         uploadPicCounter = 0;
+        mBtnPublish.setEnabled(true);
         picMap.clear();
     }
 }

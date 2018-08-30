@@ -147,20 +147,20 @@ public interface ApiService {
      * 获取朋友圈列表 后期注意ip地址的修改
      */
     @Headers({"Content-Type: application/json;charset=UTF-8"})
-    @POST("find/qryFindMagList")
+    @POST("app/find/qryFindMagList")
     Observable<FriendsListBean> getFriendsList(@Body FindDiscoveryObj findDiscoveryObj);
 
     /**
      * 获取朋友圈列表
      */
-    @GET("/platform-pc-web/app/find/qryFindLatest")
+    @GET("app/find/qryFindLatest")
     Observable<FriendsListBean> getFriendsList(@Query("size") int size);
 
     /**
      * 获取朋友圈加载更多
      */
-    @GET("/platform-pc-web/app/find/qryFindHis")
-    Observable<FriendsListBean> qryFindHis(@Query("size") int size,@Query("lastFindId")String lastFindId);
+    @GET("app/find/qryFindHis")
+    Observable<FriendsListBean> qryFindHis(@Query("size") int size, @Query("lastFindId") String lastFindId);
 
     /**
      * 朋友圈点赞

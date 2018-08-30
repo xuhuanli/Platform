@@ -12,7 +12,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -31,7 +30,6 @@ import com.yidao.platform.app.utils.FileUtil;
 import com.yidao.platform.discovery.adapter.MomentAdapter;
 import com.yidao.platform.discovery.bean.FriendsShowBean;
 import com.yidao.platform.discovery.model.DianZanObj;
-import com.yidao.platform.discovery.model.FindDiscoveryObj;
 import com.yidao.platform.discovery.presenter.DiscoveryPresenter;
 import com.yidao.platform.events.RefreshDiscoveryEvent;
 
@@ -49,7 +47,6 @@ import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
 import cn.bingoogolapple.photopicker.imageloader.BGARVOnScrollListener;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
-import io.reactivex.functions.Consumer;
 import pub.devrel.easypermissions.EasyPermissions;
 
 import static android.app.Activity.RESULT_OK;
@@ -83,11 +80,6 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     private Uri uriForFile;
     private File app_photo;
     private String userId;
-    /**
-     * 请求的下一个页码
-     */
-    private int mNextRequestPage = 1;
-    private FindDiscoveryObj findDiscoveryObj;
     private DianZanObj dianZanObj;
 
     @Override
@@ -124,7 +116,6 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
 
     @Override
     protected void initData() {
-        //createObj();
         mPresenter.getFriendsList(Constant.PAGE_SIZE);
     }
 
@@ -134,22 +125,8 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
         EventBus.getDefault().unregister(this);
     }
 
-    private void createObj() {
-        if (findDiscoveryObj == null) {
-            findDiscoveryObj = new FindDiscoveryObj();
-        }
-        findDiscoveryObj.setMemberId(Long.parseLong(userId));
-        findDiscoveryObj.setIsContent(true);
-        findDiscoveryObj.setIsImg(true);
-        FindDiscoveryObj.PageBean pageBean = new FindDiscoveryObj.PageBean();
-        pageBean.setPageIndex(mNextRequestPage);
-        pageBean.setPageSize(Constant.PAGE_SIZE);
-        findDiscoveryObj.setPage(pageBean);
-    }
-
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        //取消闪烁
         mRecyclerView.setItemAnimator(null);
     }
 
@@ -166,12 +143,6 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     }
 
     private void refresh() {
-        /*mNextRequestPage = 1;
-        if (findDiscoveryObj == null) {
-            createObj();
-        } else {
-            findDiscoveryObj.getPage().setPageIndex(mNextRequestPage);
-        }*/
         if (mAdapter != null) {
             mAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
         }
@@ -180,10 +151,11 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
 
     /**
      * 需要刷新列表的时间
+     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onRefrshEvent(RefreshDiscoveryEvent event){
+    public void onRefrshEvent(RefreshDiscoveryEvent event) {
         refresh();
     }
 
@@ -270,17 +242,11 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
         });
     }
 
-    /*private void loadMore() {
-        mNextRequestPage++;
-        findDiscoveryObj.getPage().setPageIndex(mNextRequestPage);
-        mPresenter.getFriendsList(findDiscoveryObj);
-    }*/
-
     private void loadMore() {
         List<FriendsShowBean> dataList = mAdapter.getData();
-        FriendsShowBean bean = mAdapter.getData().get(dataList.size()-1);
+        FriendsShowBean bean = mAdapter.getData().get(dataList.size() - 1);
         String findId = bean.getFindId();
-        mPresenter.qryFindHis(Constant.PAGE_SIZE,findId);
+        mPresenter.qryFindHis(Constant.PAGE_SIZE, findId);
     }
 
     @Override
@@ -351,7 +317,6 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
                 }
                 break;
             case PERM_OPEN_CAMERA:
-                //Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA
                 if (perms.size() == 2) {
                     mPresenter.openCamera();
                 }

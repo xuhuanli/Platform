@@ -108,7 +108,7 @@ public class DiscoveryMyBottleActivity extends BaseActivity implements IViewMyBo
         mRecyclerView.setAdapter(mAdapter);
         if (dataList.size() == 0) {
             View view = LayoutInflater.from(this).inflate(R.layout.info_no_msg_layout, mRecyclerView, false);
-            ((TextView) view.findViewById(R.id.tv_tips)).setText(R.string.no_collection);
+            ((TextView) view.findViewById(R.id.tv_tips)).setText(R.string.no_bottle_message);
             mAdapter.setEmptyView(view);
             mAdapter.setNewData(null);
         }

@@ -1,5 +1,6 @@
 package com.yidao.platform.info.view;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.text.TextUtils;
@@ -14,6 +15,7 @@ import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseFragment;
+import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.info.model.EventChangeInfo;
 import com.yidao.platform.info.model.EventTouXiangInfo;
 import com.yidao.platform.info.model.MineInfoBean;
@@ -59,6 +61,13 @@ public class MyInfoFragment extends BaseFragment implements IViewMineInfo {
     TextView tvMsgCount;
     private MyInfoFragmentPresenter mPresenter;
     private String userId;
+    private boolean isFirstDisplay;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        isFirstDisplay = true;
+    }
 
     @Override
     protected void initView() {
@@ -106,6 +115,12 @@ public class MyInfoFragment extends BaseFragment implements IViewMineInfo {
     protected void initData() {
         mPresenter.qryUserById(userId);
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+    }
+
 
     @Override
     public void success(MineInfoBean data) {
