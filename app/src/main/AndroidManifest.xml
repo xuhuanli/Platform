@@ -127,14 +127,6 @@
             android:name="com.alibaba.app.appsecret"
             android:value="374055eaad638c6f802363fad0278358" />
 
-        <!--Umeng Analytics Settings-->
-        <!--
-                <meta-data
-                    android:name="UMENG_APPKEY"
-                    android:value="5b7cca73f43e4810d4000011" />
-                <meta-data
-                    android:name="UMENG_CHANNEL"
-                    android:value="normal" />-->
         <!--启动引导页-->
         <activity
             android:name=".login.view.SplashActivity"

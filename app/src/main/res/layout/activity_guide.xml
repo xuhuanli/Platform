@@ -38,7 +38,7 @@
             app:banner_pageChangeDuration="1000"
             app:banner_pointAutoPlayAble="false"
             app:banner_pointContainerBackground="@android:color/transparent"
-            app:banner_pointDrawable="@drawable/bga_banner_selector_point_hollow"
+            app:banner_pointDrawable="@drawable/point_hollow"
             app:banner_pointTopBottomMargin="40dp"
             app:banner_pointLeftRightMargin="20dp"
             app:banner_transitionEffect="fade">
