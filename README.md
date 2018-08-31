@@ -50,12 +50,12 @@
           （暂时没时间搞这个了）
           
 #App发布须知
-
-1. Constant.class下IS_DEBUG开关设置为false
-2. 在MyApplicationLike下关闭LeakCanary
-3. 修改友盟渠道Value以及SplashActivity的Drawable
-4. 在Module的gradle文件下修改App的VersionCode以及VersionName
-5. 正式版需要在Constant文件下修改Bugly APPID
+1. 修改服务器连接IP
+2. Constant.class下IS_DEBUG开关设置为false
+3. 在MyApplicationLike下关闭LeakCanary
+4. 正式版需要在Constant文件下修改Bugly APPID
+5. 在Module的gradle文件下修改App的VersionCode以及VersionName
+6. 修改友盟渠道Value以及SplashActivity的Drawable(仅限联合首发)
 
 
 

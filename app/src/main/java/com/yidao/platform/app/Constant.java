@@ -20,7 +20,15 @@ public class Constant {
     /**
      * 全局debug模式开关 在release时候设置为false
      */
-    public static final boolean IS_DEBUG = true;
+    public static final boolean IS_DEBUG = false;
+    /**
+     * Bugly App ID DEBUG 内测
+     */
+    //public static final String BUGLY_ID = "59c35ade6f";
+    /**
+     * Bugly App ID RELEASE 正式
+     */
+    public static final String BUGLY_ID = "4d24298061";
     /**
      * button防抖时间
      */
@@ -31,15 +39,6 @@ public class Constant {
      */
     public static final String WX_LOGIN_APP_ID = "wx4bd23926604e2693";
 
-    /**
-     * Bugly App ID DEBUG 内测
-     */
-    public static final String BUGLY_ID = "59c35ade6f";
-    public static final String WEBVIEW_PROGRESS = "webview_progress";
-    /**
-     * Bugly App ID RELEASE 正式
-     */
-    //public static final String BUGLY_ID = "4d24298061";
     /**
      * 图片压缩的最小KB
      */

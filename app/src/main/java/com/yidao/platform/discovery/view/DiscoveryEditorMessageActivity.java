@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.allen.library.utils.ToastUtils;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
@@ -50,6 +51,8 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
     TextView mBtnPublish;
     @BindView(R.id.et_editor)
     EditText mEtEditor;
+    @BindView(R.id.tv_content_length)
+    TextView mContentLength;
     private BGASortableNinePhotoLayout mPhotosSnpl;
     private OssBean.ResultBean mOss;
     /**
@@ -126,6 +129,7 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
     }
 
     private void initView() {
+        addDisposable(RxTextView.textChanges(mEtEditor).subscribe(charSequence -> mContentLength.setText(String.format("%d%s", charSequence.length(), "/300"))));
         addDisposable(RxView.clicks(mBtnCancel).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish()));
         addDisposable(RxView.clicks(mBtnPublish).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> CompressPicAndPushToOss()));
     }

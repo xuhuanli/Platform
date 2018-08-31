@@ -53,7 +53,7 @@ public class MyApplicationLike extends DefaultApplicationLike {
         initRetrofit();
         initCloudChannel(appContext);
         initBugly();
-        initLeakCanary();
+        //initLeakCanary();
         initLogger();
         initUmengAnalytics(appContext);
         setLabelMap();

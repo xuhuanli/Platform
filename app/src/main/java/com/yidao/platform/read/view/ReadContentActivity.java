@@ -364,12 +364,15 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     public void showHotComment(boolean isCollectArt, String commentAmount, String likeAmount, ArrayList<ReadNewsDetailBean> dataList, boolean isLikedtArt) {
         isCollection = isCollectArt;
         isLike = isLikedtArt;
-
         artLikeCount = Integer.parseInt(likeAmount);
         ib_vote.setSelected(isCollectArt);
         ib_favorite.setSelected(isLike);
-        ib_comment.showTextBadge(commentAmount);
-        ib_favorite.showTextBadge(likeAmount);
+        if (!"0".equals(commentAmount)) {
+            ib_comment.showTextBadge(commentAmount);
+        }
+        if (!"0".equals(likeAmount)) {
+            ib_favorite.showTextBadge(likeAmount);
+        }
         if (dataList.size() > 0) {
             list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_HOT_COMMENT));
             list.addAll(dataList);

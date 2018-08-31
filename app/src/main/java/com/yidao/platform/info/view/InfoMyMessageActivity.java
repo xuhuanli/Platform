@@ -202,12 +202,14 @@ public class InfoMyMessageActivity extends BaseActivity implements IViewMyMessag
         mRecyclerView.setAdapter(adapter);
     }
 
-
     @Override
     public void successBottle(BottleMsgBean.ResultBean.PageBean pageBean, List<BottleMsgBean.ResultBean.ListBean> listBeans) {
         mPresenter.qryFindMess(userId, mNextRequestPage, MAX_MESSAGE);
         if (pageBean != null) {
-            tvItem3.showTextBadge(pageBean.getTotal());
+            String total = pageBean.getTotal();
+            if (!"0".equals(total)) {
+                tvItem3.showTextBadge(total);
+            }
         }
         bottleDataList = listBeans;
     }
@@ -215,7 +217,10 @@ public class InfoMyMessageActivity extends BaseActivity implements IViewMyMessag
     @Override
     public void successFind(FindMsgBean.ResultBean.PageBean pageBean, List<FindMsgBean.ResultBean.ListBean> listBeans) {
         if (pageBean != null) {
-            tvItem2.showTextBadge(pageBean.getTotal());
+            String total = pageBean.getTotal();
+            if (!"0".equals(total)) {
+                tvItem2.showTextBadge(total);
+            }
         }
         findDataList = listBeans;
     }
