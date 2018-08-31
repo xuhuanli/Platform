@@ -13,9 +13,9 @@ public class Constant {
     //陈dq
     //public static final String BASE_URL = "http://10.10.20.4:8080/platform-pc-web/";
     //debug ip
-    public static final String BASE_URL = "http://10.10.20.200:8082/";
+    //public static final String BASE_URL = "http://10.10.20.200:8082/";
     //release ip
-    //public static final String BASE_URL = "http://47.96.122.73:8082/";
+    public static final String BASE_URL = "http://47.96.122.73:8082/";
 
     /**
      * 全局debug模式开关 在release时候设置为false

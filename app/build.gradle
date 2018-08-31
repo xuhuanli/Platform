@@ -43,7 +43,7 @@ android {
         vectorDrawables.useSupportLibrary = true
         //是否要分dex
         multiDexEnabled true
-
+        flavorDimensions "release"
         ndk {
             //设置支持的SO库架构
             abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
@@ -77,21 +77,132 @@ android {
         disable 'MissingTranslation'
     }
 
-/*    flavorDimensions "channel"
+    flavorDimensions "release"
 
     productFlavors {
-        bugly{
-            dimension "channel"
-        }
-
         xiaomi{
-            dimension "channel"
+            dimension "release"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "xiaomi"]
         }
-
+        _360{
+            dimension "release"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "_360"]
+        }
         huawei{
-            dimension "channel"
+            dimension "release"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "huawei"]
         }
-    }*/
+        yingyongbao{
+            dimension "release"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "yingyongbao"]
+        }
+        oppo{
+            dimension "release"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "oppo"]
+        }
+        _91{
+            dimension "release"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "_91"]
+        }
+        pp{
+            dimension "release"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "pp"]
+        }
+        vivo{
+            dimension "release"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "vivo"]
+        }
+        meizu{
+            dimension "release"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "meizu"]
+        }
+        anzhi{
+            dimension "release"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "anzhi"]
+        }
+        mumayi{
+            dimension "release"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "mumayi"]
+        }
+        sogou{
+            dimension "release"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "sogou"]
+        }
+        smartisan{
+            dimension "release"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "smartisan"]
+        }
+        lenovo{
+            dimension "release"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "lenovo"]
+        }
+        le{
+            dimension "release"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "le"]
+        }
+        //外链
+        sgss{
+            dimension "release"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "sgss"]
+        }
+        bdss{
+            dimension "release"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "bdss"]
+        }
+        toutiao{
+            dimension "release"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "toutiao"]
+        }
+        yyb-wx{
+            dimension "release"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "yyb-wx"]
+        }
+        kuhua{
+            dimension "release"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "kuhua"]
+        }
+        //
+        shequn{
+            dimension "release"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "shequn"]
+        }
+        cpawm{
+            dimension "release"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "cpawm"]
+        }
+        xubin1{
+            dimension "release"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "xubin1"]
+        }
+        xubin2{
+            dimension "release"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "xubin2"]
+        }
+        xubin3{
+            dimension "release"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "xubin3"]
+        }
+        xubin4{
+            dimension "release"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "xubin4"]
+        }
+        xubin5{
+            dimension "release"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "xubin5"]
+        }
+        xianxia{
+            dimension "release"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "xianxia"]
+        }
+        pingtaituiguang{
+            dimension "release"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "pingtaituiguang"]
+        }
+        ziyoumeiti {
+            dimension "release"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "ziyoumeiti "]
+        }
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8

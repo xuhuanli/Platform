@@ -30,11 +30,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_comment"
         app:layout_constraintTop_toTopOf="parent" />
-
     <cn.bingoogolapple.badgeview.BGABadgeImageButton
         android:id="@+id/ib_comment"
         style="@style/Bottom_Bar_Icon"
         android:src="@drawable/comment"
+        app:badge_bgColor="@color/FF007AFF"
         app:badge_gravity="rightTop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_chainStyle="spread"
@@ -46,6 +46,7 @@
         android:id="@+id/ib_vote"
         style="@style/Bottom_Bar_Icon"
         android:src="@drawable/selector_vote"
+        app:badge_bgColor="@color/FF007AFF"
         app:badge_gravity="rightTop"
         app:layout_constraintBottom_toBottomOf="@+id/ib_comment"
         app:layout_constraintLeft_toRightOf="@+id/ib_comment"
@@ -55,6 +56,7 @@
         android:id="@+id/ib_favorite"
         style="@style/Bottom_Bar_Icon"
         android:src="@drawable/selector_dianzan"
+        app:badge_bgColor="@color/FF007AFF"
         app:badge_gravity="rightTop"
         app:layout_constraintBottom_toBottomOf="@+id/ib_vote"
         app:layout_constraintLeft_toRightOf="@+id/ib_vote"
@@ -64,6 +66,7 @@
         android:id="@+id/ib_share"
         style="@style/Bottom_Bar_Icon"
         android:src="@drawable/fenxiang"
+        app:badge_bgColor="@color/FF007AFF"
         app:badge_gravity="rightTop"
         app:layout_constraintBottom_toBottomOf="@+id/ib_favorite"
         app:layout_constraintLeft_toRightOf="@+id/ib_favorite"

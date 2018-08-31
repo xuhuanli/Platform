@@ -326,7 +326,6 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void deleteCommentSuccess() {
-        // TODO: 2018/8/16 0016 删除成功后需要刷新评论list数据 删除评论id的数据(推荐)或者重新获取
         list.remove(deleteItem);
         mAdapter.notifyDataSetChanged();
     }
@@ -337,7 +336,6 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void pushCommentSuccess(ReadNewsDetailBean item) {
-        // TODO: 2018/8/16 0016 发布成功后需要刷新评论list数据 添加评论id的数据(推荐)或者重新获取
         if (list.size() ==1) {
             list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_LAST_COMMENT));
             list.add(item);
