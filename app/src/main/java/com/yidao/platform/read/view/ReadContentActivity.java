@@ -364,6 +364,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     public void showHotComment(boolean isCollectArt, String commentAmount, String likeAmount, ArrayList<ReadNewsDetailBean> dataList, boolean isLikedtArt) {
         isCollection = isCollectArt;
         isLike = isLikedtArt;
+
         artLikeCount = Integer.parseInt(likeAmount);
         ib_vote.setSelected(isCollectArt);
         ib_favorite.setSelected(isLike);
