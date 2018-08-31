@@ -10,6 +10,7 @@ import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.read.adapter.ReadNewsDetailBean;
 import com.yidao.platform.read.bean.HotCommentsBean;
 import com.yidao.platform.read.bean.LastCommentsBean;
+import com.yidao.platform.read.bean.PushCommBean;
 import com.yidao.platform.read.bean.ShareBean;
 import com.yidao.platform.read.view.IViewReadContentActivity;
 
@@ -22,7 +23,6 @@ import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 
 import static com.yidao.platform.read.adapter.ReadNewsDetailBean.ITEM_COMMENTS;
 
@@ -52,27 +52,65 @@ public class ReadContentActivityPresenter {
         RxHttpUtils.createApi(ApiService.class)
                 .pushComment(map)
                 .compose(Transformer.switchSchedulers())
-                .subscribe(new StringObserver() {
+                .subscribe(new Observer<PushCommBean>() {
                     @Override
-                    protected void onError(String errorMsg) {
-                        showError();
+                    public void onSubscribe(Disposable d) {
+
                     }
 
                     @Override
-                    protected void onSuccess(String data) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(data);
-                            Boolean status = (Boolean) jsonObject.get("status");
-                            if (status) {
-                                mView.pushCommentSuccess();
-                            } else {
-                                mView.pushCommentFail();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                    public void onNext(PushCommBean data) {
+                        if (data.isStatus()) {
+                            PushCommBean.ResultBean result = data.getResult();
+                            ReadNewsDetailBean item = new ReadNewsDetailBean(ITEM_COMMENTS);
+                            item.setId(result.getId());
+                            item.setContent(result.getContent());
+                            item.setUserId(result.getUserId());
+                            item.setTimeSamp("刚刚");
+                            item.setNickName(result.getNickname());
+                            item.setLikeCount(result.getLikeCount());
+                            item.setHeadImg(result.getCommentUserHeadImgUrl());
+                            mView.pushCommentSuccess(item);
+                        } else {
+                            mView.pushCommentFail();
                         }
                     }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        MyLogger.e(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
                 });
+        /**
+         * new CommonObserver<PushCommBean>() {
+        @Override protected void onError(String errorMsg) {
+        MyLogger.e(errorMsg);
+        showError();
+        }
+
+        @Override protected void onSuccess(PushCommBean data) {
+        if (data.isStatus()) {
+        PushCommBean.ResultBean result = data.getResult();
+        ReadNewsDetailBean item = new ReadNewsDetailBean(ITEM_COMMENTS);
+        item.setId(result.getId());
+        item.setContent(result.getContent());
+        item.setUserId(result.getUserId());
+        item.setTimeSamp("刚刚");
+        item.setNickName(result.getNickname());
+        item.setLikeCount(result.getLikeCount());
+        item.setHeadImg(result.getCommentUserHeadImgUrl());
+        mView.pushCommentSuccess(item);
+        }else {
+        mView.pushCommentFail();
+        }
+        }
+        }
+         */
     }
 
     /**
@@ -209,7 +247,7 @@ public class ReadContentActivityPresenter {
                                 bean.setLikedCommed(commentDto.isLikedCommed());
                                 dataList.add(bean);
                             }
-                            mView.showHotComment(isCollectArt,commentAmount, likeAmount, dataList);
+                            mView.showHotComment(isCollectArt, commentAmount, likeAmount, dataList);
                         }
                     }
                 });
@@ -236,7 +274,7 @@ public class ReadContentActivityPresenter {
                             if (list != null) {
                                 if (list.size() < lastCommentsBean.getResult().getPageSize()) {  //所得数目< pageSize =>到底了
                                     mView.loadMoreEnd(false);
-                                }else {
+                                } else {
                                     mView.loadMoreComplete();
                                 }
                                 ArrayList<ReadNewsDetailBean> dataList = new ArrayList<>();
@@ -311,6 +349,7 @@ public class ReadContentActivityPresenter {
 
     /**
      * 获取分享所需(文章)
+     *
      * @param artId
      */
     public void getShareContent(String artId) {

@@ -27,6 +27,6 @@ public class ReadItemMoreAdapter extends BaseQuickAdapter<ReadNewsBean, BaseView
         helper.setText(R.id.read_list_content, item.getTitle())
                 .setText(R.id.tv_read_count, readAmount)
                 .setText(R.id.tv_news_time, deployTime);
-        Glide.with(mContext).load(R.drawable.info_head_p).into((ImageView) helper.getView(R.id.read_list_image));
+        Glide.with(mContext).load(item.getHomeImg()).into((ImageView) helper.getView(R.id.read_list_image));
     }
 }

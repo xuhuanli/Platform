@@ -36,6 +36,9 @@ public class SearchArticleActivity extends BaseActivity implements IViewSearchAr
     RecyclerView mRecyclerView;
     private SearchArticleActivityPresenter mPresenter;
     private TitleSearchAdapter mAdapter;
+    private int mNextRequestPage = 1;
+    private String queryText;
+    private boolean isFirstRequest;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,18 +49,22 @@ public class SearchArticleActivity extends BaseActivity implements IViewSearchAr
     private void initView() {
         mPresenter = new SearchArticleActivityPresenter(this);
         addDisposable(RxView.clicks(tvCancel).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish()));
-        //initRecyclerView();
         initRecyclerView();
         initSearchView();
     }
 
     private void initSearchView() {
         searchView.setIconifiedByDefault(false);
-        //searchView.onActionViewExpanded();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchArticle(query);
+                if (query.length()>10) {
+                    queryText = query.substring(0,11);
+                }
+                queryText = query;
+                mNextRequestPage = 1;
+                isFirstRequest = true;
+                searchArticle(queryText, mNextRequestPage, Constant.PAGE_SIZE, isFirstRequest);
                 return true;
             }
 
@@ -73,10 +80,10 @@ public class SearchArticleActivity extends BaseActivity implements IViewSearchAr
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
     }
 
-    private void searchArticle(String text) {
+    private void searchArticle(String text, int pageIndex, int pageSize, boolean isFirstRequest) {
         searchView.setQuery(text, false);
         searchView.clearFocus();
-        mPresenter.searchArticle(text);
+        mPresenter.searchArticle(text, pageIndex, pageSize, isFirstRequest);
     }
 
     @Override
@@ -97,7 +104,7 @@ public class SearchArticleActivity extends BaseActivity implements IViewSearchAr
     @Override
     public void loadRecyclerData(ArrayList<ReadNewsBean> dataList) {
         mAdapter = new TitleSearchAdapter(dataList);
-        //mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
+        mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
         mRecyclerView.setAdapter(mAdapter);
         if (dataList.size() == 0) {
             View view = LayoutInflater.from(this).inflate(R.layout.info_no_msg_layout, mRecyclerView, false);
@@ -106,6 +113,13 @@ public class SearchArticleActivity extends BaseActivity implements IViewSearchAr
             mAdapter.setNewData(null);
         }
         mAdapter.setOnItemClickListener(this);
+    }
+
+    @Override
+    public void loadMoreData(ArrayList<ReadNewsBean> dataList) {
+        if (mAdapter != null) {
+            mAdapter.addData(dataList);
+        }
     }
 
     @Override
@@ -118,19 +132,34 @@ public class SearchArticleActivity extends BaseActivity implements IViewSearchAr
         adapter.setNewData(null);
     }
 
+    @Override
+    public void loadMoreEnd(boolean b) {
+        if (mAdapter != null) {
+            mAdapter.loadMoreEnd(b);
+        }
+    }
+
+    @Override
+    public void loadMoreComplete() {
+        if (mAdapter != null) {
+            mAdapter.loadMoreComplete();
+        }
+    }
+
     /**
      * 上拉加载
      */
     private void loadMore() {
-
+        mNextRequestPage++;
+        isFirstRequest = false;
+        mPresenter.searchArticle(queryText, mNextRequestPage, Constant.PAGE_SIZE, isFirstRequest);
     }
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         ReadNewsBean item = (ReadNewsBean) adapter.getItem(position);
-        String url = item.getArticleContent();
         Intent intent = new Intent(this, ReadContentActivity.class);
-        intent.putExtra("url", item.getArticleContent());
+        intent.putExtra(Constant.STRING_URL, item.getArticleContent());
         intent.putExtra(Constant.STRING_ART_ID, item.getId());
         startActivity(intent);
     }

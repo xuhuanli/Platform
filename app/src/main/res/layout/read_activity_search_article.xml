@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="@dimen/size_16dp"
-    android:paddingRight="@dimen/size_16dp">
+    android:layout_height="match_parent">
 
     <SearchView
         android:id="@+id/searchView"
         android:layout_width="0dp"
         android:layout_height="32dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/searchview_shape_corner"
+        android:queryBackground="@android:color/transparent"
+        android:queryHint="@string/key_word"
+        android:showDividers="none"
+        android:submitBackground="@null"
         app:layout_constraintEnd_toStartOf="@+id/tv_cancel"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -51,6 +53,16 @@
         app:layout_constraintStart_toStartOf="@+id/tv_hot_search"
         app:layout_constraintTop_toBottomOf="@+id/tv_hot_search" />
 
+    <View
+        android:id="@+id/line"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="#ffeaecf1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchView" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_result"
         android:layout_width="0dp"
@@ -59,6 +71,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView" />
+        app:layout_constraintTop_toBottomOf="@+id/line" />
 
 </android.support.constraint.ConstraintLayout>

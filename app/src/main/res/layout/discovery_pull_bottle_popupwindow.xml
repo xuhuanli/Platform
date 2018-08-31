@@ -9,6 +9,7 @@
         android:id="@+id/iv_head_portrait"
         android:layout_width="64dp"
         android:layout_height="64dp"
+        android:scaleType="centerCrop"
         android:layout_marginStart="30dp"
         android:layout_marginTop="34dp"
         app:layout_constraintStart_toStartOf="parent"

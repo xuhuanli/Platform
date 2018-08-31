@@ -3,8 +3,14 @@ package com.yidao.platform.read.bean;
 import java.util.List;
 
 public class SearchBean {
+
+    /**
+     * status : true
+     * result : {"pageIndex":1,"pageSize":6,"total":"","begIndex":0,"list":[{"id":4703482524794880,"title":"大学女生1000元生活费很滋润，为什么男生1500却紧巴巴呢？真实原因不敢相信","status":1,"homeImg":"http://ydplatform.oss-cn-hangzhou.aliyuncs.com/articleBanner/X8CsE8_1535533157718.jpg","deployTime":"1天前","type":0,"articleContent":"http://ydplatform.oss-cn-hangzhou.aliyuncs.com/1b867b94-ded8-45ac-995c-2640b80a70e220180829085923.html","readAmount":4703482524794880}],"status":true,"errCode":"1","info":""}
+     */
+
     private boolean status;
-    private List<ResultBean> result;
+    private ResultBean result;
 
     public boolean isStatus() {
         return status;
@@ -14,195 +20,183 @@ public class SearchBean {
         this.status = status;
     }
 
-    public List<ResultBean> getResult() {
+    public ResultBean getResult() {
         return result;
     }
 
-    public void setResult(List<ResultBean> result) {
+    public void setResult(ResultBean result) {
         this.result = result;
     }
 
     public static class ResultBean {
+        /**
+         * pageIndex : 1
+         * pageSize : 6
+         * total :
+         * begIndex : 0
+         * list : [{"id":4703482524794880,"title":"大学女生1000元生活费很滋润，为什么男生1500却紧巴巴呢？真实原因不敢相信","status":1,"homeImg":"http://ydplatform.oss-cn-hangzhou.aliyuncs.com/articleBanner/X8CsE8_1535533157718.jpg","deployTime":"1天前","type":0,"articleContent":"http://ydplatform.oss-cn-hangzhou.aliyuncs.com/1b867b94-ded8-45ac-995c-2640b80a70e220180829085923.html","readAmount":4703482524794880}]
+         * status : true
+         * errCode : 1
+         * info :
+         */
 
-        private long id;
-        private String title;
-        private String createTime;
-        private int status;
-        private int isDel;
-        private int auditStatus;
-        private String subtitle;
-        private String homeImg;
-        private String deployTime;
-        private String updateTime;
-        private int userId;
-        private int type;
-        private int updateId;
-        private String delTime;
-        private int delUserId;
-        private int deployId;
-        private int auditId;
-        private String author;
-        private String fromUrl;
-        private String articleContent;
+        private int pageIndex;
+        private int pageSize;
+        private String total;
+        private int begIndex;
+        private boolean status;
+        private String errCode;
+        private String info;
+        private List<ListBean> list;
 
-        public long getId() {
-            return id;
+        public int getPageIndex() {
+            return pageIndex;
         }
 
-        public void setId(long id) {
-            this.id = id;
+        public void setPageIndex(int pageIndex) {
+            this.pageIndex = pageIndex;
         }
 
-        public String getTitle() {
-            return title;
+        public int getPageSize() {
+            return pageSize;
         }
 
-        public void setTitle(String title) {
-            this.title = title;
+        public void setPageSize(int pageSize) {
+            this.pageSize = pageSize;
         }
 
-        public String getCreateTime() {
-            return createTime;
+        public String getTotal() {
+            return total;
         }
 
-        public void setCreateTime(String createTime) {
-            this.createTime = createTime;
+        public void setTotal(String total) {
+            this.total = total;
         }
 
-        public int getStatus() {
+        public int getBegIndex() {
+            return begIndex;
+        }
+
+        public void setBegIndex(int begIndex) {
+            this.begIndex = begIndex;
+        }
+
+        public boolean isStatus() {
             return status;
         }
 
-        public void setStatus(int status) {
+        public void setStatus(boolean status) {
             this.status = status;
         }
 
-        public int getIsDel() {
-            return isDel;
+        public String getErrCode() {
+            return errCode;
         }
 
-        public void setIsDel(int isDel) {
-            this.isDel = isDel;
+        public void setErrCode(String errCode) {
+            this.errCode = errCode;
         }
 
-        public int getAuditStatus() {
-            return auditStatus;
+        public String getInfo() {
+            return info;
         }
 
-        public void setAuditStatus(int auditStatus) {
-            this.auditStatus = auditStatus;
+        public void setInfo(String info) {
+            this.info = info;
         }
 
-        public String getSubtitle() {
-            return subtitle;
+        public List<ListBean> getList() {
+            return list;
         }
 
-        public void setSubtitle(String subtitle) {
-            this.subtitle = subtitle;
+        public void setList(List<ListBean> list) {
+            this.list = list;
         }
 
-        public String getHomeImg() {
-            return homeImg;
-        }
+        public static class ListBean {
+            /**
+             * id : 4703482524794880
+             * title : 大学女生1000元生活费很滋润，为什么男生1500却紧巴巴呢？真实原因不敢相信
+             * status : 1
+             * homeImg : http://ydplatform.oss-cn-hangzhou.aliyuncs.com/articleBanner/X8CsE8_1535533157718.jpg
+             * deployTime : 1天前
+             * type : 0
+             * articleContent : http://ydplatform.oss-cn-hangzhou.aliyuncs.com/1b867b94-ded8-45ac-995c-2640b80a70e220180829085923.html
+             * readAmount : 4703482524794880
+             */
 
-        public void setHomeImg(String homeImg) {
-            this.homeImg = homeImg;
-        }
+            private long id;
+            private String title;
+            private int status;
+            private String homeImg;
+            private String deployTime;
+            private long type;
+            private String articleContent;
+            private long readAmount;
 
-        public String getDeployTime() {
-            return deployTime;
-        }
+            public long getId() {
+                return id;
+            }
 
-        public void setDeployTime(String deployTime) {
-            this.deployTime = deployTime;
-        }
+            public void setId(long id) {
+                this.id = id;
+            }
 
-        public String getUpdateTime() {
-            return updateTime;
-        }
+            public String getTitle() {
+                return title;
+            }
 
-        public void setUpdateTime(String updateTime) {
-            this.updateTime = updateTime;
-        }
+            public void setTitle(String title) {
+                this.title = title;
+            }
 
-        public int getUserId() {
-            return userId;
-        }
+            public int getStatus() {
+                return status;
+            }
 
-        public void setUserId(int userId) {
-            this.userId = userId;
-        }
+            public void setStatus(int status) {
+                this.status = status;
+            }
 
-        public int getType() {
-            return type;
-        }
+            public String getHomeImg() {
+                return homeImg;
+            }
 
-        public void setType(int type) {
-            this.type = type;
-        }
+            public void setHomeImg(String homeImg) {
+                this.homeImg = homeImg;
+            }
 
-        public int getUpdateId() {
-            return updateId;
-        }
+            public String getDeployTime() {
+                return deployTime;
+            }
 
-        public void setUpdateId(int updateId) {
-            this.updateId = updateId;
-        }
+            public void setDeployTime(String deployTime) {
+                this.deployTime = deployTime;
+            }
 
-        public String getDelTime() {
-            return delTime;
-        }
+            public long getType() {
+                return type;
+            }
 
-        public void setDelTime(String delTime) {
-            this.delTime = delTime;
-        }
+            public void setType(long type) {
+                this.type = type;
+            }
 
-        public int getDelUserId() {
-            return delUserId;
-        }
+            public String getArticleContent() {
+                return articleContent;
+            }
 
-        public void setDelUserId(int delUserId) {
-            this.delUserId = delUserId;
-        }
+            public void setArticleContent(String articleContent) {
+                this.articleContent = articleContent;
+            }
 
-        public int getDeployId() {
-            return deployId;
-        }
+            public long getReadAmount() {
+                return readAmount;
+            }
 
-        public void setDeployId(int deployId) {
-            this.deployId = deployId;
-        }
-
-        public int getAuditId() {
-            return auditId;
-        }
-
-        public void setAuditId(int auditId) {
-            this.auditId = auditId;
-        }
-
-        public String getAuthor() {
-            return author;
-        }
-
-        public void setAuthor(String author) {
-            this.author = author;
-        }
-
-        public String getFromUrl() {
-            return fromUrl;
-        }
-
-        public void setFromUrl(String fromUrl) {
-            this.fromUrl = fromUrl;
-        }
-
-        public String getArticleContent() {
-            return articleContent;
-        }
-
-        public void setArticleContent(String articleContent) {
-            this.articleContent = articleContent;
+            public void setReadAmount(long readAmount) {
+                this.readAmount = readAmount;
+            }
         }
     }
 }

@@ -133,11 +133,11 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
         banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
         banner.setImageLoader(new GlideImageLoader());
         banner.setOffscreenPageLimit(5);
-        BannerViewPager bannerViewPager = banner.findViewById(com.youth.banner.R.id.bannerViewPager);
-        bannerViewPager.setPageMargin(ScreenUtil.dip2px(getContext(), 16));
-        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) bannerViewPager.getLayoutParams();
-        lp.setMargins(ScreenUtil.dip2px(getContext(), 16), 0, ScreenUtil.dip2px(getContext(), 16), 0);
-        bannerViewPager.setLayoutParams(lp);
+//        BannerViewPager bannerViewPager = banner.findViewById(com.youth.banner.R.id.bannerViewPager);
+//        bannerViewPager.setPageMargin(ScreenUtil.dip2px(getContext(), 16));
+//        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) bannerViewPager.getLayoutParams();
+//        lp.setMargins(ScreenUtil.dip2px(getContext(), 16), 0, ScreenUtil.dip2px(getContext(), 16), 0);
+//        bannerViewPager.setLayoutParams(lp);
         banner.isAutoPlay(true);
         banner.setDelayTime(5000);
         banner.setIndicatorGravity(BannerConfig.CENTER);

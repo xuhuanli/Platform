@@ -29,6 +29,7 @@ import com.yidao.platform.read.bean.ChannelBean;
 import com.yidao.platform.read.bean.CommonArticleBean;
 import com.yidao.platform.read.bean.HotCommentsBean;
 import com.yidao.platform.read.bean.LastCommentsBean;
+import com.yidao.platform.read.bean.PushCommBean;
 import com.yidao.platform.read.bean.SearchBean;
 import com.yidao.platform.read.bean.ShareBean;
 import com.yidao.platform.service.model.BpObj;
@@ -278,7 +279,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST("user/center/pushComment")
-    Observable<String> pushComment(@FieldMap Map<String, String> options);
+    Observable<PushCommBean> pushComment(@FieldMap Map<String, String> options);
 
     /**
      * 用户阅读

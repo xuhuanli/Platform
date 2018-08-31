@@ -14,4 +14,6 @@ public interface IViewReadItemMoreActivity {
     void loadMoreComplete();
 
     void loadMoreData(List<ReadNewsBean> dataList);
+
+    void noData();
 }

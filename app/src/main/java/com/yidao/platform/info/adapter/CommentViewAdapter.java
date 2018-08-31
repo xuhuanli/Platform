@@ -22,8 +22,8 @@ public class CommentViewAdapter extends BaseQuickAdapter<FindMsgBean.ResultBean.
     protected void convert(BaseViewHolder helper, FindMsgBean.ResultBean.ListBean item) {
         helper
                 .setText(R.id.tv_name, item.getUserName())
-                .setText(R.id.tv_comment_content, "评论了你: " + item.getComment())
-                .setText(R.id.tv_comment_title, item.getContent())
+                .setText(R.id.tv_comment_content, "评论了你: " + item.getContent())
+                .setText(R.id.tv_comment_title, item.getComment())
                 .setText(R.id.tv_comment_time, item.getTimeStamp());
         Glide.with(mContext).load(item.getHeadImg()).apply(RequestOptions.placeholderOf(R.drawable.info_head_p)).into((ImageView) helper.getView(R.id.iv_touxiang));
     }

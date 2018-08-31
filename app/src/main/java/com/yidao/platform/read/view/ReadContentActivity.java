@@ -4,10 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.annotation.MainThread;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetDialog;
@@ -26,10 +23,6 @@ import android.widget.TextView;
 
 import com.allen.library.utils.ToastUtils;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
@@ -55,7 +48,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -109,6 +101,9 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     private int mNextRequestPage = 1;
     private List<ReadNewsDetailBean> list = new ArrayList<>();
     private boolean isFirstGetNewComment = true;
+    private int artLikeCount;
+    private ReadNewsDetailBean deleteItem;
+    private int indexOfLastTitleItem;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -181,10 +176,10 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         mAdapter = new MultipleReadDetailAdapter(list);
         mAdapter.setWebViewUrl(url);
         mAdapter.setOnItemLongClickListener((adapter, view, position) -> {
-            ReadNewsDetailBean item = (ReadNewsDetailBean) adapter.getItem(position);
+            deleteItem = (ReadNewsDetailBean) adapter.getItem(position);
             int itemViewType = adapter.getItemViewType(position);
-            if (TextUtils.equals(item.getUserId(), userId) && itemViewType == ReadNewsDetailBean.ITEM_COMMENTS) {
-                showAlertDialog(R.string.ensure_delete, (dialog, which) -> mPresenter.deleteMineComment(item.getId()));
+            if (TextUtils.equals(deleteItem.getUserId(), userId) && itemViewType == ReadNewsDetailBean.ITEM_COMMENTS) {
+                showAlertDialog(R.string.ensure_delete, (dialog, which) -> mPresenter.deleteMineComment(deleteItem.getId()));
             }
             return false;
         });
@@ -275,8 +270,13 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.ib_favorite: //点赞icon
                 isOperateLike = true;
-                ib_favorite.setSelected(!isLike);
                 isLike = !isLike;
+                ib_favorite.setSelected(isLike);
+                artLikeCount = isLike ? artLikeCount + 1 : artLikeCount - 1;
+                if (artLikeCount<0){
+                    artLikeCount = 0;
+                }
+                ib_favorite.showTextBadge(String.valueOf(artLikeCount));
                 break;
             case R.id.ib_share: //分享icon
                 mPresenter.getShareContent(String.valueOf(artId));
@@ -326,6 +326,8 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void deleteCommentSuccess() {
         // TODO: 2018/8/16 0016 删除成功后需要刷新评论list数据 删除评论id的数据(推荐)或者重新获取
+        list.remove(deleteItem);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -333,8 +335,15 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
-    public void pushCommentSuccess() {
+    public void pushCommentSuccess(ReadNewsDetailBean item) {
         // TODO: 2018/8/16 0016 发布成功后需要刷新评论list数据 添加评论id的数据(推荐)或者重新获取
+        if (list.size() ==1) {
+            list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_LAST_COMMENT));
+            list.add(item);
+        }else {
+            list.add(indexOfLastTitleItem+1,item);
+        }
+        mAdapter.notifyDataSetChanged();
         /*ReadNewsDetailBean firstData = list.get(0);
         list.clear();
         list.add(firstData);
@@ -353,6 +362,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void showHotComment(boolean isCollectArt,String commentAmount, String likeAmount, ArrayList<ReadNewsDetailBean> dataList) {
         isCollection = isCollectArt;
+        artLikeCount = Integer.parseInt(likeAmount);
         ib_vote.setSelected(isCollectArt);
         ib_comment.showTextBadge(commentAmount);
         ib_favorite.showTextBadge(likeAmount);
@@ -368,7 +378,9 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     public void loadMoreData(List<ReadNewsDetailBean> dataList) {
         if (isFirstGetNewComment) {
             if (dataList.size() > 0) {
-                list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_LAST_COMMENT));
+                ReadNewsDetailBean lastTitleItem = new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_LAST_COMMENT);
+                list.add(lastTitleItem);
+                indexOfLastTitleItem = list.indexOf(lastTitleItem);
                 list.addAll(dataList);
             }else {
                 mAdapter.loadMoreEnd(true);

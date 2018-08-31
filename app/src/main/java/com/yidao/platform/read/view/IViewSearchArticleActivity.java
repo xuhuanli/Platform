@@ -10,4 +10,10 @@ public interface IViewSearchArticleActivity {
     void loadRecyclerData(ArrayList<ReadNewsBean> dataList);
 
     void noData();
+
+    void loadMoreEnd(boolean b);
+
+    void loadMoreComplete();
+
+    void loadMoreData(ArrayList<ReadNewsBean> dataList);
 }

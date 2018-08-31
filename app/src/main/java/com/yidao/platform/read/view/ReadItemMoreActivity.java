@@ -7,12 +7,15 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
+import com.yidao.platform.read.adapter.ErrorAdapter;
 import com.yidao.platform.read.adapter.ReadItemMoreAdapter;
 import com.yidao.platform.read.bean.ReadNewsBean;
 import com.yidao.platform.read.presenter.ReadItemMoreActivityPresenter;
@@ -101,6 +104,16 @@ public class ReadItemMoreActivity extends BaseActivity implements IViewReadItemM
         if (mAdapter != null) {
             mAdapter.addData(dataList);
         }
+    }
+
+    @Override
+    public void noData() {
+        ErrorAdapter adapter = new ErrorAdapter(null);
+        adapter.bindToRecyclerView(mRecyclerView);
+        View view = LayoutInflater.from(this).inflate(R.layout.info_no_msg_layout, mRecyclerView, false);
+        ((TextView) view.findViewById(R.id.tv_tips)).setText(R.string.no_category_art);
+        adapter.setEmptyView(view);
+        adapter.setNewData(null);
     }
 
     private void loadMore() {

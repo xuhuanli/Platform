@@ -120,11 +120,6 @@
             </intent-filter>
         </receiver>
 
-        <!--Aliyun Push Settings-->
-        <!--
-        appkey:24968407
-        appsecret:81bc533a0da6bcae3be7739d6f2c404a
-        -->
         <meta-data
             android:name="com.alibaba.app.appkey"
             android:value="25030018" />
@@ -134,6 +129,7 @@
 
         <!--Umeng Analytics Settings-->
         <!--UMENG_CHANNEL
+            normal normal
             小米   xiaomi
             360    360
             华为    huawei
@@ -155,7 +151,7 @@
             android:value="5b7cca73f43e4810d4000011" />
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="xiaomi" />
+            android:value="normal" />
         <!--启动引导页-->
         <activity
             android:name=".login.view.SplashActivity"

@@ -116,10 +116,12 @@
     <string name="yidao">驿道</string>
     <string name="slogan">你的梦想才是我的梦想</string>
     <string name="user_protocol">查看瓶什么用户协议</string>
-    <string name="no_data">没有数据</string>
+    <string name="no_data">没有相应文章</string>
     <string name="wx_public_number">yidaozhizhou</string>
     <string name="url">www.edaochina.com</string>
     <string name="last_comments">最新评论</string>
     <string name="tv_user_protocol">《用户协议》</string>
     <string name="bind_phone_hint">点击注册即表示您同意</string>
+    <string name="key_word">搜个关键词试试</string>
+    <string name="no_category_art">该类目还没有文章</string>
 </resources>

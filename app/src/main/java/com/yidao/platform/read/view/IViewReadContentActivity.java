@@ -1,7 +1,6 @@
 package com.yidao.platform.read.view;
 
 import com.yidao.platform.read.adapter.ReadNewsDetailBean;
-import com.yidao.platform.read.bean.HotCommentsBean;
 import com.yidao.platform.read.bean.ShareBean;
 
 import java.util.ArrayList;
@@ -12,7 +11,7 @@ public interface IViewReadContentActivity {
 
     void deleteCommentFail();
 
-    void pushCommentSuccess();
+    void pushCommentSuccess(ReadNewsDetailBean item);
 
     void pushCommentFail();
 
