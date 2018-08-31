@@ -14,6 +14,7 @@ import com.alibaba.sdk.android.push.CommonCallback;
 import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.allen.library.RxHttpUtils;
 import com.allen.library.config.OkHttpConfig;
+import com.meituan.android.walle.WalleChannelReader;
 import com.squareup.leakcanary.LeakCanary;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
@@ -22,7 +23,6 @@ import com.umeng.commonsdk.UMConfigure;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.app.utils.FileUtil;
 import com.yidao.platform.app.utils.MyLogger;
-import com.yidao.platform.app.utils.PingFangSCUtil;
 import com.yidao.platform.container.ContainerActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -60,30 +60,29 @@ public class MyApplicationLike extends DefaultApplicationLike {
         //PingFangSCUtil.setDefaultFont(getAppContext(),"DEFAULT","fonts/PingFang-SC-Regular.ttf");
     }
 
-    private void setLabelMap(){
-        labelMap.put("商业计划书",1);
-        labelMap.put("产品原型",2);
-        labelMap.put("技术开发",3);
-        labelMap.put("投融资需求",4);
-        labelMap.put("资源对接",5);
-        labelMap.put("路演/峰会",6);
-        labelMap.put("项目投资",7);
-        labelMap.put("项目评估",8);
+    private void setLabelMap() {
+        labelMap.put("商业计划书", 1);
+        labelMap.put("产品原型", 2);
+        labelMap.put("技术开发", 3);
+        labelMap.put("投融资需求", 4);
+        labelMap.put("资源对接", 5);
+        labelMap.put("路演/峰会", 6);
+        labelMap.put("项目投资", 7);
+        labelMap.put("项目评估", 8);
     }
 
-    public static int getLabelId(String label){
+    public static int getLabelId(String label) {
         return labelMap.get(label);
     }
 
     //初始化友盟统计
     private void initUmengAnalytics(Context context) {
-        UMConfigure.init(context, UMConfigure.DEVICE_TYPE_PHONE, "");
+        String channel = WalleChannelReader.getChannel(context);
+        UMConfigure.init(context, Constant.UMENG_APPKEY, channel, UMConfigure.DEVICE_TYPE_PHONE, "");
         UMConfigure.setLogEnabled(Constant.IS_DEBUG);
     }
 
     private void initBugly() {
-        //设置当前apk属于开发设备
-        //Bugly.setIsDevelopmentDevice(getAppContext(),true);
         Bugly.init(getApplication(), Constant.BUGLY_ID, Constant.IS_DEBUG);
         Beta.canShowUpgradeActs.add(ContainerActivity.class);
     }

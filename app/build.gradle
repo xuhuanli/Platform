@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply from: 'tinker-support.gradle'
+apply plugin: 'walle'
 //apply plugin: 'org.greenrobot.greendao' // apply plugin
 android {
     compileSdkVersion 27
@@ -17,7 +18,7 @@ android {
                 throw new InvalidUserDataException(ex.toString())
             }
             v1SigningEnabled true
-            v2SigningEnabled false
+            v2SigningEnabled true
         }
         release {
             try {
@@ -29,7 +30,7 @@ android {
                 throw new InvalidUserDataException(ex.toString())
             }
             v1SigningEnabled true
-            v2SigningEnabled false
+            v2SigningEnabled true
         }
     }
 
@@ -47,7 +48,6 @@ android {
             //设置支持的SO库架构
             abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
         }
-        flavorDimensions "release"
     }
     //忽略方法数限制的检查
     android.dexOptions {
@@ -61,18 +61,6 @@ android {
             shrinkResources false
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            // 自定义输出配置
-            applicationVariants.all { variant ->
-                variant.outputs.all { output ->
-                    def outputFile = output.outputFile
-                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                        // 输出apk名称为JPay_0.0.1_xiaomi.apk
-                        def fileName = "pingsm_v${defaultConfig.versionName}_${releaseTime()}_${variant.productFlavors[0].name}.apk"
-                        // output.outputFile = new File(outputFile.parent, fileName)
-                        outputFileName = new File("", fileName)
-                    }
-                }
-            }
         }
         debug {
             minifyEnabled false
@@ -89,6 +77,8 @@ android {
     lintOptions {
         disable 'MissingTranslation'
     }
+
+   /* flavorDimensions "release"
 
     productFlavors {
         xiaomi{
@@ -151,7 +141,6 @@ android {
             dimension "release"
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "le"]
         }
-        //外链
         sgss{
             dimension "release"
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "sgss"]
@@ -172,7 +161,6 @@ android {
             dimension "release"
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "kuhua"]
         }
-        //
         shequn{
             dimension "release"
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "shequn"]
@@ -217,6 +205,18 @@ android {
     productFlavors.all {
         flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
     }
+    // 自定义输出配置
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                // 输出apk名称为JPay_0.0.1_xiaomi.apk
+                def fileName = "pingsm_v${defaultConfig.versionName}_${releaseTime()}_${variant.productFlavors[0].name}.apk"
+                // output.outputFile = new File(outputFile.parent, fileName)
+                outputFileName = new File("", fileName)
+            }
+        }
+    }*/
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -232,6 +232,15 @@ android {
         }
     }
 }
+
+walle {
+    apkOutputFolder = new File("${project.buildDir}/outputs/channels")
+    apkFileNameFormat = '${appName}-${channel}.apk'
+    //configFile与channelFile两者必须存在一个，否则无法生成渠道包。两者都存在时优先执行configFile
+    channelFile = new File("${project.getProjectDir()}/channel")
+    //configFile = new File("${project.getProjectDir()}/config.json")
+}
+
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -345,5 +354,5 @@ dependencies {
     //umeng analytics
     implementation 'com.umeng.sdk:common:latest.integration'
     implementation 'com.umeng.sdk:analytics:latest.integration'
-
+    implementation 'com.meituan.android.walle:library:1.1.6'
 }

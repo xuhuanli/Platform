@@ -40,6 +40,11 @@ public class Constant {
     public static final String WX_LOGIN_APP_ID = "wx4bd23926604e2693";
 
     /**
+     * 友盟appkey
+     */
+    public static final String UMENG_APPKEY = "5b7cca73f43e4810d4000011";
+
+    /**
      * 图片压缩的最小KB
      */
     public static final int NEED_COMPRESS_SIZE = 300;

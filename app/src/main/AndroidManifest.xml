@@ -128,44 +128,13 @@
             android:value="374055eaad638c6f802363fad0278358" />
 
         <!--Umeng Analytics Settings-->
-        <!--UMENG_CHANNEL
-            小米	xiaomi
-            360	360
-            华为	huawei
-            应用宝	yingyongbao
-            oppo	oppo
-            百度助手	91
-            pp助手	pp
-            vivo	vivo
-            魅族	meizu
-            安智	anzhi
-            木蚂蚁	mumayi
-            搜狗	sogou
-            锤子	smartisan
-            联想	lenovo
-            乐视	le
-            搜狗搜索	sgss
-            百度搜索	bdss
-            今日头条	toutiao
-            朋友圈投放	yyb-wx
-            酷划	kuhua
-            社群	shequn
-            网盟	cpawm
-            徐斌1	xubin1
-            徐斌2	xubin2
-            徐斌3	xubin3
-            徐斌4	xubin4
-            徐斌5	xubin5
-            任翔1	xianxia
-            任翔2	pingtaituiguang
-            任翔3	ziyoumeiti
-        -->
-        <meta-data
-            android:name="UMENG_APPKEY"
-            android:value="5b7cca73f43e4810d4000011" />
-        <meta-data
-            android:name="UMENG_CHANNEL"
-            android:value="${UMENG_CHANNEL_VALUE}" />
+        <!--
+                <meta-data
+                    android:name="UMENG_APPKEY"
+                    android:value="5b7cca73f43e4810d4000011" />
+                <meta-data
+                    android:name="UMENG_CHANNEL"
+                    android:value="normal" />-->
         <!--启动引导页-->
         <activity
             android:name=".login.view.SplashActivity"
