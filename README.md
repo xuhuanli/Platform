@@ -55,6 +55,7 @@
 2. 在MyApplicationLike下关闭LeakCanary
 3. 修改友盟渠道Value以及SplashActivity的Drawable
 4. 在Module的gradle文件下修改App的VersionCode以及VersionName
+5. 正式版需要在Constant文件下修改Bugly APPID
 
 
 

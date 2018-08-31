@@ -213,6 +213,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     private void initRecyclerView() {
         layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setItemAnimator(null);
     }
 
     private void showAlertDialog(int messageId, DialogInterface.OnClickListener positiveListener) {
@@ -265,8 +266,8 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.ib_vote: //收藏
                 isOperateCollection = true;
-                ib_vote.setSelected(!isCollection);
                 isCollection = !isCollection;
+                ib_vote.setSelected(isCollection);
                 break;
             case R.id.ib_favorite: //点赞icon
                 isOperateLike = true;
@@ -360,10 +361,12 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
-    public void showHotComment(boolean isCollectArt,String commentAmount, String likeAmount, ArrayList<ReadNewsDetailBean> dataList) {
+    public void showHotComment(boolean isCollectArt, String commentAmount, String likeAmount, ArrayList<ReadNewsDetailBean> dataList, boolean isLikedtArt) {
         isCollection = isCollectArt;
+        isLike = isLikedtArt;
         artLikeCount = Integer.parseInt(likeAmount);
         ib_vote.setSelected(isCollectArt);
+        ib_favorite.setSelected(isLike);
         ib_comment.showTextBadge(commentAmount);
         ib_favorite.showTextBadge(likeAmount);
         if (dataList.size() > 0) {
@@ -392,7 +395,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         mAdapter.notifyDataSetChanged();
     }
 
-    private void showShareDialog(String title,String content,Bitmap bitmap) {
+    private void showShareDialog(String title,String subTitle,Bitmap bitmap) {
         mShareBottomSheetDialog = new BottomSheetDialog(this);
         mShareBottomSheetDialog.setCanceledOnTouchOutside(true);
         @SuppressLint("InflateParams") View view = LayoutInflater.from(this).inflate(R.layout.layout_share_fragment_dialog, null);
@@ -400,23 +403,23 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         mShareBottomSheetDialog.show();
         view.findViewById(R.id.iv_share_msg).setOnClickListener(v -> {
             //分享到session界面
-            weChatShare(SendMessageToWX.Req.WXSceneSession,title,content,bitmap);
+            weChatShare(SendMessageToWX.Req.WXSceneSession,title,subTitle,bitmap);
         });
         view.findViewById(R.id.iv_share_group).setOnClickListener(v -> {
             //分享到朋友圈
-            weChatShare(SendMessageToWX.Req.WXSceneTimeline,title,content,bitmap);
+            weChatShare(SendMessageToWX.Req.WXSceneTimeline,title,subTitle,bitmap);
         });
         view.findViewById(R.id.tv_cancel).setOnClickListener(v -> {
             mShareBottomSheetDialog.cancel();
         });
     }
 
-    private void weChatShare(int mTargetScene,String title,String content,Bitmap bitmap) {
+    private void weChatShare(int mTargetScene,String title,String subTitle,Bitmap bitmap) {
         WXWebpageObject webpage = new WXWebpageObject();
         webpage.webpageUrl = url;
         WXMediaMessage msg = new WXMediaMessage(webpage);
         msg.title = title;
-        msg.description = content;
+        msg.description = subTitle;
         msg.thumbData = BitmapUtil.bitmapBytes(bitmap, 32);
 
         SendMessageToWX.Req req = new SendMessageToWX.Req();

@@ -37,6 +37,7 @@ import cn.bingoogolapple.badgeview.BGABadgeTextView;
 
 public class InfoMyMessageActivity extends BaseActivity implements IViewMyMessage {
 
+    private static final int MAX_MESSAGE = 65535;
     @BindView(R.id.tv_title)
     TextView tvTitle;
     @BindView(R.id.toolbar)
@@ -67,8 +68,7 @@ public class InfoMyMessageActivity extends BaseActivity implements IViewMyMessag
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         MyLogger.e("onNewIntent executed");
-        mPresenter.qryBottleMess(userId, mNextRequestPage, Integer.MAX_VALUE);
-        mPresenter.qryFindMess(userId, mNextRequestPage, Integer.MAX_VALUE);
+        mPresenter.qryBottleMess(userId, mNextRequestPage, MAX_MESSAGE);
     }
 
     private void initView() {
@@ -188,8 +188,7 @@ public class InfoMyMessageActivity extends BaseActivity implements IViewMyMessag
     }
 
     private void initData() {
-        mPresenter.qryBottleMess(userId, mNextRequestPage, Integer.MAX_VALUE);
-        mPresenter.qryFindMess(userId, mNextRequestPage, Integer.MAX_VALUE);
+        mPresenter.qryBottleMess(userId, mNextRequestPage, MAX_MESSAGE);
     }
 
     @Override
@@ -206,6 +205,7 @@ public class InfoMyMessageActivity extends BaseActivity implements IViewMyMessag
 
     @Override
     public void successBottle(BottleMsgBean.ResultBean.PageBean pageBean, List<BottleMsgBean.ResultBean.ListBean> listBeans) {
+        mPresenter.qryFindMess(userId, mNextRequestPage, MAX_MESSAGE);
         if (pageBean != null) {
             tvItem3.showTextBadge(pageBean.getTotal());
         }
