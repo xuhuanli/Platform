@@ -10,7 +10,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.allen.library.utils.ToastUtils;
@@ -19,7 +18,6 @@ import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseFragment;
 import com.yidao.platform.app.utils.MyLogger;
-import com.yidao.platform.app.utils.ScreenUtil;
 import com.yidao.platform.read.adapter.ErrorAdapter;
 import com.yidao.platform.read.adapter.MultipleReadAdapter;
 import com.yidao.platform.read.bean.ChannelBean;
@@ -27,8 +25,6 @@ import com.yidao.platform.read.bean.ReadNewsBean;
 import com.yidao.platform.read.presenter.ReadFragmentPresenter;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
-import com.youth.banner.listener.OnBannerListener;
-import com.youth.banner.view.BannerViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,6 +138,7 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
         banner.setDelayTime(5000);
         banner.setIndicatorGravity(BannerConfig.CENTER);
     }
+
     @Override
     public void showBanner(List<String> imageUrls, List<String> bannerTitles, List<String> artUrls, List<Long> artIds) {
         mPresenter.getListCategories();
@@ -149,17 +146,23 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
             banner.setImages(imageUrls);
             banner.setBannerTitles(bannerTitles);
             banner.setOnBannerListener(position -> {
-                Intent intent = new Intent(getActivity(),ReadContentActivity.class);
+                Intent intent = new Intent(getActivity(), ReadContentActivity.class);
                 String artUrl = artUrls.get(position);
                 Long artId = artIds.get(position);
-                if (artId != null) {
-                    if (artId == 200L || TextUtils.isEmpty(artUrl)) {
+                if (artId == 200L) {
+                    if (TextUtils.isEmpty(artUrl)) {
                         return;
+                    } else {
+                        Intent webIntent = new Intent(getActivity(), WebActivity.class);
+                        webIntent.putExtra(Constant.STRING_ACTIVITY, artUrl);
+                        MyLogger.e(artUrl);
+                        startActivity(webIntent);
                     }
+                }else {
+                    intent.putExtra(Constant.STRING_URL, artUrl);
+                    intent.putExtra(Constant.STRING_ART_ID, artId);
+                    startActivity(intent);
                 }
-                intent.putExtra(Constant.STRING_URL, artUrl);
-                intent.putExtra(Constant.STRING_ART_ID, artId);
-                startActivity(intent);
             });
             banner.start();
         }
@@ -247,7 +250,7 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
                 ReadNewsBean item = (ReadNewsBean) adapter.getItem(position);
                 Intent intent = new Intent(getActivity(), ReadContentActivity.class);
                 intent.putExtra("url", item.getArticleContent());
-                intent.putExtra(Constant.STRING_ART_ID,item.getId());
+                intent.putExtra(Constant.STRING_ART_ID, item.getId());
                 startActivity(intent);
             });
             mRecyclerView.setAdapter(mAdapter);

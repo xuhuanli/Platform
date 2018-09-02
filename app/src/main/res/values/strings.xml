@@ -125,4 +125,5 @@
     <string name="bind_phone_hint">点击注册即表示您同意</string>
     <string name="key_word">搜个关键词试试</string>
     <string name="no_category_art">该类目还没有文章</string>
+    <string name="activity_detail">活动详情</string>
 </resources>

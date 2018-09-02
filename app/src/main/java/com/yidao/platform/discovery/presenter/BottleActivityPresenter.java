@@ -30,7 +30,6 @@ public class BottleActivityPresenter {
                 .createApi(ApiService.class)
                 .throwBottle(obj)
                 .compose(Transformer.switchSchedulers())
-                .doOnSubscribe(disposable -> mView.pushAnim())
                 .subscribe(new StringObserver() {
                     @Override
                     protected void onError(String errorMsg) {
@@ -68,7 +67,6 @@ public class BottleActivityPresenter {
                 .createApi(ApiService.class)
                 .pickBottle(userId)
                 .compose(Transformer.switchSchedulers())
-                .doOnSubscribe(disposable -> mView.pickAnim())
                 .subscribe(new StringObserver() {
                     @Override
                     protected void onError(String errorMsg) {

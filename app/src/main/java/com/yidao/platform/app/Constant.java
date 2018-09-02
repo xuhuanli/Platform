@@ -85,4 +85,5 @@ public class Constant {
 
     public static final String STRING_BOTTLE_PAGE_FROM = "bottle_from";
     public static final String STRING_HAS_GUIDE = "has_guide";
+    public static final String STRING_ACTIVITY = "activity";
 }

@@ -5,7 +5,7 @@
     android:id="@+id/cl_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:background="@drawable/drift_bottle_has_bar"
+    android:background="@drawable/drift_bottle_has_bar"
     android:fitsSystemWindows="true">
 
     <android.support.v7.widget.Toolbar

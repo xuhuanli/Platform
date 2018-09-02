@@ -44,7 +44,6 @@ import com.yidao.platform.discovery.presenter.BottleActivityPresenter;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
-import io.reactivex.functions.Consumer;
 
 public class DiscoveryDriftingBottleActivity extends BaseActivity implements IViewBottleActivity {
     /**
@@ -82,8 +81,10 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity implements IVi
     private BottleActivityPresenter mPresenter;
     private String userId;
     private ImageView ivDriftBottle;
-    private boolean isLimited;
-    private String info;
+    private boolean isPickLimited;
+    private boolean isThrowLimited;
+    private String pickInfo;
+    private String throwInfo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,23 +95,24 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity implements IVi
 
     private void initView() {
         initToolbar();
-        changeBackground(R.drawable.drift_bottle_has_bar);
+        //changeBackground(R.drawable.drift_bottle_has_bar);
         initStatusBar();
         mPresenter = new BottleActivityPresenter(this);
         //扔瓶子
         addDisposable(RxView.clicks(mIvPushBottle).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
-            Intent intent = new Intent(DiscoveryDriftingBottleActivity.this, BottlePushActivity.class);
-            startActivityForResult(intent, PUSH_BOTTLE_REQUEST);
+            if (isThrowLimited) {
+                ToastUtils.showToast(throwInfo);
+            } else {
+                Intent intent = new Intent(DiscoveryDriftingBottleActivity.this, BottlePushActivity.class);
+                startActivityForResult(intent, PUSH_BOTTLE_REQUEST);
+            }
         }));
         //捡瓶子
-        addDisposable(RxView.clicks(mIvPullBottle).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) throws Exception {
-                if (isLimited) {
-                    ToastUtils.showToast(info);
-                } else {
-                    mPresenter.pickBottle(userId);
-                }
+        addDisposable(RxView.clicks(mIvPullBottle).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
+            if (isPickLimited) {
+                ToastUtils.showToast(pickInfo);
+            } else {
+                mPresenter.pickBottle(userId);
             }
         }));
         /**
@@ -339,11 +341,12 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity implements IVi
 
     @Override
     public void throwSuccess() {
-
+        pushAnim();
     }
 
     @Override
     public void getOneBottle(PickBottleBean.ResultBean result) {
+        pickAnim();
         ivDriftBottle.setOnClickListener(v -> {
             if (mSpaceShipWindow != null) {
                 mSpaceShipWindow.dismiss();
@@ -405,9 +408,9 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity implements IVi
         Button btnReply = messageView.findViewById(R.id.btn_reply);
         addDisposable(RxView.clicks(btnReply).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o12 -> {
             Intent intent = new Intent(DiscoveryDriftingBottleActivity.this, DiscoveryBottleDetailActivity.class);
-            intent.putExtra(Constant.STRING_BOTTLE_ID, result.getId()+"");
+            intent.putExtra(Constant.STRING_BOTTLE_ID, result.getId() + "");
             intent.putExtra(Constant.STRING_SESSION_ID, "0");
-            intent.putExtra(Constant.STRING_BOTTLE_PAGE_FROM,"1");
+            intent.putExtra(Constant.STRING_BOTTLE_PAGE_FROM, "1");
             startActivity(intent);
             mRootView.setVisibility(View.VISIBLE);
             ActionBar actionBar = getSupportActionBar();
@@ -421,41 +424,49 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity implements IVi
 
     /**
      * 扔瓶子上限
+     *
      * @param info
      */
     @Override
     public void throwLimited(String info) {
+        isThrowLimited = true;
+        throwInfo = info;
         ToastUtils.showToast(info);
     }
 
     /**
      * 捡瓶子上限
+     *
      * @param info
      */
     @Override
     public void countLimit(String info) {
-        if (mSpaceShipWindow != null) {
+        /*if (mSpaceShipWindow != null) {
             mSpaceShipWindow.dismiss();
         }
         mRootView.setVisibility(View.VISIBLE);
         ActionBar actionBar = getSupportActionBar();
         actionBar.show();
         changeBackground(R.drawable.drift_bottle_has_bar);
-        isLimited = true;
-        this.info = info;
+        isPickLimited = true;
+        this.pickInfo = pickInfo;*/
+        isPickLimited = true;
+        this.pickInfo = info;
+        ToastUtils.showToast(info);
     }
 
     @Override
     public void errorStatus(String info) {
-        if (mSpaceShipWindow != null) {
+        /*if (mSpaceShipWindow != null) {
             mSpaceShipWindow.dismiss();
         }
         mRootView.setVisibility(View.VISIBLE);
         ActionBar actionBar = getSupportActionBar();
         actionBar.show();
-        changeBackground(R.drawable.drift_bottle_has_bar);
-        isLimited = true;
-        this.info = info;
+        changeBackground(R.drawable.drift_bottle_has_bar);*/
+        isPickLimited = true;
+        this.pickInfo = info;
+        ToastUtils.showToast(info);
     }
 
     @Override
