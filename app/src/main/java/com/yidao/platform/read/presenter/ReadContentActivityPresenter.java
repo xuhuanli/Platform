@@ -86,31 +86,6 @@ public class ReadContentActivityPresenter {
 
                     }
                 });
-        /**
-         * new CommonObserver<PushCommBean>() {
-        @Override protected void onError(String errorMsg) {
-        MyLogger.e(errorMsg);
-        showError();
-        }
-
-        @Override protected void onSuccess(PushCommBean data) {
-        if (data.isStatus()) {
-        PushCommBean.ResultBean result = data.getResult();
-        ReadNewsDetailBean item = new ReadNewsDetailBean(ITEM_COMMENTS);
-        item.setId(result.getId());
-        item.setContent(result.getContent());
-        item.setUserId(result.getUserId());
-        item.setTimeSamp("刚刚");
-        item.setNickName(result.getNickname());
-        item.setLikeCount(result.getLikeCount());
-        item.setHeadImg(result.getCommentUserHeadImgUrl());
-        mView.pushCommentSuccess(item);
-        }else {
-        mView.pushCommentFail();
-        }
-        }
-        }
-         */
     }
 
     /**
@@ -308,16 +283,6 @@ public class ReadContentActivityPresenter {
                         MyLogger.e("获取最新评论onCompleted");
                     }
                 });
-        /**
-         * new CommonObserver<LastCommentsBean>() {
-        @Override protected void onError(String errorMsg) {
-
-        }
-
-        @Override protected void onSuccess(LastCommentsBean lastCommentsBean) {
-
-        }
-         */
     }
 
     /**
