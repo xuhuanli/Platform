@@ -13,22 +13,22 @@ public class Constant {
     //陈dq
     //public static final String BASE_URL = "http://10.10.20.4:8080/platform-pc-web/";
     //debug ip
-    public static final String BASE_URL = "http://10.10.20.200:8082/";
+    //public static final String BASE_URL = "http://10.10.20.200:8082/";
     //release ip
-    //public static final String BASE_URL = "http://47.96.122.73:8082/";
+    public static final String BASE_URL = "http://47.96.122.73:8082/";
 
     /**
      * 全局debug模式开关 在release时候设置为false
      */
-    public static final boolean IS_DEBUG = true;
+    public static final boolean IS_DEBUG = false;
     /**
      * Bugly App ID DEBUG 内测
      */
-    public static final String BUGLY_ID = "59c35ade6f";
+    //public static final String BUGLY_ID = "59c35ade6f";
     /**
      * Bugly App ID RELEASE 正式
      */
-    //public static final String BUGLY_ID = "4d24298061";
+    public static final String BUGLY_ID = "4d24298061";
     /**
      * button防抖时间
      */
@@ -72,30 +72,17 @@ public class Constant {
     public static final int PAGE_SIZE = 6;
     public static final String STRING_ART_ID = "artId";
     public static final String STRING_URL = "url";
-    public static final String STRING_COLLECTION = "collection";
-    public static final String STRING_DIAN_ZAN = "dian_zan";
     public static final String STRING_TITLE = "title";
     public static final String STRING_VALUE = "value";
     public static final String STRING_USER_ID = "userId";
-    public static final String STRING_USER_NAME = "nickname";
-    public static final String STRING_USER_SEX = "sex";
-    public static final String STRING_USER_COUNTRY = "country";
-    public static final String STRING_USER_PROVINCE = "province";
-    public static final String STRING_USER_CITY = "city";
-    public static final String STRING_USER_HEADIMGURL = "headImgUrl";
-    public static final String STRING_USER_PRIVILEGELIST = "privilegeList";
     public static final String STRING_USER_TOKEN = "token";
     public static final String STRING_USER_REFRESHTOKEN = "refreshToken";
-    public static final String STRING_USER_FIRSTLOGIN = "firstLogin";
-    public static final String STRING_USER_BINDPHONE = "bindPhone";
 
     public static final String STRING_DEVICE_ID = "deviceId";
-    public static final String STRING_BOTTLE = "bottle";
     public static final String STRING_BOTTLE_ID = "bottleId";
     public static final String STRING_SESSION_ID = "sessionId";
     public static final String STRING_FIND_ID = "findId";
 
     public static final String STRING_BOTTLE_PAGE_FROM = "bottle_from";
-    public static final String USER_INFO = "user_info";
     public static final String STRING_HAS_GUIDE = "has_guide";
 }

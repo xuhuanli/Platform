@@ -6,9 +6,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -58,8 +58,8 @@ public class SearchArticleActivity extends BaseActivity implements IViewSearchAr
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if (query.length()>10) {
-                    queryText = query.substring(0,11);
+                if (query.length() > 10) {
+                    queryText = query.substring(0, 11);
                 }
                 queryText = query;
                 mNextRequestPage = 1;

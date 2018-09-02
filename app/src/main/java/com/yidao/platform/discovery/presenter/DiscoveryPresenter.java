@@ -82,11 +82,6 @@ public class DiscoveryPresenter {
                         if (friendsListBean.isStatus()) {
                             FriendsListBean.ResultBean result = friendsListBean.getResult();
                             if (result != null) {
-                                if (result.getList().size() < Constant.PAGE_SIZE) {  //所得数目< pageSize =>到底了
-                                    mView.loadMoreEnd(false);
-                                } else {
-                                    mView.loadMoreComplete();
-                                }
                                 List<FriendsListBean.ResultBean.ListBean> list = result.getList();
                                 ArrayList<FriendsShowBean> dataList = new ArrayList<>();
                                 for (FriendsListBean.ResultBean.ListBean listBean : list) {
@@ -103,6 +98,11 @@ public class DiscoveryPresenter {
                                     dataList.add(bean);
                                 }
                                 mView.loadRecyclerData(dataList);
+                                if (result.getList().size() < Constant.PAGE_SIZE) {  //所得数目< pageSize =>到底了
+                                    mView.loadMoreEnd(false);
+                                } else {
+                                    mView.loadMoreComplete();
+                                }
                             }else {
                                 mView.loadMoreEnd(false);
                             }
@@ -179,11 +179,6 @@ public class DiscoveryPresenter {
                         if (friendsListBean.isStatus()) {
                             FriendsListBean.ResultBean result = friendsListBean.getResult();
                             if (result != null) {
-                                if (result.getList().size() == 0) {  //所得数目< pageSize =>到底了
-                                    mView.loadMoreEnd(false);
-                                } else {
-                                    mView.loadMoreComplete();
-                                }
                                 List<FriendsListBean.ResultBean.ListBean> list = result.getList();
                                 ArrayList<FriendsShowBean> dataList = new ArrayList<>();
                                 for (FriendsListBean.ResultBean.ListBean listBean : list) {
@@ -200,9 +195,16 @@ public class DiscoveryPresenter {
                                     dataList.add(bean);
                                 }
                                 mView.loadMoreData(dataList);
+                                if (result.getList().size() == 0) {  //所得数目< pageSize =>到底了
+                                    mView.loadMoreEnd(false);
+                                } else {
+                                    mView.loadMoreComplete();
+                                }
                             }else {
                                 mView.loadMoreEnd(false);
                             }
+                        }else {
+                            mView.loadMoreEnd(false);
                         }
                     }
                 });
