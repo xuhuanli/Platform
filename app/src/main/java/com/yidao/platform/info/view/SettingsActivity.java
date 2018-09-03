@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.tencent.bugly.Bugly;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
@@ -28,6 +29,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
+import io.reactivex.functions.Consumer;
 
 public class SettingsActivity extends BaseActivity implements SettingsViewInterface {
 
@@ -58,7 +60,7 @@ public class SettingsActivity extends BaseActivity implements SettingsViewInterf
         initCacheTextView();
         initToolbar();
         addDisposable(RxView.clicks(mRlcache).subscribe(o -> clearAppCache()));
-        addDisposable(RxView.clicks(tvAboutUs).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> startActivity(AboutUsActivity.class)));
+        addDisposable(RxView.clicks(tvAboutUs).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> SettingsActivity.this.startActivity(AboutUsActivity.class)));
         addDisposable(RxView.clicks(tvSignUp).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
             //退出登录:清除Sp下userId 跳转到登录页面
             IPreference.prefHolder.getPreference(SettingsActivity.this).remove(Constant.STRING_USER_ID);

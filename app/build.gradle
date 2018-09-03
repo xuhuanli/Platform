@@ -38,8 +38,8 @@ android {
         applicationId "com.yidao.platform"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 11
-        versionName "1.0.5"
+        versionCode 14
+        versionName "1.0.8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         //是否要分dex
