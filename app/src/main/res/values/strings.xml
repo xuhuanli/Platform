@@ -126,4 +126,6 @@
     <string name="key_word">搜个关键词试试</string>
     <string name="no_category_art">该类目还没有文章</string>
     <string name="activity_detail">活动详情</string>
+    <string name="sign_in">登录</string>
+    <string name="register">注册</string>
 </resources>
