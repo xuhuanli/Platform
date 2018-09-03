@@ -39,7 +39,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 27
         versionCode 14
-        versionName "1.0.8"
+        versionName "1.0.6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         //是否要分dex
