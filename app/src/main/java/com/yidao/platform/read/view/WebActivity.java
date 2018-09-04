@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -30,10 +31,12 @@ public class WebActivity extends BaseActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
+                        | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         String url = intent.getStringExtra(Constant.STRING_ACTIVITY);
-        //url="http://ofo-campaign.ofo.com/yearcardtob/index.html#/?channel=15359607765373&platform=1";
         MyLogger.e(url);
         addDisposable(RxToolbar.navigationClicks(toolbarInfo).subscribe(o -> finish()));
         if (url.endsWith("png") || url.endsWith("jpg")) {

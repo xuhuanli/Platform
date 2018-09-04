@@ -137,7 +137,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".read.view.WebActivity" />
+        <activity android:name=".read.view.WebActivity"/>
         <activity android:name=".login.view.ProtocolActivity" />
     </application>
 </manifest>
