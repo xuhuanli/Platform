@@ -53,7 +53,7 @@ public class WXEntryActivityPresenter {
                                 mView.loginSuccess(result);
                                 break;
                             default:
-                                mView.loginFail();
+                                mView.loginFail(wxCodeBean.getInfo());
                                 break;
                         }
                     }

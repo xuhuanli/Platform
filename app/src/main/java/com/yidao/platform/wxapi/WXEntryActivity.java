@@ -84,6 +84,12 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler, IVi
     }
 
     @Override
+    public void loginFail(String info) {
+        finish();
+        ToastUtils.showToast("登录失败: "+info);
+    }
+
+    @Override
     public void loginSuccess(WxCodeBean.ResultBean result) {
         MyLogger.e(result.toString());
         IPreference.prefHolder.getPreference(this).put(Constant.STRING_USER_TOKEN, result.getToken());

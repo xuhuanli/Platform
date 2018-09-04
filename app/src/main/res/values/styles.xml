@@ -203,4 +203,9 @@
         <item name="android:textColor">@color/FF999999</item>
         <item name="android:textSize">14sp</item>
     </style>
+
+    <style name="MyEditText" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">#ffd9d9d9</item>
+        <item name="colorControlActivated">#007AFF</item>
+    </style>
 </resources>

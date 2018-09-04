@@ -22,6 +22,7 @@ import com.yidao.platform.info.model.UserInfoBean;
 import com.yidao.platform.info.model.UserReadRecordBean;
 import com.yidao.platform.login.bean.WxCodeBean;
 import com.yidao.platform.login.model.BindPhoneObj;
+import com.yidao.platform.login.model.LoginObj;
 import com.yidao.platform.read.bean.ArticleBean;
 import com.yidao.platform.read.bean.BannerBean;
 import com.yidao.platform.read.bean.CategoryArticleExtBean;
@@ -63,10 +64,10 @@ public interface ApiService {
     Observable<WxCodeBean> sendCodeToServer(@QueryMap Map<String, String> options);
 
     /**
-     * 分享回调
+     * 发送验证码
      */
-    @GET("user/center/shareResult")
-    Observable<String> shareResult(@Query("artId") String artId, @Query("userId") String userId);
+    @GET("app/phone/send-code")
+    Observable<String> sendVCode(@Query("phone") String phone);
 
     /**
      * 发送验证码
@@ -80,6 +81,26 @@ public interface ApiService {
     @Headers({"Content-Type: application/json;charset=UTF-8"})
     @POST("app/phone/bind")
     Observable<String> bindPhone(@Body BindPhoneObj bindPhoneObj);
+
+    /**
+     * 手机登录
+     *
+     * @param loginObj
+     * @return
+     */
+    @Headers({"Content-Type: application/json;charset=UTF-8"})
+    @POST("/app/phone/login")
+    Observable<WxCodeBean> phoneSignIn(@Body LoginObj loginObj);
+
+    /**
+     * 手机注册
+     *
+     * @param loginObj
+     * @return
+     */
+    @Headers({"Content-Type: application/json;charset=UTF-8"})
+    @POST("/app/phone/register")
+    Observable<WxCodeBean> registerAccount(@Body LoginObj loginObj);
 
     /**
      * 刷新token 这里不用了
@@ -212,6 +233,12 @@ public interface ApiService {
     @POST("app/find/qryFindContent")
     Observable<FindContentBean> qryFindContent(@Body QryFindContentObj qryFindContentObj);
     //----------文章模块------------
+
+    /**
+     * 分享回调
+     */
+    @GET("user/center/shareResult")
+    Observable<String> shareResult(@Query("artId") String artId, @Query("userId") String userId);
 
     /**
      * 查询banner(正在显示的)

@@ -15,6 +15,7 @@
         android:layout_marginTop="60dp"
         android:text="@string/sign_in"
         android:textColor="#ff333333"
+        android:textStyle="bold"
         android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -44,8 +45,8 @@
         <EditText
             android:id="@+id/et_phone"
             android:layout_width="match_parent"
+            android:theme="@style/MyEditText"
             android:layout_height="match_parent"
-            android:backgroundTint="#ffd9d9d9"
             android:hint="@string/phone_number"
             android:inputType="phone"
             android:maxLength="11"
@@ -82,6 +83,7 @@
             android:id="@+id/et_v_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:theme="@style/MyEditText"
             android:backgroundTint="#ffd9d9d9"
             android:hint="@string/verification_code"
             android:inputType="number"
@@ -102,7 +104,7 @@
         app:layout_constraintTop_toBottomOf="@+id/text_input_layout2" />
 
     <Button
-        android:id="@+id/btn_ensure"
+        android:id="@+id/btn_operation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
@@ -134,14 +136,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageView2"
+        app:layout_constraintBottom_toTopOf="@+id/btn_login_by_wechat"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:src="@drawable/third_login"/>
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/btn_login_by_wechat"
         android:layout_width="wrap_content"
+        android:padding="4dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="60dp"
         android:src="@drawable/wx_icon"

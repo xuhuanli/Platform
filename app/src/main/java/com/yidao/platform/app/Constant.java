@@ -13,14 +13,14 @@ public class Constant {
     //陈dq
     //public static final String BASE_URL = "http://10.10.20.4:8080/platform-pc-web/";
     //debug ip
-    //public static final String BASE_URL = "http://10.10.20.200:8082/";
+    public static final String BASE_URL = "http://10.10.20.200:8082/";
     //release ip
-    public static final String BASE_URL = "http://47.96.122.73:8082/";
+    //public static final String BASE_URL = "http://47.96.122.73:8082/";
 
     /**
      * 全局debug模式开关 在release时候设置为false
      */
-    public static final boolean IS_DEBUG = false;
+    public static final boolean IS_DEBUG = true;
     /**
      * Bugly App ID DEBUG 内测
      */
@@ -86,4 +86,5 @@ public class Constant {
     public static final String STRING_BOTTLE_PAGE_FROM = "bottle_from";
     public static final String STRING_HAS_GUIDE = "has_guide";
     public static final String STRING_ACTIVITY = "activity";
+    public static final String STRING_ERRCODE = "errCode";
 }
