@@ -21,11 +21,12 @@
             android:textColor="#ff333333"
             android:textSize="17sp" />
     </android.support.v7.widget.Toolbar>
+
     <com.yidao.platform.webview.XHLWebView
         android:id="@+id/webView"
         android:layout_width="0dp"
-        android:visibility="gone"
         android:layout_height="0dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

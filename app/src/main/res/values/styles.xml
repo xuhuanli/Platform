@@ -206,6 +206,6 @@
 
     <style name="MyEditText" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">#ffd9d9d9</item>
-        <item name="colorControlActivated">#007AFF</item>
+        <item name="colorControlActivated">#ffd9d9d9</item>
     </style>
 </resources>

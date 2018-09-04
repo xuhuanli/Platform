@@ -21,7 +21,6 @@ import com.tencent.bugly.beta.Beta;
 import com.tencent.tinker.loader.app.DefaultApplicationLike;
 import com.umeng.commonsdk.UMConfigure;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
-import com.yidao.platform.app.utils.FileUtil;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.container.ContainerActivity;
 
@@ -116,7 +115,7 @@ public class MyApplicationLike extends DefaultApplicationLike {
         OkHttpClient okHttpClient = new OkHttpConfig
                 .Builder()
                 //.setHeaders(headerMaps)
-                .setCachePath(FileUtil.getDiskCacheDir(getAppContext(), "http_cache").getPath())
+                //.setCachePath(FileUtil.getDiskCacheDir(getAppContext(), "http_cache").getPath())
                 //开启缓存策略(默认false)
                 //1、在有网络的时候，先去读缓存，缓存时间到了，再去访问网络获取数据；
                 //2、在没有网络的时候，去读缓存中的数据。

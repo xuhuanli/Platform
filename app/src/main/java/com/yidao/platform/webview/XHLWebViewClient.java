@@ -65,11 +65,11 @@ public class XHLWebViewClient extends WebViewClient {
         if (!view.getSettings().getLoadsImagesAutomatically()) {
             view.getSettings().setLoadsImagesAutomatically(true);
         }
+        imgReset(view);//重置webview中img标签的图片大小
         // TODO: 2018/6/30 0030 待网页加载完全后设置图片点击的监听方法
         //view.addJavascriptInterface(new MJavascriptInterface(view.getContext()), "imagelistener");
         //addImageClickListener(view);
     }
-
 
     @Override
     public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
@@ -81,6 +81,16 @@ public class XHLWebViewClient extends WebViewClient {
         super.onReceivedError(view, request, error);
         EventBus.getDefault().post(new WebViewLoadEvent());
         view.loadUrl("file:///android_asset/net_error.html");
+    }
+
+    private void imgReset(WebView view) {
+        view.loadUrl("javascript:(function(){" +
+                "var objs = document.getElementsByTagName('img'); " +
+                "for(var i=0;i<objs.length;i++)  " +
+                "{" +
+                "objs[i].style.maxWidth = '100%'; objs[i].style.height = 'auto';  " +
+                "}" +
+                "})()");
     }
 
     private void addImageClickListener(WebView view) {

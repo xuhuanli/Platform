@@ -33,6 +33,7 @@ public class WebActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         String url = intent.getStringExtra(Constant.STRING_ACTIVITY);
+        //url="http://ofo-campaign.ofo.com/yearcardtob/index.html#/?channel=15359607765373&platform=1";
         MyLogger.e(url);
         addDisposable(RxToolbar.navigationClicks(toolbarInfo).subscribe(o -> finish()));
         if (url.endsWith("png") || url.endsWith("jpg")) {
