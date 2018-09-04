@@ -65,7 +65,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler, IVi
                         //((SendAuth.Resp) baseResp)
                         String artId = baseResp.transaction;
                         String userId = IPreference.prefHolder.getPreference(this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
-                        mPresenter.updateShareData(artId,userId);
+                        mPresenter.updateShareData(artId, userId);
                         finish();
                         break;
                 }
@@ -89,7 +89,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler, IVi
     @Override
     public void loginFail(String info) {
         finish();
-        ToastUtils.showToast("登录失败: "+info);
+        ToastUtils.showToast("登录失败: " + info);
     }
 
     @Override
@@ -97,15 +97,16 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler, IVi
         MyLogger.e(result.toString());
         IPreference.prefHolder.getPreference(this).put(Constant.STRING_USER_TOKEN, result.getToken());
         IPreference.prefHolder.getPreference(this).put(Constant.STRING_USER_REFRESHTOKEN, result.getRefreshToken());
+        EventBus.getDefault().post(new WxSignInEvent(result));
         if (result.isBindPhone()) {
             //已绑定，需要写入userId
             EventBus.getDefault().post(new WxSignInEvent());
-            IPreference.prefHolder.getPreference(this).put(Constant.STRING_USER_ID,result.getUserId());
+            IPreference.prefHolder.getPreference(this).put(Constant.STRING_USER_ID, result.getUserId());
             startActivity(new Intent(this, ContainerActivity.class));
             finish();
-        }else {  //没绑定， 跳转到绑定页 绑定成功后写入userId
+        } else {  //没绑定， 跳转到绑定页 绑定成功后写入userId
             Intent intent = new Intent(this, LoginBindingPhoneActivity.class);
-            intent.putExtra(Constant.STRING_USER_ID,result.getUserId());
+            intent.putExtra(Constant.STRING_USER_ID, result.getUserId());
             startActivity(intent);
             finish();
         }

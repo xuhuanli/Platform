@@ -219,6 +219,7 @@ public class LoginActivity extends BaseActivity implements IViewLoginActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onLoginEvent(WxSignInEvent event) {
+        WxCodeBean.ResultBean result = event.getResult();
         finish();
     }
 
