@@ -11,6 +11,7 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
+import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.read.adapter.ChannelAdapter;
 import com.yidao.platform.read.bean.ChannelBean;
 import com.yidao.platform.read.presenter.ItemChannelActivityPresenter;
@@ -42,6 +43,8 @@ public class ItemChannelActivity extends BaseActivity implements IViewItemChanne
     }
 
     private void initView() {
+        int taskId = getTaskId();
+        MyLogger.e("ItemChannelActivity:所在的任务的id为: " +  taskId);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
         mRecyclerView.setLayoutManager(layoutManager);
         addDisposable(RxView.clicks(mBackIB).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish()));

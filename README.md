@@ -57,6 +57,8 @@
 5. 在Module的gradle文件下修改App的VersionCode以及VersionName
 6. 修改友盟渠道Value以及SplashActivity的Drawable(仅限联合首发)
 
+#如果涉及到修改包名，注意修改清单文件下ContainerActivity的任务栈
+
 
 
 

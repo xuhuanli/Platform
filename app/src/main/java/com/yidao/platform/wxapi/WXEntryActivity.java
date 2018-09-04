@@ -18,8 +18,11 @@ import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.MyApplicationLike;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.container.ContainerActivity;
+import com.yidao.platform.events.WxSignInEvent;
 import com.yidao.platform.login.bean.WxCodeBean;
 import com.yidao.platform.login.view.LoginBindingPhoneActivity;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class WXEntryActivity extends Activity implements IWXAPIEventHandler, IViewWXEntryActivity {
 
@@ -96,6 +99,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler, IVi
         IPreference.prefHolder.getPreference(this).put(Constant.STRING_USER_REFRESHTOKEN, result.getRefreshToken());
         if (result.isBindPhone()) {
             //已绑定，需要写入userId
+            EventBus.getDefault().post(new WxSignInEvent());
             IPreference.prefHolder.getPreference(this).put(Constant.STRING_USER_ID,result.getUserId());
             startActivity(new Intent(this, ContainerActivity.class));
             finish();

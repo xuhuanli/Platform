@@ -5,14 +5,16 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.KeyEvent;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.yidao.platform.R;
 import com.yidao.platform.app.base.BaseActivity;
+import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.discovery.view.DiscoveryFragment;
 import com.yidao.platform.events.SignUpEvent;
 import com.yidao.platform.info.view.MyInfoFragment;
@@ -40,10 +42,13 @@ public class ContainerActivity extends BaseActivity {
     ViewPager mViewPager;
     @BindView(R.id.tabLayout)
     TabLayout mTabLayout;
+    boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        int taskId = getTaskId();
+        MyLogger.e("ContainerActivity:所在的任务的id为: " + taskId);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         EventBus.getDefault().register(this);
         initView();
@@ -140,12 +145,18 @@ public class ContainerActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);
     }
 
+
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            moveTaskToBack(false);
-            return true;
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            finish();
+            System.exit(0);
+            return;
         }
-        return super.onKeyDown(keyCode, event);
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
     }
 }

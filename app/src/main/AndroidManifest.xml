@@ -41,10 +41,11 @@
             android:name="com.tencent.bugly.beta.ui.BetaActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|locale"
             android:theme="@android:style/Theme.Translucent" />
-        <activity android:name=".container.ContainerActivity" />
+        <!--微信登录会拉起新的任务栈-->
+        <activity android:name=".container.ContainerActivity"/>
 
         <activity android:name=".login.view.GuideActivity" />
-        <activity android:name=".login.view.LoginActivity" />
+        <activity android:name=".login.view.LoginActivity"/>
         <activity
             android:name=".read.view.ReadContentActivity"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />

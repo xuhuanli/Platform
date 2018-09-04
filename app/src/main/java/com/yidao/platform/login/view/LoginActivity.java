@@ -27,6 +27,7 @@ import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.app.utils.PhoneRegUtil;
 import com.yidao.platform.container.ContainerActivity;
+import com.yidao.platform.events.WxSignInEvent;
 import com.yidao.platform.login.bean.WxCodeBean;
 import com.yidao.platform.login.model.LoginObj;
 import com.yidao.platform.login.presenter.LoginPresenter;
@@ -73,6 +74,8 @@ public class LoginActivity extends BaseActivity implements IViewLoginActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        int taskId = getTaskId();
+        MyLogger.e("LoginActivity:所在的任务的id为: " +  taskId);
         EventBus.getDefault().register(this);
         mPresenter = new LoginPresenter(this);
         String userId = IPreference.prefHolder.getPreference(this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
@@ -212,6 +215,11 @@ public class LoginActivity extends BaseActivity implements IViewLoginActivity {
     public void onMessageEvent(DeviceIdEvent event) {
         mBtnLogin.setVisibility(View.VISIBLE);
         btnOperation.setVisibility(View.VISIBLE);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onLoginEvent(WxSignInEvent event) {
+        finish();
     }
 
     @Override
