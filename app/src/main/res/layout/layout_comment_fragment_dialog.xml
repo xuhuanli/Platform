@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="#fffcfcfc"
-    android:layout_height="56dp">
+    android:layout_height="56dp"
+    android:background="#fffcfcfc">
 
-    <!--change color 当有内容时候android:textColor="#ff007aff"-->
     <Button
         android:id="@+id/btn_comment_send"
         android:layout_width="34dp"
@@ -26,13 +24,13 @@
         android:layout_height="36dp"
         android:layout_marginBottom="10dp"
         android:layout_marginEnd="12dp"
-        android:background="#fff2f4f7"
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
+        android:background="#fff2f4f7"
         android:gravity="top"
         android:hint="@string/add_comment"
+        android:inputType="text"
         android:maxLength="150"
-        android:inputType="none"
         android:maxLines="1"
         android:padding="@dimen/size_8dp"
         android:textSize="@dimen/text_size_16sp"

@@ -4,7 +4,6 @@ apply plugin: 'walle'
 //apply plugin: 'org.greenrobot.greendao' // apply plugin
 android {
     compileSdkVersion 27
-
     // 签名配置 放buildTypes上面 放下面会找不到signingConfigs
     signingConfigs {
         debug {
@@ -33,7 +32,6 @@ android {
             v2SigningEnabled true
         }
     }
-
     defaultConfig {
         applicationId "com.yidao.platform"
         minSdkVersion 21
@@ -46,14 +44,13 @@ android {
         multiDexEnabled true
         ndk {
             //设置支持的SO库架构
-            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a',"x86"
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', "x86"
         }
     }
     //忽略方法数限制的检查
     android.dexOptions {
         jumboMode = true
     }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -67,22 +64,18 @@ android {
             signingConfig signingConfigs.debug
         }
     }
-
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
         }
     }
-
     lintOptions {
         disable 'MissingTranslation'
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
     /* Aliyun push */
     allprojects {
         repositories {
@@ -92,6 +85,7 @@ android {
             }
         }
     }
+    buildToolsVersion '28.0.0'
 }
 
 walle {
