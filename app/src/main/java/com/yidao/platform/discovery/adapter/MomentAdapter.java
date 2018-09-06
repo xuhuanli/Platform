@@ -1,6 +1,7 @@
 package com.yidao.platform.discovery.adapter;
 
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,6 +31,9 @@ public class MomentAdapter extends BaseQuickAdapter<FriendsShowBean, BaseViewHol
                 .setText(R.id.tv_discovery_time, item.getTimeStamp())
                 .setText(R.id.tv_discovery_content, item.getContent())
                 .setVisible(R.id.tv_delete, visible);
+        if (TextUtils.isEmpty(item.getContent())) {
+            helper.setGone(R.id.tv_discovery_content,false);
+        }
         TextView dianZan = helper.getView(R.id.tv_discovery_vote);
         dianZan.setText(String.valueOf(item.getLikeAmount()));
         dianZan.setCompoundDrawablesWithIntrinsicBounds(item.isLike() ? R.drawable.dianzan_small_done : R.drawable.dianzan_small, 0, 0, 0);

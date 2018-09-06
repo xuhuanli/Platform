@@ -50,26 +50,23 @@ public class ChangeInfoActivity extends BaseActivity {
         String value = intent.getStringExtra(Constant.STRING_VALUE);
         tvTitle.setText(title);
         etValue.setText(value);
-        addDisposable(RxView.clicks(tvSave).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) throws Exception {
-                String newValue = etValue.getText().toString().trim();
-                if (TextUtils.equals(title, "昵称")) {
-                    if (newValue.length()>15) {
-                        ToastUtils.showToast("昵称不能超过15个字");
-                        return;
-                    }
+        addDisposable(RxView.clicks(tvSave).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
+            String newValue = etValue.getText().toString().trim();
+            if (TextUtils.equals(title, "昵称")) {
+                if (newValue.length()>8) {
+                    ToastUtils.showToast("昵称不能超过8个字");
+                    return;
                 }
-                if (TextUtils.equals(title, "简介")) {
-                    if (newValue.length()>30) {
-                        ToastUtils.showToast("简介不能超过30个字");
-                        return;
-                    }
+            }
+            if (TextUtils.equals(title, "简介")) {
+                if (newValue.length()>12) {
+                    ToastUtils.showToast("简介不能超过12个字");
+                    return;
                 }
-                if (!TextUtils.isEmpty(newValue)) {
-                    EventBus.getDefault().post(new EventChangeInfo(title, newValue));
-                    finish();
-                }
+            }
+            if (!TextUtils.isEmpty(newValue)) {
+                EventBus.getDefault().post(new EventChangeInfo(title, newValue));
+                finish();
             }
         }));
         addDisposable(RxToolbar.navigationClicks(toolbarInfo).subscribe(o -> finish()));

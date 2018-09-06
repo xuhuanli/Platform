@@ -19,6 +19,7 @@ import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.discovery.view.DiscoveryBottleDetailActivity;
 import com.yidao.platform.discovery.view.FriendsGroupDetailActivity;
+import com.yidao.platform.events.RefreshInfoEvent;
 import com.yidao.platform.info.adapter.BottleViewAdapter;
 import com.yidao.platform.info.adapter.CommentViewAdapter;
 import com.yidao.platform.info.adapter.SystemViewAdapter;
@@ -28,12 +29,15 @@ import com.yidao.platform.info.presenter.MyMessageActivityPresenter;
 import com.yidao.platform.read.adapter.ErrorAdapter;
 import com.yidao.platform.read.view.CustomDecoration;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import cn.bingoogolapple.badgeview.BGABadgeTextView;
+import io.reactivex.functions.Consumer;
 
 public class InfoMyMessageActivity extends BaseActivity implements IViewMyMessage {
 
@@ -73,7 +77,10 @@ public class InfoMyMessageActivity extends BaseActivity implements IViewMyMessag
 
     private void initView() {
         tvTitle.setText("我的消息");
-        addDisposable(RxToolbar.navigationClicks(toolbar).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish()));
+        addDisposable(RxToolbar.navigationClicks(toolbar).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
+            EventBus.getDefault().post(new RefreshInfoEvent());
+            finish();
+        }));
         initTabLayout();
     }
 
@@ -227,5 +234,11 @@ public class InfoMyMessageActivity extends BaseActivity implements IViewMyMessag
 
     @Override
     public void successUpdate() {
+    }
+
+    @Override
+    public void onBackPressed() {
+        EventBus.getDefault().post(new RefreshInfoEvent());
+        super.onBackPressed();
     }
 }

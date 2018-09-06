@@ -108,7 +108,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/FF333333</item>
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">17sp</item>
         <item name="android:drawablePadding">12dp</item>
         <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:layout_marginTop">10dp</item>
@@ -208,5 +208,9 @@
     <style name="MyEditText" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">#ffd9d9d9</item>
         <item name="colorControlActivated">#ffd9d9d9</item>
+    </style>
+    <style name="MyTextInputLayout" parent="@android:style/TextAppearance">
+        <item name="android:textColor">#ff007aff</item>
+        <item name="android:textSize">12sp</item>
     </style>
 </resources>

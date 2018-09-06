@@ -23,6 +23,36 @@ public class MyCollectionActivityPresenter {
         this.mView = view;
     }
 
+    /**
+     * 收藏了文章后发给server
+     *
+     * @param isCollection
+     * @param artId
+     * @param userId
+     */
+    public void sendCollectionInfo(Boolean isCollection, long artId, String userId) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("artId", String.valueOf(artId));
+        map.put("userId", String.valueOf(userId));
+        if (isCollection) {
+            RxHttpUtils.createApi(ApiService.class)
+                    .pushHasCollect(map)
+                    .compose(Transformer.switchSchedulers())
+                    .subscribe();
+        } else {
+            RxHttpUtils.createApi(ApiService.class)
+                    .unCollect(map)
+                    .compose(Transformer.switchSchedulers())
+                    .subscribe();
+        }
+    }
+
+    /**
+     * 收藏列表
+     * @param userId
+     * @param pageIndex
+     * @param pageSize
+     */
     public void getUserCollectArtList(@NonNull String userId, String pageIndex, String pageSize) {
         HashMap<String, String> map = new HashMap<>();
         map.put("userId", userId);
@@ -55,7 +85,7 @@ public class MyCollectionActivityPresenter {
                                 readNewsBean.setReadAmount(listBean.getReadAmount());
                                 readNewsBean.setId(listBean.getId());
                                 readNewsBean.setHomeImg(listBean.getHomeImg());
-                                readNewsBean.setDeployTime(listBean.getDeployTime());
+                                readNewsBean.setDeployTime(listBean.getCollectTime());
                                 readNewsBean.setArticleContent(listBean.getArticleContent());
                                 dataList.add(readNewsBean);
                             }

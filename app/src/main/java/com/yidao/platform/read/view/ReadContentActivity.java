@@ -102,6 +102,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     private List<ReadNewsDetailBean> list = new ArrayList<>();
     private boolean isFirstGetNewComment = true;
     private int artLikeCount;
+    private int artCommentConut;
     private ReadNewsDetailBean deleteItem;
     private int indexOfLastTitleItem;
 
@@ -327,6 +328,8 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void deleteCommentSuccess() {
         list.remove(deleteItem);
+        artCommentConut = artCommentConut-1;
+        ib_comment.showTextBadge(String.valueOf(artCommentConut));
         mAdapter.notifyDataSetChanged();
     }
 
@@ -336,21 +339,17 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void pushCommentSuccess(ReadNewsDetailBean item) {
+        artCommentConut = artCommentConut+1;
+        ib_comment.showTextBadge(artCommentConut == 0 ? null : String.valueOf(artCommentConut));
         if (list.size() ==1) {
-            list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_LAST_COMMENT));
+            ReadNewsDetailBean titleItem = new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_LAST_COMMENT);
+            list.add(titleItem);
             list.add(item);
+            indexOfLastTitleItem = list.indexOf(titleItem);
         }else {
             list.add(indexOfLastTitleItem+1,item);
         }
         mAdapter.notifyDataSetChanged();
-        /*ReadNewsDetailBean firstData = list.get(0);
-        list.clear();
-        list.add(firstData);
-        mNextRequestPage = 0;  //初始化为0
-        isFirstGetNewComment = true; //初始化为true
-        mAdapter.loadMoreEnd(false); //开启加载更多
-        mPresenter.getHotComments(artId,userId);
-        MyLogger.e("发布成功");*/
     }
 
     @Override
@@ -363,6 +362,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         isCollection = isCollectArt;
         isLike = isLikedtArt;
         artLikeCount = Integer.parseInt(likeAmount);
+        artCommentConut = Integer.parseInt(commentAmount);
         ib_vote.setSelected(isCollectArt);
         ib_favorite.setSelected(isLike);
         if (!"0".equals(commentAmount)) {

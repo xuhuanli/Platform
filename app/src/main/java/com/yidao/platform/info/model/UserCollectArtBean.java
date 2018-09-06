@@ -102,9 +102,18 @@ public class UserCollectArtBean {
             private int status;
             private String homeImg;
             private String deployTime;
+            private String collectTime;
             private int type;
             private String articleContent;
             private int readAmount;
+
+            public String getCollectTime() {
+                return collectTime;
+            }
+
+            public void setCollectTime(String collectTime) {
+                this.collectTime = collectTime;
+            }
 
             public long getId() {
                 return id;

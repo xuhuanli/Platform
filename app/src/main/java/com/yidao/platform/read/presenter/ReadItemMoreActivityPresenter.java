@@ -45,7 +45,7 @@ public class ReadItemMoreActivityPresenter {
                             CategoryArticleExtBean.ResultBean result = categoryArticleExtBean.getResult();
                             if (result.getTotal()!=0) {
                                 if ( result.getList().size() < result.getPageSize()) {  //所得数目< pageSize =>到底了
-                                    mView.loadMoreEnd(false);
+                                    mView.loadMoreEnd(true);
                                 } else {
                                     mView.loadMoreComplete();
                                 }

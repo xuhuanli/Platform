@@ -45,7 +45,7 @@ public class MyBottlePresenter {
                                     String result = jsonObject.getString("result");
                                     MyBottleBean bean = new Gson().fromJson(result, MyBottleBean.class);
                                     if (bean.getList() != null && (bean.getList().size() < bean.getPage().getPageSize())) {
-                                        mView.loadMoreEnd(false);
+                                        mView.loadMoreEnd(true);
                                     } else {
                                         mView.loadMoreComplete();
                                     }

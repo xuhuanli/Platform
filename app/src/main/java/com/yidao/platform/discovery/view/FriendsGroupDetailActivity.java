@@ -45,7 +45,6 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
-import io.reactivex.functions.Consumer;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class FriendsGroupDetailActivity extends BaseActivity implements IViewFriendsGroupDetail, EasyPermissions.PermissionCallbacks, BGANinePhotoLayout.Delegate {
@@ -83,6 +82,7 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
     private PyqFindIdObj obj;
     private String findId;
     private DianZanObj dianZanObj;
+    private FriendsShowBean detailData;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,7 +100,16 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
     }
 
     private void initToolbar() {
-        addDisposable(RxToolbar.navigationClicks(mToolbar).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish()));
+        addDisposable(RxToolbar.navigationClicks(mToolbar).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
+            if (detailData != null) {
+                Intent intent = new Intent();
+                intent.putExtra(Constant.STRING_FIND_ID, detailData.getFindId());
+                intent.putExtra(Constant.STRING_LIKE_AMOUNT, detailData.getLikeAmount());
+                intent.putExtra(Constant.STRING_ISLIKE, detailData.isLike());
+                setResult(RESULT_OK, intent);
+            }
+            finish();
+        }));
         mTitle.setText(R.string.discovery_pyq_title);
     }
 
@@ -136,7 +145,7 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
         fillEditText();
         mCommentBottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         mCommentBottomSheetDialog.show();
-        addDisposable(RxView.clicks(mBtnSend).throttleFirst(Constant.THROTTLE_TIME,TimeUnit.MILLISECONDS).subscribe(o -> {
+        addDisposable(RxView.clicks(mBtnSend).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
             String content = mEtContent.getText().toString();
             if (!TextUtils.isEmpty(content)) {
                 PyqCommentsObj obj = new PyqCommentsObj();
@@ -154,7 +163,6 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
         });
     }
 
-    //内容回显
     private void fillEditText() {
         // 为 EditText 获取焦点
         mEtContent.setFocusable(true);
@@ -276,6 +284,7 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
 
     @Override
     public void showDetail(FriendsShowBean showBean) {
+        detailData = showBean;
         mPresenter.qryFindComms(obj);
         Glide.with(this).load(showBean.getHeadImg()).apply(new RequestOptions().placeholder(R.drawable.info_head_p)).into(ivDiscoveryIcon);
         tvDiscoveryName.setText(showBean.getDeployName());
@@ -303,7 +312,22 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
             showBean.setLike(!isLike);
         }));
         tvDiscoveryContent.setText(showBean.getContent());
+        if (TextUtils.isEmpty(showBean.getContent())) {
+            tvDiscoveryContent.setVisibility(View.GONE);
+        }
         nplItemMomentPhotos.setData(showBean.getImgUrls());
         nplItemMomentPhotos.setDelegate(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (detailData != null) {
+            Intent intent = new Intent();
+            intent.putExtra(Constant.STRING_FIND_ID, detailData.getFindId());
+            intent.putExtra(Constant.STRING_LIKE_AMOUNT, detailData.getLikeAmount());
+            intent.putExtra(Constant.STRING_ISLIKE, detailData.isLike());
+            setResult(RESULT_OK, intent);
+        }
+        super.onBackPressed();
     }
 }

@@ -1,7 +1,6 @@
 package com.yidao.platform.info.view;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 import com.jakewharton.rxbinding2.view.RxView;
-import com.tencent.bugly.Bugly;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
@@ -22,14 +20,12 @@ import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.app.utils.FileUtil;
 import com.yidao.platform.events.SignUpEvent;
 import com.yidao.platform.info.presenter.SettingsPresenter;
-import com.yidao.platform.login.view.LoginActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
-import io.reactivex.functions.Consumer;
 
 public class SettingsActivity extends BaseActivity implements SettingsViewInterface {
 
@@ -89,10 +85,10 @@ public class SettingsActivity extends BaseActivity implements SettingsViewInterf
             @Override
             void onClearCacheFinished() {
                 initCacheTextView();
-                mHandler.postDelayed(() -> {
+                mHandler.post(() -> {
                     mTvCache.setVisibility(View.VISIBLE);
                     mPresenter.dismissProgressBar(mProgressBar);
-                }, 1000);
+                });
             }
         });
     }

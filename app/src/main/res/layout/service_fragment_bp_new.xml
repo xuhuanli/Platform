@@ -62,7 +62,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_base_info"
                 app:leftText="名称"
                 app:rightHint="请输入企业名称"
-                app:setImportantIcon="@drawable/ic_stars_black_8dp" />
+                app:setImportantIcon="@drawable/red_star" />
 
             <View
                 android:id="@+id/line1"
@@ -135,7 +135,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/line4"
                 app:leftText="手机"
                 app:rightHint="请输入你的联系方式"
-                app:setImportantIcon="@drawable/ic_stars_black_8dp" />
+                app:setImportantIcon="@drawable/red_star" />
 
             <View
                 android:id="@+id/line5"

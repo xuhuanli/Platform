@@ -15,6 +15,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -60,6 +61,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     //startActivityForResult的常量
     private static final int REQUEST_IMAGE_CAPTURE = 100;
     private static final int REQUEST_CHOOSE_PICTURE = 101;
+    private static final int REQUEST_DETAIL = 102;
     @BindView(R.id.btn_take_photo)
     TextView mBtnPhoto;
     @BindView(R.id.btn_album)
@@ -77,7 +79,6 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     private DiscoveryPresenter mPresenter;
     private MomentAdapter mAdapter;
     private BGANinePhotoLayout mCurrentClickNpl;
-    private Uri uriForFile;
     private File app_photo;
     private String userId;
     private DianZanObj dianZanObj;
@@ -89,7 +90,6 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
         initToolbar();
         initRecyclerView();
         initSwipeRefreshLayout();
-        //mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         mRecyclerView.addOnScrollListener(new BGARVOnScrollListener(getActivity()));
         //拍照function
         addDisposable(RxView.clicks(mBtnPhoto).subscribe(o -> {
@@ -175,6 +175,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
         if (!app_photo.getParentFile().exists()) {
             app_photo.getParentFile().mkdirs();
         }
+        Uri uriForFile;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             uriForFile = FileProvider.getUriForFile(getActivity(), "com.yidao.platform.file_provider", app_photo);
         } else {
@@ -213,14 +214,13 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
 
     @Override
     public void loadRecyclerData(ArrayList<FriendsShowBean> dataList) {
-
         mAdapter = new MomentAdapter(dataList, this);
         mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             Intent intent = new Intent(getActivity(), FriendsGroupDetailActivity.class);
             intent.putExtra(Constant.STRING_FIND_ID, ((FriendsShowBean) adapter.getItem(position)).getFindId());
-            startActivity(intent);
+            startActivityForResult(intent, REQUEST_DETAIL);
         });
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             FriendsShowBean item = (FriendsShowBean) adapter.getItem(position);
@@ -290,6 +290,21 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
                     ArrayList<String> photos = BGAPhotoPickerActivity.getSelectedPhotos(data);
                     choosePictureIntent.putStringArrayListExtra("choose_picture_path", photos);
                     startActivity(choosePictureIntent);
+                    break;
+                case REQUEST_DETAIL:
+                    if (data != null) {
+                        String findId = data.getStringExtra(Constant.STRING_FIND_ID);
+                        boolean isLike = data.getBooleanExtra(Constant.STRING_ISLIKE, false);
+                        long likeAmount = data.getLongExtra(Constant.STRING_LIKE_AMOUNT, 0);
+                        List<FriendsShowBean> dataList = mAdapter.getData();
+                        for (int i = 0; i < dataList.size(); i++) {
+                            if (TextUtils.equals(dataList.get(i).getFindId(), findId)) {
+                                dataList.get(i).setLike(isLike);
+                                dataList.get(i).setLikeAmount(likeAmount);
+                                mAdapter.notifyItemChanged(i);
+                            }
+                        }
+                    }
                     break;
             }
         }

@@ -23,12 +23,16 @@ import com.yidao.platform.discovery.adapter.MomentAdapter;
 import com.yidao.platform.discovery.bean.FriendsShowBean;
 import com.yidao.platform.discovery.model.FindDiscoveryObj;
 import com.yidao.platform.discovery.model.PyqFindIdObj;
+import com.yidao.platform.events.RefreshInfoEvent;
 import com.yidao.platform.info.presenter.MyPublishActivityPresenter;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
+import io.reactivex.functions.Consumer;
 
 public class InfoMyPublishActivity extends BaseActivity implements BaseQuickAdapter.OnItemChildClickListener, IViewMyPublishActivity {
 
@@ -88,7 +92,10 @@ public class InfoMyPublishActivity extends BaseActivity implements BaseQuickAdap
 
     private void initToolbar() {
         tvTitle.setText("我的发布");
-        addDisposable(RxToolbar.navigationClicks(toolbar).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish()));
+        addDisposable(RxToolbar.navigationClicks(toolbar).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
+            EventBus.getDefault().post(new RefreshInfoEvent());
+            InfoMyPublishActivity.this.finish();
+        }));
     }
 
     @Override
@@ -165,5 +172,11 @@ public class InfoMyPublishActivity extends BaseActivity implements BaseQuickAdap
         //删除成功
         mDataList.remove(item);
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onBackPressed() {
+        EventBus.getDefault().post(new RefreshInfoEvent());
+        super.onBackPressed();
     }
 }

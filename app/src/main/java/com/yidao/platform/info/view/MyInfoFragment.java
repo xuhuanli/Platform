@@ -22,6 +22,7 @@ import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.utils.MyLogger;
+import com.yidao.platform.events.RefreshInfoEvent;
 import com.yidao.platform.info.model.EventChangeInfo;
 import com.yidao.platform.info.model.EventTouXiangInfo;
 import com.yidao.platform.info.model.MineInfoBean;
@@ -206,6 +207,12 @@ public class MyInfoFragment extends Fragment implements IViewMineInfo {
         if (TextUtils.equals(event.title, "简介")) {
             tvLoginHint.setText(event.value);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onRefreshEvent(RefreshInfoEvent event) {
+        MyLogger.e("activity返回刷新");
+        initData();
     }
 
     private void clearDisposable() {

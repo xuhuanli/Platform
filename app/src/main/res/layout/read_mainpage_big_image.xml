@@ -48,7 +48,7 @@
         android:ellipsize="end"
         android:maxLines="2"
         android:textColor="#ff000000"
-        android:textSize="16sp"
+        android:textSize="17sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_big_image"
         tools:text="那么在前面的Fragment中再显示一个子Fragment, 并且又带有一个不一样的Toolbar, 还需要哪些处理呢?

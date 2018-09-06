@@ -5,9 +5,9 @@ public class Constant {
     //王鹏
     //public static final String BASE_URL = "http://10.10.20.11:8060/";
     //徐ww
-    //public static final String BASE_URL = "http://10.10.20.24:8080/";
+    //public static final String BASE_URL = "http://10.10.20.3:8080/";
     //徐ly
-    //public static final String BASE_URL = "http://10.10.20.13:8080/";
+    //public static final String BASE_URL = "http://10.10.20.3:8080/";
     //张zk
     //public static final String BASE_URL = "http://10.10.20.10:8081/";
     //陈dq
@@ -87,4 +87,6 @@ public class Constant {
     public static final String STRING_HAS_GUIDE = "has_guide";
     public static final String STRING_ACTIVITY = "activity";
     public static final String STRING_ERRCODE = "errCode";
+    public static final String STRING_LIKE_AMOUNT = "likeAmount";
+    public static final String STRING_ISLIKE = "isLike";
 }
