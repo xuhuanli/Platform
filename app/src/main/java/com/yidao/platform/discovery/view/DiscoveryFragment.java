@@ -116,7 +116,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
 
     @Override
     protected void initData() {
-        mPresenter.getFriendsList(Constant.PAGE_SIZE);
+        mPresenter.getFriendsList(Constant.PAGE_SIZE,userId);
     }
 
     @Override
@@ -146,7 +146,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
         if (mAdapter != null) {
             mAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
         }
-        mPresenter.getFriendsList(Constant.PAGE_SIZE);
+        mPresenter.getFriendsList(Constant.PAGE_SIZE,userId);
     }
 
     /**
@@ -246,7 +246,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
         List<FriendsShowBean> dataList = mAdapter.getData();
         FriendsShowBean bean = mAdapter.getData().get(dataList.size() - 1);
         String findId = bean.getFindId();
-        mPresenter.qryFindHis(Constant.PAGE_SIZE, findId);
+        mPresenter.qryFindHis(Constant.PAGE_SIZE, findId,userId);
     }
 
     @Override

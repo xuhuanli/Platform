@@ -33,7 +33,6 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
-import io.reactivex.functions.Consumer;
 
 public class DiscoveryBottleDetailActivity extends BaseActivity implements DiscoveryBottleDetailInterface {
     @BindView(R.id.toolbar)
@@ -69,7 +68,6 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
     private String sessionId;
     private BottleDtlBean.ResultBean result;
     private String flag;
-    private Button mBtnSend;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -104,12 +102,12 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
         mCommentBottomSheetDialog.setCanceledOnTouchOutside(true);
         @SuppressLint("InflateParams") View view = LayoutInflater.from(this).inflate(R.layout.layout_comment_fragment_dialog, null);
         mEtContent = view.findViewById(R.id.et_comment_content);
-        mBtnSend = view.findViewById(R.id.btn_comment_send);
+        Button mBtnSend = view.findViewById(R.id.btn_comment_send);
         mCommentBottomSheetDialog.setContentView(view);
         fillEditText();
         mCommentBottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         mCommentBottomSheetDialog.show();
-        addDisposable(RxView.clicks(mBtnSend).throttleFirst(Constant.THROTTLE_TIME,TimeUnit.MILLISECONDS).subscribe(o -> {
+        addDisposable(RxView.clicks(mBtnSend).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
             String content = mEtContent.getText().toString();
             if (!TextUtils.isEmpty(content)) {
                 ReplyBottleObj obj = new ReplyBottleObj();
@@ -141,9 +139,10 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
         fillEditText();
         mCommentBottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         mCommentBottomSheetDialog.show();
-        addDisposable(RxView.clicks(mBtnSend).throttleFirst(Constant.THROTTLE_TIME,TimeUnit.MILLISECONDS).subscribe(o -> {
+        addDisposable(RxView.clicks(mBtnSend).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
             String content = mEtContent.getText().toString();
             if (!TextUtils.isEmpty(content)) {
+                mBtnSend.setEnabled(false);
                 ReplyBottleListObj obj = new ReplyBottleListObj();
                 obj.setContent(content);
                 obj.setDeviceId(IPreference.prefHolder.getPreference(DiscoveryBottleDetailActivity.this).getString(Constant.STRING_DEVICE_ID));
@@ -157,6 +156,7 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
         //when you invoke cancel() , callback to here .So  please use dialog.cancel() but not dialog.dismiss(), unless you setOnDismissListener
         mCommentBottomSheetDialog.setOnCancelListener(dialog -> {
             //when dialog cancel state write content into textview.
+            mBtnSend.setEnabled(true);
             tvPublishComment.setText(mEtContent.getText().toString());
         });
     }

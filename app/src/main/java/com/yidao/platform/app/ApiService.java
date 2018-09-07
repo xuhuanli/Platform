@@ -175,14 +175,14 @@ public interface ApiService {
     /**
      * 获取朋友圈列表
      */
-    @GET("app/find/qryFindLatest")
-    Observable<FriendsListBean> getFriendsList(@Query("size") int size);
+    @GET("app/find/qryFindLatestNew")
+    Observable<FriendsListBean> getFriendsList(@Query("size") int size, @Query("userId") String userId);
 
     /**
      * 获取朋友圈加载更多
      */
-    @GET("app/find/qryFindHis")
-    Observable<FriendsListBean> qryFindHis(@Query("size") int size, @Query("lastFindId") String lastFindId);
+    @GET("app/find/qryFindHisNew")
+    Observable<FriendsListBean> qryFindHis(@Query("size") int size, @Query("lastFindId") String lastFindId, @Query("userId") String userId);
 
     /**
      * 朋友圈点赞

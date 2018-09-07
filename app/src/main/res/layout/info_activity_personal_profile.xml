@@ -22,7 +22,9 @@
             android:gravity="center"
             android:text="@string/personal_profile"
             android:textColor="#ff333333"
-            android:textSize="17sp" />
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="158dp" />
     </android.support.v7.widget.Toolbar>
 
     <android.support.constraint.ConstraintLayout

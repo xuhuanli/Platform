@@ -15,13 +15,15 @@
 
         <TextView
             android:id="@+id/tv_title"
-            tools:text="@string/recent_read"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
             android:textColor="@color/FF333333"
-            android:textSize="17sp" />
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="158dp"
+            tools:text="@string/recent_read" />
     </android.support.v7.widget.Toolbar>
 
     <View

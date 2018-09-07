@@ -63,10 +63,10 @@ public class DiscoveryPresenter {
     /**
      * 获取朋友圈列表新的接口
      */
-    public void getFriendsList(int size) {
+    public void getFriendsList(int size,String userId) {
         RxHttpUtils
                 .createApi(ApiService.class)
-                .getFriendsList(size)
+                .getFriendsList(size,userId)
                 .compose(Transformer.switchSchedulers())
                 .subscribe(new CommonObserver<FriendsListBean>() {
                     @Override
@@ -161,10 +161,10 @@ public class DiscoveryPresenter {
      * @param pageSize
      * @param findId
      */
-    public void qryFindHis(int pageSize, String findId) {
+    public void qryFindHis(int pageSize, String findId,String userId) {
         RxHttpUtils
                 .createApi(ApiService.class)
-                .qryFindHis(pageSize, findId)
+                .qryFindHis(pageSize, findId,userId)
                 .compose(Transformer.switchSchedulers())
                 .subscribe(new CommonObserver<FriendsListBean>() {
                     @Override

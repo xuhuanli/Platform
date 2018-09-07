@@ -118,6 +118,7 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
         mPresenter.qryFindContent(findContentObj);
         obj = new PyqFindIdObj(findId);
         addDisposable(RxView.clicks(mTvComment).subscribe(o -> showCommentDialog(Long.valueOf(userId), "0")));
+        addDisposable(RxView.clicks(mIvIcon).subscribe(o -> showCommentDialog(Long.valueOf(userId), "0")));
     }
 
     private void showAlertDialog(int messageId, DialogInterface.OnClickListener positiveListener) {
@@ -148,6 +149,7 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
         addDisposable(RxView.clicks(mBtnSend).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
             String content = mEtContent.getText().toString();
             if (!TextUtils.isEmpty(content)) {
+                mBtnSend.setEnabled(false);
                 PyqCommentsObj obj = new PyqCommentsObj();
                 obj.setContent(content);
                 obj.setDeployId(deployId);
@@ -159,6 +161,7 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
         //when you invoke cancel() , callback to here .So  please use dialog.cancel() but not dialog.dismiss(), unless you setOnDismissListener
         mCommentBottomSheetDialog.setOnCancelListener(dialog -> {
             //when dialog cancel state write content into textview.
+            mBtnSend.setEnabled(true);
             mTvComment.setText(mEtContent.getText().toString());
         });
     }

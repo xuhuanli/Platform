@@ -19,9 +19,11 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            tools:text="@string/discovery_pyq_title"
             android:textColor="#ff333333"
-            android:textSize="17sp" />
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="158dp"
+            tools:text="@string/discovery_pyq_title" />
     </android.support.v7.widget.Toolbar>
 
     <android.support.v4.widget.NestedScrollView
@@ -50,12 +52,12 @@
 
             <TextView
                 android:id="@+id/tv_discovery_name"
-                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:textColor="#ff333333"
-                android:textSize="14sp"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/iv_discovery_icon"
                 app:layout_constraintTop_toTopOf="@+id/iv_discovery_icon"
                 tools:text="name" />

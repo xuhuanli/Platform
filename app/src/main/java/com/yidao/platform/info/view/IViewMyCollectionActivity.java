@@ -10,8 +10,6 @@ public interface IViewMyCollectionActivity {
 
     void showError();
 
-    void loadMoreFail();
-
     void loadMoreEnd(boolean b);
 
     void loadMoreComplete();

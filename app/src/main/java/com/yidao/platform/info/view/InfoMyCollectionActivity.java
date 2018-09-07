@@ -13,16 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.allen.library.utils.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
-import com.yidao.platform.discovery.bean.FriendsShowBean;
-import com.yidao.platform.discovery.model.PyqFindIdObj;
-import com.yidao.platform.events.CancelCollectionEvent;
 import com.yidao.platform.events.RefreshInfoEvent;
 import com.yidao.platform.info.adapter.CollectionAdapter;
 import com.yidao.platform.info.presenter.MyCollectionActivityPresenter;
@@ -31,15 +27,12 @@ import com.yidao.platform.read.bean.ReadNewsBean;
 import com.yidao.platform.read.view.ReadContentActivity;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
-import io.reactivex.functions.Consumer;
 
 public class InfoMyCollectionActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemLongClickListener, IViewMyCollectionActivity {
 
@@ -96,7 +89,7 @@ public class InfoMyCollectionActivity extends BaseActivity implements BaseQuickA
         String url = item.getArticleContent();
         Intent intent = new Intent(this, ReadContentActivity.class);
         intent.putExtra("url", item.getArticleContent());
-        intent.putExtra(Constant.STRING_ART_ID,item.getId());
+        intent.putExtra(Constant.STRING_ART_ID, item.getId());
         startActivity(intent);
     }
 
@@ -105,7 +98,7 @@ public class InfoMyCollectionActivity extends BaseActivity implements BaseQuickA
         ReadNewsBean item = (ReadNewsBean) adapter.getItem(position);
         long artId = item.getId();
         showAlertDialog(R.string.ensure_cancel_collection, (dialog, which) -> {
-            mPresenter.sendCollectionInfo(false,artId,userId);
+            mPresenter.sendCollectionInfo(false, artId, userId);
             List<ReadNewsBean> dataList = mAdapter.getData();
             dataList.remove(item);
             mAdapter.notifyDataSetChanged();
@@ -156,12 +149,6 @@ public class InfoMyCollectionActivity extends BaseActivity implements BaseQuickA
         ((TextView) view.findViewById(R.id.tv_tips)).setText(R.string.connection_failed);
         adapter.setEmptyView(view);
         adapter.setNewData(null);
-    }
-
-    @Override
-    public void loadMoreFail() {
-        mAdapter.loadMoreFail();
-        ToastUtils.showToast(getString(R.string.connection_failed));
     }
 
     @Override

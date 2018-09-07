@@ -21,7 +21,9 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:textColor="@color/FF333333"
-            android:textSize="17sp"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="158dp"
             tools:text="@string/my_msg" />
     </android.support.v7.widget.Toolbar>
 

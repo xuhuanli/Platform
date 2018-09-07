@@ -89,13 +89,14 @@
         <item name="android:layout_marginBottom">@dimen/size_8dp</item>
         <item name="android:textColor">@color/FF333333</item>
         <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="Info_Text_Style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">#ff666666</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="Info_Line_Style">
@@ -139,7 +140,7 @@
         <item name="android:paddingLeft">@dimen/size_16dp</item>
         <item name="android:paddingRight">@dimen/size_16dp</item>
         <item name="android:textColor">@color/FF333333</item>
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="CustomViewStyle">
@@ -152,9 +153,9 @@
 
     <style name="BP_Item_Style">
         <item name="leftColor">@color/FF333333</item>
-        <item name="leftSize">15sp</item>
+        <item name="leftSize">16sp</item>
         <item name="rightColor">@color/FF333333</item>
-        <item name="rightSize">15sp</item>
+        <item name="rightSize">16sp</item>
         <item name="android:layout_height">52dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:paddingLeft">16dp</item>

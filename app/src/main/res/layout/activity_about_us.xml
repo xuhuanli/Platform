@@ -20,7 +20,9 @@
             android:gravity="center"
             android:text="@string/about_us"
             android:textColor="#ff333333"
-            android:textSize="17sp" />
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="158dp" />
     </android.support.v7.widget.Toolbar>
 
     <View
