@@ -56,7 +56,6 @@ public class MyApplicationLike extends DefaultApplicationLike {
         initLogger();
         initUmengAnalytics(appContext);
         setLabelMap();
-        //PingFangSCUtil.setDefaultFont(getAppContext(),"DEFAULT","fonts/PingFang-SC-Regular.ttf");
     }
 
     private void setLabelMap() {

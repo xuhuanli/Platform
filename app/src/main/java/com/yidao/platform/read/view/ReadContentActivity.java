@@ -376,7 +376,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
             list.addAll(dataList);
             mAdapter.notifyDataSetChanged();
         }
-        mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
+        mAdapter.setOnLoadMoreListener(this::loadMore, mRecyclerView);
     }
 
     @Override
@@ -411,9 +411,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
             //分享到朋友圈
             weChatShare(SendMessageToWX.Req.WXSceneTimeline,title,subTitle,bitmap);
         });
-        view.findViewById(R.id.tv_cancel).setOnClickListener(v -> {
-            mShareBottomSheetDialog.cancel();
-        });
+        view.findViewById(R.id.tv_cancel).setOnClickListener(v -> mShareBottomSheetDialog.cancel());
     }
 
     private void weChatShare(int mTargetScene,String title,String subTitle,Bitmap bitmap) {

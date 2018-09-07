@@ -28,7 +28,6 @@ import com.yidao.platform.service.view.CustomBpItemView;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
-import io.reactivex.functions.Consumer;
 
 public class ServiceFragment extends BaseFragment implements IViewServiceFragment {
 

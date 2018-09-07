@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.yidao.platform.R;
-import com.yidao.platform.read.adapter.MultipleReadDetailAdapter;
 
 import java.util.List;
 

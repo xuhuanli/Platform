@@ -5,11 +5,9 @@ import android.support.annotation.NonNull;
 import com.allen.library.RxHttpUtils;
 import com.allen.library.interceptor.Transformer;
 import com.allen.library.observer.CommonObserver;
-import com.allen.library.utils.ToastUtils;
 import com.yidao.platform.app.ApiService;
 import com.yidao.platform.info.model.UserCollectArtBean;
 import com.yidao.platform.info.view.IViewMyCollectionActivity;
-import com.yidao.platform.read.bean.CategoryArticleExtBean;
 import com.yidao.platform.read.bean.ReadNewsBean;
 
 import java.util.ArrayList;

@@ -104,7 +104,7 @@ public class SearchArticleActivity extends BaseActivity implements IViewSearchAr
     @Override
     public void loadRecyclerData(ArrayList<ReadNewsBean> dataList) {
         mAdapter = new TitleSearchAdapter(dataList);
-        mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
+        mAdapter.setOnLoadMoreListener(this::loadMore, mRecyclerView);
         mRecyclerView.setAdapter(mAdapter);
         if (dataList.size() == 0) {
             View view = LayoutInflater.from(this).inflate(R.layout.info_no_msg_layout, mRecyclerView, false);

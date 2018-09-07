@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Environment;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.Random;
 
 public class FileUtil {

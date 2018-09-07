@@ -74,7 +74,7 @@ public class ReadItemMoreActivity extends BaseActivity implements IViewReadItemM
     @Override
     public void loadRecyclerData(List<ReadNewsBean> dataList) {
         mAdapter = new ReadItemMoreAdapter(dataList);
-        mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
+        mAdapter.setOnLoadMoreListener(this::loadMore, mRecyclerView);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             ReadNewsBean item = (ReadNewsBean) adapter.getItem(position);

@@ -4,10 +4,6 @@ import android.text.TextPaint;
 import android.text.style.ClickableSpan;
 import android.view.View;
 
-import com.yidao.platform.R;
-import com.yidao.platform.app.MyApplication;
-import com.yidao.platform.app.MyApplicationLike;
-
 /**
  * @author yiw
  * @Description:

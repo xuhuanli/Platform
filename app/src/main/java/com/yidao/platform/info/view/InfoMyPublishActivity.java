@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
-import io.reactivex.functions.Consumer;
 
 public class InfoMyPublishActivity extends BaseActivity implements BaseQuickAdapter.OnItemChildClickListener, IViewMyPublishActivity {
 
@@ -144,7 +143,7 @@ public class InfoMyPublishActivity extends BaseActivity implements BaseQuickAdap
         mDataList = dataList;
         mAdapter = new MomentAdapter(dataList, null);
         mAdapter.setDeleteVisible(true);
-        mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
+        mAdapter.setOnLoadMoreListener(this::loadMore, mRecyclerView);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             Intent intent = new Intent(this, FriendsGroupDetailActivity.class);

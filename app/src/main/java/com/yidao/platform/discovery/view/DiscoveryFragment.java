@@ -215,7 +215,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     @Override
     public void loadRecyclerData(ArrayList<FriendsShowBean> dataList) {
         mAdapter = new MomentAdapter(dataList, this);
-        mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
+        mAdapter.setOnLoadMoreListener(this::loadMore, mRecyclerView);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             Intent intent = new Intent(getActivity(), FriendsGroupDetailActivity.class);

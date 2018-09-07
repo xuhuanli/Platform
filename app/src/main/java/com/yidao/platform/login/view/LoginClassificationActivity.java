@@ -25,18 +25,8 @@ public class LoginClassificationActivity extends BaseActivity {
     }
 
     private void initView() {
-        addDisposable(RxView.clicks(mTvEntrepreneur).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) {
-                startActivity(LoginInterestingActivity.class);
-            }
-        }));
-        addDisposable(RxView.clicks(mTvInvestor).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) {
-                startActivity(LoginInterestingActivity.class);
-            }
-        }));
+        addDisposable(RxView.clicks(mTvEntrepreneur).subscribe(o -> startActivity(LoginInterestingActivity.class)));
+        addDisposable(RxView.clicks(mTvInvestor).subscribe(o -> startActivity(LoginInterestingActivity.class)));
     }
 
     @Override

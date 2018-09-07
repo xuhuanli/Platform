@@ -1,13 +1,9 @@
 package com.yidao.platform.discovery.presenter;
 
-import android.content.ContentUris;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.widget.ImageView;
 
@@ -15,14 +11,12 @@ import com.allen.library.RxHttpUtils;
 import com.allen.library.interceptor.Transformer;
 import com.allen.library.observer.CommonObserver;
 import com.allen.library.observer.StringObserver;
-import com.yidao.platform.R;
 import com.yidao.platform.app.ApiService;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.discovery.bean.FriendsListBean;
 import com.yidao.platform.discovery.bean.FriendsShowBean;
 import com.yidao.platform.discovery.model.DianZanObj;
-import com.yidao.platform.discovery.model.FindDiscoveryObj;
 import com.yidao.platform.discovery.view.DiscoveryViewInterface;
 
 import java.util.ArrayList;

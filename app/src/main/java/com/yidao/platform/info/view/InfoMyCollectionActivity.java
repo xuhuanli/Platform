@@ -124,7 +124,7 @@ public class InfoMyCollectionActivity extends BaseActivity implements BaseQuickA
     @Override
     public void loadRecyclerData(ArrayList<ReadNewsBean> dataList) {
         mAdapter = new CollectionAdapter(dataList);
-        mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
+        mAdapter.setOnLoadMoreListener(this::loadMore, mRecyclerView);
         mRecyclerView.setAdapter(mAdapter);
         if (dataList.size() == 0) {
             View view = LayoutInflater.from(this).inflate(R.layout.info_no_msg_layout, mRecyclerView, false);

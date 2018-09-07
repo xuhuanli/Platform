@@ -229,7 +229,7 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
             mAdapter = new MultipleReadAdapter(getActivity(), dataList);
             mAdapter.addHeaderView(headerView);
             mPresenter.getBannerData();
-            mAdapter.setOnLoadMoreListener(() -> loadMore(), mRecyclerView);
+            mAdapter.setOnLoadMoreListener(this::loadMore, mRecyclerView);
             mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
                 switch (view.getId()) {
                     case R.id.tv_item_more:

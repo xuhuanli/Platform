@@ -9,13 +9,10 @@ import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
-import android.os.Build;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.xuhuanli.androidutils.density.DensityUtil;
 import com.yidao.platform.app.utils.ScreenUtil;
 import com.youth.banner.loader.ImageLoader;
 

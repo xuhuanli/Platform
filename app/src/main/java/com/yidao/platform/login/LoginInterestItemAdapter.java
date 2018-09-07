@@ -30,12 +30,9 @@ public class LoginInterestItemAdapter extends RecyclerView.Adapter<LoginInterest
         mContext = parent.getContext();
         View view = LayoutInflater.from(mContext).inflate(R.layout.login_interest_item, parent, false);
         final ItemViewHolder holder = new ItemViewHolder(view);
-        RxView.clicks(holder.mIvInterestItem).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) {
-                int position = holder.getAdapterPosition();
-                mContext.startActivity(new Intent(mContext, ContainerActivity.class));
-            }
+        RxView.clicks(holder.mIvInterestItem).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
+            int position = holder.getAdapterPosition();
+            mContext.startActivity(new Intent(mContext, ContainerActivity.class));
         });
         return holder;
     }

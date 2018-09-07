@@ -37,7 +37,6 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import cn.bingoogolapple.badgeview.BGABadgeTextView;
-import io.reactivex.functions.Consumer;
 
 public class InfoMyMessageActivity extends BaseActivity implements IViewMyMessage {
 

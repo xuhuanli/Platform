@@ -3,7 +3,6 @@ package com.yidao.platform.wxapi;
 import com.allen.library.RxHttpUtils;
 import com.allen.library.interceptor.Transformer;
 import com.allen.library.observer.CommonObserver;
-import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.app.ApiService;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.login.bean.WxCodeBean;
@@ -11,7 +10,6 @@ import com.yidao.platform.login.bean.WxCodeBean;
 import java.util.HashMap;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class WXEntryActivityPresenter {

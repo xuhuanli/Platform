@@ -122,7 +122,7 @@ public class TokenInterceptor implements Interceptor {
                     response.body().close();
                     return token;
                 case "1021":
-                    mHandler.post(() -> jumpToLoginPage());
+                    mHandler.post(this::jumpToLoginPage);
                     break;
             }
         } catch (JSONException e) {

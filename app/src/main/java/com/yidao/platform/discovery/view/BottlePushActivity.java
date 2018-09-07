@@ -17,7 +17,6 @@ import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
-import com.yidao.platform.app.utils.MyLogger;
 
 import java.util.Arrays;
 import java.util.List;

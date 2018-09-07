@@ -46,7 +46,7 @@ public class CommentListView extends LinearLayout {
 
     public void setDatas(List<CommentsItem> datas) {
         if (datas == null) {
-            datas = new ArrayList<CommentsItem>();
+            datas = new ArrayList<>();
         }
         mDatas = datas;
         notifyDataSetChanged();

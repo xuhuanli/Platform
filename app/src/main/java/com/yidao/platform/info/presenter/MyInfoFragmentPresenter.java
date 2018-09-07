@@ -3,7 +3,6 @@ package com.yidao.platform.info.presenter;
 import com.allen.library.RxHttpUtils;
 import com.allen.library.interceptor.Transformer;
 import com.allen.library.observer.CommonObserver;
-import com.allen.library.observer.StringObserver;
 import com.yidao.platform.app.ApiService;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.info.model.MineInfoBean;

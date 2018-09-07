@@ -118,9 +118,7 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity implements IVi
         /**
          * 我的瓶子
          */
-        addDisposable(RxView.clicks(mIvMyBottle).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
-            startActivity(DiscoveryMyBottleActivity.class);
-        }));
+        addDisposable(RxView.clicks(mIvMyBottle).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> startActivity(DiscoveryMyBottleActivity.class)));
     }
 
     private void initStatusBar() {

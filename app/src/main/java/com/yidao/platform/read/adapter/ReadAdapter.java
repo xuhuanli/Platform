@@ -35,16 +35,13 @@ public class ReadAdapter extends RecyclerView.Adapter<ReadAdapter.ReadViewHolder
         this.parent = parent;
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.read_recycle_item, parent, false);
         final ReadViewHolder viewHolder = new ReadViewHolder(view);
-        viewHolder.rootview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //通过getAdapterPosition获取到的position有点问题 -1后显示正确
-                int position = viewHolder.getAdapterPosition();
-                String s = dataList.get(position - 1);
-                ToastUtils.showToast(s);
-                Intent intent = new Intent(v.getContext(), ReadContentActivity.class);
-                v.getContext().startActivity(intent);
-            }
+        viewHolder.rootview.setOnClickListener(v -> {
+            //通过getAdapterPosition获取到的position有点问题 -1后显示正确
+            int position = viewHolder.getAdapterPosition();
+            String s = dataList.get(position - 1);
+            ToastUtils.showToast(s);
+            Intent intent = new Intent(v.getContext(), ReadContentActivity.class);
+            v.getContext().startActivity(intent);
         });
         return viewHolder;
     }
