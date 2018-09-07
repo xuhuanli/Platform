@@ -32,7 +32,7 @@ public class LoginInterestItemAdapter extends RecyclerView.Adapter<LoginInterest
         final ItemViewHolder holder = new ItemViewHolder(view);
         RxView.clicks(holder.mIvInterestItem).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
             @Override
-            public void accept(Object o) throws Exception {
+            public void accept(Object o) {
                 int position = holder.getAdapterPosition();
                 mContext.startActivity(new Intent(mContext, ContainerActivity.class));
             }

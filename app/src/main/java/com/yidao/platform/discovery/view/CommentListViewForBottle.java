@@ -102,7 +102,7 @@ public class CommentListViewForBottle extends LinearLayout {
             layoutInflater = LayoutInflater.from(getContext());
         }
         View convertView = layoutInflater.inflate(R.layout.item_comment, null, false);
-        TextView commentTv = (TextView) convertView.findViewById(R.id.commentTv);
+        TextView commentTv = convertView.findViewById(R.id.commentTv);
         final CircleMovementMethod circleMovementMethod = new CircleMovementMethod(itemSelectorColor, itemSelectorColor);
         final BottleDtlBean.ResultBean.MessBean bean = mDatas.get(position);
 
@@ -157,10 +157,10 @@ public class CommentListViewForBottle extends LinearLayout {
     }
 
     public interface OnItemClickListener {
-        public void onItemClick(int position);
+        void onItemClick(int position);
     }
 
     public interface OnItemLongClickListener {
-        public void onItemLongClick(int position);
+        void onItemLongClick(int position);
     }
 }
