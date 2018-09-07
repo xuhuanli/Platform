@@ -43,9 +43,20 @@
         android:inputType="textMultiLine"
         android:maxHeight="@dimen/size_120dp"
         android:maxLength="300"
+        android:paddingBottom="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_cancel" />
+
+    <TextView
+        android:id="@+id/tv_content_length"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/_0_300"
+        app:layout_constraintBottom_toTopOf="@+id/snpl_moment_add_photos"
+        app:layout_constraintEnd_toEndOf="@+id/et_editor"
+        app:layout_constraintTop_toBottomOf="@+id/et_editor" />
 
     <cn.bingoogolapple.photopicker.widget.BGASortableNinePhotoLayout
         android:id="@+id/snpl_moment_add_photos"
@@ -78,11 +89,4 @@
         app:layout_constraintStart_toStartOf="@+id/snpl_moment_add_photos"
         app:layout_constraintTop_toBottomOf="@+id/snpl_moment_add_photos" />
 
-    <TextView
-        android:id="@+id/tv_content_length"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/_0_300"
-        app:layout_constraintBottom_toBottomOf="@+id/et_editor"
-        app:layout_constraintEnd_toEndOf="@+id/et_editor" />
 </android.support.constraint.ConstraintLayout>
