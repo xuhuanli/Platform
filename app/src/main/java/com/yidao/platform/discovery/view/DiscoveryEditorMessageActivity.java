@@ -1,6 +1,7 @@
 package com.yidao.platform.discovery.view;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -128,6 +129,7 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
         mPresenter.getOssAccess();
     }
 
+    @SuppressLint("DefaultLocale")
     private void initView() {
         addDisposable(RxTextView.textChanges(mEtEditor).subscribe(charSequence -> mContentLength.setText(String.format("%d%s", charSequence.length(), "/300"))));
         addDisposable(RxView.clicks(mBtnCancel).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish()));

@@ -1,5 +1,6 @@
 package com.yidao.platform.discovery.view;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -44,6 +45,7 @@ public class BottlePushActivity extends BaseActivity {
         initView();
     }
 
+    @SuppressLint("DefaultLocale")
     private void initView() {
         addDisposable(RxTextView.textChanges(mBottleContent).subscribe(charSequence -> mContentLength.setText(String.format("%d%s", charSequence.length(), "/150"))));
         addDisposable(RxView.clicks(tvBottleCancel).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish()));

@@ -1,5 +1,6 @@
 package com.yidao.platform.login;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -24,22 +25,20 @@ public class LoginInterestItemAdapter extends RecyclerView.Adapter<LoginInterest
 
     private Context mContext;
 
+    @SuppressLint("CheckResult")
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         mContext = parent.getContext();
         View view = LayoutInflater.from(mContext).inflate(R.layout.login_interest_item, parent, false);
         final ItemViewHolder holder = new ItemViewHolder(view);
-        RxView.clicks(holder.mIvInterestItem).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
-            int position = holder.getAdapterPosition();
-            mContext.startActivity(new Intent(mContext, ContainerActivity.class));
-        });
+        RxView.clicks(holder.mIvInterestItem).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> mContext.startActivity(new Intent(mContext, ContainerActivity.class)));
         return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-        holder.mIvInterestItem.setText("hello");
+        holder.mIvInterestItem.setText("");
     }
 
     @Override

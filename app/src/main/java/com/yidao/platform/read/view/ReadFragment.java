@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -158,7 +159,7 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
                         MyLogger.e(artUrl);
                         startActivity(webIntent);
                     }
-                }else {
+                } else {
                     intent.putExtra(Constant.STRING_URL, artUrl);
                     intent.putExtra(Constant.STRING_ART_ID, artId);
                     startActivity(intent);

@@ -65,6 +65,7 @@ public class SettingsActivity extends BaseActivity implements SettingsViewInterf
         }));
     }
 
+    @SuppressLint({"DefaultLocale", "SetTextI18n"})
     private void initCacheTextView() {
         ThreadPoolManager.getInstance().addTask(() -> {
             final double cacheSize = FileUtil.getAppCacheSize(getCacheDir()) + FileUtil.getAppCacheSize(getExternalCacheDir());
