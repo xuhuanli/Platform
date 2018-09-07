@@ -5,6 +5,7 @@ import com.allen.library.interceptor.Transformer;
 import com.allen.library.observer.StringObserver;
 import com.google.gson.Gson;
 import com.yidao.platform.app.ApiService;
+import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.discovery.view.IViewBottleActivity;
 import com.yidao.platform.discovery.bean.PickBottleBean;
@@ -40,7 +41,7 @@ public class BottleActivityPresenter {
                     protected void onSuccess(String data) {
                         try {
                             JSONObject jsonObject = new JSONObject(data);
-                            String errCode = (String) jsonObject.get("errCode");
+                            String errCode = (String) jsonObject.get(Constant.STRING_ERRCODE);
                             MyLogger.e(errCode);
                             switch (errCode) {
                                 case "1000":
@@ -77,7 +78,7 @@ public class BottleActivityPresenter {
                     protected void onSuccess(String data) {
                         try {
                             JSONObject jsonObject = new JSONObject(data);
-                            String errCode = (String) jsonObject.get("errCode");
+                            String errCode = (String) jsonObject.get(Constant.STRING_ERRCODE);
                             switch (errCode) {
                                 //1000,捡到一个瓶子；1102，捡瓶子机会用完；1103，没有发现漂流瓶
                                 case "1000":

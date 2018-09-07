@@ -5,6 +5,7 @@ import com.allen.library.interceptor.Transformer;
 import com.allen.library.observer.StringObserver;
 import com.google.gson.Gson;
 import com.yidao.platform.app.ApiService;
+import com.yidao.platform.app.Constant;
 import com.yidao.platform.discovery.bean.MyBottleBean;
 
 import org.json.JSONException;
@@ -39,7 +40,7 @@ public class MyBottlePresenter {
                     protected void onSuccess(String data) {
                         try {
                             JSONObject jsonObject = new JSONObject(data);
-                            String errCode = jsonObject.getString("errCode");
+                            String errCode = jsonObject.getString(Constant.STRING_ERRCODE);
                             switch (errCode) {
                                 case "1000":
                                     String result = jsonObject.getString("result");

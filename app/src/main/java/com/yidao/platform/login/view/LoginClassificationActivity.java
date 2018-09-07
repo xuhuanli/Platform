@@ -9,7 +9,6 @@ import com.yidao.platform.R;
 import com.yidao.platform.app.base.BaseActivity;
 
 import butterknife.BindView;
-import io.reactivex.functions.Consumer;
 
 public class LoginClassificationActivity extends BaseActivity {
 

@@ -5,6 +5,7 @@ import com.allen.library.interceptor.Transformer;
 import com.allen.library.observer.CommonObserver;
 import com.allen.library.observer.StringObserver;
 import com.yidao.platform.app.ApiService;
+import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.discovery.bean.BottleDtlBean;
 import com.yidao.platform.discovery.model.ReplyBottleListObj;
@@ -41,7 +42,7 @@ public class DiscoveryBottleDetailPresenter {
                     protected void onSuccess(String data) {
                         try {
                             JSONObject jsonObject = new JSONObject(data);
-                            String errCode = jsonObject.getString("errCode");
+                            String errCode = jsonObject.getString(Constant.STRING_ERRCODE);
                             switch (errCode) {
                                 case "1000":
                                     mView.commentSuccess();
@@ -107,7 +108,7 @@ public class DiscoveryBottleDetailPresenter {
                     protected void onSuccess(String data) {
                         try {
                             JSONObject jsonObject = new JSONObject(data);
-                            String errCode = jsonObject.getString("errCode");
+                            String errCode = jsonObject.getString(Constant.STRING_ERRCODE);
                             switch (errCode) {
                                 case "1000":
                                     mView.commentSuccess();

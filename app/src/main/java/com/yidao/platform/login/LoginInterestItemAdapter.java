@@ -19,7 +19,6 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.functions.Consumer;
 
 public class LoginInterestItemAdapter extends RecyclerView.Adapter<LoginInterestItemAdapter.ItemViewHolder> {
 

@@ -25,7 +25,6 @@ public class MultipleReadAdapter extends BaseMultiItemQuickAdapter<ReadNewsBean,
      */
     public MultipleReadAdapter(Context context, List<ReadNewsBean> data) {
         super(data);
-        List<ReadNewsBean> data1 = data;
         this.mContext = context;
         addItemType(ReadNewsBean.ITEM_ONE, R.layout.read_mainpage_big_image);
         addItemType(ReadNewsBean.ITEM_TWO, R.layout.read_mainpage_text_image);

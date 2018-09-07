@@ -34,10 +34,6 @@ public class ReadNewsDetailBean implements MultiItemEntity {
         this.userId = userId;
     }
 
-    public static int getItemWebview() {
-        return ITEM_WEBVIEW;
-    }
-
     public String getHeadImg() {
         return headImg;
     }

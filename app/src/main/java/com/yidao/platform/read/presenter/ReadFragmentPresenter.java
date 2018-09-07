@@ -58,7 +58,7 @@ public class ReadFragmentPresenter {
                                 artUrls.add(resultBean.getUrl());
                                 artIds.add(resultBean.getArtId());
                             }
-                            mView.showBanner(imageUrls, bannerTitles,artUrls,artIds);
+                            mView.showBanner(imageUrls, bannerTitles, artUrls, artIds);
                         }
                     }
 
@@ -163,24 +163,26 @@ public class ReadFragmentPresenter {
                     protected void onSuccess(CommonArticleBean commonArticleBean) {
                         if (commonArticleBean.isStatus()) {
                             List<CommonArticleBean.ListBean> list = commonArticleBean.getList();
-                            if (list != null && list.size() < commonArticleBean.getPageSize()) {  //所得数目< pageSize =>到底了
-                                mView.loadMoreEnd(false);
-                            } else {
-                                mView.loadMoreComplete();
+                            if (list != null) {
+                                if (list.size() < commonArticleBean.getPageSize()) {  //所得数目< pageSize =>到底了
+                                    mView.loadMoreEnd(false);
+                                } else {
+                                    mView.loadMoreComplete();
+                                }
+                                ArrayList<ReadNewsBean> dataList = new ArrayList<>();
+                                for (CommonArticleBean.ListBean listBean : list) {
+                                    ReadNewsBean readNewsBean = new ReadNewsBean(ReadNewsBean.ITEM_TWO);
+                                    readNewsBean.setType(listBean.getType());
+                                    readNewsBean.setTitle(listBean.getTitle());
+                                    readNewsBean.setReadAmount(listBean.getReadAmount());
+                                    readNewsBean.setId(listBean.getId());
+                                    readNewsBean.setHomeImg(listBean.getHomeImg());
+                                    readNewsBean.setDeployTime(listBean.getDeployTime());
+                                    readNewsBean.setArticleContent(listBean.getArticleContent());
+                                    dataList.add(readNewsBean);
+                                }
+                                mView.loadMoreData(dataList);
                             }
-                            ArrayList<ReadNewsBean> dataList = new ArrayList<>();
-                            for (CommonArticleBean.ListBean listBean : list) {
-                                ReadNewsBean readNewsBean = new ReadNewsBean(ReadNewsBean.ITEM_TWO);
-                                readNewsBean.setType(listBean.getType());
-                                readNewsBean.setTitle(listBean.getTitle());
-                                readNewsBean.setReadAmount(listBean.getReadAmount());
-                                readNewsBean.setId(listBean.getId());
-                                readNewsBean.setHomeImg(listBean.getHomeImg());
-                                readNewsBean.setDeployTime(listBean.getDeployTime());
-                                readNewsBean.setArticleContent(listBean.getArticleContent());
-                                dataList.add(readNewsBean);
-                            }
-                            mView.loadMoreData(dataList);
                         }
                     }
                 });
@@ -203,7 +205,7 @@ public class ReadFragmentPresenter {
                     @Override
                     public void onNext(ChannelBean channelBean) {
                         MyLogger.e("获取文章类目: onNext");
-                        MyLogger.e("ChannelBean toString := "+channelBean.getResult().toString());
+                        MyLogger.e("ChannelBean toString := " + channelBean.getResult().toString());
                         if (channelBean.isStatus()) {
                             ArrayList<ChannelBean.ResultBean> result = (ArrayList<ChannelBean.ResultBean>) channelBean.getResult();
                             mView.saveChannelData(result);

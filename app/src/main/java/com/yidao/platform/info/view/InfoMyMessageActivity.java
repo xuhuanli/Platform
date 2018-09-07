@@ -28,7 +28,6 @@ import com.yidao.platform.info.model.BottleMsgBean;
 import com.yidao.platform.info.model.FindMsgBean;
 import com.yidao.platform.info.presenter.MyMessageActivityPresenter;
 import com.yidao.platform.read.adapter.ErrorAdapter;
-import com.yidao.platform.read.view.CustomDecoration;
 
 import org.greenrobot.eventbus.EventBus;
 

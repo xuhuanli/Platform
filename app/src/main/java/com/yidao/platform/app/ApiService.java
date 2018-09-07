@@ -102,13 +102,6 @@ public interface ApiService {
     @POST("/app/phone/register")
     Observable<WxCodeBean> registerAccount(@Body LoginObj loginObj);
 
-    /**
-     * 刷新token 这里不用了
-     */
-    @FormUrlEncoded
-    @POST("app/user/token-refresh")
-    Observable<String> refreshToken();
-
     //---------个人中心-------------
 
     /**

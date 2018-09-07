@@ -26,21 +26,10 @@ public class MyLogger {
         });
     }
 
-    /**
-     * .
-     *
-     * @param message the message
-     */
     public static void i(@NonNull String message) {
         Logger.i(message);
     }
 
-    /**
-     * .
-     *
-     * @param tag     the tag
-     * @param message the message
-     */
     public static void i(String tag, @NonNull String message) {
         Logger.i(tag, message);
     }

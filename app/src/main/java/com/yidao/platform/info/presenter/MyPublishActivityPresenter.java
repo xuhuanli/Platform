@@ -44,7 +44,6 @@ public class MyPublishActivityPresenter {
                             } else {
                                 mView.loadMoreComplete();
                             }
-
                             List<FriendsListBean.ResultBean.ListBean> list = result.getList();
                             ArrayList<FriendsShowBean> dataList = new ArrayList<>();
                             for (FriendsListBean.ResultBean.ListBean listBean : list) {
@@ -66,8 +65,6 @@ public class MyPublishActivityPresenter {
                             } else {
                                 mView.loadMoreData(dataList);
                             }
-
-
                         }
                     }
                 });

@@ -113,8 +113,6 @@ public class CircleMovementMethod extends BaseMovementMethod {
                     if (mBgSpan != null) {//移除点击时设置的背景span
                         buffer.removeSpan(mBgSpan);
                     }
-                } else {
-
                 }
                 Selection.removeSelection(buffer);
                 widget.setBackgroundResource(R.color.transparent);

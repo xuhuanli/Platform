@@ -147,7 +147,7 @@ public class GlideImageLoader extends ImageLoader {
             path.arcTo(new RectF(
                             0,
                             getHeight()-roundHeight*2,
-                            0+roundWidth*2,
+                            roundWidth * 2,
                             getHeight()),
                     90,
                     90);
@@ -178,7 +178,7 @@ public class GlideImageLoader extends ImageLoader {
                             getWidth()-roundWidth*2,
                             0,
                             getWidth(),
-                            0+roundHeight*2),
+                            roundHeight * 2),
                     -90,
                     90);
             path.close();

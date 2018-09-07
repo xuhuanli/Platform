@@ -5,6 +5,7 @@ import com.allen.library.interceptor.Transformer;
 import com.allen.library.observer.StringObserver;
 import com.allen.library.utils.ToastUtils;
 import com.yidao.platform.app.ApiService;
+import com.yidao.platform.app.Constant;
 import com.yidao.platform.service.IViewServiceFragment;
 import com.yidao.platform.service.model.BpObj;
 
@@ -38,7 +39,7 @@ public class ServiceFragmentPresenter {
                     protected void onSuccess(String data) {
                         try {
                             JSONObject jsonObject = new JSONObject(data);
-                            switch (jsonObject.getString("errCode")) {
+                            switch (jsonObject.getString(Constant.STRING_ERRCODE)) {
                                 case "1000":
                                     ToastUtils.showToast("申请成功");
                                     mView.applySuccess();

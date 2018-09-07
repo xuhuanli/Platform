@@ -69,7 +69,7 @@ public class TokenInterceptor implements Interceptor {
             MyLogger.e(resultStr);
             try {
                 JSONObject jsonObject = new JSONObject(resultStr);
-                String errCode = jsonObject.getString("errCode");
+                String errCode = jsonObject.getString(Constant.STRING_ERRCODE);
                 return dispatchErrorCode(errCode);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -114,7 +114,7 @@ public class TokenInterceptor implements Interceptor {
         MyLogger.e("保存。。。" + result);
         try {
             JSONObject jsonObject = new JSONObject(result);
-            switch (jsonObject.getString("errCode")) {
+            switch (jsonObject.getString(Constant.STRING_ERRCODE)) {
                 case "1000":
                     String token = jsonObject.getJSONObject("result").getString("token");
                     IPreference.prefHolder.getPreference(MyApplicationLike.getAppContext()).put(Constant.STRING_USER_TOKEN, token);

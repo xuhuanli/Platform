@@ -167,10 +167,6 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
                 }
             }
 
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
         });
         list.add(new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_WEBVIEW));
         mAdapter = new MultipleReadDetailAdapter(list);

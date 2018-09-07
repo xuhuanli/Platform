@@ -11,7 +11,6 @@ public class ThreadPoolManager {
     private final ExecutorService mService;
 
     private ThreadPoolManager() {
-        int core = Runtime.getRuntime().availableProcessors();
         mService = Executors.newFixedThreadPool(2);
     }
 
