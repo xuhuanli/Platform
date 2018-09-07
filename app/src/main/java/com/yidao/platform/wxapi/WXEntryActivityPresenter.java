@@ -12,7 +12,7 @@ import java.util.HashMap;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class WXEntryActivityPresenter {
+class WXEntryActivityPresenter {
     private IViewWXEntryActivity mView;
 
     public WXEntryActivityPresenter(IViewWXEntryActivity mView) {

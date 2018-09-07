@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -49,7 +50,6 @@ public class InfoMyMessageActivity extends BaseActivity implements IViewMyMessag
     TabLayout mTabLayout;
     @BindView(R.id.rv_msg)
     RecyclerView mRecyclerView;
-    private BGABadgeTextView tvItem1;
     private BGABadgeTextView tvItem2;
     private BGABadgeTextView tvItem3;
     private MyMessageActivityPresenter mPresenter;
@@ -80,14 +80,21 @@ public class InfoMyMessageActivity extends BaseActivity implements IViewMyMessag
             EventBus.getDefault().post(new RefreshInfoEvent());
             finish();
         }));
+        initRecyclerView();
         initTabLayout();
+    }
+
+    private void initRecyclerView() {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        //mRecyclerView.addItemDecoration(new CustomDecoration(this, 1, 16, 16));
     }
 
     private void initTabLayout() {
         mTabLayout.addTab(mTabLayout.newTab().setCustomView(R.layout.msg_layout_tab_item));
         mTabLayout.addTab(mTabLayout.newTab().setCustomView(R.layout.msg_layout_tab_item));
         mTabLayout.addTab(mTabLayout.newTab().setCustomView(R.layout.msg_layout_tab_item));
-        tvItem1 = mTabLayout.getTabAt(0).getCustomView().findViewById(R.id.tv_item);
+        BGABadgeTextView tvItem1 = mTabLayout.getTabAt(0).getCustomView().findViewById(R.id.tv_item);
         tvItem2 = mTabLayout.getTabAt(1).getCustomView().findViewById(R.id.tv_item);
         tvItem3 = mTabLayout.getTabAt(2).getCustomView().findViewById(R.id.tv_item);
         tvItem1.setText(R.string.system_msg);
@@ -178,7 +185,7 @@ public class InfoMyMessageActivity extends BaseActivity implements IViewMyMessag
     }
 
     private void setTabViewData(RecyclerView.Adapter adapter) {
-        configRecyclerView(adapter);
+        mRecyclerView.setAdapter(adapter);
     }
 
     private void setDefaultTabView() {
@@ -200,12 +207,6 @@ public class InfoMyMessageActivity extends BaseActivity implements IViewMyMessag
     @Override
     protected int getLayoutId() {
         return R.layout.info_activity_my_message;
-    }
-
-    private void configRecyclerView(RecyclerView.Adapter adapter) {
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.addItemDecoration(new CustomDecoration(this, 1, 16, 16));
-        mRecyclerView.setAdapter(adapter);
     }
 
     @Override

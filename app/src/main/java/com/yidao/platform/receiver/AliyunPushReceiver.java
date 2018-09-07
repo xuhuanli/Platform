@@ -20,7 +20,7 @@ public class AliyunPushReceiver extends MessageReceiver {
     /**
      * 消息接收部分的LOG_TAG
      */
-    public static final String REC_TAG = "aliyun_push_receiver";
+    private static final String REC_TAG = "aliyun_push_receiver";
 
     /**
      * 推送通知的回调方法

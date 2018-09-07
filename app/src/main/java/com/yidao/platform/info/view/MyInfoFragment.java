@@ -76,7 +76,7 @@ public class MyInfoFragment extends Fragment implements IViewMineInfo {
     private boolean isViewCreated;
     private boolean isUIVisible;
     private Unbinder mUnbinder;
-    public CompositeDisposable mCompositeDisposable;
+    private CompositeDisposable mCompositeDisposable;
 
     @Nullable
     @Override
@@ -105,7 +105,7 @@ public class MyInfoFragment extends Fragment implements IViewMineInfo {
         }
     }
 
-    public void lazyLoad() {
+    private void lazyLoad() {
         //在Fragment的View创建并且可见后加载当前fragment内容
         if (isViewCreated && isUIVisible) {
             MyLogger.e("片段可见,加载数据");
@@ -116,14 +116,14 @@ public class MyInfoFragment extends Fragment implements IViewMineInfo {
     /**
      * 添加订阅
      */
-    public void addDisposable(Disposable mDisposable) {
+    private void addDisposable(Disposable mDisposable) {
         if (mCompositeDisposable == null) {
             mCompositeDisposable = new CompositeDisposable();
         }
         mCompositeDisposable.add(mDisposable);
     }
 
-    protected void initView() {
+    private void initView() {
         EventBus.getDefault().register(this);
         mPresenter = new MyInfoFragmentPresenter(this);
         userId = IPreference.prefHolder.getPreference(getActivity()).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
@@ -159,11 +159,11 @@ public class MyInfoFragment extends Fragment implements IViewMineInfo {
         }));
     }
 
-    protected int getLayoutId() {
+    private int getLayoutId() {
         return R.layout.info_fragment_content;
     }
 
-    protected void initData() {
+    private void initData() {
         mPresenter.qryUserById(userId);
     }
 

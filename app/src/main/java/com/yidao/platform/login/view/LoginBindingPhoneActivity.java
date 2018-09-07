@@ -78,7 +78,7 @@ public class LoginBindingPhoneActivity extends BaseActivity implements IViewBind
                     if (TextUtils.isEmpty(phone)) {
                         ToastUtils.showToast("电话号码不能为空");
                         return Observable.empty();
-                    } else if (!PhoneRegUtil.checkPhoneNumber(phone)) {
+                    } else if (!PhoneRegUtil.isPhoneNumber(phone)) {
                         ToastUtils.showToast("请输入正确的手机号");
                         return Observable.empty();
                     }

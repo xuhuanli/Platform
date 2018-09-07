@@ -62,7 +62,6 @@ public class ServiceFragment extends BaseFragment implements IViewServiceFragmen
     @BindView(R.id.btn_commit)
     Button btnCommit;
     private ServiceFragmentPresenter mPresenter;
-    private String userId;
 
     @SuppressLint({"CheckResult", "DefaultLocale"})
     @Override
@@ -94,7 +93,7 @@ public class ServiceFragment extends BaseFragment implements IViewServiceFragmen
             ToastUtils.showToast("手机号码不能为空");
             return null;
         }
-        if (!PhoneRegUtil.checkPhoneNumber(phoneNum)) {
+        if (!PhoneRegUtil.isPhoneNumber(phoneNum)) {
             ToastUtils.showToast("请输入正确的手机号");
             return null;
         }
@@ -125,7 +124,7 @@ public class ServiceFragment extends BaseFragment implements IViewServiceFragmen
 
     @Override
     protected void initData() {
-        userId = IPreference.prefHolder.getPreference(getContext()).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
+        String userId = IPreference.prefHolder.getPreference(getContext()).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
     }
 
     @Override

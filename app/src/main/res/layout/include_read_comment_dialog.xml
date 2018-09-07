@@ -26,7 +26,7 @@
         android:gravity="center_vertical"
         android:hint="@string/comment_hint"
         android:maxLines="1"
-        android:paddingLeft="@dimen/size_10dp"
+        android:paddingStart="@dimen/size_10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_comment"
         app:layout_constraintTop_toTopOf="parent" />

@@ -21,7 +21,7 @@ import io.reactivex.disposables.Disposable;
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
-    public CompositeDisposable mCompositeDisposable;
+    private CompositeDisposable mCompositeDisposable;
     private Unbinder mUnbinder;
 
     @Override
@@ -35,7 +35,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * 添加订阅
      */
-    public void addDisposable(Disposable mDisposable) {
+    protected void addDisposable(Disposable mDisposable) {
         if (mCompositeDisposable == null) {
             mCompositeDisposable = new CompositeDisposable();
         }
@@ -45,7 +45,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * 取消所有订阅
      */
-    public void clearDisposable() {
+    private void clearDisposable() {
         if (mCompositeDisposable != null) {
             mCompositeDisposable.clear();
         }
@@ -86,7 +86,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param clz    the clz
      * @param bundle the bundle
      */
-    public void startActivity(Class<?> clz, Bundle bundle) {
+    private void startActivity(Class<?> clz, Bundle bundle) {
         Intent intent = new Intent();
         intent.setClass(this, clz);
         if (bundle != null) {

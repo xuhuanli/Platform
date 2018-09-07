@@ -115,7 +115,7 @@ public class LoginActivity extends BaseActivity implements IViewLoginActivity {
                     if (TextUtils.isEmpty(phoneNum)) {
                         ToastUtils.showToast("电话号码不能为空");
                         return Observable.empty();
-                    } else if (!PhoneRegUtil.checkPhoneNumber(phoneNum)) {
+                    } else if (!PhoneRegUtil.isPhoneNumber(phoneNum)) {
                         ToastUtils.showToast("请输入正确的手机号");
                         return Observable.empty();
                     }
@@ -155,7 +155,7 @@ public class LoginActivity extends BaseActivity implements IViewLoginActivity {
             if (TextUtils.isEmpty(phoneNum)) {
                 ToastUtils.showToast("电话号码不能为空");
                 return;
-            } else if (!PhoneRegUtil.checkPhoneNumber(phoneNum)) {
+            } else if (!PhoneRegUtil.isPhoneNumber(phoneNum)) {
                 ToastUtils.showToast("请输入正确的手机号");
                 return;
             }

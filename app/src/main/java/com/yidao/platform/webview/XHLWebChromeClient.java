@@ -5,10 +5,8 @@ import android.webkit.WebView;
 
 public class XHLWebChromeClient extends WebChromeClient {
 
-    private XHLWebView webView;
-
     public XHLWebChromeClient(XHLWebView webView) {
-        this.webView = webView;
+        XHLWebView webView1 = webView;
     }
 
     @Override

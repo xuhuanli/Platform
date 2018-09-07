@@ -13,7 +13,7 @@ import java.util.List;
 
 public class MyBottleAdapter extends BaseQuickAdapter<MyBottleBean.ListBean, BaseViewHolder> {
     public MyBottleAdapter(@Nullable List<MyBottleBean.ListBean> data) {
-        super(R.layout.info_message_bottle_item, data);
+        super(R.layout.discovery_my_bottle_list_item, data);
     }
 
     @Override

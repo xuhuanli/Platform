@@ -9,7 +9,7 @@ import com.yidao.platform.R;
 
 import java.util.ArrayList;
 
-public class ViewpagerAdapter extends FragmentPagerAdapter {
+class ViewpagerAdapter extends FragmentPagerAdapter {
 
     public static final String[] TAB_NAMES = new String[]{"阅读", "发现", "服务", "我的"};
     public static final int[] DRAWABLE_RES_UNSELECTED = {R.drawable.read_unselected, R.drawable.discovery_unselected, R.drawable.server_unselected, R.drawable.my_unselected};

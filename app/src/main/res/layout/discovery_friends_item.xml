@@ -55,7 +55,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:drawableLeft="@drawable/selector_dianzan_small"
+        android:drawableStart="@drawable/selector_dianzan_small"
         android:drawablePadding="2dp"
         android:gravity="center"
         android:paddingBottom="8dp"

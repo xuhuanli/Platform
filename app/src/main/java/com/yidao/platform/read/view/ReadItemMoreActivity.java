@@ -37,7 +37,6 @@ public class ReadItemMoreActivity extends BaseActivity implements IViewReadItemM
     private long categoryId;
     //上拉加载page控制value
     private int mNextRequestPage = 1;
-    private String categoryName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,7 +49,7 @@ public class ReadItemMoreActivity extends BaseActivity implements IViewReadItemM
     private void initData() {
         Intent intent = getIntent();
         categoryId = intent.getLongExtra("categoryId", 0L);
-        categoryName = intent.getStringExtra("categoryName");
+        String categoryName = intent.getStringExtra("categoryName");
         setTitle(categoryName);
         mPresenter.getCategoryArticleExt(categoryId, String.valueOf(1), String.valueOf(Constant.PAGE_SIZE));
     }

@@ -27,7 +27,7 @@
         <ImageView
             android:id="@+id/iv_select_item"
             style="@style/ToolBarMenuIcon"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             android:src="@drawable/discovery_publish" />
     </android.support.v7.widget.Toolbar>
     <View

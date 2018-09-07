@@ -15,7 +15,6 @@ import com.yidao.platform.read.bean.ReadNewsBean;
 import java.util.List;
 
 public class MultipleReadAdapter extends BaseMultiItemQuickAdapter<ReadNewsBean, BaseViewHolder> {
-    private List<ReadNewsBean> data;
     private Context mContext;
 
     /**
@@ -26,7 +25,7 @@ public class MultipleReadAdapter extends BaseMultiItemQuickAdapter<ReadNewsBean,
      */
     public MultipleReadAdapter(Context context, List<ReadNewsBean> data) {
         super(data);
-        this.data = data;
+        List<ReadNewsBean> data1 = data;
         this.mContext = context;
         addItemType(ReadNewsBean.ITEM_ONE, R.layout.read_mainpage_big_image);
         addItemType(ReadNewsBean.ITEM_TWO, R.layout.read_mainpage_text_image);

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorLine">
+    android:theme="@style/SettingsTheme">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_info"
@@ -64,7 +64,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:gravity="center_vertical"
             android:text="@string/clear_cache"
@@ -75,9 +75,9 @@
             android:id="@+id/tv_cache_item"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
+            android:drawableEnd="@drawable/ic_keyboard_arrow_right_black_24dp"
             android:gravity="center_vertical"
             android:textColor="@color/FF999999"
             android:textSize="15sp"
@@ -87,7 +87,7 @@
             android:id="@+id/pb_cache"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:padding="@dimen/size_8dp"
             android:visibility="gone" />

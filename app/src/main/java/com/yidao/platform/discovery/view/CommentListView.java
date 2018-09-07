@@ -88,12 +88,11 @@ public class CommentListView extends LinearLayout {
         }
         LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         for (int i = 0; i < mDatas.size(); i++) {
-            final int index = i;
-            View view = getView(index);
+            View view = getView(i);
             if (view == null) {
                 throw new NullPointerException("listview item layout is null, please check getView()...");
             }
-            addView(view, index, layoutParams);
+            addView(view, i, layoutParams);
         }
     }
 

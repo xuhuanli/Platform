@@ -70,7 +70,6 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     private BGABadgeImageButton ib_comment;
     private BGABadgeImageButton ib_vote;
     private BGABadgeImageButton ib_favorite;
-    private BGABadgeImageButton ib_share;
     private BottomSheetDialog mCommentBottomSheetDialog;
     private MultipleReadDetailAdapter mAdapter;
     private String url;
@@ -204,7 +203,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         ib_comment = findViewById(R.id.ib_comment);
         ib_vote = findViewById(R.id.ib_vote);
         ib_favorite = findViewById(R.id.ib_favorite);
-        ib_share = findViewById(R.id.ib_share);
+        BGABadgeImageButton ib_share = findViewById(R.id.ib_share);
         ib_comment.setOnClickListener(this);
         ib_vote.setOnClickListener(this);
         ib_favorite.setOnClickListener(this);

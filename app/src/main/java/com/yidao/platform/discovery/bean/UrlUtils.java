@@ -29,7 +29,7 @@ public class UrlUtils {
             try {
                 //处理url匹配
                 Pattern urlPattern = Pattern.compile("(http|https|ftp|svn)://([a-zA-Z0-9]+[/?.?])" +
-                        "+[a-zA-Z0-9]*\\?([a-zA-Z0-9]*=[a-zA-Z0-9]*&?)*");
+                        "+[a-zA-Z0-9]*\\??([a-zA-Z0-9]*=[a-zA-Z0-9]*&?)*");
                 Matcher urlMatcher = urlPattern.matcher(contentStr);
 
                 while (urlMatcher.find()) {

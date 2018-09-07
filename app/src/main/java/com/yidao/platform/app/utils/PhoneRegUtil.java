@@ -10,7 +10,7 @@ public class PhoneRegUtil {
      * @param phoneNumber 手机号码
      * @return boolean
      */
-    public static boolean checkPhoneNumber(String phoneNumber) {
+    public static boolean isPhoneNumber(String phoneNumber) {
         Pattern pattern = Pattern.compile("^1[0-9]{10}$");
         Matcher matcher = pattern.matcher(phoneNumber);
         return matcher.matches();

@@ -19,10 +19,9 @@ import com.yidao.platform.read.bus.WebViewLoadEvent;
 import org.greenrobot.eventbus.EventBus;
 
 public class XHLWebViewClient extends WebViewClient {
-    private XHLWebView webView;
 
     public XHLWebViewClient(XHLWebView webView) {
-        this.webView = webView;
+        XHLWebView webView1 = webView;
     }
 
     @Override

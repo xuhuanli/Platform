@@ -37,7 +37,6 @@ public class RecentlyReadActivity extends BaseActivity implements IViewRecentlyR
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
     private MyRecentlyReadActivityPresenter mPresenter;
-    private RecentReadAdapter mAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,7 +83,7 @@ public class RecentlyReadActivity extends BaseActivity implements IViewRecentlyR
 
     @Override
     public void loadRecyclerData(ArrayList<ReadNewsBean> dataList) {
-        mAdapter = new RecentReadAdapter(dataList);
+        RecentReadAdapter mAdapter = new RecentReadAdapter(dataList);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(this);
     }

@@ -4,6 +4,7 @@
     android:id="@+id/cl_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/RootViewNullBG"
     android:background="@drawable/drift_bottle_has_bar"
     android:fitsSystemWindows="true">
 
@@ -29,7 +30,7 @@
             android:id="@+id/iv_discovery_push_bottle"
             android:layout_width="80dp"
             android:layout_height="60dp"
-            android:layout_marginLeft="32dp"
+            android:layout_marginStart="32dp"
             android:src="@drawable/drift_bottle"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -49,7 +50,7 @@
             android:id="@+id/iv_discovery_my_bottle"
             android:layout_width="80dp"
             android:layout_height="60dp"
-            android:layout_marginRight="32dp"
+            android:layout_marginEnd="32dp"
             android:src="@drawable/drift_box"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -59,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:text="扔一个"
+            android:text="@string/throw_one"
             android:textColor="#ffffffff"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -71,7 +72,7 @@
             android:id="@+id/tv_jyg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="捡一个"
+            android:text="@string/pick_one"
             android:textColor="#ffffffff"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_ryg"
@@ -84,7 +85,7 @@
             android:id="@+id/tv_my_bottle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="我的瓶子"
+            android:text="@string/my_bottles"
             android:textColor="#ffffffff"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_ryg"

@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/colorWhite"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_touxiang"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -17,11 +18,10 @@
 
     <TextView
         android:id="@+id/tv_name"
+        style="@style/Text_Sp16_Color33_Bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:textColor="@color/FF333333"
-        android:textSize="15sp"
         app:layout_constraintStart_toEndOf="@+id/iv_touxiang"
         app:layout_constraintTop_toTopOf="@+id/iv_touxiang"
         tools:text="XHL" />
@@ -29,44 +29,27 @@
 
     <TextView
         android:id="@+id/tv_comment_content"
+        style="@style/Text_Sp14_Color99"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="6dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textColor="@color/FF999999"
-        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tv_name"
         app:layout_constraintTop_toBottomOf="@+id/tv_name"
         tools:text="评论了你：今年资产管理新规出台以后，银行…" />
 
     <TextView
-        android:id="@+id/tv_comment_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="#fff3f3f5"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:padding="8dp"
-        android:textColor="#ff333333"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tv_comment_content"
-        app:layout_constraintTop_toBottomOf="@+id/tv_comment_content"
-        tools:text="这会带来一系列连锁反应会带来一系列连锁反应会带来一系列连锁反应会带来一系列连锁反应" />
-
-    <TextView
         android:id="@+id/tv_comment_time"
+        style="@style/Text_Sp12_Color848e98"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:textColor="#ff848e98"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tv_comment_title"
-        app:layout_constraintTop_toBottomOf="@+id/tv_comment_title"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_name"
         tools:text="1小时前" />
 </android.support.constraint.ConstraintLayout>

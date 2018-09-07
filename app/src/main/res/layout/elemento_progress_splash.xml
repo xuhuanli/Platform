@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:background="@color/half_transparent"
+    android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_height="wrap_content">
+    android:theme="@style/Half_Transparent_Theme">
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -28,14 +28,14 @@
 
     <TextView
         android:id="@+id/tv_pb_message"
-        android:padding="@dimen/size_8dp"
         android:layout_width="wrap_content"
-        android:textColor="@color/colorWhite"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:padding="@dimen/size_8dp"
+        android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline2"

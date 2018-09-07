@@ -48,7 +48,7 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
     /**
      * 轮播图
      */
-    Banner banner;
+    private Banner banner;
     /**
      * 请求的下一个页码
      */
@@ -151,9 +151,7 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
                 String artUrl = artUrls.get(position);
                 Long artId = artIds.get(position);
                 if (artId == 200L) {
-                    if (TextUtils.isEmpty(artUrl)) {
-                        return;
-                    } else {
+                    if (!TextUtils.isEmpty(artUrl)) {
                         Intent webIntent = new Intent(getActivity(), WebActivity.class);
                         webIntent.putExtra(Constant.STRING_ACTIVITY, artUrl);
                         MyLogger.e(artUrl);

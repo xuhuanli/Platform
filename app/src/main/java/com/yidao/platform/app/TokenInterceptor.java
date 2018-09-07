@@ -54,8 +54,7 @@ public class TokenInterceptor implements Interceptor {
                 return null;
             }
         }
-        Response build = response.newBuilder().body(ResponseBody.create(mediaType, resultStr)).build();
-        return build;
+        return response.newBuilder().body(ResponseBody.create(mediaType, resultStr)).build();
     }
 
     /**

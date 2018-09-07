@@ -28,7 +28,6 @@ public class ItemChannelActivity extends BaseActivity implements IViewItemChanne
     @BindView(R.id.imageButton)
     ImageView mBackIB;
     private ItemChannelActivityPresenter mPresenter;
-    private ChannelAdapter mAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,7 +56,7 @@ public class ItemChannelActivity extends BaseActivity implements IViewItemChanne
 
     @Override
     public void loadChannel(List<ChannelBean.ResultBean> result) {
-        mAdapter = new ChannelAdapter(result);
+        ChannelAdapter mAdapter = new ChannelAdapter(result);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             ChannelBean.ResultBean data = (ChannelBean.ResultBean) adapter.getData().get(position);

@@ -10,14 +10,12 @@ import com.yidao.platform.app.base.BaseActivity;
 
 public class PhotoBrowserActivity extends BaseActivity {
 
-    private ImageView mImage;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         String imageUrls = intent.getStringExtra("imageUrls");
-        mImage = findViewById(R.id.imageview);
+        ImageView mImage = findViewById(R.id.imageview);
         Glide.with(this).load(imageUrls).into(mImage);
     }
 

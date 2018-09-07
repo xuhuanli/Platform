@@ -21,7 +21,6 @@ public class CustomBpItemView extends ConstraintLayout {
 
     private TextView tvKey;
     private EditText etValue;
-    private int clearIconRef;
 
     public CustomBpItemView(Context context) {
         this(context, null);
@@ -55,8 +54,7 @@ public class CustomBpItemView extends ConstraintLayout {
         int valueColor = ta.getColor(R.styleable.CustomBpItemView_rightColor, Color.BLACK);
         //右侧文字大小
         float valueSize = ta.getDimension(R.styleable.CustomBpItemView_rightSize, 0f);
-        int clearIconSrcId = ta.getResourceId(R.styleable.CustomBpItemView_setClearIcon, 0);
-        clearIconRef = clearIconSrcId;
+        int clearIconRef = ta.getResourceId(R.styleable.CustomBpItemView_setClearIcon, 0);
         //右侧文字hint
         String valueHint = ta.getString(R.styleable.CustomBpItemView_rightHint);
         int type = ta.getInt(R.styleable.CustomBpItemView_setInputType, InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PERSON_NAME);

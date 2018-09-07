@@ -75,7 +75,6 @@ public class PersonInfomationActivity extends BaseActivity implements View.OnCli
     private static final int PERM_OPEN_ALBUM = 0;
     private static final int PERM_OPEN_CAMERA = 1;
     private File app_photo;
-    private Uri uriForFile;
     //startActivityForResult的常量
     private static final int REQUEST_IMAGE_CAPTURE = 100;
     private static final int REQUEST_CHOOSE_PICTURE = 101;
@@ -173,6 +172,7 @@ public class PersonInfomationActivity extends BaseActivity implements View.OnCli
         if (!app_photo.getParentFile().exists()) {
             app_photo.getParentFile().mkdirs();
         }
+        Uri uriForFile;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             uriForFile = FileProvider.getUriForFile(this, "com.yidao.platform.file_provider", app_photo);
         } else {

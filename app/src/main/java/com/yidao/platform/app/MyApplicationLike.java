@@ -31,9 +31,9 @@ import java.util.HashMap;
 import okhttp3.OkHttpClient;
 
 public class MyApplicationLike extends DefaultApplicationLike {
-    public static final String TAG = "Tinker.MyApplicationLike";
+    private static final String TAG = "Tinker.MyApplicationLike";
     private static Context appContext;
-    public static HashMap<String, Integer> labelMap = new HashMap<>();
+    private static HashMap<String, Integer> labelMap = new HashMap<>();
 
     public MyApplicationLike(Application application, int tinkerFlags,
                              boolean tinkerLoadVerifyFlag, long applicationStartElapsedTime,
@@ -111,7 +111,7 @@ public class MyApplicationLike extends DefaultApplicationLike {
     }
 
     private OkHttpClient initOkHttpClient() {
-        OkHttpClient okHttpClient = new OkHttpConfig
+        return new OkHttpConfig
                 .Builder()
                 //.setHeaders(headerMaps)
                 //.setCachePath(FileUtil.getDiskCacheDir(getAppContext(), "http_cache").getPath())
@@ -139,7 +139,6 @@ public class MyApplicationLike extends DefaultApplicationLike {
                 //全局是否打开请求log日志
                 .setDebug(Constant.IS_DEBUG)
                 .build();
-        return okHttpClient;
     }
 
     /**

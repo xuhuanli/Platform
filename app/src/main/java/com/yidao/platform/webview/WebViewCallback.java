@@ -5,7 +5,7 @@ package com.yidao.platform.webview;
  * Created by HDL on 2017/6/23.
  */
 
-public abstract class WebViewCallback {
+abstract class WebViewCallback {
     /**
      * 开始加载的时候调用
      */

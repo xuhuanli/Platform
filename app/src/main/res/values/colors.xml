@@ -5,7 +5,6 @@
     <color name="colorAccent">#FFFF4081</color>
     <color name="colorWhite" >#FFFFFFFF</color>
     <color name="colorBlack">#FF000000</color>
-    <color name="colorGray">#FF645e5e</color>
     <color name="colorRipple">#42000000</color>
     <color name="transparent">#00000000</color>
     <color name="half_transparent">#60000000</color>
@@ -15,8 +14,6 @@
 
     <color name="default_clickable_color">#cccccc</color>
     <color name="praise_item">#8290AF</color>
-    <color name="name_selector_color">#cccccc</color>
-    <color name="color_232323">#232323</color>
     <color name="FF999999">#ff999999</color>
     <color name="FF333333">#ff333333</color>
     <color name="FFC4C9CE">#ffc4c9ce</color>
@@ -25,4 +22,5 @@
 
     <color name="colorLine">#ffeaecf1</color>
     <color name="colorPoint">#ff848e98</color>
+    <color name="FFF2F4F7">#fff2f4f7</color>
 </resources>

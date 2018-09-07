@@ -21,7 +21,7 @@ public abstract class BaseFragment extends Fragment {
     private boolean isViewCreated;
     private boolean isUIVisible;
     private Unbinder mUnbinder;
-    public CompositeDisposable mCompositeDisposable;
+    private CompositeDisposable mCompositeDisposable;
 
     @Nullable
     @Override
@@ -52,7 +52,7 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
-    public void lazyLoad() {
+    private void lazyLoad() {
         //在Fragment的View创建并且可见后加载当前fragment内容
         if (isViewCreated && isUIVisible) {
             MyLogger.d("片段可见,加载数据");
@@ -74,7 +74,7 @@ public abstract class BaseFragment extends Fragment {
     /**
      * 添加订阅
      */
-    public void addDisposable(Disposable mDisposable) {
+    protected void addDisposable(Disposable mDisposable) {
         if (mCompositeDisposable == null) {
             mCompositeDisposable = new CompositeDisposable();
         }
@@ -84,7 +84,7 @@ public abstract class BaseFragment extends Fragment {
     /**
      * 取消所有订阅
      */
-    public void clearDisposable() {
+    private void clearDisposable() {
         if (mCompositeDisposable != null) {
             mCompositeDisposable.clear();
         }

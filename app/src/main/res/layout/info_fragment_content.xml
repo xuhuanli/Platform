@@ -81,7 +81,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/size_8dp"
-        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="36dp"
         android:background="?android:attr/selectableItemBackground"
         android:orientation="vertical"
@@ -94,7 +94,7 @@
         <TextView
             android:id="@+id/tv_collection_count"
             style="@style/Info_Number_Style"
-            android:text="0" />
+            android:text="@string/string_0" />
 
         <TextView
             style="@style/Info_Text_Style"
@@ -114,7 +114,7 @@
         <TextView
             android:id="@+id/tv_publish_count"
             style="@style/Info_Number_Style"
-            android:text="0" />
+            android:text="@string/string_0" />
 
         <TextView
             style="@style/Info_Text_Style"
@@ -125,7 +125,7 @@
         android:id="@+id/linearLayout3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="24dp"
+        android:layout_marginEnd="24dp"
         android:background="?android:attr/selectableItemBackground"
         android:orientation="vertical"
         app:layout_constraintLeft_toRightOf="@+id/linearLayout2"
@@ -135,7 +135,7 @@
         <TextView
             android:id="@+id/tv_msg_count"
             style="@style/Info_Number_Style"
-            android:text="0" />
+            android:text="@string/string_0" />
 
         <TextView
             style="@style/Info_Text_Style"
