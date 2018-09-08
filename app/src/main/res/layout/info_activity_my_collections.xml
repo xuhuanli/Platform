@@ -7,11 +7,13 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
+        android:elevation="1dp"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
         android:background="?android:attr/colorPrimary"
         app:navigationIcon="@drawable/jiantou_black"
-        app:popupTheme="@style/AppTheme.PopupOverlay">
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        tools:showIn="@layout/info_activity_my_collections">
 
         <TextView
             android:id="@+id/tv_title"
@@ -22,18 +24,9 @@
             android:textColor="@color/FF333333"
             android:textSize="18sp"
             android:textStyle="bold"
-            tools:layout_editor_absoluteX="158dp"
             tools:text="@string/my_collection" />
     </android.support.v7.widget.Toolbar>
 
-    <View
-        android:id="@+id/line1"
-        android:layout_width="0dp"
-        android:layout_height="5dp"
-        android:background="@color/colorLine"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_my_collection"
@@ -42,5 +35,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/line1"/>
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
 </android.support.constraint.ConstraintLayout>

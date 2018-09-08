@@ -6,9 +6,10 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
+        android:elevation="1dp"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
-        android:background="@color/transparent"
+        android:background="?android:attr/colorPrimary"
         app:navigationIcon="@drawable/jiantou_black"
         app:popupTheme="@style/AppTheme.PopupOverlay">
 
@@ -22,15 +23,6 @@
             android:textSize="17sp" />
     </android.support.v7.widget.Toolbar>
 
-    <View
-        android:id="@+id/line1"
-        android:layout_width="@dimen/size_0dp"
-        android:layout_height="@dimen/size_5dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:background="#ffeaecf1"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
@@ -38,5 +30,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/line1" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 </android.support.constraint.ConstraintLayout>

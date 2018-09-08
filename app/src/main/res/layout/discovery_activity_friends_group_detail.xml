@@ -7,9 +7,10 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
+        android:elevation="1dp"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
-        android:background="@color/transparent"
+        android:background="?android:attr/colorPrimary"
         app:navigationIcon="@drawable/jiantou_black"
         app:popupTheme="@style/AppTheme.PopupOverlay">
 
