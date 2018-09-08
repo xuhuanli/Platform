@@ -170,19 +170,12 @@
         <item name="colorControlNormal">#ffd9d9d9</item>
         <item name="colorControlActivated">#ffd9d9d9</item>
     </style>
+
     <style name="MyTextInputLayout" parent="@android:style/TextAppearance">
         <item name="android:textColor">#ff007aff</item>
         <item name="android:textSize">12sp</item>
     </style>
-    <style name="OverdrawTheme" parent="@style/AppTheme">
-        <item name="android:windowBackground">@color/FFF2F4F7</item>
-    </style>
-    <style name="SettingsTheme" parent="@style/AppTheme">
-        <item name="android:windowBackground">@color/colorLine</item>
-    </style>
-    <style name="Half_Transparent_Theme" parent="@style/AppTheme">
-        <item name="android:windowBackground">@color/half_transparent</item>
-    </style>
+
     <style name="RootViewNullBG" parent="@style/AppTheme">
         <item name="android:windowBackground">@null</item>
     </style>

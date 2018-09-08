@@ -222,7 +222,6 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
 
     @Override
     public void saveChannelData(ArrayList<ChannelBean.ResultBean> result) {
-        //这里拿到了类目的ID和Name，没做本地化存储
         mChannelBean = result;
     }
 

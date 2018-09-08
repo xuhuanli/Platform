@@ -96,7 +96,7 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
                         //重置数量
                         uploadPicCounter = 0;
                         mProgressDialog.dismiss();
-                    }else {
+                    } else {
                         mBtnPublish.setEnabled(true);
                     }
                     break;
@@ -139,43 +139,45 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
     private void CompressPicAndPushToOss() {
         //在压缩和发布之间不能再次点击
         mBtnPublish.setEnabled(false);
-        mPresenter.getOssInstance(DiscoveryEditorMessageActivity.this, mOss.getAccessKeyId(), mOss.getAccessKeySecret(), mOss.getSecurityToken());
-        ArrayList<String> mUpLoadPicList = mPhotosSnpl.getData();
-        if (mUpLoadPicList.size() > 0) {
-            for (int i = 0; i < mUpLoadPicList.size(); i++) {
-                String thisPath = mUpLoadPicList.get(i);
-                picMap.put(i, thisPath);
-                if (!needCompress(Constant.NEED_COMPRESS_SIZE, thisPath)) { //<300K时，直传
-                    mPresenter.uploadFile(i, thisPath, mHandler);
-                } else {
-                    int finalI = i;
-                    Luban.with(DiscoveryEditorMessageActivity.this)
-                            .load(thisPath)
-                            .setTargetDir(getExternalCacheDir().getAbsolutePath())
-                            .setCompressListener(new OnCompressListener() {
-                                @Override
-                                public void onStart() {
-                                }
+        if (mOss != null) {
+            mPresenter.getOssInstance(DiscoveryEditorMessageActivity.this, mOss.getAccessKeyId(), mOss.getAccessKeySecret(), mOss.getSecurityToken());
+            ArrayList<String> mUpLoadPicList = mPhotosSnpl.getData();
+            if (mUpLoadPicList.size() > 0) {
+                for (int i = 0; i < mUpLoadPicList.size(); i++) {
+                    String thisPath = mUpLoadPicList.get(i);
+                    picMap.put(i, thisPath);
+                    if (!needCompress(Constant.NEED_COMPRESS_SIZE, thisPath)) { //<300K时，直传
+                        mPresenter.uploadFile(i, thisPath, mHandler);
+                    } else {
+                        int finalI = i;
+                        Luban.with(DiscoveryEditorMessageActivity.this)
+                                .load(thisPath)
+                                .setTargetDir(getExternalCacheDir().getAbsolutePath())
+                                .setCompressListener(new OnCompressListener() {
+                                    @Override
+                                    public void onStart() {
+                                    }
 
-                                @Override
-                                public void onSuccess(File file) {
-                                    mPresenter.uploadFile(finalI, file.getAbsolutePath(), mHandler);
-                                }
+                                    @Override
+                                    public void onSuccess(File file) {
+                                        mPresenter.uploadFile(finalI, file.getAbsolutePath(), mHandler);
+                                    }
 
-                                @Override
-                                public void onError(Throwable e) {
-                                    //压缩失败就直传了
-                                    mPresenter.uploadFile(finalI, thisPath, mHandler);
-                                }
-                            })
-                            .launch();
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        //压缩失败就直传了
+                                        mPresenter.uploadFile(finalI, thisPath, mHandler);
+                                    }
+                                })
+                                .launch();
+                    }
                 }
             }
         } else { //纯文本
             String content = mEtEditor.getText().toString().trim();
             if (!TextUtils.isEmpty(content)) {
                 mPresenter.sendMsg2Server(userId, content, null);
-            }else {
+            } else {
                 mBtnPublish.setEnabled(true);
                 ToastUtils.showToast("写点什么好呢....");
             }

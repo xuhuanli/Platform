@@ -28,8 +28,7 @@ public class UrlUtils {
             sp = new SpannableStringBuilder(contentStr);
             try {
                 //处理url匹配
-                Pattern urlPattern = Pattern.compile("(http|https|ftp|svn)://([a-zA-Z0-9]+[/?.?])" +
-                        "+[a-zA-Z0-9]*\\??([a-zA-Z0-9]*=[a-zA-Z0-9]*&?)*");
+                Pattern urlPattern = Pattern.compile("(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]");
                 Matcher urlMatcher = urlPattern.matcher(contentStr);
 
                 while (urlMatcher.find()) {
