@@ -186,6 +186,7 @@ public class DiscoveryPresenter {
                                     bean.setFindId(String.valueOf(listBean.getFindId()));
                                     bean.setLike(listBean.isIsLike());
                                     bean.setTimeStamp(listBean.getTimeStamp());
+                                    bean.setDeployId(listBean.getDeployId());
                                     dataList.add(bean);
                                 }
                                 mView.loadMoreData(dataList);
@@ -200,6 +201,29 @@ public class DiscoveryPresenter {
                         }else {
                             mView.loadMoreEnd(false);
                         }
+                    }
+                });
+    }
+
+    /**
+     * 屏蔽此人
+     * @param deployId 被屏蔽者id
+     * @param userId 我的id
+     */
+    public void shieldUser(String deployId, String userId) {
+        RxHttpUtils
+                .createApi(ApiService.class)
+                .shieldUser(deployId,userId)
+                .compose(Transformer.switchSchedulers())
+                .subscribe(new CommonObserver<String>() {
+                    @Override
+                    protected void onError(String errorMsg) {
+                        MyLogger.e(errorMsg);
+                    }
+
+                    @Override
+                    protected void onSuccess(String s) {
+                        MyLogger.e(s);
                     }
                 });
     }

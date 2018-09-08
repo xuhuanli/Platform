@@ -28,6 +28,16 @@
         app:layout_constraintTop_toTopOf="@+id/iv_discovery_icon"
         tools:text="name" />
 
+    <ImageView
+        android:id="@+id/iv_baned"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:paddingEnd="16dp"
+        android:src="@drawable/icon_baned"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_discovery_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_discovery_name" />
+
     <TextView
         android:id="@+id/tv_discovery_content"
         android:layout_width="0dp"
@@ -50,19 +60,6 @@
         app:layout_constraintStart_toStartOf="@+id/tv_discovery_name"
         tools:text="10分钟前" />
 
-    <TextView
-        android:id="@+id/tv_discovery_vote"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:drawableStart="@drawable/selector_dianzan_small"
-        android:drawablePadding="2dp"
-        android:gravity="center"
-        android:paddingBottom="8dp"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="100999" />
 
     <cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout
         android:id="@+id/npl_item_moment_photos"
@@ -76,20 +73,24 @@
         app:bga_npl_otherWhiteSpacing="64dp"
         app:bga_npl_placeholderDrawable="@mipmap/bga_pp_ic_holder_light"
         app:bga_npl_showAsLargeWhenOnlyOne="true"
-        app:layout_constraintBottom_toTopOf="@+id/tv_discovery_reply"
+        app:layout_constraintBottom_toTopOf="@+id/tv_discovery_vote"
         app:layout_constraintLeft_toRightOf="@+id/iv_discovery_icon"
         app:layout_constraintTop_toBottomOf="@+id/tv_discovery_content" />
 
-    <ImageView
-        android:id="@+id/tv_discovery_reply"
+
+    <TextView
+        android:id="@+id/tv_discovery_vote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
-        android:src="@drawable/discovery_reply"
-        android:text="@string/more"
+        android:drawablePadding="2dp"
+        android:drawableStart="@drawable/selector_dianzan_small"
+        android:gravity="center"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/npl_item_moment_photos" />
+        app:layout_constraintTop_toBottomOf="@+id/npl_item_moment_photos"
+        tools:text="100999" />
 
     <TextView
         android:id="@+id/tv_delete"
@@ -103,6 +104,7 @@
         app:layout_constraintStart_toStartOf="@+id/tv_discovery_time"
         app:layout_constraintTop_toBottomOf="@id/npl_item_moment_photos" />
 
+
     <View
         android:layout_width="@dimen/size_0dp"
         android:layout_height="@dimen/size_1dp"
@@ -110,5 +112,5 @@
         android:background="@color/colorLine"
         app:layout_constraintLeft_toLeftOf="@+id/tv_discovery_name"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_discovery_reply" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_discovery_vote" />
 </android.support.constraint.ConstraintLayout>

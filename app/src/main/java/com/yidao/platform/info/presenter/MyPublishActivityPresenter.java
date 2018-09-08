@@ -57,6 +57,7 @@ public class MyPublishActivityPresenter {
                                 bean.setFindId(String.valueOf(listBean.getFindId()));
                                 bean.setLike(listBean.isIsLike());
                                 bean.setTimeStamp(listBean.getTimeStamp());
+                                bean.setDeployId(listBean.getDeployId());
                                 dataList.add(bean);
                             }
 

@@ -102,4 +102,5 @@
     <string name="my_bottles">我的瓶子</string>
     <string name="channel">频道</string>
     <string name="wx_subscribe_account">微信订阅号:</string>
+    <string name="shield">屏蔽此人?</string>
 </resources>

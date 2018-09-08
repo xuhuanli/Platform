@@ -39,9 +39,21 @@ public class FriendsShowBean {
      */
     private String timeStamp;
     /**
+     * 发布人ID
+     */
+    private String deployId;
+    /**
      * 图片地址
      */
     private ArrayList<String> imgUrls;
+
+    public String getDeployId() {
+        return deployId;
+    }
+
+    public void setDeployId(String deployId) {
+        this.deployId = deployId;
+    }
 
     public String getTimeStamp() {
         return timeStamp;

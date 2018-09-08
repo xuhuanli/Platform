@@ -39,6 +39,7 @@ public class MomentAdapter extends BaseQuickAdapter<FriendsShowBean, BaseViewHol
         dianZan.setCompoundDrawablesWithIntrinsicBounds(item.isLike() ? R.drawable.dianzan_small_done : R.drawable.dianzan_small, 0, 0, 0);
         helper.addOnClickListener(R.id.tv_discovery_vote); //点赞监听
         helper.addOnClickListener(R.id.tv_delete); //删除按钮监听
+        helper.addOnClickListener(R.id.iv_baned);
         Glide.with(mContext).load(item.getHeadImg()).apply(new RequestOptions().placeholder(R.drawable.info_head_p).error(R.drawable.info_head_p)).into((ImageView) helper.getView(R.id.iv_discovery_icon));
         BGANinePhotoLayout ninePhotoLayout = helper.getView(R.id.npl_item_moment_photos);
         if (delegate != null) {

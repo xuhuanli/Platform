@@ -132,7 +132,7 @@ public class FriendsListBean {
             private long commAmount;
             private String deployName;
             private String headImg;
-            private long deployId;
+            private String deployId;
             private String deployTime;
             private boolean isLike;
             private FindBean find;
@@ -187,11 +187,11 @@ public class FriendsListBean {
                 this.headImg = headImg;
             }
 
-            public long getDeployId() {
+            public String getDeployId() {
                 return deployId;
             }
 
-            public void setDeployId(long deployId) {
+            public void setDeployId(String deployId) {
                 this.deployId = deployId;
             }
 

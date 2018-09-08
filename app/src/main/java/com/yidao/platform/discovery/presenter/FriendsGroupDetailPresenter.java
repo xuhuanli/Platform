@@ -142,6 +142,7 @@ public class FriendsGroupDetailPresenter {
                             showBean.setTimeStamp(result.getTimeStamp());
                             showBean.setLikeAmount(result.getLikeAmount());
                             showBean.setImgUrls((ArrayList<String>) result.getImgs());
+                            showBean.setDeployId(result.getUserId());
                             mView.showDetail(showBean);
                         }
                     }

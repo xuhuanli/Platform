@@ -2,9 +2,11 @@ package com.yidao.platform.discovery.view;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -12,12 +14,17 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.allen.library.utils.ToastUtils;
@@ -116,7 +123,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
 
     @Override
     protected void initData() {
-        mPresenter.getFriendsList(Constant.PAGE_SIZE,userId);
+        mPresenter.getFriendsList(Constant.PAGE_SIZE, userId);
     }
 
     @Override
@@ -146,7 +153,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
         if (mAdapter != null) {
             mAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
         }
-        mPresenter.getFriendsList(Constant.PAGE_SIZE,userId);
+        mPresenter.getFriendsList(Constant.PAGE_SIZE, userId);
     }
 
     /**
@@ -224,29 +231,45 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
         });
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             FriendsShowBean item = (FriendsShowBean) adapter.getItem(position);
-            boolean isLike = item.isLike();
-            if (dianZanObj == null) {
-                dianZanObj = new DianZanObj();
+            switch (view.getId()) {
+                case R.id.tv_discovery_vote:
+                    boolean isLike = item.isLike();
+                    if (dianZanObj == null) {
+                        dianZanObj = new DianZanObj();
+                    }
+                    dianZanObj.setUserId(userId);
+                    dianZanObj.setFindId(item.getFindId());
+                    if (isLike) {  //已点赞，点击后变成不点赞 传服务器
+                        mPresenter.cancelFindLike(dianZanObj);
+                        item.setLikeAmount(item.getLikeAmount() - 1);
+                    } else {
+                        mPresenter.sendFindLike(dianZanObj);
+                        item.setLikeAmount(item.getLikeAmount() + 1);
+                    }
+                    item.setLike(!isLike);
+                    mAdapter.notifyItemChanged(position);
+                    break;
+                case R.id.iv_baned:
+                    showAlertDialog(R.string.shield, (dialog, which) -> mPresenter.shieldUser(item.getDeployId(),userId));
+                    break;
             }
-            dianZanObj.setUserId(userId);
-            dianZanObj.setFindId(item.getFindId());
-            if (isLike) {  //已点赞，点击后变成不点赞 传服务器
-                mPresenter.cancelFindLike(dianZanObj);
-                item.setLikeAmount(item.getLikeAmount() - 1);
-            } else {
-                mPresenter.sendFindLike(dianZanObj);
-                item.setLikeAmount(item.getLikeAmount() + 1);
-            }
-            item.setLike(!isLike);
-            mAdapter.notifyItemChanged(position);
         });
+    }
+
+    private void showAlertDialog(int messageId, DialogInterface.OnClickListener positiveListener) {
+        AlertDialog alertDialog = new AlertDialog.Builder(getContext())
+                .setMessage(messageId)
+                .setPositiveButton(R.string.ensure, positiveListener)
+                .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
+                .create();
+        alertDialog.show();
     }
 
     private void loadMore() {
         List<FriendsShowBean> dataList = mAdapter.getData();
         FriendsShowBean bean = mAdapter.getData().get(dataList.size() - 1);
         String findId = bean.getFindId();
-        mPresenter.qryFindHis(Constant.PAGE_SIZE, findId,userId);
+        mPresenter.qryFindHis(Constant.PAGE_SIZE, findId, userId);
     }
 
     @Override

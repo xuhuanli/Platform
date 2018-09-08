@@ -152,6 +152,24 @@ public interface ApiService {
     //----------朋友圈模块----------
 
     /**
+     * 屏蔽用户
+     */
+    @GET("app/edit/find/shieldUser")
+    Observable<String> shieldUser(@Query("shUserId") String shUserId, @Query("userId") String userId);
+
+    /**
+     * 取消屏蔽
+     */
+    @GET("app/edit/find/cancelShieldUser")
+    Observable<String> cancelShieldUser(@Query("shUserId") String shUserId, @Query("userId") String userId);
+
+    /**
+     * 查询被屏蔽用户列表
+     */
+    @GET("app/find/qryShieldUsers")
+    Observable<String> qryShieldUsers(@Query("index") long index, @Query("size") int size, @Query("userId") String userId);
+
+    /**
      * 发布朋友圈图片上传路径到公司服务器 后期注意ip地址的修改
      */
     @Headers({"Content-Type: application/json;charset=UTF-8"})
