@@ -64,7 +64,6 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
         initRecyclerView();
         initSwipeRefreshLayout();
         headerView = getHeaderView();
-        //refresh();
     }
 
     private void initToolbar() {
@@ -86,8 +85,6 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
             mAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
         }
         mPresenter.getMainArticleData();
-        //mPresenter.getListCategories();
-        //mPresenter.getBannerData();
     }
 
     @Override
@@ -214,6 +211,11 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
     public void saveChannelData(ArrayList<ChannelBean.ResultBean> result) {
         //这里拿到了类目的ID和Name，没做本地化存储
         mChannelBean = result;
+    }
+
+    @Override
+    public void netError() {
+
     }
 
     @Override

@@ -133,6 +133,7 @@ public class ReadFragmentPresenter {
 
                     @Override
                     public void onError(Throwable e) {
+                        mView.netError();
                         MyLogger.e(e.getMessage());
                     }
 
