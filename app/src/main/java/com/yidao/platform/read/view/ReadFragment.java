@@ -202,20 +202,28 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
         ErrorAdapter adapter = new ErrorAdapter(null);
         adapter.bindToRecyclerView(mRecyclerView);
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.info_no_msg_layout, mRecyclerView, false);
-        ((TextView) view.findViewById(R.id.tv_tips)).setText(R.string.connection_failed);
+        TextView tips = view.findViewById(R.id.tv_tips);
+        tips.setText(R.string.connection_failed_click_relink);
+        tips.setOnClickListener(v -> reLoadData());
         adapter.setEmptyView(view);
         adapter.setNewData(null);
+    }
+
+    private void reLoadData() {
+        headerView = null;
+        banner =null;
+        headerView = getHeaderView();
+        mRecyclerView.removeAllViews();
+        if (mAdapter != null) {
+            mAdapter = null;
+        }
+        initData();
     }
 
     @Override
     public void saveChannelData(ArrayList<ChannelBean.ResultBean> result) {
         //这里拿到了类目的ID和Name，没做本地化存储
         mChannelBean = result;
-    }
-
-    @Override
-    public void netError() {
-
     }
 
     @Override
