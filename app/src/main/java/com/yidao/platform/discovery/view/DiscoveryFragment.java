@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -19,12 +18,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.allen.library.utils.ToastUtils;
@@ -157,7 +152,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     }
 
     /**
-     * 需要刷新列表的时间
+     * 需要刷新列表的事件
      *
      * @param event
      */
@@ -250,7 +245,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
                     mAdapter.notifyItemChanged(position);
                     break;
                 case R.id.iv_baned:
-                    showAlertDialog(R.string.shield, (dialog, which) -> mPresenter.shieldUser(item.getDeployId(),userId));
+                    showAlertDialog(R.string.shield, (dialog, which) -> mPresenter.shieldUser(item.getDeployId(), userId));
                     break;
             }
         });
@@ -289,6 +284,11 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     @Override
     public void setRefreshing(boolean b) {
         mSwipeRefreshLayout.setRefreshing(b);
+    }
+
+    @Override
+    public void shieldSuccess() {
+        refresh();
     }
 
     @Override

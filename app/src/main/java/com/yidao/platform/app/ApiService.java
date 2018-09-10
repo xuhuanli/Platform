@@ -14,6 +14,7 @@ import com.yidao.platform.discovery.model.ReplyBottleListObj;
 import com.yidao.platform.discovery.model.ReplyBottleObj;
 import com.yidao.platform.discovery.model.SendFindObj;
 import com.yidao.platform.discovery.model.ThrowBottleObj;
+import com.yidao.platform.info.model.BlackListBean;
 import com.yidao.platform.info.model.BottleMsgBean;
 import com.yidao.platform.info.model.FindMsgBean;
 import com.yidao.platform.info.model.MineInfoBean;
@@ -167,7 +168,7 @@ public interface ApiService {
      * 查询被屏蔽用户列表
      */
     @GET("app/find/qryShieldUsers")
-    Observable<String> qryShieldUsers(@Query("index") long index, @Query("size") int size, @Query("userId") String userId);
+    Observable<BlackListBean> qryShieldUsers(@Query("index") int index, @Query("size") int size, @Query("userId") String userId);
 
     /**
      * 发布朋友圈图片上传路径到公司服务器 后期注意ip地址的修改

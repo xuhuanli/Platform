@@ -103,4 +103,7 @@
     <string name="channel">频道</string>
     <string name="wx_subscribe_account">微信订阅号:</string>
     <string name="shield">屏蔽此人?</string>
+    <string name="black_list">黑名单</string>
+    <string name="recover_user">解除黑名单限制?</string>
+    <string name="no_shiled_user">你看这名单它又长又宽</string>
 </resources>

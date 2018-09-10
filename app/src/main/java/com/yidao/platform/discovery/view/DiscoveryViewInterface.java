@@ -27,4 +27,6 @@ public interface DiscoveryViewInterface {
     void setEnableLoadMore(boolean b);
 
     void setRefreshing(boolean b);
+
+    void shieldSuccess();
 }

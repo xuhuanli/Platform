@@ -1,6 +1,7 @@
 package com.yidao.platform.info.view;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -26,6 +27,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
+import io.reactivex.functions.Consumer;
 
 public class SettingsActivity extends BaseActivity implements SettingsViewInterface {
 
@@ -41,6 +43,8 @@ public class SettingsActivity extends BaseActivity implements SettingsViewInterf
     TextView tvAboutUs;
     @BindView(R.id.sign_up)
     TextView tvSignUp;
+    @BindView(R.id.tv_settings_black_list)
+    TextView tvBlackList;
     private SettingsPresenter mPresenter;
     private Handler mHandler = new Handler();
 
@@ -62,6 +66,11 @@ public class SettingsActivity extends BaseActivity implements SettingsViewInterf
             IPreference.prefHolder.getPreference(SettingsActivity.this).remove(Constant.STRING_USER_ID);
             EventBus.getDefault().post(new SignUpEvent());
             finish();
+        }));
+        //黑名单
+        addDisposable(RxView.clicks(tvBlackList).throttleFirst(Constant.THROTTLE_TIME,TimeUnit.MILLISECONDS).subscribe(o -> {
+            Intent intent = new Intent(SettingsActivity.this, BlackListActivity.class);
+            startActivity(intent);
         }));
     }
 

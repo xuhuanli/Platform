@@ -23,16 +23,14 @@
             android:text="@string/settings"
             android:textColor="#ff333333"
             android:textSize="18sp"
-            android:textStyle="bold"
-            tools:layout_editor_absoluteX="175dp" />
+            android:textStyle="bold"/>
     </android.support.v7.widget.Toolbar>
 
     <TextView
-        android:id="@+id/tv_settings_callback_item"
+        android:id="@+id/tv_settings_black_list"
         style="@style/Style_Settings_TextView"
         android:layout_marginTop="10dp"
-        android:text="@string/user_callback"
-        android:visibility="gone"
+        android:text="@string/black_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_info" />
@@ -40,11 +38,10 @@
     <TextView
         android:id="@+id/tv_settings_about_us_item"
         style="@style/Style_Settings_TextView"
-        android:layout_marginTop="10dp"
         android:text="@string/about_us"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_settings_callback_item" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_settings_black_list" />
 
 
     <RelativeLayout

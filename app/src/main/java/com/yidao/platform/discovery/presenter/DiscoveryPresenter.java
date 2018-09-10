@@ -19,6 +19,9 @@ import com.yidao.platform.discovery.bean.FriendsShowBean;
 import com.yidao.platform.discovery.model.DianZanObj;
 import com.yidao.platform.discovery.view.DiscoveryViewInterface;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,10 +60,10 @@ public class DiscoveryPresenter {
     /**
      * 获取朋友圈列表新的接口
      */
-    public void getFriendsList(int size,String userId) {
+    public void getFriendsList(int size, String userId) {
         RxHttpUtils
                 .createApi(ApiService.class)
-                .getFriendsList(size,userId)
+                .getFriendsList(size, userId)
                 .compose(Transformer.switchSchedulers())
                 .subscribe(new CommonObserver<FriendsListBean>() {
                     @Override
@@ -89,15 +92,16 @@ public class DiscoveryPresenter {
                                     bean.setFindId(String.valueOf(listBean.getFindId()));
                                     bean.setLike(listBean.isIsLike());
                                     bean.setTimeStamp(listBean.getTimeStamp());
+                                    bean.setDeployId(listBean.getDeployId());
                                     dataList.add(bean);
                                 }
                                 mView.loadRecyclerData(dataList);
-                                if (result.getList().size() < Constant.PAGE_SIZE) {  //所得数目< pageSize =>到底了
+                                if (result.getList().size() == 0) {  //所得数目< pageSize =>到底了
                                     mView.loadMoreEnd(false);
                                 } else {
                                     mView.loadMoreComplete();
                                 }
-                            }else {
+                            } else {
                                 mView.loadMoreEnd(false);
                             }
                         }
@@ -155,10 +159,10 @@ public class DiscoveryPresenter {
      * @param pageSize
      * @param findId
      */
-    public void qryFindHis(int pageSize, String findId,String userId) {
+    public void qryFindHis(int pageSize, String findId, String userId) {
         RxHttpUtils
                 .createApi(ApiService.class)
-                .qryFindHis(pageSize, findId,userId)
+                .qryFindHis(pageSize, findId, userId)
                 .compose(Transformer.switchSchedulers())
                 .subscribe(new CommonObserver<FriendsListBean>() {
                     @Override
@@ -195,10 +199,10 @@ public class DiscoveryPresenter {
                                 } else {
                                     mView.loadMoreComplete();
                                 }
-                            }else {
+                            } else {
                                 mView.loadMoreEnd(false);
                             }
-                        }else {
+                        } else {
                             mView.loadMoreEnd(false);
                         }
                     }
@@ -207,13 +211,14 @@ public class DiscoveryPresenter {
 
     /**
      * 屏蔽此人
+     *
      * @param deployId 被屏蔽者id
-     * @param userId 我的id
+     * @param userId   我的id
      */
     public void shieldUser(String deployId, String userId) {
         RxHttpUtils
                 .createApi(ApiService.class)
-                .shieldUser(deployId,userId)
+                .shieldUser(deployId, userId)
                 .compose(Transformer.switchSchedulers())
                 .subscribe(new CommonObserver<String>() {
                     @Override
@@ -223,7 +228,16 @@ public class DiscoveryPresenter {
 
                     @Override
                     protected void onSuccess(String s) {
-                        MyLogger.e(s);
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            switch (jsonObject.getString(Constant.STRING_ERRCODE)) {
+                                case "1000":
+                                    mView.shieldSuccess();
+                                    break;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
     }

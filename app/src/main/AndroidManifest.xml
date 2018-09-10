@@ -140,5 +140,6 @@
         </activity>
         <activity android:name=".read.view.WebActivity"/>
         <activity android:name=".login.view.ProtocolActivity" />
+        <activity android:name=".info.view.BlackListActivity" />
     </application>
 </manifest>
