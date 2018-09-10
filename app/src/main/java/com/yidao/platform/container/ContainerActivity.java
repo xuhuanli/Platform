@@ -10,6 +10,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yidao.platform.R;
@@ -108,22 +109,32 @@ public class ContainerActivity extends BaseActivity {
     private void loadTabData() {
         mTabLayout.setupWithViewPager(mViewPager, true);
         for (int i = 0; i < ViewpagerAdapter.DRAWABLE_RES_UNSELECTED.length; i++) {
-            mTabLayout.getTabAt(i).setText(ViewpagerAdapter.TAB_NAMES[i]).setIcon(ViewpagerAdapter.DRAWABLE_RES_UNSELECTED[i]);
+            TabLayout.Tab tab = mTabLayout.getTabAt(i);
+            tab.setCustomView(R.layout.container_layout_tab_item);
+            TextView tabText = tab.getCustomView().findViewById(R.id.tv_tab);
+            tabText.setText(ViewpagerAdapter.TAB_NAMES[i]);
+            tabText.setCompoundDrawablesWithIntrinsicBounds(0, ViewpagerAdapter.DRAWABLE_RES_UNSELECTED[i], 0, 0);
+            if (i == 0) {
+                tabText.setCompoundDrawablesWithIntrinsicBounds(0, ViewpagerAdapter.DRAWABLE_RES_SELECTED[0], 0, 0);
+                tabText.setTextColor(getResources().getColor(R.color.FF007AFF));
+            }
         }
-        //不正经fix:修复tablayout默认选中bug
-        mTabLayout.getTabAt(0).setIcon(ViewpagerAdapter.DRAWABLE_RES_SELECTED[0]);
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
-                mTabLayout.getTabAt(position).setIcon(ViewpagerAdapter.DRAWABLE_RES_SELECTED[position]);
+                TextView myTab = mTabLayout.getTabAt(position).getCustomView().findViewById(R.id.tv_tab);
+                myTab.setCompoundDrawablesWithIntrinsicBounds(0, ViewpagerAdapter.DRAWABLE_RES_SELECTED[position], 0, 0);
+                myTab.setTextColor(getResources().getColor(R.color.FF007AFF));
                 mViewPager.setCurrentItem(position, false);
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
-                mTabLayout.getTabAt(position).setIcon(ViewpagerAdapter.DRAWABLE_RES_UNSELECTED[position]);
+                TextView myTab = mTabLayout.getTabAt(position).getCustomView().findViewById(R.id.tv_tab);
+                myTab.setCompoundDrawablesWithIntrinsicBounds(0, ViewpagerAdapter.DRAWABLE_RES_UNSELECTED[position], 0, 0);
+                myTab.setTextColor(getResources().getColor(R.color.FF999999));
             }
 
             @Override
