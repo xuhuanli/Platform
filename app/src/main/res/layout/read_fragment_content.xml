@@ -9,7 +9,7 @@
     tools:context=".container.ContainerActivity">
 
 
-    <android.support.v7.widget.Toolbar
+    <com.yidao.platform.app.XHLToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
@@ -48,7 +48,7 @@
             style="@style/ToolBarMenuIcon"
             android:layout_gravity="end"
             android:src="@drawable/search_icon" />
-    </android.support.v7.widget.Toolbar>
+    </com.yidao.platform.app.XHLToolbar>
 
 
     <android.support.v4.widget.SwipeRefreshLayout

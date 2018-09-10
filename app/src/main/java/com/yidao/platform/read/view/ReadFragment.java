@@ -6,7 +6,6 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -18,6 +17,7 @@ import com.allen.library.utils.ToastUtils;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
+import com.yidao.platform.app.XHLToolbar;
 import com.yidao.platform.app.base.BaseFragment;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.read.adapter.ErrorAdapter;
@@ -37,7 +37,7 @@ import butterknife.BindView;
 public class ReadFragment extends BaseFragment implements IViewReadFragment {
 
     @BindView(R.id.toolbar)
-    Toolbar mToolbar;
+    XHLToolbar mToolbar;
     @BindView(R.id.recycleview)
     RecyclerView mRecyclerView;
     @BindView(R.id.swipeRefreshLayout)
@@ -58,6 +58,8 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
     private ReadFragmentPresenter mPresenter;
     private ArrayList<ChannelBean.ResultBean> mChannelBean;
     private View headerView;
+    private boolean isScrolling = false;
+    private LinearLayoutManager mLayoutManager;
 
     @Override
     protected void initView() {
@@ -74,6 +76,11 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
             Intent intent = new Intent(getActivity(), SearchArticleActivity.class);
             startActivity(intent);
         }));
+        mToolbar.setOnTwoTapListener(() -> {
+            if (!isScrolling) {
+                mLayoutManager.scrollToPositionWithOffset(0, 0);
+            }
+        });
     }
 
     private void initSwipeRefreshLayout() {
@@ -100,9 +107,26 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
     }
 
     private void initRecyclerView() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(layoutManager);
-        //mRecyclerView.addItemDecoration(new CustomDecoration(getActivity(), 5, 0, 0),1);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                switch (newState) {
+                    case RecyclerView.SCROLL_STATE_IDLE:
+                        isScrolling = false;
+                        break;
+                    case RecyclerView.SCROLL_STATE_DRAGGING:
+                        isScrolling = true;
+                        break;
+                    case RecyclerView.SCROLL_STATE_SETTLING:
+                        isScrolling = true;
+                        break;
+                }
+            }
+
+        });
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
     }
 
     /**

@@ -86,6 +86,8 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     private File app_photo;
     private String userId;
     private DianZanObj dianZanObj;
+    private boolean isScrolling = false;
+    private LinearLayoutManager mLayoutManager;
 
     @Override
     protected void initView() {
@@ -130,7 +132,26 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     }
 
     private void initRecyclerView() {
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                switch (newState) {
+                    case RecyclerView.SCROLL_STATE_IDLE:
+                        isScrolling = false;
+                        break;
+                    case RecyclerView.SCROLL_STATE_DRAGGING:
+                        isScrolling = true;
+                        break;
+                    case RecyclerView.SCROLL_STATE_SETTLING:
+                        isScrolling = true;
+                        break;
+                }
+            }
+
+        });
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(null);
     }
 
