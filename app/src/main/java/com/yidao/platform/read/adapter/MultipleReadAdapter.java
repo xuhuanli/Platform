@@ -49,8 +49,9 @@ public class MultipleReadAdapter extends BaseMultiItemQuickAdapter<ReadNewsBean,
                 } else if (item.getCategoryId() == Constant.CATEGORY_ID_LABEL_7) {
                     helper.setImageResource(R.id.iv_item_name, R.drawable.label7);
                 }
-
-                Glide.with(mContext).load(item.getHomeImg()).apply(new RequestOptions().placeholder(R.drawable.info_head_p).error(R.drawable.info_head_p)).into((ImageView) helper.getView(R.id.iv_big_image));
+                ImageView imageView = helper.getView(R.id.iv_big_image);
+                imageView.setClipToOutline(true);
+                Glide.with(mContext).load(item.getHomeImg()).apply(new RequestOptions().placeholder(R.drawable.info_head_p).error(R.drawable.info_head_p)).into(imageView);
                 helper.setText(R.id.tv_item_title, item.getTitle());
                 helper.addOnClickListener(R.id.tv_item_more);
                 break;
@@ -58,7 +59,9 @@ public class MultipleReadAdapter extends BaseMultiItemQuickAdapter<ReadNewsBean,
                 helper.setText(R.id.read_list_content, item.getTitle())
                         .setText(R.id.tv_read_count, ConvertFormatUtil.convertCount(item.getReadAmount()))
                         .setText(R.id.tv_news_time, item.getDeployTime());
-                Glide.with(mContext).load(item.getHomeImg()).apply(new RequestOptions().placeholder(R.drawable.info_head_p).error(R.drawable.info_head_p)).into((ImageView) helper.getView(R.id.read_list_image));
+                ImageView smallView = helper.getView(R.id.read_list_image);
+                smallView.setClipToOutline(true);
+                Glide.with(mContext).load(item.getHomeImg()).apply(new RequestOptions().placeholder(R.drawable.info_head_p).error(R.drawable.info_head_p)).into(smallView);
                 break;
         }
     }

@@ -32,6 +32,8 @@
         app:tabSelectedTextColor="#007aff"
         app:tabTextColor="#999999"
         android:layout_height="@dimen/app_navigation_height"
+        app:tabPaddingTop="8dp"
+        app:tabPaddingBottom="1dp"
         android:background="@color/colorWhite"
         app:layout_constraintTop_toBottomOf="@+id/line1"
         app:layout_constraintBottom_toBottomOf="parent"

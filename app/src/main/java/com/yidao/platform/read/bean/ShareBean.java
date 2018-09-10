@@ -58,6 +58,7 @@ public class ShareBean {
         private String title;
         private String subtitle;
         private String homeImg;
+        private String linkUrl;
 
         public String getId() {
             return id;
@@ -89,6 +90,14 @@ public class ShareBean {
 
         public void setHomeImg(String homeImg) {
             this.homeImg = homeImg;
+        }
+
+        public String getLinkUrl() {
+            return linkUrl;
+        }
+
+        public void setLinkUrl(String linkUrl) {
+            this.linkUrl = linkUrl;
         }
     }
 }

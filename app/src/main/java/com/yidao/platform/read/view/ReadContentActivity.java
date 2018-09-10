@@ -72,7 +72,6 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     private BGABadgeImageButton ib_favorite;
     private BottomSheetDialog mCommentBottomSheetDialog;
     private MultipleReadDetailAdapter mAdapter;
-    private String url;
     private IWXAPI mWxapi;
     private BottomSheetDialog mShareBottomSheetDialog;
     private LinearLayoutManager layoutManager;
@@ -137,7 +136,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
 
     private void initView() {
         Intent intent = getIntent();
-        url = intent.getStringExtra(Constant.STRING_URL);
+        String url = intent.getStringExtra(Constant.STRING_URL);
         artId = intent.getLongExtra(Constant.STRING_ART_ID, 0L);
         userId = IPreference.prefHolder.getPreference(this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
         configCommentBar();
@@ -270,7 +269,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
                 isLike = !isLike;
                 ib_favorite.setSelected(isLike);
                 artLikeCount = isLike ? artLikeCount + 1 : artLikeCount - 1;
-                if (artLikeCount<0){
+                if (artLikeCount < 0) {
                     artLikeCount = 0;
                 }
                 ib_favorite.showTextBadge(String.valueOf(artLikeCount));
@@ -323,7 +322,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void deleteCommentSuccess() {
         list.remove(deleteItem);
-        artCommentConut = artCommentConut-1;
+        artCommentConut = artCommentConut - 1;
         ib_comment.showTextBadge(String.valueOf(artCommentConut));
         mAdapter.notifyDataSetChanged();
     }
@@ -334,15 +333,15 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void pushCommentSuccess(ReadNewsDetailBean item) {
-        artCommentConut = artCommentConut+1;
+        artCommentConut = artCommentConut + 1;
         ib_comment.showTextBadge(artCommentConut == 0 ? null : String.valueOf(artCommentConut));
-        if (list.size() ==1) {
+        if (list.size() == 1) {
             ReadNewsDetailBean titleItem = new ReadNewsDetailBean(ReadNewsDetailBean.ITEM_LAST_COMMENT);
             list.add(titleItem);
             list.add(item);
             indexOfLastTitleItem = list.indexOf(titleItem);
-        }else {
-            list.add(indexOfLastTitleItem+1,item);
+        } else {
+            list.add(indexOfLastTitleItem + 1, item);
         }
         mAdapter.notifyDataSetChanged();
     }
@@ -382,7 +381,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
                 list.add(lastTitleItem);
                 indexOfLastTitleItem = list.indexOf(lastTitleItem);
                 list.addAll(dataList);
-            }else {
+            } else {
                 mAdapter.loadMoreEnd(true);
             }
             isFirstGetNewComment = false;
@@ -392,7 +391,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         mAdapter.notifyDataSetChanged();
     }
 
-    private void showShareDialog(String title,String subTitle,Bitmap bitmap) {
+    private void showShareDialog(String title, String subTitle, Bitmap bitmap, String shareUrl) {
         mShareBottomSheetDialog = new BottomSheetDialog(this);
         mShareBottomSheetDialog.setCanceledOnTouchOutside(true);
         @SuppressLint("InflateParams") View view = LayoutInflater.from(this).inflate(R.layout.layout_share_fragment_dialog, null);
@@ -400,18 +399,18 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         mShareBottomSheetDialog.show();
         view.findViewById(R.id.iv_share_msg).setOnClickListener(v -> {
             //分享到session界面
-            weChatShare(SendMessageToWX.Req.WXSceneSession,title,subTitle,bitmap);
+            weChatShare(SendMessageToWX.Req.WXSceneSession, title, subTitle, bitmap, shareUrl);
         });
         view.findViewById(R.id.iv_share_group).setOnClickListener(v -> {
             //分享到朋友圈
-            weChatShare(SendMessageToWX.Req.WXSceneTimeline,title,subTitle,bitmap);
+            weChatShare(SendMessageToWX.Req.WXSceneTimeline, title, subTitle, bitmap, shareUrl);
         });
         view.findViewById(R.id.tv_cancel).setOnClickListener(v -> mShareBottomSheetDialog.cancel());
     }
 
-    private void weChatShare(int mTargetScene,String title,String subTitle,Bitmap bitmap) {
+    private void weChatShare(int mTargetScene, String title, String subTitle, Bitmap bitmap, String shareUrl) {
         WXWebpageObject webpage = new WXWebpageObject();
-        webpage.webpageUrl = url;
+        webpage.webpageUrl = shareUrl;
         WXMediaMessage msg = new WXMediaMessage(webpage);
         msg.title = title;
         msg.description = subTitle;
@@ -429,7 +428,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         new Thread(() -> {
             try {
                 Bitmap bitmap = Glide.with(ReadContentActivity.this).asBitmap().load(result.getHomeImg()).submit(THUMB_SIZE, THUMB_SIZE).get();
-                EventBus.getDefault().post(new ThumbEvent(bitmap,result.getTitle(),result.getSubtitle()));
+                EventBus.getDefault().post(new ThumbEvent(bitmap, result.getTitle(), result.getSubtitle(), result.getLinkUrl()));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -437,8 +436,8 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void getThumbEvent(ThumbEvent event){
-        showShareDialog(event.getTitle(),event.getSubTitle(),event.getBitmap());
+    public void getThumbEvent(ThumbEvent event) {
+        showShareDialog(event.getTitle(), event.getSubTitle(), event.getBitmap(), event.getShareUrl());
     }
 
     @Override
