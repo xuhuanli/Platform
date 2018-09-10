@@ -29,4 +29,6 @@ public interface DiscoveryViewInterface {
     void setRefreshing(boolean b);
 
     void shieldSuccess();
+
+    void showError();
 }

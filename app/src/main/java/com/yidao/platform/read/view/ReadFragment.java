@@ -2,11 +2,13 @@ package com.yidao.platform.read.view;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -100,7 +102,7 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
     private void initRecyclerView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.addItemDecoration(new CustomDecoration(getActivity(), 5, 0, 0));
+        //mRecyclerView.addItemDecoration(new CustomDecoration(getActivity(), 5, 0, 0),1);
     }
 
     /**
@@ -113,7 +115,11 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
 
     private View getHeaderView() {
         View view = getLayoutInflater().inflate(R.layout.read_mainpage_banner, null);
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        int widthDp = dm.widthPixels;
+        int needHeightDp = (194 * widthDp) / 345;
         banner = view.findViewById(R.id.banner);
+        banner.setLayoutParams(new ConstraintLayout.LayoutParams(widthDp, needHeightDp));
         initBanner();
         return view;
     }
@@ -126,11 +132,6 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
         banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
         banner.setImageLoader(new GlideImageLoader());
         banner.setOffscreenPageLimit(5);
-//        BannerViewPager bannerViewPager = banner.findViewById(com.youth.banner.R.id.bannerViewPager);
-//        bannerViewPager.setPageMargin(ScreenUtil.dip2px(getContext(), 16));
-//        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) bannerViewPager.getLayoutParams();
-//        lp.setMargins(ScreenUtil.dip2px(getContext(), 16), 0, ScreenUtil.dip2px(getContext(), 16), 0);
-//        bannerViewPager.setLayoutParams(lp);
         banner.isAutoPlay(true);
         banner.setDelayTime(5000);
         banner.setIndicatorGravity(BannerConfig.CENTER);
@@ -211,7 +212,7 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
 
     private void reLoadData() {
         headerView = null;
-        banner =null;
+        banner = null;
         headerView = getHeaderView();
         mRecyclerView.removeAllViews();
         if (mAdapter != null) {

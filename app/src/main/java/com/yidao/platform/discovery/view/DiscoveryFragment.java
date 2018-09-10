@@ -18,6 +18,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,6 +36,7 @@ import com.yidao.platform.discovery.bean.FriendsShowBean;
 import com.yidao.platform.discovery.model.DianZanObj;
 import com.yidao.platform.discovery.presenter.DiscoveryPresenter;
 import com.yidao.platform.events.RefreshDiscoveryEvent;
+import com.yidao.platform.read.adapter.ErrorAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -289,6 +291,26 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     @Override
     public void shieldSuccess() {
         refresh();
+    }
+
+    @Override
+    public void showError() {
+        ErrorAdapter adapter = new ErrorAdapter(null);
+        adapter.bindToRecyclerView(mRecyclerView);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.info_no_msg_layout, mRecyclerView, false);
+        TextView tips = view.findViewById(R.id.tv_tips);
+        tips.setText(R.string.connection_failed_click_relink);
+        tips.setOnClickListener(v -> reLoadData());
+        adapter.setEmptyView(view);
+        adapter.setNewData(null);
+    }
+
+    private void reLoadData() {
+        mRecyclerView.removeAllViews();
+        if (mAdapter != null) {
+            mAdapter = null;
+        }
+        initData();
     }
 
     @Override

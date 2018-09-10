@@ -60,7 +60,8 @@ public class XHLWebView extends WebView {
         webSettings.setJavaScriptCanOpenWindowsAutomatically(false); //支持通过JS打开新窗口
         //允许SessionStorage/LocalStorage存储
         webSettings.setDomStorageEnabled(true);
-        webSettings.setAppCachePath(webView.getContext().getExternalCacheDir().getPath());
+        //把缓存搬到浏览器中，避免应用缓存占用太大
+        //webSettings.setAppCachePath(webView.getContext().getExternalCacheDir().getPath());
         //移除部分系统JavaScript接口
         //自动加载图片 在WebViewClient finished后加载
         webSettings.setLoadsImagesAutomatically(false);

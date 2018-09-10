@@ -11,6 +11,7 @@ import com.allen.library.RxHttpUtils;
 import com.allen.library.interceptor.Transformer;
 import com.allen.library.observer.CommonObserver;
 import com.allen.library.observer.StringObserver;
+import com.allen.library.utils.ToastUtils;
 import com.yidao.platform.app.ApiService;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.utils.MyLogger;
@@ -70,6 +71,7 @@ public class DiscoveryPresenter {
                     protected void onError(String errorMsg) {
                         mView.setEnableLoadMore(true);
                         mView.setRefreshing(false);
+                        showError();
                     }
 
                     @Override
@@ -240,5 +242,10 @@ public class DiscoveryPresenter {
                         }
                     }
                 });
+    }
+
+    private void showError() {
+        mView.showError();
+        ToastUtils.showToast("服务器连接失败");
     }
 }
