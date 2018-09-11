@@ -16,7 +16,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +28,7 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
+import com.yidao.platform.app.XHLToolbar;
 import com.yidao.platform.app.base.BaseFragment;
 import com.yidao.platform.app.utils.FileUtil;
 import com.yidao.platform.discovery.adapter.MomentAdapter;
@@ -66,14 +66,11 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     private static final int REQUEST_IMAGE_CAPTURE = 100;
     private static final int REQUEST_CHOOSE_PICTURE = 101;
     private static final int REQUEST_DETAIL = 102;
-    @BindView(R.id.btn_take_photo)
-    TextView mBtnPhoto;
-    @BindView(R.id.btn_album)
-    TextView mBtnAlbum;
-    @BindView(R.id.btn_bottle)
-    TextView mBtnBottle;
+    private TextView mBtnPhoto;
+    private TextView mBtnAlbum;
+    private TextView mBtnBottle;
     @BindView(R.id.toolbar)
-    Toolbar mToolbar;
+    XHLToolbar mToolbar;
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
     @BindView(R.id.iv_select_item)
@@ -88,6 +85,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     private DianZanObj dianZanObj;
     private boolean isScrolling = false;
     private LinearLayoutManager mLayoutManager;
+    private View headerView;
 
     @Override
     protected void initView() {
@@ -97,26 +95,6 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
         initRecyclerView();
         initSwipeRefreshLayout();
         mRecyclerView.addOnScrollListener(new BGARVOnScrollListener(getActivity()));
-        //拍照function
-        addDisposable(RxView.clicks(mBtnPhoto).subscribe(o -> {
-            String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
-            if (EasyPermissions.hasPermissions(getActivity(), perms)) {
-                mPresenter.openCamera();
-            } else {
-                EasyPermissions.requestPermissions(DiscoveryFragment.this, getString(R.string.rationable_ask), PERM_OPEN_CAMERA, perms);
-            }
-        }));
-        //相册function
-        addDisposable(RxView.clicks(mBtnAlbum).subscribe(o -> {
-            String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
-            if (EasyPermissions.hasPermissions(getActivity(), perms)) {
-                mPresenter.openAlbum();
-            } else {
-                EasyPermissions.requestPermissions(DiscoveryFragment.this, getString(R.string.rationable_ask), PERM_OPEN_ALBUM, perms);
-            }
-        }));
-        //漂流瓶function core ，one of the most important functions
-        addDisposable(RxView.clicks(mBtnBottle).subscribe(o -> startActivity(new Intent(getActivity(), DiscoveryDriftingBottleActivity.class))));
         userId = IPreference.prefHolder.getPreference(getActivity()).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
     }
 
@@ -132,6 +110,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     }
 
     private void initRecyclerView() {
+        headerView = getHeaderView();
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -160,11 +139,44 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
             Intent intent = new Intent(getActivity(), DiscoveryEditorMessageActivity.class);
             startActivity(intent);
         }));
+        mToolbar.setOnTwoTapListener(() -> {
+            if (!isScrolling) {
+                mLayoutManager.scrollToPositionWithOffset(0, 0);
+            }
+        });
     }
 
     private void initSwipeRefreshLayout() {
         mSwipeRefreshLayout.setColorSchemeColors(Color.BLUE);
         mSwipeRefreshLayout.setOnRefreshListener(this::refresh);
+    }
+
+    private View getHeaderView() {
+        View view = getLayoutInflater().inflate(R.layout.discovery_header_view, null);
+        mBtnPhoto = view.findViewById(R.id.btn_take_photo);
+        mBtnAlbum = view.findViewById(R.id.btn_album);
+        mBtnBottle = view.findViewById(R.id.btn_bottle);
+        //拍照function
+        addDisposable(RxView.clicks(mBtnPhoto).subscribe(o -> {
+            String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+            if (EasyPermissions.hasPermissions(getActivity(), perms)) {
+                mPresenter.openCamera();
+            } else {
+                EasyPermissions.requestPermissions(DiscoveryFragment.this, getString(R.string.rationable_ask), PERM_OPEN_CAMERA, perms);
+            }
+        }));
+        //相册function
+        addDisposable(RxView.clicks(mBtnAlbum).subscribe(o -> {
+            String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+            if (EasyPermissions.hasPermissions(getActivity(), perms)) {
+                mPresenter.openAlbum();
+            } else {
+                EasyPermissions.requestPermissions(DiscoveryFragment.this, getString(R.string.rationable_ask), PERM_OPEN_ALBUM, perms);
+            }
+        }));
+        //漂流瓶function core ，one of the most important functions
+        addDisposable(RxView.clicks(mBtnBottle).subscribe(o -> startActivity(new Intent(getActivity(), DiscoveryDriftingBottleActivity.class))));
+        return view;
     }
 
     private void refresh() {
@@ -239,39 +251,44 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
 
     @Override
     public void loadRecyclerData(ArrayList<FriendsShowBean> dataList) {
-        mAdapter = new MomentAdapter(dataList, this);
-        mAdapter.setOnLoadMoreListener(this::loadMore, mRecyclerView);
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener((adapter, view, position) -> {
-            Intent intent = new Intent(getActivity(), FriendsGroupDetailActivity.class);
-            intent.putExtra(Constant.STRING_FIND_ID, ((FriendsShowBean) adapter.getItem(position)).getFindId());
-            startActivityForResult(intent, REQUEST_DETAIL);
-        });
-        mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
-            FriendsShowBean item = (FriendsShowBean) adapter.getItem(position);
-            switch (view.getId()) {
-                case R.id.tv_discovery_vote:
-                    boolean isLike = item.isLike();
-                    if (dianZanObj == null) {
-                        dianZanObj = new DianZanObj();
-                    }
-                    dianZanObj.setUserId(userId);
-                    dianZanObj.setFindId(item.getFindId());
-                    if (isLike) {  //已点赞，点击后变成不点赞 传服务器
-                        mPresenter.cancelFindLike(dianZanObj);
-                        item.setLikeAmount(item.getLikeAmount() - 1);
-                    } else {
-                        mPresenter.sendFindLike(dianZanObj);
-                        item.setLikeAmount(item.getLikeAmount() + 1);
-                    }
-                    item.setLike(!isLike);
-                    mAdapter.notifyItemChanged(position);
-                    break;
-                case R.id.iv_baned:
-                    showAlertDialog(R.string.shield, (dialog, which) -> mPresenter.shieldUser(item.getDeployId(), userId));
-                    break;
-            }
-        });
+        if (mAdapter == null) {
+            mAdapter = new MomentAdapter(dataList, this);
+            mAdapter.setHeaderView(headerView);
+            mAdapter.setOnLoadMoreListener(this::loadMore, mRecyclerView);
+            mRecyclerView.setAdapter(mAdapter);
+            mAdapter.setOnItemClickListener((adapter, view, position) -> {
+                Intent intent = new Intent(getActivity(), FriendsGroupDetailActivity.class);
+                intent.putExtra(Constant.STRING_FIND_ID, ((FriendsShowBean) adapter.getItem(position)).getFindId());
+                startActivityForResult(intent, REQUEST_DETAIL);
+            });
+            mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+                FriendsShowBean item = (FriendsShowBean) adapter.getItem(position);
+                switch (view.getId()) {
+                    case R.id.tv_discovery_vote:
+                        boolean isLike = item.isLike();
+                        if (dianZanObj == null) {
+                            dianZanObj = new DianZanObj();
+                        }
+                        dianZanObj.setUserId(userId);
+                        dianZanObj.setFindId(item.getFindId());
+                        if (isLike) {  //已点赞，点击后变成不点赞 传服务器
+                            mPresenter.cancelFindLike(dianZanObj);
+                            item.setLikeAmount(item.getLikeAmount() - 1);
+                        } else {
+                            mPresenter.sendFindLike(dianZanObj);
+                            item.setLikeAmount(item.getLikeAmount() + 1);
+                        }
+                        item.setLike(!isLike);
+                        mAdapter.notifyItemChanged(position);
+                        break;
+                    case R.id.iv_baned:
+                        showAlertDialog(R.string.shield, (dialog, which) -> mPresenter.shieldUser(item.getDeployId(), userId));
+                        break;
+                }
+            });
+        } else {
+            mAdapter.setNewData(dataList);
+        }
     }
 
     private void showAlertDialog(int messageId, DialogInterface.OnClickListener positiveListener) {
@@ -327,6 +344,8 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     }
 
     private void reLoadData() {
+        headerView = null;
+        headerView = getHeaderView();
         mRecyclerView.removeAllViews();
         if (mAdapter != null) {
             mAdapter = null;

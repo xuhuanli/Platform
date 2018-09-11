@@ -4,9 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.Toolbar
+    <com.yidao.platform.app.XHLToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
+        android:elevation="3dp"
         android:layout_height="?android:attr/actionBarSize"
         android:background="?android:attr/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,71 +30,7 @@
             style="@style/ToolBarMenuIcon"
             android:layout_gravity="end"
             android:src="@drawable/discovery_publish" />
-    </android.support.v7.widget.Toolbar>
-    <View
-        android:id="@+id/line1"
-        android:layout_width="@dimen/size_0dp"
-        android:layout_height="@dimen/size_5dp"
-        android:background="@color/colorLine"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
-    <TextView
-        android:id="@+id/tv_discovery_tips"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:gravity="center"
-        android:text="@string/tips"
-        android:textColor="#ff999999"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/line1"
-        app:layout_goneMarginTop="@dimen/size_5dp" />
-
-    <TextView
-        android:id="@+id/btn_take_photo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:drawableTop="@drawable/dis_xiangji"
-        android:gravity="center"
-        android:text="@string/take_photo"
-        android:paddingBottom="10dp"
-        android:textColor="@color/FF333333"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/btn_album"
-        app:layout_constraintTop_toBottomOf="@+id/tv_discovery_tips" />
-
-    <TextView
-        android:id="@+id/btn_album"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableTop="@drawable/dis_xiangce"
-        android:gravity="center"
-        android:text="@string/gallery"
-        android:paddingBottom="10dp"
-        android:textColor="@color/FF333333"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_take_photo"
-        app:layout_constraintLeft_toRightOf="@id/btn_take_photo"
-        app:layout_constraintRight_toLeftOf="@+id/btn_bottle" />
-
-    <TextView
-        android:id="@+id/btn_bottle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:drawableTop="@drawable/dis_piaoliuping"
-        android:gravity="center"
-        android:text="@string/drifting_bottle"
-        android:paddingBottom="10dp"
-        android:textColor="@color/FF333333"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_album"
-        app:layout_constraintLeft_toRightOf="@id/btn_album"
-        app:layout_constraintRight_toRightOf="parent" />
+    </com.yidao.platform.app.XHLToolbar>
 
     <View
         android:id="@+id/line2"
@@ -102,13 +39,12 @@
         android:background="@color/colorLine"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_take_photo" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

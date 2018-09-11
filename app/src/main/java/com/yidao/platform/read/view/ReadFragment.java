@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.allen.library.utils.ToastUtils;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.XHLToolbar;
@@ -174,7 +175,10 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
                 if (artId == 200L) {
                     if (!TextUtils.isEmpty(artUrl)) {
                         Intent webIntent = new Intent(getActivity(), WebActivity.class);
-                        webIntent.putExtra(Constant.STRING_ACTIVITY, artUrl);
+                        String userId = IPreference.prefHolder.getPreference(getActivity()).getString(Constant.STRING_USER_ID);
+                        String token = IPreference.prefHolder.getPreference(getActivity()).getString(Constant.STRING_USER_TOKEN);
+                        String artUrlWithToken = artUrl + "?userId=" + userId + "&token=" + token;
+                        webIntent.putExtra(Constant.STRING_ACTIVITY, artUrlWithToken);
                         MyLogger.e(artUrl);
                         startActivity(webIntent);
                     }
