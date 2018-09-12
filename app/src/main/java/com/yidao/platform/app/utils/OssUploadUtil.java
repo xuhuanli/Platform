@@ -68,7 +68,7 @@ public class OssUploadUtil {
         });
     }
 
-    public void uploadFile(int index,final String filePath, @Nullable final Handler handler) {
+    public void uploadFile(int index, final String filePath, @Nullable final Handler handler) {
         String objectKey = "Find/IMG_" + FileUtil.formateTime();
         PutObjectRequest put = new PutObjectRequest(Constant.OSS_BUCKET_NAME, objectKey, filePath);
         OSSAsyncTask<PutObjectResult> task = ossClient.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
@@ -79,8 +79,8 @@ public class OssUploadUtil {
                     Message msg = Message.obtain();
                     msg.what = 0;
                     Bundle bundle = new Bundle();
-                    bundle.putInt("index",index);
-                    bundle.putString("pathOnOss",pathOnOss);
+                    bundle.putInt("index", index);
+                    bundle.putString("pathOnOss", pathOnOss);
                     msg.setData(bundle);
                     handler.sendMessage(msg);
                 } else {  //发布一个String的event

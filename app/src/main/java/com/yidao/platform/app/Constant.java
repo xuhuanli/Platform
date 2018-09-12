@@ -2,10 +2,10 @@ package com.yidao.platform.app;
 
 public class Constant {
 
-    //王鹏
-    public static final String BASE_URL = "http://10.10.20.3:8080/platform-pc-web/";
+    //后台
+    //public static final String BASE_URL = "http://10.10.20.3:8080/platform-pc-web/";
     //debug ip
-    //public static final String BASE_URL = "http://10.10.20.200:8082/";
+    public static final String BASE_URL = "http://10.10.20.200:8082/";
     //release ip
     //public static final String BASE_URL = "http://47.96.122.73:8082/";
 
