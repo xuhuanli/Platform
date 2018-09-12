@@ -7,9 +7,9 @@ import com.google.gson.Gson;
 import com.yidao.platform.app.ApiService;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.utils.MyLogger;
-import com.yidao.platform.discovery.view.IViewBottleActivity;
 import com.yidao.platform.discovery.bean.PickBottleBean;
 import com.yidao.platform.discovery.model.ThrowBottleObj;
+import com.yidao.platform.discovery.view.IViewBottleActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,6 +19,43 @@ public class BottleActivityPresenter {
 
     public BottleActivityPresenter(IViewBottleActivity mView) {
         this.mView = mView;
+    }
+
+    /**
+     * 验证扔瓶子次数
+     *
+     * @param userId
+     */
+    public void validThrowTimes(String userId) {
+        RxHttpUtils
+                .createApi(ApiService.class)
+                .validThrowTimes(userId)
+                .compose(Transformer.switchSchedulers())
+                .subscribe(new StringObserver() {
+                    @Override
+                    protected void onError(String errorMsg) {
+
+                    }
+
+                    @Override
+                    protected void onSuccess(String data) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(data);
+                            String errCode = (String) jsonObject.get(Constant.STRING_ERRCODE);
+                            MyLogger.e(errCode);
+                            switch (errCode) {
+                                case "1000":
+                                    mView.grantThrowValid();
+                                    break;
+                                default:
+                                    mView.throwLimited((String) jsonObject.get("info"));
+                                    break;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
     /**
@@ -48,7 +85,44 @@ public class BottleActivityPresenter {
                                     mView.throwSuccess();
                                     break;
                                 case "1101":
-                                    mView.throwLimited((String)jsonObject.get("info"));
+                                    mView.throwLimited((String) jsonObject.get("info"));
+                                    break;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+    }
+
+    /**
+     * 验证扔瓶子次数
+     *
+     * @param userId
+     */
+    public void validPickTimes(String userId) {
+        RxHttpUtils
+                .createApi(ApiService.class)
+                .validPickTimes(userId)
+                .compose(Transformer.switchSchedulers())
+                .subscribe(new StringObserver() {
+                    @Override
+                    protected void onError(String errorMsg) {
+
+                    }
+
+                    @Override
+                    protected void onSuccess(String data) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(data);
+                            String errCode = (String) jsonObject.get(Constant.STRING_ERRCODE);
+                            MyLogger.e(errCode);
+                            switch (errCode) {
+                                case "1000":
+                                    mView.grantPickValid();
+                                    break;
+                                default:
+                                    mView.countLimit((String) jsonObject.get("info"));
                                     break;
                             }
                         } catch (JSONException e) {

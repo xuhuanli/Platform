@@ -21,6 +21,7 @@ import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.app.utils.FileUtil;
 import com.yidao.platform.events.SignUpEvent;
 import com.yidao.platform.info.presenter.SettingsPresenter;
+import com.yidao.platform.login.view.LoginActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -65,6 +66,7 @@ public class SettingsActivity extends BaseActivity implements SettingsViewInterf
             //退出登录:清除Sp下userId 跳转到登录页面
             IPreference.prefHolder.getPreference(SettingsActivity.this).remove(Constant.STRING_USER_ID);
             EventBus.getDefault().post(new SignUpEvent());
+            startActivity(new Intent(SettingsActivity.this, LoginActivity.class));
             finish();
         }));
         //黑名单

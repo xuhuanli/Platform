@@ -33,6 +33,8 @@ public class MomentAdapter extends BaseQuickAdapter<FriendsShowBean, BaseViewHol
                 .setVisible(R.id.tv_delete, visible);
         if (TextUtils.isEmpty(item.getContent())) {
             helper.setGone(R.id.tv_discovery_content,false);
+        }else {
+            helper.setGone(R.id.tv_discovery_content,true);
         }
         TextView dianZan = helper.getView(R.id.tv_discovery_vote);
         dianZan.setText(String.valueOf(item.getLikeAmount()));

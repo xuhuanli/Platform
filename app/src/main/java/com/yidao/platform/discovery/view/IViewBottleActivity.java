@@ -20,4 +20,8 @@ public interface IViewBottleActivity {
     void netError();
 
     void throwLimited(String info);
+
+    void grantThrowValid();
+
+    void grantPickValid();
 }

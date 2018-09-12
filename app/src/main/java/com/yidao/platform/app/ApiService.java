@@ -422,6 +422,12 @@ public interface ApiService {
     //-------------漂流瓶----------------
 
     /**
+     * 扔瓶子次数验证
+     */
+    @GET("app/bottle/validThrowTimes")
+    Observable<String> validThrowTimes(@Query("userId") String userId);
+
+    /**
      * 扔瓶子
      *
      * @param throwBottleObj
@@ -430,6 +436,12 @@ public interface ApiService {
     @Headers({"Content-Type: application/json;charset=UTF-8"})
     @POST("app/bottle/throwBottle")
     Observable<String> throwBottle(@Body ThrowBottleObj throwBottleObj);
+
+    /**
+     * 捡瓶子次数验证
+     */
+    @GET("app/bottle/validPickTimes")
+    Observable<String> validPickTimes(@Query("userId") String userId);
 
     /**
      * 捡瓶子

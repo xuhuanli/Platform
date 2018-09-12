@@ -282,7 +282,10 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
                         mAdapter.notifyItemChanged(position);
                         break;
                     case R.id.iv_baned:
-                        showAlertDialog(R.string.shield, (dialog, which) -> mPresenter.shieldUser(item.getDeployId(), userId));
+                        String deployId = item.getDeployId();
+                        if (!TextUtils.equals(deployId, userId)) {
+                            showAlertDialog(R.string.shield, (dialog, which) -> mPresenter.shieldUser(deployId, userId));
+                        }
                         break;
                 }
             });

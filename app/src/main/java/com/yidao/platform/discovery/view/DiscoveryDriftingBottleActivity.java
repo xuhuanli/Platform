@@ -95,7 +95,6 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity implements IVi
 
     private void initView() {
         initToolbar();
-        //changeBackground(R.drawable.drift_bottle_has_bar);
         initStatusBar();
         mPresenter = new BottleActivityPresenter(this);
         //扔瓶子
@@ -103,8 +102,7 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity implements IVi
             if (isThrowLimited) {
                 ToastUtils.showToast(throwInfo);
             } else {
-                Intent intent = new Intent(DiscoveryDriftingBottleActivity.this, BottlePushActivity.class);
-                startActivityForResult(intent, PUSH_BOTTLE_REQUEST);
+                mPresenter.validThrowTimes(userId);
             }
         }));
         //捡瓶子
@@ -112,7 +110,7 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity implements IVi
             if (isPickLimited) {
                 ToastUtils.showToast(pickInfo);
             } else {
-                mPresenter.pickBottle(userId);
+                mPresenter.validPickTimes(userId);
             }
         }));
         /**
@@ -432,6 +430,17 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity implements IVi
         ToastUtils.showToast(info);
     }
 
+    @Override
+    public void grantThrowValid() {
+        Intent intent = new Intent(DiscoveryDriftingBottleActivity.this, BottlePushActivity.class);
+        startActivityForResult(intent, PUSH_BOTTLE_REQUEST);
+    }
+
+    @Override
+    public void grantPickValid() {
+        mPresenter.pickBottle(userId);
+    }
+
     /**
      * 捡瓶子上限
      *
@@ -439,15 +448,6 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity implements IVi
      */
     @Override
     public void countLimit(String info) {
-        /*if (mSpaceShipWindow != null) {
-            mSpaceShipWindow.dismiss();
-        }
-        mRootView.setVisibility(View.VISIBLE);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.show();
-        changeBackground(R.drawable.drift_bottle_has_bar);
-        isPickLimited = true;
-        this.pickInfo = pickInfo;*/
         isPickLimited = true;
         this.pickInfo = info;
         ToastUtils.showToast(info);
@@ -455,13 +455,6 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity implements IVi
 
     @Override
     public void errorStatus(String info) {
-        /*if (mSpaceShipWindow != null) {
-            mSpaceShipWindow.dismiss();
-        }
-        mRootView.setVisibility(View.VISIBLE);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.show();
-        changeBackground(R.drawable.drift_bottle_has_bar);*/
         isPickLimited = true;
         this.pickInfo = info;
         ToastUtils.showToast(info);
