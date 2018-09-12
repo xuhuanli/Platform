@@ -97,8 +97,8 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler, IVi
         MyLogger.e(result.toString());
         IPreference.prefHolder.getPreference(this).put(Constant.STRING_USER_TOKEN, result.getToken());
         IPreference.prefHolder.getPreference(this).put(Constant.STRING_USER_REFRESHTOKEN, result.getRefreshToken());
-        EventBus.getDefault().post(new WxSignInEvent());
         if (result.isBindPhone()) {
+            EventBus.getDefault().post(new WxSignInEvent());
             //已绑定，需要写入userId
             IPreference.prefHolder.getPreference(this).put(Constant.STRING_USER_ID, result.getUserId());
             startActivity(new Intent(this, ContainerActivity.class));

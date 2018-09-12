@@ -60,6 +60,12 @@ public class LoginBindingPhonePresenter {
                                 case "1000":
                                     mView.bindSuccess();
                                     break;
+                                case "1052":
+                                    mView.hasBind();
+                                    break;
+                                default:
+                                    break;
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

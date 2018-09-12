@@ -15,6 +15,7 @@ import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.allen.library.RxHttpUtils;
 import com.allen.library.config.OkHttpConfig;
 import com.meituan.android.walle.WalleChannelReader;
+import com.shujike.analysis.SjkAgent;
 import com.squareup.leakcanary.LeakCanary;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
@@ -56,6 +57,12 @@ public class MyApplicationLike extends DefaultApplicationLike {
         initLogger();
         initUmengAnalytics(appContext);
         setLabelMap();
+        initSjk();
+    }
+
+    private void initSjk() {
+        SjkAgent.setDebugEnabled(Constant.IS_DEBUG);//正式发版时请关闭debug模式
+        SjkAgent.init(appContext);
     }
 
     private void setLabelMap() {

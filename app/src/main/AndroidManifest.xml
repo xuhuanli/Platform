@@ -42,10 +42,10 @@
             android:configChanges="keyboardHidden|orientation|screenSize|locale"
             android:theme="@android:style/Theme.Translucent" />
         <!--微信登录会拉起新的任务栈-->
-        <activity android:name=".container.ContainerActivity"/>
+        <activity android:name=".container.ContainerActivity" />
 
         <activity android:name=".login.view.GuideActivity" />
-        <activity android:name=".login.view.LoginActivity"/>
+        <activity android:name=".login.view.LoginActivity" />
         <activity
             android:name=".read.view.ReadContentActivity"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
@@ -137,8 +137,27 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <!--数极客-->
+            <intent-filter>
+                <data android:scheme="sjk.b3313cb811913db4" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
         </activity>
-        <activity android:name=".read.view.WebActivity"/>
+        <!--数极客-->
+        <meta-data
+            android:name="SHUJIKE_APPKEY"
+            android:value="b3313cb811913db4" />
+
+
+        <meta-data
+            android:name="SHUJIKE_CHANNEL"
+            android:value="Android" />
+
+        <activity android:name=".read.view.WebActivity" />
         <activity android:name=".login.view.ProtocolActivity" />
         <activity android:name=".info.view.BlackListActivity" />
     </application>

@@ -27,6 +27,7 @@ import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.app.utils.PhoneRegUtil;
 import com.yidao.platform.container.ContainerActivity;
+import com.yidao.platform.events.HasBindEvent;
 import com.yidao.platform.events.WxSignInEvent;
 import com.yidao.platform.login.bean.WxCodeBean;
 import com.yidao.platform.login.model.LoginObj;
@@ -220,6 +221,14 @@ public class LoginActivity extends BaseActivity implements IViewLoginActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onLoginEvent(WxSignInEvent event) {
         finish();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onHasBindEvent(HasBindEvent event) {
+        String phoneNum = event.getPhoneNum();
+        String vCode = event.getvCode();
+        etPhone.setText(phoneNum);
+        etVCode.setText(vCode);
     }
 
     @Override

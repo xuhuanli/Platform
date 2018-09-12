@@ -1,15 +1,10 @@
 package com.yidao.platform.login.view;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
-import android.text.style.ForegroundColorSpan;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -24,8 +19,12 @@ import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.app.utils.PhoneRegUtil;
 import com.yidao.platform.container.ContainerActivity;
+import com.yidao.platform.events.HasBindEvent;
+import com.yidao.platform.events.WxSignInEvent;
 import com.yidao.platform.login.model.BindPhoneObj;
 import com.yidao.platform.login.presenter.LoginBindingPhonePresenter;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.concurrent.TimeUnit;
 
@@ -116,23 +115,7 @@ public class LoginBindingPhoneActivity extends BaseActivity implements IViewBind
     }
 
     private void initProtocol() {
-        addDisposable(RxView.clicks(tvUserProtocol).throttleFirst(Constant.THROTTLE_TIME,TimeUnit.MILLISECONDS).subscribe(o -> MyLogger.e("跳转到协议page")));
-    }
-
-    private void setProtocol() {
-        String str = getString(R.string.register_protocol);
-        SpannableStringBuilder builder = new SpannableStringBuilder(str);
-        ClickableSpan clickableSpan = new ClickableSpan() {
-            @Override
-            public void onClick(View widget) {
-                ToastUtils.showToast("跳转到协议page");
-            }
-        };
-        builder.setSpan(clickableSpan, 10, str.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-        ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#009ad6"));
-        builder.setSpan(colorSpan, 10, str.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        tvRegisterProtocol.setText(builder);
-        tvRegisterProtocol.setMovementMethod(LinkMovementMethod.getInstance());
+        addDisposable(RxView.clicks(tvUserProtocol).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> startActivity(new Intent(LoginBindingPhoneActivity.this, ProtocolActivity.class))));
     }
 
     @Override
@@ -147,8 +130,18 @@ public class LoginBindingPhoneActivity extends BaseActivity implements IViewBind
 
     @Override
     public void bindSuccess() {
+        EventBus.getDefault().post(new WxSignInEvent());
         IPreference.prefHolder.getPreference(this).put(Constant.STRING_USER_ID, userId);
         startActivity(ContainerActivity.class);
+        finish();
+    }
+
+    @Override
+    public void hasBind() {
+        String phone = etPhone.getText().toString();
+        String vCode = etVCode.getText().toString().trim();
+        EventBus.getDefault().post(new HasBindEvent(phone, vCode));
+        ToastUtils.showToast("手机号已被绑定，请直接登录");
         finish();
     }
 }
