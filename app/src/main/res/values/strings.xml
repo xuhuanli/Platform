@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">瓶什么</string>
+    <string name="app_name">驿道企业资源链接</string>
     <string name="read">阅读</string>
     <string name="discovery">发现</string>
     <string name="more">更多</string>
@@ -46,7 +46,7 @@
     <string name="ensure_delete_reply">确定要删除回复吗?</string>
     <string name="ensure_delete_bottle">确定要删除瓶子吗?</string>
     <string name="not_sign_in">未登录</string>
-    <string name="sign_tips">暂无简介</string>
+    <string name="sign_tips">这家伙很懒,什么都没留下</string>
     <string name="hot_search">热门搜索</string>
     <string name="personal_profile">个人资料</string>
     <string name="head_portrait">头像</string>
