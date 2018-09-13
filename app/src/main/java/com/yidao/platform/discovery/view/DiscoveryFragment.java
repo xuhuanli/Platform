@@ -66,9 +66,6 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
     private static final int REQUEST_IMAGE_CAPTURE = 100;
     private static final int REQUEST_CHOOSE_PICTURE = 101;
     private static final int REQUEST_DETAIL = 102;
-    private TextView mBtnPhoto;
-    private TextView mBtnAlbum;
-    private TextView mBtnBottle;
     @BindView(R.id.toolbar)
     XHLToolbar mToolbar;
     @BindView(R.id.recyclerView)
@@ -153,9 +150,9 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
 
     private View getHeaderView() {
         View view = getLayoutInflater().inflate(R.layout.discovery_header_view, null);
-        mBtnPhoto = view.findViewById(R.id.btn_take_photo);
-        mBtnAlbum = view.findViewById(R.id.btn_album);
-        mBtnBottle = view.findViewById(R.id.btn_bottle);
+        TextView mBtnPhoto = view.findViewById(R.id.btn_take_photo);
+        TextView mBtnAlbum = view.findViewById(R.id.btn_album);
+        TextView mBtnBottle = view.findViewById(R.id.btn_bottle);
         //拍照function
         addDisposable(RxView.clicks(mBtnPhoto).subscribe(o -> {
             String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
