@@ -32,6 +32,7 @@ import com.yidao.platform.read.bean.CommonArticleBean;
 import com.yidao.platform.read.bean.HotCommentsBean;
 import com.yidao.platform.read.bean.LastCommentsBean;
 import com.yidao.platform.read.bean.PushCommBean;
+import com.yidao.platform.read.bean.RefreshTokenObj;
 import com.yidao.platform.read.bean.SearchBean;
 import com.yidao.platform.read.bean.ShareBean;
 import com.yidao.platform.service.model.BpObj;
@@ -40,6 +41,7 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -51,6 +53,13 @@ import retrofit2.http.QueryMap;
 public interface ApiService {
 
     //-------------登录模块---------------
+
+    /**
+     * 刷新token
+     */
+    @FormUrlEncoded
+    @POST("app/user/token-refresh")
+    Observable<String> refreshToken(@Field("refreshToken") String refreshToken);
 
     /**
      * 发送code到server

@@ -26,4 +26,6 @@ public interface IViewReadFragment {
     void showError();
 
     void saveChannelData(ArrayList<ChannelBean.ResultBean> result);
+
+    void loadNewToken(String artId);
 }

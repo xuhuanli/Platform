@@ -4,14 +4,21 @@ import com.allen.library.RxHttpUtils;
 import com.allen.library.interceptor.Transformer;
 import com.allen.library.observer.CommonObserver;
 import com.allen.library.utils.ToastUtils;
+import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.app.ApiService;
+import com.yidao.platform.app.Constant;
+import com.yidao.platform.app.MyApplicationLike;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.read.bean.ArticleBean;
 import com.yidao.platform.read.bean.BannerBean;
 import com.yidao.platform.read.bean.ChannelBean;
 import com.yidao.platform.read.bean.CommonArticleBean;
 import com.yidao.platform.read.bean.ReadNewsBean;
+import com.yidao.platform.read.bean.RefreshTokenObj;
 import com.yidao.platform.read.view.IViewReadFragment;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -230,5 +237,40 @@ public class ReadFragmentPresenter {
     private void showError() {
         mView.showError();
         ToastUtils.showToast("服务器连接失败");
+    }
+
+    /**
+     * 刷新token
+     * @param refreshToken
+     */
+    public void refreshToken(String  refreshToken,String artUrl) {
+        RxHttpUtils
+                .createApi(ApiService.class)
+                .refreshToken(refreshToken)
+                .compose(Transformer.switchSchedulers())
+                .subscribe(new CommonObserver<String>() {
+                    @Override
+                    protected void onError(String errorMsg) {
+
+                    }
+
+                    @Override
+                    protected void onSuccess(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            String errCode = jsonObject.getString(Constant.STRING_ERRCODE);
+                            switch (errCode) {
+                                case "1000":
+                                    String token = jsonObject.getJSONObject("result").getString("token");
+                                    IPreference.prefHolder.getPreference(MyApplicationLike.getAppContext()).put(Constant.STRING_USER_TOKEN, token);
+                                    mView.loadNewToken(artUrl);
+                                    break;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        MyLogger.e(s);
+                    }
+                });
     }
 }

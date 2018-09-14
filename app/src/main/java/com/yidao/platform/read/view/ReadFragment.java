@@ -174,13 +174,9 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
                 Long artId = artIds.get(position);
                 if (artId == 200L) {
                     if (!TextUtils.isEmpty(artUrl)) {
-                        Intent webIntent = new Intent(getActivity(), WebActivity.class);
-                        String userId = IPreference.prefHolder.getPreference(getActivity()).getString(Constant.STRING_USER_ID);
-                        String token = IPreference.prefHolder.getPreference(getActivity()).getString(Constant.STRING_USER_TOKEN);
-                        String artUrlWithToken = artUrl + "?userId=" + userId + "&token=" + token;
-                        webIntent.putExtra(Constant.STRING_ACTIVITY, artUrlWithToken);
-                        MyLogger.e(artUrl);
-                        startActivity(webIntent);
+                        String refreshToken = IPreference.prefHolder.getPreference(getActivity()).getString(Constant.STRING_USER_REFRESHTOKEN);
+                        //RefreshTokenObj obj = new RefreshTokenObj(refreshToken);
+                        mPresenter.refreshToken(refreshToken,artUrl);
                     }
                 } else {
                     intent.putExtra(Constant.STRING_URL, artUrl);
@@ -252,6 +248,17 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
     @Override
     public void saveChannelData(ArrayList<ChannelBean.ResultBean> result) {
         mChannelBean = result;
+    }
+
+    @Override
+    public void loadNewToken(String artUrl) {
+        Intent webIntent = new Intent(getActivity(), WebActivity.class);
+        String userId = IPreference.prefHolder.getPreference(getActivity()).getString(Constant.STRING_USER_ID);
+        String token = IPreference.prefHolder.getPreference(getActivity()).getString(Constant.STRING_USER_TOKEN);
+        String artUrlWithToken = artUrl + "?userId=" + userId + "&token=" + token;
+        webIntent.putExtra(Constant.STRING_ACTIVITY, artUrlWithToken);
+        MyLogger.e(artUrl);
+        startActivity(webIntent);
     }
 
     @Override
