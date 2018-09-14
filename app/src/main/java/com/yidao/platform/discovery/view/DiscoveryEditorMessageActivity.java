@@ -133,10 +133,10 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
     private void initView() {
         addDisposable(RxTextView.textChanges(mEtEditor).subscribe(charSequence -> mContentLength.setText(String.format("%d%s", charSequence.length(), "/300"))));
         addDisposable(RxView.clicks(mBtnCancel).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish()));
-        addDisposable(RxView.clicks(mBtnPublish).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> CompressPicAndPushToOss()));
+        addDisposable(RxView.clicks(mBtnPublish).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> compressPicAndPushToOss()));
     }
 
-    private void CompressPicAndPushToOss() {
+    private void compressPicAndPushToOss() {
         //在压缩和发布之间不能再次点击
         mBtnPublish.setEnabled(false);
         if (mOss != null) {
@@ -172,14 +172,14 @@ public class DiscoveryEditorMessageActivity extends BaseActivity implements Easy
                                 .launch();
                     }
                 }
-            }
-        } else { //纯文本
-            String content = mEtEditor.getText().toString().trim();
-            if (!TextUtils.isEmpty(content)) {
-                mPresenter.sendMsg2Server(userId, content, null);
-            } else {
-                mBtnPublish.setEnabled(true);
-                ToastUtils.showToast("写点什么好呢....");
+            } else { //纯文本
+                String content = mEtEditor.getText().toString().trim();
+                if (!TextUtils.isEmpty(content)) {
+                    mPresenter.sendMsg2Server(userId, content, null);
+                } else {
+                    mBtnPublish.setEnabled(true);
+                    ToastUtils.showToast("写点什么好呢....");
+                }
             }
         }
     }

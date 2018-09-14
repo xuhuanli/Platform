@@ -141,9 +141,9 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         userId = IPreference.prefHolder.getPreference(this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
         configCommentBar();
         //在载入文章前展示progressbar
-        //mRecyclerView.setVisibility(View.INVISIBLE);
-        //mCommentBar.setVisibility(View.INVISIBLE);
-        //mProgressBar.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.INVISIBLE);
+        mCommentBar.setVisibility(View.INVISIBLE);
+        mProgressBar.setVisibility(View.VISIBLE);
         //-------------------------
         initRecyclerView();
         //展开评论框
@@ -313,9 +313,9 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(WebViewLoadEvent event) {
-        //mRecyclerView.setVisibility(View.VISIBLE);
-        //mCommentBar.setVisibility(View.VISIBLE);
-        //mProgressBar.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.VISIBLE);
+        mCommentBar.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.GONE);
         MyLogger.e("获取到浏览器加载完毕回调");
     }
 

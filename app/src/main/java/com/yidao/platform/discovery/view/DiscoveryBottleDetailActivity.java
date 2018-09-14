@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.allen.library.utils.ToastUtils;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
@@ -203,7 +204,7 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
     @Override
     public void showBottleDtl(BottleDtlBean.ResultBean result) {
         this.result = result;
-        Glide.with(this).load(result.getHeadImg()).into(ivDiscoveryIcon);
+        Glide.with(this).load(result.getHeadImg()).apply(RequestOptions.placeholderOf(R.drawable.info_head_p)).into(ivDiscoveryIcon);
         tvDiscoveryContent.setText(result.getContent());
         tvDiscoveryName.setText(result.getUserName());
         tvDiscoveryTime.setText(result.getTimeStamp());

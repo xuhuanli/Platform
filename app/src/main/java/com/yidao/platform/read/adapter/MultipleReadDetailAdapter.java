@@ -4,6 +4,7 @@ import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.yidao.platform.R;
@@ -42,7 +43,7 @@ public class MultipleReadDetailAdapter extends BaseMultiItemQuickAdapter<ReadNew
             case ReadNewsDetailBean.ITEM_HOT_COMMENT:
                 break;
             case ReadNewsDetailBean.ITEM_COMMENTS:
-                Glide.with(mContext).load(item.getHeadImg()).into((CircleImageView) helper.getView(R.id.iv_detail_icon));
+                Glide.with(mContext).load(item.getHeadImg()).apply(RequestOptions.placeholderOf(R.drawable.info_head_p)).into((CircleImageView) helper.getView(R.id.iv_detail_icon));
                 helper.setText(R.id.tv_detail_name, item.getNickName())
                         .setText(R.id.tv_detail_comment, item.getContent())
                         .setText(R.id.tv_detail_time, item.getTimeSamp());

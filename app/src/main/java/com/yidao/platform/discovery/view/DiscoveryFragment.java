@@ -276,7 +276,8 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
                             item.setLikeAmount(item.getLikeAmount() + 1);
                         }
                         item.setLike(!isLike);
-                        mAdapter.notifyItemChanged(position);
+                        //第三方库bug 添加header后position不自增 手动+1
+                        mAdapter.notifyItemChanged(position+1);
                         break;
                     case R.id.iv_baned:
                         String deployId = item.getDeployId();

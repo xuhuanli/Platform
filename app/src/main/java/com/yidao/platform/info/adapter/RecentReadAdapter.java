@@ -15,7 +15,7 @@ import java.util.List;
 
 public class RecentReadAdapter extends BaseQuickAdapter<ReadNewsBean, BaseViewHolder> {
     public RecentReadAdapter(@Nullable List<ReadNewsBean> data) {
-        super(R.layout.read_mainpage_text_image, data);
+        super(R.layout.recent_read_item, data);
     }
 
     @Override

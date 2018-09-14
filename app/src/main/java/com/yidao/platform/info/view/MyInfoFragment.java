@@ -195,7 +195,7 @@ public class MyInfoFragment extends Fragment implements IViewMineInfo {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void headImageEventBus(EventTouXiangInfo info) {
         if (info.isStatus) {
-            Glide.with(this).load(info.path).into(ivLoginSuccessInfo);
+            Glide.with(this).load(info.path).apply(RequestOptions.placeholderOf(R.drawable.info_head_p)).into(ivLoginSuccessInfo);
         }
     }
 

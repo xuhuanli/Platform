@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.allen.library.utils.ToastUtils;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
@@ -205,13 +206,13 @@ public class PersonInfomationActivity extends BaseActivity implements View.OnCli
                 case REQUEST_IMAGE_CAPTURE:
                     refreshAlbum(this, app_photo);
                     String path = app_photo.getAbsolutePath();
-                    Glide.with(PersonInfomationActivity.this).load(path).into(headPortrait);
+                    Glide.with(PersonInfomationActivity.this).load(path).apply(RequestOptions.placeholderOf(R.drawable.info_head_p)).into(headPortrait);
                     //不刷新相册 拍照的图片不会在相册显示
                     upload2Oss(path,mOss.getAccessKeyId(),mOss.getAccessKeySecret(),mOss.getSecurityToken());
                     break;
                 case REQUEST_CHOOSE_PICTURE:
                     ArrayList<String> photos = BGAPhotoPickerActivity.getSelectedPhotos(data);
-                    Glide.with(PersonInfomationActivity.this).load(photos.get(0)).into(headPortrait);
+                    Glide.with(PersonInfomationActivity.this).load(photos.get(0)).apply(RequestOptions.placeholderOf(R.drawable.info_head_p)).into(headPortrait);
                     if (photos.size() == 1) {
                         upload2Oss(photos.get(0),mOss.getAccessKeyId(),mOss.getAccessKeySecret(),mOss.getSecurityToken());
                     }
@@ -323,7 +324,7 @@ public class PersonInfomationActivity extends BaseActivity implements View.OnCli
 
     @Override
     public void successInfo(UserInfoBean.ResultBean resultBean) {
-        Glide.with(this).load(resultBean.getHeadImgUrl()).into(headPortrait);
+        Glide.with(this).load(resultBean.getHeadImgUrl()).apply(RequestOptions.placeholderOf(R.drawable.info_head_p)).into(headPortrait);
         tvUserId.setValue(resultBean.getId());
         tvNikeName.setValue(resultBean.getNickname());
         tvLocation.setValue(resultBean.getProvinceName() + " " + resultBean.getCityName());

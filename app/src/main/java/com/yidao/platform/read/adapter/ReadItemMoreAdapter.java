@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.yidao.platform.R;
@@ -27,6 +28,6 @@ public class ReadItemMoreAdapter extends BaseQuickAdapter<ReadNewsBean, BaseView
         helper.setText(R.id.read_list_content, item.getTitle())
                 .setText(R.id.tv_read_count, readAmount)
                 .setText(R.id.tv_news_time, deployTime);
-        Glide.with(mContext).load(item.getHomeImg()).into((ImageView) helper.getView(R.id.read_list_image));
+        Glide.with(mContext).load(item.getHomeImg()).apply(RequestOptions.placeholderOf(R.drawable.info_head_p)).into((ImageView) helper.getView(R.id.read_list_image));
     }
 }
