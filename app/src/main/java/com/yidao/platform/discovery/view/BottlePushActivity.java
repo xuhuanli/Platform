@@ -69,7 +69,7 @@ public class BottlePushActivity extends BaseActivity {
         addDisposable(RxView.clicks(mTvLabel).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
             InputMethodManager mImm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
             mImm.hideSoftInputFromWindow(mTvLabel.getWindowToken(), 0);
-            List<String> labelsList = Arrays.asList("商业计划书", "产品原型", "技术开发", "投融资需求", "资源对接", "路演/峰会", "项目投资", "项目评估");
+            List<String> labelsList = Arrays.asList("商业计划书", "产品原型", "技术开发", "投融资需求", "资源对接", "路演/峰会", "项目投资", "项目评估","其它");
             setWheelView(labelsList, (options1, options2, options3, v) -> {
                 String s = labelsList.get(options1);
                 mTvLabel.setText(s);

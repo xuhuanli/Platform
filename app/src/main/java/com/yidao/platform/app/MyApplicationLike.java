@@ -74,6 +74,7 @@ public class MyApplicationLike extends DefaultApplicationLike {
         labelMap.put("路演/峰会", 6);
         labelMap.put("项目投资", 7);
         labelMap.put("项目评估", 8);
+        labelMap.put("其它", 9);
     }
 
     public static int getLabelId(String label) {
