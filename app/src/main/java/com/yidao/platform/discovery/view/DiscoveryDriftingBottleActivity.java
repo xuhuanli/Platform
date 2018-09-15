@@ -110,7 +110,8 @@ public class DiscoveryDriftingBottleActivity extends BaseActivity implements IVi
             if (isPickLimited) {
                 ToastUtils.showToast(pickInfo);
             } else {
-                mPresenter.validPickTimes(userId);
+                mIvPullBottle.setEnabled(false);
+                mPresenter.validPickTimes(userId,mIvPullBottle);
             }
         }));
         /**

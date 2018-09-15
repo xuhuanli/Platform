@@ -1,5 +1,7 @@
 package com.yidao.platform.discovery.presenter;
 
+import android.widget.ImageView;
+
 import com.allen.library.RxHttpUtils;
 import com.allen.library.interceptor.Transformer;
 import com.allen.library.observer.StringObserver;
@@ -99,8 +101,9 @@ public class BottleActivityPresenter {
      * 验证扔瓶子次数
      *
      * @param userId
+     * @param mIvPullBottle
      */
-    public void validPickTimes(String userId) {
+    public void validPickTimes(String userId, ImageView mIvPullBottle) {
         RxHttpUtils
                 .createApi(ApiService.class)
                 .validPickTimes(userId)
@@ -108,11 +111,12 @@ public class BottleActivityPresenter {
                 .subscribe(new StringObserver() {
                     @Override
                     protected void onError(String errorMsg) {
-
+                        mIvPullBottle.setEnabled(true);
                     }
 
                     @Override
                     protected void onSuccess(String data) {
+                        mIvPullBottle.setEnabled(true);
                         try {
                             JSONObject jsonObject = new JSONObject(data);
                             String errCode = (String) jsonObject.get(Constant.STRING_ERRCODE);
