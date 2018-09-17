@@ -102,39 +102,43 @@ public class ReadFragmentPresenter {
                         mView.setRefreshing(false);
                         if (articleBean.isStatus()) {
                             List<ArticleBean.ResultBean> result = articleBean.getResult();
-                            List<ReadNewsBean> dataList = new ArrayList<>();
-                            for (ArticleBean.ResultBean resultBean : result) {
-                                List<ArticleBean.ResultBean.ArticleExtListBean> articleExtList = resultBean.getArticleExtList();
-                                if (articleExtList != null) {
-                                    for (ArticleBean.ResultBean.ArticleExtListBean articleExtListBean : articleExtList) {
-                                        int type = articleExtListBean.getType();
-                                        if (type == 2) { //0为普通 1为精选 2为类目
-                                            ReadNewsBean readNewsBean = new ReadNewsBean(ReadNewsBean.ITEM_ONE);
-                                            readNewsBean.setCategoryId(resultBean.getCategoryId());
-                                            readNewsBean.setDeployTime(articleExtListBean.getDeployTime());
-                                            readNewsBean.setHomeImg(articleExtListBean.getHomeImg());
-                                            readNewsBean.setId(articleExtListBean.getId());
-                                            readNewsBean.setReadAmount(articleExtListBean.getReadAmount());
-                                            readNewsBean.setTitle(articleExtListBean.getTitle());
-                                            readNewsBean.setArticleContent(articleExtListBean.getArticleContent());
-                                            readNewsBean.setType(articleExtListBean.getType());
-                                            dataList.add(readNewsBean);
-                                        } else if (type == 1) {
-                                            ReadNewsBean readNewsBean = new ReadNewsBean(ReadNewsBean.ITEM_TWO);
-                                            readNewsBean.setCategoryId(resultBean.getCategoryId());
-                                            readNewsBean.setDeployTime(articleExtListBean.getDeployTime());
-                                            readNewsBean.setHomeImg(articleExtListBean.getHomeImg());
-                                            readNewsBean.setId(articleExtListBean.getId());
-                                            readNewsBean.setReadAmount(articleExtListBean.getReadAmount());
-                                            readNewsBean.setTitle(articleExtListBean.getTitle());
-                                            readNewsBean.setType(articleExtListBean.getType());
-                                            readNewsBean.setArticleContent(articleExtListBean.getArticleContent());
-                                            dataList.add(readNewsBean);
+                            if (result != null) {
+                                List<ReadNewsBean> dataList = new ArrayList<>();
+                                for (ArticleBean.ResultBean resultBean : result) {
+                                    List<ArticleBean.ResultBean.ArticleExtListBean> articleExtList = resultBean.getArticleExtList();
+                                    if (articleExtList != null) {
+                                        for (ArticleBean.ResultBean.ArticleExtListBean articleExtListBean : articleExtList) {
+                                            int type = articleExtListBean.getType();
+                                            if (type == 2) { //0为普通 1为精选 2为类目
+                                                ReadNewsBean readNewsBean = new ReadNewsBean(ReadNewsBean.ITEM_ONE);
+                                                readNewsBean.setCategoryId(resultBean.getCategoryId());
+                                                readNewsBean.setDeployTime(articleExtListBean.getDeployTime());
+                                                readNewsBean.setHomeImg(articleExtListBean.getHomeImg());
+                                                readNewsBean.setId(articleExtListBean.getId());
+                                                readNewsBean.setReadAmount(articleExtListBean.getReadAmount());
+                                                readNewsBean.setTitle(articleExtListBean.getTitle());
+                                                readNewsBean.setArticleContent(articleExtListBean.getArticleContent());
+                                                readNewsBean.setType(articleExtListBean.getType());
+                                                dataList.add(readNewsBean);
+                                            } else if (type == 1) {
+                                                ReadNewsBean readNewsBean = new ReadNewsBean(ReadNewsBean.ITEM_TWO);
+                                                readNewsBean.setCategoryId(resultBean.getCategoryId());
+                                                readNewsBean.setDeployTime(articleExtListBean.getDeployTime());
+                                                readNewsBean.setHomeImg(articleExtListBean.getHomeImg());
+                                                readNewsBean.setId(articleExtListBean.getId());
+                                                readNewsBean.setReadAmount(articleExtListBean.getReadAmount());
+                                                readNewsBean.setTitle(articleExtListBean.getTitle());
+                                                readNewsBean.setType(articleExtListBean.getType());
+                                                readNewsBean.setArticleContent(articleExtListBean.getArticleContent());
+                                                dataList.add(readNewsBean);
+                                            }
                                         }
                                     }
                                 }
+                                mView.showMainArticle(dataList);
+                            }else {
+                                showError();
                             }
-                            mView.showMainArticle(dataList);
                         }
                     }
 
