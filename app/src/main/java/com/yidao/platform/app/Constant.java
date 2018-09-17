@@ -14,7 +14,7 @@ public class Constant {
     /**
      * 全局debug模式开关 在release时候设置为false
      */
-    public static final boolean IS_DEBUG = false;
+    public static final boolean IS_DEBUG = true;
     /**
      * Bugly App ID DEBUG 内测
      */
