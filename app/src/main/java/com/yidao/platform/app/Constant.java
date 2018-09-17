@@ -1,7 +1,6 @@
 package com.yidao.platform.app;
 
 public class Constant {
-
     //后台
     //public static final String BASE_URL = "http://10.10.20.3:8080/platform-pc-web/";
     //xly
