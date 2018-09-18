@@ -10,6 +10,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.utils.ConvertFormatUtil;
+import com.yidao.platform.app.utils.TimeUtil;
 import com.yidao.platform.read.bean.ReadNewsBean;
 
 import java.util.List;
@@ -56,9 +57,11 @@ public class MultipleReadAdapter extends BaseMultiItemQuickAdapter<ReadNewsBean,
                 helper.addOnClickListener(R.id.tv_item_more);
                 break;
             case ReadNewsBean.ITEM_TWO:
+                String deployTime = item.getDeployTime();
+                String timeSamp = TimeUtil.fromToday(Long.parseLong(deployTime));
                 helper.setText(R.id.read_list_content, item.getTitle())
                         .setText(R.id.tv_read_count, ConvertFormatUtil.convertCount(item.getReadAmount()))
-                        .setText(R.id.tv_news_time, item.getDeployTime());
+                        .setText(R.id.tv_news_time, timeSamp);
                 ImageView smallView = helper.getView(R.id.read_list_image);
                 smallView.setClipToOutline(true);
                 Glide.with(mContext).load(item.getHomeImg()).apply(new RequestOptions().placeholder(R.drawable.info_head_p).error(R.drawable.info_head_p)).into(smallView);

@@ -278,6 +278,14 @@ public interface ApiService {
     Observable<ArticleBean> getMainArticle();
 
     /**
+     * 首页18篇文章2
+     *
+     * @return Observable
+     */
+    @GET("home/article/listCategoryAndArti")
+    Observable<ArticleBean> getMainArticle2();
+
+    /**
      * 获取首页余下的普通文章
      *
      * @param options

@@ -87,7 +87,7 @@ public class ReadFragmentPresenter {
     public void getMainArticleData() {
         RxHttpUtils
                 .createApi(ApiService.class)
-                .getMainArticle()
+                .getMainArticle2()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ArticleBean>() {
@@ -147,7 +147,6 @@ public class ReadFragmentPresenter {
                         mView.setEnableLoadMore(true);
                         mView.setRefreshing(false);
                         showError();
-                        MyLogger.e(e.getMessage());
                     }
 
                     @Override

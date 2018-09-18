@@ -4,9 +4,11 @@ public class Constant {
     //后台
     //public static final String BASE_URL = "http://10.10.20.3:8080/platform-pc-web/";
     //xly
-    //public static final String BASE_URL = "http://10.10.20.6:8080/";
+//    public static final String BASE_URL = "http://10.10.20.6:8080/";
+    //wp
+    public static final String BASE_URL = "http://10.10.20.10:8060/";
     //debug ip
-    public static final String BASE_URL = "http://10.10.20.200:8082/";
+    //public static final String BASE_URL = "http://10.10.20.200:8082/";
     //release ip
     //public static final String BASE_URL = "http://47.96.122.73:8082/";
 
