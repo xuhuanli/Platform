@@ -1,6 +1,7 @@
 package com.yidao.platform.read.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -58,7 +59,8 @@ public class MultipleReadAdapter extends BaseMultiItemQuickAdapter<ReadNewsBean,
                 break;
             case ReadNewsBean.ITEM_TWO:
                 String deployTime = item.getDeployTime();
-                String timeSamp = TimeUtil.fromToday(Long.parseLong(deployTime));
+                String timeSamp = null;
+                timeSamp = TextUtils.equals(deployTime, Constant.STRING_RECENT) ? deployTime : TimeUtil.fromToday(Long.parseLong(deployTime));
                 helper.setText(R.id.read_list_content, item.getTitle())
                         .setText(R.id.tv_read_count, ConvertFormatUtil.convertCount(item.getReadAmount()))
                         .setText(R.id.tv_news_time, timeSamp);

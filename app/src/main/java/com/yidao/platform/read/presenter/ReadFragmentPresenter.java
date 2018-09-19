@@ -1,5 +1,7 @@
 package com.yidao.platform.read.presenter;
 
+import android.text.TextUtils;
+
 import com.allen.library.RxHttpUtils;
 import com.allen.library.interceptor.Transformer;
 import com.allen.library.observer.CommonObserver;
@@ -87,7 +89,7 @@ public class ReadFragmentPresenter {
     public void getMainArticleData() {
         RxHttpUtils
                 .createApi(ApiService.class)
-                .getMainArticle2()
+                .getMainArticle()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ArticleBean>() {
@@ -112,7 +114,7 @@ public class ReadFragmentPresenter {
                                             if (type == 2) { //0为普通 1为精选 2为类目
                                                 ReadNewsBean readNewsBean = new ReadNewsBean(ReadNewsBean.ITEM_ONE);
                                                 readNewsBean.setCategoryId(resultBean.getCategoryId());
-                                                readNewsBean.setDeployTime(articleExtListBean.getDeployTime());
+                                                readNewsBean.setDeployTime(!TextUtils.isEmpty(articleExtListBean.getDeployTime()) ? articleExtListBean.getDeployTime() : Constant.STRING_RECENT);
                                                 readNewsBean.setHomeImg(articleExtListBean.getHomeImg());
                                                 readNewsBean.setId(articleExtListBean.getId());
                                                 readNewsBean.setReadAmount(articleExtListBean.getReadAmount());
@@ -123,7 +125,7 @@ public class ReadFragmentPresenter {
                                             } else if (type == 1) {
                                                 ReadNewsBean readNewsBean = new ReadNewsBean(ReadNewsBean.ITEM_TWO);
                                                 readNewsBean.setCategoryId(resultBean.getCategoryId());
-                                                readNewsBean.setDeployTime(articleExtListBean.getDeployTime());
+                                                readNewsBean.setDeployTime(!TextUtils.isEmpty(articleExtListBean.getDeployTime()) ? articleExtListBean.getDeployTime() : Constant.STRING_RECENT);
                                                 readNewsBean.setHomeImg(articleExtListBean.getHomeImg());
                                                 readNewsBean.setId(articleExtListBean.getId());
                                                 readNewsBean.setReadAmount(articleExtListBean.getReadAmount());
@@ -190,7 +192,7 @@ public class ReadFragmentPresenter {
                                     readNewsBean.setReadAmount(listBean.getReadAmount());
                                     readNewsBean.setId(listBean.getId());
                                     readNewsBean.setHomeImg(listBean.getHomeImg());
-                                    readNewsBean.setDeployTime(listBean.getDeployTime());
+                                    readNewsBean.setDeployTime(!TextUtils.isEmpty(listBean.getDeployTime()) ? listBean.getDeployTime() : Constant.STRING_RECENT);
                                     readNewsBean.setArticleContent(listBean.getArticleContent());
                                     dataList.add(readNewsBean);
                                 }

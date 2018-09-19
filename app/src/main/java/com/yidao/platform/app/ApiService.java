@@ -296,6 +296,16 @@ public interface ApiService {
     Observable<CommonArticleBean> getCommonArticle(@FieldMap Map<String, String> options);
 
     /**
+     * 获取首页余下的普通文章
+     *
+     * @param options
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("home/article/listArticleByDeployt")
+    Observable<CommonArticleBean> getCommonArticle2(@FieldMap Map<String, String> options);
+
+    /**
      * 获取类目的扩展文章
      *
      * @param options

@@ -1,5 +1,7 @@
 package com.yidao.platform.read.bean;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class CommonArticleBean {
@@ -83,6 +85,7 @@ public class CommonArticleBean {
         private String title;
         private int status;
         private String homeImg;
+        @SerializedName(value = "time")
         private String deployTime;
         private int type;
         private int readAmount;
