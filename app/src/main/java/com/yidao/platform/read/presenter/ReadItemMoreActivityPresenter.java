@@ -1,10 +1,13 @@
 package com.yidao.platform.read.presenter;
 
+import android.text.TextUtils;
+
 import com.allen.library.RxHttpUtils;
 import com.allen.library.interceptor.Transformer;
 import com.allen.library.observer.CommonObserver;
 import com.allen.library.utils.ToastUtils;
 import com.yidao.platform.app.ApiService;
+import com.yidao.platform.app.Constant;
 import com.yidao.platform.read.bean.CategoryArticleExtBean;
 import com.yidao.platform.read.bean.ReadNewsBean;
 import com.yidao.platform.read.view.IViewReadItemMoreActivity;
@@ -58,7 +61,7 @@ public class ReadItemMoreActivityPresenter {
                                     readNewsBean.setReadAmount(listBean.getReadAmount());
                                     readNewsBean.setId(listBean.getId());
                                     readNewsBean.setHomeImg(listBean.getHomeImg());
-                                    readNewsBean.setDeployTime(listBean.getDeployTime());
+                                    readNewsBean.setDeployTime(!TextUtils.isEmpty(listBean.getDeployTime()) ? listBean.getDeployTime() : Constant.STRING_RECENT);
                                     readNewsBean.setArticleContent(listBean.getArticleContent());
                                     dataList.add(readNewsBean);
                                 }

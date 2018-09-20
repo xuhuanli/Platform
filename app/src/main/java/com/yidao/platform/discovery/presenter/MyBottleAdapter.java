@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.yidao.platform.R;
@@ -22,6 +23,6 @@ public class MyBottleAdapter extends BaseQuickAdapter<MyBottleBean.ListBean, Bas
                 .setText(R.id.tv_name, item.getNickName())
                 .setText(R.id.tv_comment_content, item.getContent())
                 .setText(R.id.tv_comment_time, item.getTimeStamp());
-        Glide.with(mContext).load(item.getHeadImg()).into((ImageView) helper.getView(R.id.iv_touxiang));
+        Glide.with(mContext).load(item.getHeadImg()).apply(RequestOptions.placeholderOf(R.drawable.info_head_p)).into((ImageView) helper.getView(R.id.iv_touxiang));
     }
 }

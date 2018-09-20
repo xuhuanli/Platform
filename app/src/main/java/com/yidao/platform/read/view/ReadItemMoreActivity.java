@@ -62,7 +62,6 @@ public class ReadItemMoreActivity extends BaseActivity implements IViewReadItemM
     private void initView() {
         RxToolbar.navigationClicks(toolbar).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> finish());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.addItemDecoration(new CustomDecoration(this, 5, 0, 0));
     }
 
     @Override

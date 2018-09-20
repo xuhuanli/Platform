@@ -183,9 +183,6 @@ public class MyApplicationLike extends DefaultApplicationLike {
         super.onBaseContextAttached(base);
         // you must install multiDex whatever tinker is installed!
         MultiDex.install(base);
-
-        // 安装tinker
-        // TinkerManager.installTinker(this); 替换成下面Bugly提供的方法
         Beta.installTinker(this);
     }
 
