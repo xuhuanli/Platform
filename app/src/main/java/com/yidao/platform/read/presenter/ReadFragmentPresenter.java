@@ -89,7 +89,7 @@ public class ReadFragmentPresenter {
     public void getMainArticleData() {
         RxHttpUtils
                 .createApi(ApiService.class)
-                .getMainArticle()
+                .getMainArticle2()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ArticleBean>() {
@@ -166,7 +166,7 @@ public class ReadFragmentPresenter {
         map.put("pageIndex", pageIndex);
         map.put("pageSize", pageSize);
         RxHttpUtils.createApi(ApiService.class)
-                .getCommonArticle(map)
+                .getCommonArticle2(map)
                 .compose(Transformer.switchSchedulers())
                 .subscribe(new CommonObserver<CommonArticleBean>() {
                     @Override
