@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetDialog;
@@ -46,12 +47,14 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import cn.bingoogolapple.badgeview.BGABadgeImageButton;
+import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
 
 public class ReadContentActivity extends BaseActivity implements View.OnClickListener, IViewReadContentActivity {
 
@@ -180,16 +183,23 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         });
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             ReadNewsDetailBean item = (ReadNewsDetailBean) adapter.getItem(position);
-            boolean isLike = item.isLikedCommed();
-            if (isLike) {
-                mPresenter.userUnlikeComment(item.getId(), userId);
-                item.setLikeCount(String.valueOf(Long.parseLong(item.getLikeCount()) - 1));
-            } else {
-                mPresenter.userLikeComment(item.getId(), userId);
-                item.setLikeCount(String.valueOf(Long.parseLong(item.getLikeCount()) + 1));
+            switch (view.getId()) {
+                case R.id.tv_detail_vote:
+                    boolean isLike = item.isLikedCommed();
+                    if (isLike) {
+                        mPresenter.userUnlikeComment(item.getId(), userId);
+                        item.setLikeCount(String.valueOf(Long.parseLong(item.getLikeCount()) - 1));
+                    } else {
+                        mPresenter.userLikeComment(item.getId(), userId);
+                        item.setLikeCount(String.valueOf(Long.parseLong(item.getLikeCount()) + 1));
+                    }
+                    item.setLikedCommed(!isLike);
+                    mAdapter.notifyItemChanged(position);
+                    break;
+                case R.id.iv_detail_icon:
+                    photoPreviewWrapper(item.getHeadImg());
+                    break;
             }
-            item.setLikedCommed(!isLike);
-            mAdapter.notifyItemChanged(position);
         });
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -246,6 +256,13 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         mEtContent.requestFocus();
         mEtContent.setText(mTvComment.getText());
         mEtContent.setSelection(mTvComment.getText().length());
+    }
+
+    private void photoPreviewWrapper(String photoPath) {
+        BGAPhotoPreviewActivity.IntentBuilder photoPreviewIntentBuilder = new BGAPhotoPreviewActivity.IntentBuilder(this)
+                .saveImgDir(null); // 保存图片的目录，如果传 null，则没有保存图片功能
+        photoPreviewIntentBuilder.previewPhoto(photoPath);
+        startActivity(photoPreviewIntentBuilder.build());
     }
 
     @Override

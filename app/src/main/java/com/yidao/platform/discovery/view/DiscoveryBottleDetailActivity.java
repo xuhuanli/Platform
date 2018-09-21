@@ -33,7 +33,9 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
+import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
+import io.reactivex.functions.Consumer;
 
 public class DiscoveryBottleDetailActivity extends BaseActivity implements DiscoveryBottleDetailInterface {
     @BindView(R.id.toolbar)
@@ -44,8 +46,6 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
     TextView tvDiscoveryName;
     @BindView(R.id.tv_discovery_time)
     TextView tvDiscoveryTime;
-    @BindView(R.id.tv_discovery_vote)
-    TextView tvDiscoveryVote;
     @BindView(R.id.tv_discovery_content)
     TextView tvDiscoveryContent;
     @BindView(R.id.npl_item_moment_photos)
@@ -86,7 +86,6 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
         sessionId = intent.getStringExtra(Constant.STRING_SESSION_ID);
         flag = intent.getStringExtra(Constant.STRING_BOTTLE_PAGE_FROM);
         userId = IPreference.prefHolder.getPreference(this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
-        tvDiscoveryVote.setVisibility(View.GONE);
         nplItemMomentPhotos.setVisibility(View.GONE);
     }
 
@@ -174,6 +173,13 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
         mEtContent.setSelection(tvPublishComment.getText().length());
     }
 
+    private void photoPreviewWrapper(String photoPath) {
+        BGAPhotoPreviewActivity.IntentBuilder photoPreviewIntentBuilder = new BGAPhotoPreviewActivity.IntentBuilder(this)
+                .saveImgDir(null); // 保存图片的目录，如果传 null，则没有保存图片功能
+        photoPreviewIntentBuilder.previewPhoto(photoPath);
+        startActivity(photoPreviewIntentBuilder.build());
+    }
+
     @Override
     protected int getLayoutId() {
         return R.layout.discovery_activity_bottle_detail;
@@ -230,6 +236,7 @@ public class DiscoveryBottleDetailActivity extends BaseActivity implements Disco
                 showCommentDialog();
             }
         }));
+        addDisposable(RxView.clicks(ivDiscoveryIcon).throttleFirst(Constant.THROTTLE_TIME,TimeUnit.MILLISECONDS).subscribe(o -> photoPreviewWrapper(result.getHeadImg())));
     }
 
     @Override

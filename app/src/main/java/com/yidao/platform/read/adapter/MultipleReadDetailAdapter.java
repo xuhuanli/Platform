@@ -51,6 +51,7 @@ public class MultipleReadDetailAdapter extends BaseMultiItemQuickAdapter<ReadNew
                 dianZan.setText(item.getLikeCount());
                 dianZan.setCompoundDrawablesWithIntrinsicBounds(item.isLikedCommed() ? R.drawable.dianzan_small_done : R.drawable.dianzan_small, 0, 0, 0);
                 helper.addOnClickListener(R.id.tv_detail_vote);
+                helper.addOnClickListener(R.id.iv_detail_icon);
                 break;
             case ReadNewsDetailBean.ITEM_LAST_COMMENT:
                 break;

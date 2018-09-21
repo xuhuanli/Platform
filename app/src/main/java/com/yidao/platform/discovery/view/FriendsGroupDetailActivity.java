@@ -45,6 +45,7 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
+import io.reactivex.functions.Consumer;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class FriendsGroupDetailActivity extends BaseActivity implements IViewFriendsGroupDetail, EasyPermissions.PermissionCallbacks, BGANinePhotoLayout.Delegate {
@@ -207,6 +208,13 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
         }
     }
 
+    private void photoPreviewWrapper(String photoPath) {
+        BGAPhotoPreviewActivity.IntentBuilder photoPreviewIntentBuilder = new BGAPhotoPreviewActivity.IntentBuilder(this)
+                .saveImgDir(null); // 保存图片的目录，如果传 null，则没有保存图片功能
+        photoPreviewIntentBuilder.previewPhoto(photoPath);
+        startActivity(photoPreviewIntentBuilder.build());
+    }
+
     private void photoPreviewWrapper() {
         if (mCurrentClickNpl == null) {
             return;
@@ -290,6 +298,7 @@ public class FriendsGroupDetailActivity extends BaseActivity implements IViewFri
         detailData = showBean;
         mPresenter.qryFindComms(obj);
         Glide.with(this).load(showBean.getHeadImg()).apply(new RequestOptions().placeholder(R.drawable.info_head_p)).into(ivDiscoveryIcon);
+        addDisposable(RxView.clicks(ivDiscoveryIcon).throttleFirst(Constant.THROTTLE_TIME,TimeUnit.MILLISECONDS).subscribe(o -> photoPreviewWrapper(showBean.getHeadImg())));
         tvDiscoveryName.setText(showBean.getDeployName());
         tvDiscoveryTime.setText(showBean.getTimeStamp());
         tvDiscoveryVote.setText(String.valueOf(showBean.getLikeAmount()));
