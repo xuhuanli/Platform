@@ -152,7 +152,6 @@
             android:name="SHUJIKE_APPKEY"
             android:value="b3313cb811913db4" />
 
-
         <meta-data
             android:name="SHUJIKE_CHANNEL"
             android:value="Android" />

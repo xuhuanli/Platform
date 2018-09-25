@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
+import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -65,9 +66,7 @@ public class XHLWebViewClient extends WebViewClient {
             view.getSettings().setLoadsImagesAutomatically(true);
         }
         imgReset(view);//重置webview中img标签的图片大小
-        // TODO: 2018/6/30 0030 待网页加载完全后设置图片点击的监听方法
-        //view.addJavascriptInterface(new MJavascriptInterface(view.getContext()), "imagelistener");
-        //addImageClickListener(view);
+        addImageClickListener(view);
     }
 
     @Override
@@ -79,7 +78,7 @@ public class XHLWebViewClient extends WebViewClient {
     public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
         super.onReceivedError(view, request, error);
         EventBus.getDefault().post(new WebViewLoadEvent());
-        view.loadUrl("file:///android_asset/net_error.html");
+//        view.loadUrl("file:///android_asset/net_error.html");
     }
 
     private void imgReset(WebView view) {
@@ -94,28 +93,29 @@ public class XHLWebViewClient extends WebViewClient {
 
     private void addImageClickListener(WebView view) {
         view.loadUrl("javascript:(function(){" +
-                "var objs = document.getElementsByTagName(\"img\"); " +
+                "var objs = document.getElementsByTagName('img'); " +
                 "for(var i=0;i<objs.length;i++)  " +
                 "{"
-                + "    objs[i].onclick=function()  " +
+                + "objs[i].onclick=function()" +
                 "    {  "
-                + "        window.imagelistener.startPhotoActivity(this.src);  " +//通过js代码找到标签为img的代码块，设置点击的监听方法与本地的openImage方法进行连接
+                + "window.android.startPhotoActivity(this.src)  " +
                 "    }  " +
                 "}" +
                 "})()");
     }
 
-    class MJavascriptInterface {
+    public static class MJavascriptInterface {
         private Context context;
 
         MJavascriptInterface(Context context) {
             this.context = context;
         }
 
-        @android.webkit.JavascriptInterface
-        public void startPhotoActivity(String imageUrls) {
+        @JavascriptInterface
+        public void startPhotoActivity(String img) {
+            MyLogger.d("clicked IMG");
             Intent intent = new Intent();
-            intent.putExtra("imageUrls", imageUrls);
+            intent.putExtra("image", img);
             intent.setClass(context, PhotoBrowserActivity.class);
             context.startActivity(intent);
         }

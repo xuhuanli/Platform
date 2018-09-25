@@ -66,6 +66,7 @@ public class XHLWebView extends WebView {
         //自动加载图片 在WebViewClient finished后加载
         webSettings.setLoadsImagesAutomatically(false);
         webSettings.setDefaultTextEncodingName("utf-8");//设置编码格式
+        addJavascriptInterface(new XHLWebViewClient.MJavascriptInterface(this.getContext()), "android");
     }
 
     /**

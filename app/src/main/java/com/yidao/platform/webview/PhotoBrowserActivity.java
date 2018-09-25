@@ -14,7 +14,7 @@ public class PhotoBrowserActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        String imageUrls = intent.getStringExtra("imageUrls");
+        String imageUrls = intent.getStringExtra("image");
         ImageView mImage = findViewById(R.id.imageview);
         Glide.with(this).load(imageUrls).into(mImage);
     }
