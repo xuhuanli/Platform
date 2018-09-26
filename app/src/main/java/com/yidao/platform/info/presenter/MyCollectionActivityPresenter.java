@@ -36,12 +36,32 @@ public class MyCollectionActivityPresenter {
             RxHttpUtils.createApi(ApiService.class)
                     .pushHasCollect(map)
                     .compose(Transformer.switchSchedulers())
-                    .subscribe();
+                    .subscribe(new CommonObserver<String>() {
+                        @Override
+                        protected void onError(String errorMsg) {
+
+                        }
+
+                        @Override
+                        protected void onSuccess(String s) {
+
+                        }
+                    });
         } else {
             RxHttpUtils.createApi(ApiService.class)
                     .unCollect(map)
                     .compose(Transformer.switchSchedulers())
-                    .subscribe();
+                    .subscribe(new CommonObserver<String>() {
+                        @Override
+                        protected void onError(String errorMsg) {
+
+                        }
+
+                        @Override
+                        protected void onSuccess(String s) {
+
+                        }
+                    });
         }
     }
 

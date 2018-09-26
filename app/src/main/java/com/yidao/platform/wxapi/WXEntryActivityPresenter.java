@@ -69,6 +69,16 @@ class WXEntryActivityPresenter {
                 .shareResult(artId,userId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
+                .subscribe(new CommonObserver<String>() {
+                    @Override
+                    protected void onError(String errorMsg) {
+
+                    }
+
+                    @Override
+                    protected void onSuccess(String s) {
+
+                    }
+                });
     }
 }

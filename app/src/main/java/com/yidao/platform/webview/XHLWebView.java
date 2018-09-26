@@ -8,6 +8,8 @@ import android.util.AttributeSet;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
+import com.yidao.platform.app.MyApplicationLike;
+
 public class XHLWebView extends WebView {
 
     /**
@@ -55,7 +57,7 @@ public class XHLWebView extends WebView {
         webSettings.setBuiltInZoomControls(false); //设置内置的缩放控件。若为false，则该WebView不可缩放
         webSettings.setDisplayZoomControls(false); //隐藏原生的缩放控件
         //允许缓存，设置缓存位置
-        webSettings.setAppCacheEnabled(true);
+        webSettings.setAppCacheEnabled(false);
         webSettings.setAllowFileAccess(true); //设置可以访问文件
         webSettings.setJavaScriptCanOpenWindowsAutomatically(false); //支持通过JS打开新窗口
         //允许SessionStorage/LocalStorage存储
@@ -66,7 +68,7 @@ public class XHLWebView extends WebView {
         //自动加载图片 在WebViewClient finished后加载
         webSettings.setLoadsImagesAutomatically(false);
         webSettings.setDefaultTextEncodingName("utf-8");//设置编码格式
-        addJavascriptInterface(new XHLWebViewClient.MJavascriptInterface(this.getContext()), "android");
+        addJavascriptInterface(new XHLWebViewClient.MJavascriptInterface(MyApplicationLike.getAppContext()), "android");
     }
 
     /**

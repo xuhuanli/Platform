@@ -137,12 +137,32 @@ public class ReadContentActivityPresenter {
             RxHttpUtils.createApi(ApiService.class)
                     .pushHasCollect(map)
                     .compose(Transformer.switchSchedulers())
-                    .subscribe();
+                    .subscribe(new CommonObserver<String>() {
+                        @Override
+                        protected void onError(String errorMsg) {
+
+                        }
+
+                        @Override
+                        protected void onSuccess(String s) {
+
+                        }
+                    });
         } else {
             RxHttpUtils.createApi(ApiService.class)
                     .unCollect(map)
                     .compose(Transformer.switchSchedulers())
-                    .subscribe();
+                    .subscribe(new CommonObserver<String>() {
+                        @Override
+                        protected void onError(String errorMsg) {
+
+                        }
+
+                        @Override
+                        protected void onSuccess(String s) {
+
+                        }
+                    });
         }
     }
 
@@ -161,12 +181,32 @@ public class ReadContentActivityPresenter {
             RxHttpUtils.createApi(ApiService.class)
                     .pushHasLike(map)
                     .compose(Transformer.switchSchedulers())
-                    .subscribe();
+                    .subscribe(new CommonObserver<String>() {
+                        @Override
+                        protected void onError(String errorMsg) {
+
+                        }
+
+                        @Override
+                        protected void onSuccess(String s) {
+
+                        }
+                    });
         } else {
             RxHttpUtils.createApi(ApiService.class)
                     .unLike(map)
                     .compose(Transformer.switchSchedulers())
-                    .subscribe();
+                    .subscribe(new CommonObserver<String>() {
+                        @Override
+                        protected void onError(String errorMsg) {
+
+                        }
+
+                        @Override
+                        protected void onSuccess(String s) {
+
+                        }
+                    });
         }
     }
 
@@ -183,7 +223,17 @@ public class ReadContentActivityPresenter {
         RxHttpUtils.createApi(ApiService.class)
                 .pushHasRead(map)
                 .compose(Transformer.switchSchedulers())
-                .subscribe();
+                .subscribe(new CommonObserver<String>() {
+                    @Override
+                    protected void onError(String errorMsg) {
+
+                    }
+
+                    @Override
+                    protected void onSuccess(String s) {
+
+                    }
+                });
     }
 
     /**
@@ -296,7 +346,17 @@ public class ReadContentActivityPresenter {
                 .createApi(ApiService.class)
                 .userLikeComment(id, userId)
                 .compose(Transformer.switchSchedulers())
-                .subscribe();
+                .subscribe(new CommonObserver<String>() {
+                    @Override
+                    protected void onError(String errorMsg) {
+
+                    }
+
+                    @Override
+                    protected void onSuccess(String s) {
+
+                    }
+                });
     }
 
     /**
@@ -310,7 +370,17 @@ public class ReadContentActivityPresenter {
                 .createApi(ApiService.class)
                 .userUnLikeComment(id, userId)
                 .compose(Transformer.switchSchedulers())
-                .subscribe();
+                .subscribe(new CommonObserver<String>() {
+                    @Override
+                    protected void onError(String errorMsg) {
+
+                    }
+
+                    @Override
+                    protected void onSuccess(String s) {
+
+                    }
+                });
     }
 
     /**

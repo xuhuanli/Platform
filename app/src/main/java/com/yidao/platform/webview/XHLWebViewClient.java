@@ -21,8 +21,8 @@ import org.greenrobot.eventbus.EventBus;
 
 public class XHLWebViewClient extends WebViewClient {
 
+
     public XHLWebViewClient(XHLWebView webView) {
-        XHLWebView webView1 = webView;
     }
 
     @Override
@@ -39,7 +39,6 @@ public class XHLWebViewClient extends WebViewClient {
     }
 
     private boolean handleUri(WebView view, Uri uri) {
-        MyLogger.d("Uri = " + uri);
         final String scheme = uri.getScheme();
         final String host = uri.getHost();
         // Based on some condition you need to determine if you are going to load the url
@@ -75,10 +74,23 @@ public class XHLWebViewClient extends WebViewClient {
     }
 
     @Override
+    public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+        super.onReceivedError(view, errorCode, description, failingUrl);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            return;
+        }
+        EventBus.getDefault().post(new WebViewLoadEvent());
+        view.loadUrl("file:///android_asset/net_error.html");
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    @Override
     public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
         super.onReceivedError(view, request, error);
-        EventBus.getDefault().post(new WebViewLoadEvent());
-//        view.loadUrl("file:///android_asset/net_error.html");
+        if (request.isForMainFrame()) {
+            EventBus.getDefault().post(new WebViewLoadEvent());
+            view.loadUrl("file:///android_asset/net_error.html");
+        }
     }
 
     private void imgReset(WebView view) {
@@ -113,7 +125,6 @@ public class XHLWebViewClient extends WebViewClient {
 
         @JavascriptInterface
         public void startPhotoActivity(String img) {
-            MyLogger.d("clicked IMG");
             Intent intent = new Intent();
             intent.putExtra("image", img);
             intent.setClass(context, PhotoBrowserActivity.class);
