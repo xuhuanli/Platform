@@ -20,7 +20,7 @@ import com.yidao.platform.read.bus.WebViewLoadEvent;
 import org.greenrobot.eventbus.EventBus;
 
 public class XHLWebViewClient extends WebViewClient {
-
+    private boolean hasListener = true;
 
     public XHLWebViewClient(XHLWebView webView) {
     }
@@ -65,7 +65,9 @@ public class XHLWebViewClient extends WebViewClient {
             view.getSettings().setLoadsImagesAutomatically(true);
         }
         imgReset(view);//重置webview中img标签的图片大小
-        addImageClickListener(view);
+        if (hasListener) {
+            addImageClickListener(view);
+        }
     }
 
     @Override
@@ -76,7 +78,7 @@ public class XHLWebViewClient extends WebViewClient {
     @Override
     public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
         super.onReceivedError(view, errorCode, description, failingUrl);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return;
         }
         EventBus.getDefault().post(new WebViewLoadEvent());
@@ -114,6 +116,10 @@ public class XHLWebViewClient extends WebViewClient {
                 "    }  " +
                 "}" +
                 "})()");
+    }
+
+    public void cancelImgClick() {
+        hasListener = false;
     }
 
     public static class MJavascriptInterface {

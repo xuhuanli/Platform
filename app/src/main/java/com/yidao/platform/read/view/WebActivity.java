@@ -44,7 +44,9 @@ public class WebActivity extends BaseActivity {
             ivActivity.setVisibility(View.VISIBLE);
             Glide.with(this).load(url).into(ivActivity);
         } else {
-            webView.setWebViewClient(new XHLWebViewClient(webView));
+            XHLWebViewClient client = new XHLWebViewClient(webView);
+            client.cancelImgClick();
+            webView.setWebViewClient(client);
             webView.setWebChromeClient(new XHLWebChromeClient(webView));
             webView.setVisibility(View.VISIBLE);
             ivActivity.setVisibility(View.GONE);
