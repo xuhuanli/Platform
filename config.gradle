@@ -2,7 +2,6 @@
 ext {
     android = [
             compileSdkVersion: 27,
-            //applicationId    : "com.yidao.platform",
             minSdkVersion    : 19,
             targetSdkVersion : 23,
             versionCode      : 1,
@@ -13,7 +12,6 @@ ext {
             "appcompat-v7"             : "com.android.support:appcompat-v7:27.1.1",
             "design"                   : "com.android.support:design:27.1.1",
             "constraint-layout"        : 'com.android.support.constraint:constraint-layout:1.1.1',
-
             "rxbinding"                : 'com.jakewharton.rxbinding2:rxbinding:2.1.1',
             "rxbinding-support-v4"     : 'com.jakewharton.rxbinding2:rxbinding-support-v4:2.1.1',
             "rxbinding-appcompat-v7"   : 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.1.1',
