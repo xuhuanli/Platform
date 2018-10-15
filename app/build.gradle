@@ -169,6 +169,7 @@ dependencies {
     implementation 'cn.bingoogolapple:bga-badgeview-api:1.1.8'
     annotationProcessor "cn.bingoogolapple:bga-badgeview-compiler:1.1.8"
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
+
     //implementation 'com.github.anzaizai:EasySwipeMenuLayout:1.1.2'
 
     //implementation 'com.github.lygttpod:RxHttpUtils:2.1.1'
@@ -218,4 +219,7 @@ dependencies {
     implementation 'com.umeng.sdk:analytics:7.5.3'
     implementation 'com.meituan.android.walle:library:1.1.6'
     implementation(name: 'shujike-android-sdk-3.0.2', ext: 'aar')
+
+    //implementation 'com.github.barteksc:android-pdf-viewer:3.1.0-beta.1'
+    implementation project(':android-pdf-viewer')
 }

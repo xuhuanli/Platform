@@ -12,9 +12,11 @@ import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewStub;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -138,6 +140,9 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void initView() {
+        Toolbar toolbar = findViewById(R.id.toolbar_include);
+//        TextView title = (TextView) ((ViewStub) toolbar.findViewById(R.id.vs_title)).inflate();
+//        title.setText("title");
         Intent intent = getIntent();
         String url = intent.getStringExtra(Constant.STRING_URL);
         artId = intent.getLongExtra(Constant.STRING_ART_ID, 0L);

@@ -49,3 +49,6 @@
 
 #SmartCamera
 -keep class me.pqpo.smartcameralib.**{*;}
+
+#AndroidPdfViewer
+-keep class com.shockwave.**
