@@ -31,6 +31,7 @@ import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.XHLToolbar;
 import com.yidao.platform.app.base.BaseFragment;
 import com.yidao.platform.app.utils.FileUtil;
+import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.discovery.adapter.MomentAdapter;
 import com.yidao.platform.discovery.bean.FriendsShowBean;
 import com.yidao.platform.discovery.model.DianZanObj;
@@ -39,6 +40,7 @@ import com.yidao.platform.events.RefreshDiscoveryEvent;
 import com.yidao.platform.read.adapter.ErrorAdapter;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Logger;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -277,7 +279,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryViewInte
                         }
                         item.setLike(!isLike);
                         //第三方库bug 添加header后position不自增 手动+1
-                        mAdapter.notifyItemChanged(position+1);
+                        mAdapter.notifyItemChanged(position + 1);
                         break;
                     case R.id.iv_baned:
                         String deployId = item.getDeployId();

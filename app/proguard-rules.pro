@@ -43,3 +43,9 @@
 
 #umeng
 -keep class com.umeng.** {*;}
+
+#SmartCropper
+-keep class me.pqpo.smartcropperlib.**{*;}
+
+#SmartCamera
+-keep class me.pqpo.smartcameralib.**{*;}

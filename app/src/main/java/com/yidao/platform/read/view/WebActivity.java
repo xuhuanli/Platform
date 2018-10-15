@@ -50,6 +50,7 @@ public class WebActivity extends BaseActivity {
             webView.setWebChromeClient(new XHLWebChromeClient(webView));
             webView.setVisibility(View.VISIBLE);
             ivActivity.setVisibility(View.GONE);
+            //"https://docs.google.com/viewer?url=http://ydplatform.oss-cn-hangzhou.aliyuncs.com/test/%E7%BB%A9%E6%95%88%E8%A1%A8.xlsx"
             webView.loadUrl(url);
         }
     }
