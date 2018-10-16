@@ -59,12 +59,6 @@
         <activity android:name=".discovery.view.DiscoveryEditorMessageActivity" />
         <activity android:name=".info.view.InfoMyCollectionActivity" />
 
-        <!--微信登录回调界面-->
-        <activity
-            android:name=".wxapi.WXEntryActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBarTransparent" />
         <activity android:name=".read.view.ItemChannelActivity" />
         <activity android:name=".discovery.view.BottlePushActivity" />
         <activity android:name=".discovery.view.FriendsGroupDetailActivity" />
@@ -159,5 +153,35 @@
         <activity android:name=".read.view.WebActivity" />
         <activity android:name=".login.view.ProtocolActivity" />
         <activity android:name=".info.view.BlackListActivity" />
+
+        <!--微博分享-->
+        <activity
+            android:name="com.umeng.socialize.media.WBShareCallBackActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:exported="false"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <activity
+            android:name="com.sina.weibo.sdk.web.WeiboSdkWebActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize">
+
+        </activity>
+        <activity
+            android:name="com.sina.weibo.sdk.share.WbShareTransActivity"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
+            <intent-filter>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!--微信分享/login-->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
     </application>
 </manifest>
