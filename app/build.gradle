@@ -96,7 +96,7 @@ walle {
     channelFile = new File("${project.getProjectDir()}/channel")
     //configFile = new File("${project.getProjectDir()}/config.json")
 }
-repositories{
+repositories {
     flatDir {
         dirs 'libs'
     }

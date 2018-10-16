@@ -176,7 +176,7 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
                     if (!TextUtils.isEmpty(artUrl)) {
                         String refreshToken = IPreference.prefHolder.getPreference(getActivity()).getString(Constant.STRING_USER_REFRESHTOKEN);
                         //RefreshTokenObj obj = new RefreshTokenObj(refreshToken);
-                        mPresenter.refreshToken(refreshToken,artUrl);
+                        mPresenter.refreshToken(refreshToken, artUrl);
                     }
                 } else {
                     intent.putExtra(Constant.STRING_URL, artUrl);

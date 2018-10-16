@@ -59,6 +59,8 @@ public class XHLWebView extends WebView {
         //允许缓存，设置缓存位置
         webSettings.setAppCacheEnabled(false);
         webSettings.setAllowFileAccess(true); //设置可以访问文件
+        webSettings.setAllowFileAccessFromFileURLs(true);
+        webSettings.setAllowUniversalAccessFromFileURLs(true);
         webSettings.setJavaScriptCanOpenWindowsAutomatically(false); //支持通过JS打开新窗口
         //允许SessionStorage/LocalStorage存储
         webSettings.setDomStorageEnabled(true);

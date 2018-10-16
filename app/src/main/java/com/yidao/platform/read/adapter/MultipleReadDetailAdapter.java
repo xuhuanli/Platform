@@ -22,7 +22,9 @@ import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.yidao.platform.R;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.read.bus.WebViewLoadEvent;
+import com.yidao.platform.webview.XHLWebChromeClient;
 import com.yidao.platform.webview.XHLWebView;
+import com.yidao.platform.webview.XHLWebViewClient;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -41,7 +43,7 @@ public class MultipleReadDetailAdapter extends BaseMultiItemQuickAdapter<ReadNew
     public MultipleReadDetailAdapter(List<ReadNewsDetailBean> data) {
         super(data);
         addItemType(ReadNewsDetailBean.ITEM_WEBVIEW, R.layout.read_detail_webview_item);
-        addItemType(ReadNewsDetailBean.ITEM_WEBVIEW, R.layout.read_detail_pdfview_item);
+        //addItemType(ReadNewsDetailBean.ITEM_WEBVIEW, R.layout.read_detail_pdfview_item);
         addItemType(ReadNewsDetailBean.ITEM_HOT_COMMENT, R.layout.read_detail_hot_comment_item);
         addItemType(ReadNewsDetailBean.ITEM_COMMENTS, R.layout.read_detail_comment_item);
         addItemType(ReadNewsDetailBean.ITEM_LAST_COMMENT, R.layout.read_detail_last_comment_item);
@@ -51,13 +53,13 @@ public class MultipleReadDetailAdapter extends BaseMultiItemQuickAdapter<ReadNew
     protected void convert(BaseViewHolder helper, ReadNewsDetailBean item) {
         switch (item.getItemType()) {
             case ReadNewsDetailBean.ITEM_WEBVIEW:
-                /*mWebView = helper.getView(R.id.xhlwebview_detail);
+                mWebView = helper.getView(R.id.xhlwebview_detail);
                 mWebView.setWebChromeClient(new XHLWebChromeClient(mWebView));
                 if (!url.isEmpty()) {
                     mWebView.setWebViewClient(new XHLWebViewClient(mWebView));
-                    mWebView.loadUrl(url);
-                }*/
-                String url = "http://ydplatform.oss-cn-hangzhou.aliyuncs.com/test/%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4Android%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C.pdf";
+                    mWebView.loadUrl("file:///android_asset/pdfjs/web/viewer.html?file=" + "http://ydplatform.oss-cn-hangzhou.aliyuncs.com/test/%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4Android%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C.pdf");
+                }
+                /*String url = "http://ydplatform.oss-cn-hangzhou.aliyuncs.com/test/%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4Android%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C.pdf";
                 String fileName = "alipay.pdf";
                 RxHttpUtils
                         .downloadFile(url)
@@ -92,13 +94,7 @@ public class MultipleReadDetailAdapter extends BaseMultiItemQuickAdapter<ReadNew
                                                 @Override
                                                 public void onPageScrolled(int page, float positionOffset) {
                                                     if (page == maxPage) {
-                                                        pdfView.setOnTouchListener(new View.OnTouchListener() {
-                                                            @Override
-                                                            public boolean onTouch(View v, MotionEvent event) {
-                                                                // TODO: 2018/10/15 0015 处理滑动方向
-                                                                return false;
-                                                            }
-                                                        });
+
                                                     }
                                                 }
                                             })
@@ -107,7 +103,7 @@ public class MultipleReadDetailAdapter extends BaseMultiItemQuickAdapter<ReadNew
                                 }
 
                             }
-                        });
+                        });*/
 
                 break;
             case ReadNewsDetailBean.ITEM_HOT_COMMENT:
