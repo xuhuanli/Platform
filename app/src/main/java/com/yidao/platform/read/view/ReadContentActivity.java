@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetDialog;
@@ -16,7 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewStub;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,6 +30,11 @@ import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
@@ -44,12 +47,12 @@ import com.yidao.platform.read.adapter.ReadNewsDetailBean;
 import com.yidao.platform.read.bean.ShareBean;
 import com.yidao.platform.read.bus.WebViewLoadEvent;
 import com.yidao.platform.read.presenter.ReadContentActivityPresenter;
+import com.yidao.platform.wxapi.ShareListenerCallback;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -108,6 +111,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     private int artCommentConut;
     private ReadNewsDetailBean deleteItem;
     private int indexOfLastTitleItem;
+    private String shareImg;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -140,7 +144,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void initView() {
-        Toolbar toolbar = findViewById(R.id.toolbar_include);
+//        Toolbar toolbar = findViewById(R.id.toolbar_include);
 //        TextView title = (TextView) ((ViewStub) toolbar.findViewById(R.id.vs_title)).inflate();
 //        title.setText("title");
         Intent intent = getIntent();
@@ -313,6 +317,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        UMShareAPI.get(this).release();
         if (isOperateCollection) {
             mPresenter.sendCollectionInfo(isCollection, artId, userId);
         }
@@ -421,7 +426,8 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
         mShareBottomSheetDialog.show();
         view.findViewById(R.id.iv_share_msg).setOnClickListener(v -> {
             //分享到session界面
-            weChatShare(SendMessageToWX.Req.WXSceneSession, title, subTitle, bitmap, shareUrl);
+
+//            weChatShare(SendMessageToWX.Req.WXSceneSession, title, subTitle, bitmap, shareUrl);
         });
         view.findViewById(R.id.iv_share_group).setOnClickListener(v -> {
             //分享到朋友圈
@@ -447,6 +453,7 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void setShareContent(ShareBean.ResultBean result) {
+        shareImg = result.getHomeImg();
         new Thread(() -> {
             try {
                 Bitmap bitmap = Glide.with(ReadContentActivity.this).asBitmap().load(result.getHomeImg()).submit(THUMB_SIZE, THUMB_SIZE).get();
@@ -459,7 +466,17 @@ public class ReadContentActivity extends BaseActivity implements View.OnClickLis
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void getThumbEvent(ThumbEvent event) {
-        showShareDialog(event.getTitle(), event.getSubTitle(), event.getBitmap(), event.getShareUrl());
+        UMImage image = new UMImage(ReadContentActivity.this, BitmapUtil.bitmapBytes(event.getBitmap(), 32));
+        UMWeb umWeb = new UMWeb(event.getShareUrl());
+        umWeb.setTitle(event.getTitle());
+        umWeb.setDescription(event.getSubTitle());
+        umWeb.setThumb(image);
+        new ShareAction(ReadContentActivity.this)
+                .withMedia(umWeb)
+                .setDisplayList(SHARE_MEDIA.SINA, SHARE_MEDIA.QQ, SHARE_MEDIA.WEIXIN)
+                .setCallback(new ShareListenerCallback())
+                .open();
+        //showShareDialog(event.getTitle(), event.getSubTitle(), event.getBitmap(), event.getShareUrl());
     }
 
     @Override

@@ -14,7 +14,7 @@
         <item name="colorPrimary">@color/colorWhite</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <!--整体的背景颜色为白色-->
-        <item name="android:windowBackground">@color/colorWhite</item>
+        <!--<item name="android:windowBackground">@color/colorWhite</item>-->
     </style>
 
     <style name="DriftBottleTheme" parent="AppTheme">
@@ -178,5 +178,23 @@
 
     <style name="RootViewNullBG" parent="@style/AppTheme">
         <item name="android:windowBackground">@null</item>
+    </style>
+
+    <style name="Tv_Info_Style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/ff848e98</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Tv_Label_Style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/shape_contacts_label</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/ff7ba5e7</item>
+        <item name="android:paddingLeft">@dimen/size_5dp</item>
+        <item name="android:paddingRight">@dimen/size_5dp</item>
     </style>
 </resources>

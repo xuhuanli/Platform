@@ -21,6 +21,7 @@ import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.tinker.loader.app.DefaultApplicationLike;
 import com.umeng.commonsdk.UMConfigure;
+import com.umeng.socialize.PlatformConfig;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.container.ContainerActivity;
@@ -86,6 +87,7 @@ public class MyApplicationLike extends DefaultApplicationLike {
         String channel = WalleChannelReader.getChannel(context);
         UMConfigure.init(context, Constant.UMENG_APPKEY, channel, UMConfigure.DEVICE_TYPE_PHONE, "");
         UMConfigure.setLogEnabled(Constant.IS_DEBUG);
+        PlatformConfig.setWeixin(Constant.WX_LOGIN_APP_ID,"d0ec01859e2f3b97f3deff38682cb181");
     }
 
     private void initBugly() {

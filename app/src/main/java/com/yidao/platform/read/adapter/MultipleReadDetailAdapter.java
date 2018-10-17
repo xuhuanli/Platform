@@ -1,38 +1,20 @@
 package com.yidao.platform.read.adapter;
 
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.allen.library.RxHttpUtils;
-import com.allen.library.download.DownloadObserver;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.github.barteksc.pdfviewer.PDFView;
-import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
-import com.github.barteksc.pdfviewer.listener.OnPageScrollListener;
-import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
-import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.yidao.platform.R;
-import com.yidao.platform.app.utils.MyLogger;
-import com.yidao.platform.read.bus.WebViewLoadEvent;
 import com.yidao.platform.webview.XHLWebChromeClient;
 import com.yidao.platform.webview.XHLWebView;
 import com.yidao.platform.webview.XHLWebViewClient;
 
-import org.greenrobot.eventbus.EventBus;
-
-import java.io.File;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.reactivex.disposables.Disposable;
 
 public class MultipleReadDetailAdapter extends BaseMultiItemQuickAdapter<ReadNewsDetailBean, BaseViewHolder> {
 
@@ -57,7 +39,7 @@ public class MultipleReadDetailAdapter extends BaseMultiItemQuickAdapter<ReadNew
                 mWebView.setWebChromeClient(new XHLWebChromeClient(mWebView));
                 if (!url.isEmpty()) {
                     mWebView.setWebViewClient(new XHLWebViewClient(mWebView));
-                    mWebView.loadUrl("file:///android_asset/pdfjs/web/viewer.html?file=" + "http://ydplatform.oss-cn-hangzhou.aliyuncs.com/test/%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4Android%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C.pdf");
+                    mWebView.loadUrl(url);
                 }
                 /*String url = "http://ydplatform.oss-cn-hangzhou.aliyuncs.com/test/%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4Android%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C.pdf";
                 String fileName = "alipay.pdf";
