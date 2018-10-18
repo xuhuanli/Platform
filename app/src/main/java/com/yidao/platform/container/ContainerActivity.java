@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.yidao.platform.R;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.app.utils.MyLogger;
+import com.yidao.platform.contacts.ContactsFragment;
 import com.yidao.platform.discovery.view.DiscoveryFragment;
 import com.yidao.platform.events.SignUpEvent;
 import com.yidao.platform.info.view.MyInfoFragment;
@@ -97,6 +98,7 @@ public class ContainerActivity extends BaseActivity {
     private void initView() {
         ArrayList<Fragment> list = new ArrayList<>();
         list.add(new ReadFragment());
+        list.add(new ContactsFragment());
         list.add(new DiscoveryFragment());
         list.add(new ServiceFragment());
         list.add(new MyInfoFragment());

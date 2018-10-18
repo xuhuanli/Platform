@@ -2,11 +2,15 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:background="@color/colorWhite"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="15dp"
+    android:layout_marginLeft="15dp"
+    android:layout_marginTop="15dp">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="183dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_head_portrait"
@@ -50,15 +54,15 @@
             android:layout_width="60dp"
             android:layout_height="30dp"
             android:layout_marginTop="38dp"
-            android:paddingStart="7dp"
-            android:paddingEnd="7dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:background="@drawable/shape_stroke_2radius"
             android:layout_marginEnd="15dp"
-            android:textColor="@color/FF007AFF"
+            android:background="@drawable/shape_stroke_2radius"
             android:gravity="center"
+            android:paddingStart="7dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="7dp"
+            android:paddingBottom="4dp"
             android:text="联系TA"
+            android:textColor="@color/FF007AFF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -77,10 +81,10 @@
         <TextView
             android:id="@+id/tv_info2"
             style="@style/Tv_Info_Style"
-            android:text="TextView"
-            android:maxLines="1"
             android:maxWidth="70dp"
+            android:maxLines="1"
             android:minWidth="50dp"
+            android:text="TextView"
             app:layout_constraintBaseline_toBaselineOf="@+id/tv_info1"
             app:layout_constraintEnd_toStartOf="@+id/tv_info3"
             app:layout_constraintHorizontal_bias="0.5"
@@ -89,10 +93,10 @@
         <TextView
             android:id="@+id/tv_info3"
             style="@style/Tv_Info_Style"
-            android:text="TextView"
-            android:maxLines="1"
             android:maxWidth="70dp"
+            android:maxLines="1"
             android:minWidth="50dp"
+            android:text="TextView"
             app:layout_constraintBaseline_toBaselineOf="@+id/tv_info2"
             app:layout_constraintEnd_toStartOf="@+id/tv_info4"
             app:layout_constraintHorizontal_bias="0.5"
@@ -102,10 +106,10 @@
             android:id="@+id/tv_info4"
             style="@style/Tv_Info_Style"
             android:layout_marginEnd="15dp"
-            android:text="TextView"
-            android:maxLines="1"
             android:maxWidth="70dp"
+            android:maxLines="1"
             android:minWidth="50dp"
+            android:text="TextView"
             app:layout_constraintBaseline_toBaselineOf="@+id/tv_info3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -126,26 +130,26 @@
 
         <TextView
             android:id="@+id/tv_label1"
+            style="@style/Tv_Label_Style"
             android:layout_marginStart="15dp"
             android:layout_marginTop="15dp"
             android:paddingLeft="@dimen/size_5dp"
             android:paddingRight="@dimen/size_5dp"
             android:text="转化P10"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider_line"
-            style="@style/Tv_Label_Style" />
+            app:layout_constraintTop_toBottomOf="@+id/divider_line" />
 
         <TextView
-            style="@style/Tv_Label_Style"
             android:id="@+id/tv_label2"
+            style="@style/Tv_Label_Style"
             android:layout_marginStart="5dp"
             android:text="法律"
             app:layout_constraintStart_toEndOf="@+id/tv_label1"
             app:layout_constraintTop_toTopOf="@+id/tv_label1" />
 
         <TextView
-            style="@style/Tv_Label_Style"
             android:id="@+id/tv_label3"
+            style="@style/Tv_Label_Style"
             android:layout_marginStart="5dp"
             android:text="咨询"
             app:layout_constraintStart_toEndOf="@+id/tv_label2"
