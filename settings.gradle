@@ -1,1 +1,1 @@
-include ':app', ':httplibrary', ':ocr', ':testdemo', ':android-pdf-viewer'
+include ':app', ':httplibrary', ':ocr', ':testdemo'

@@ -41,52 +41,6 @@ public class MultipleReadDetailAdapter extends BaseMultiItemQuickAdapter<ReadNew
                     mWebView.setWebViewClient(new XHLWebViewClient(mWebView));
                     mWebView.loadUrl(url);
                 }
-                /*String url = "http://ydplatform.oss-cn-hangzhou.aliyuncs.com/test/%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4Android%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C.pdf";
-                String fileName = "alipay.pdf";
-                RxHttpUtils
-                        .downloadFile(url)
-                        .subscribe(new DownloadObserver(fileName) {
-                            @Override
-                            protected void getDisposable(Disposable d) {
-                                MyLogger.e("getDisposable");
-                            }
-
-                            @Override
-                            protected void onError(String errorMsg) {
-                                MyLogger.e(errorMsg);
-                            }
-
-                            @Override
-                            protected void onSuccess(long bytesRead, long contentLength, float progress, boolean done, String filePath) {
-                                MyLogger.e("onSuccess");
-                                File file = new File(filePath);
-                                if (done) {
-                                    PDFView pdfView = helper.getView(R.id.pdf_view);
-                                    pdfView.fromFile(file)
-                                            .defaultPage(0)
-                                            .pageFitPolicy(FitPolicy.BOTH)
-                                            .enableAnnotationRendering(true)
-                                            .scrollHandle(new DefaultScrollHandle(mContext))  //手柄
-                                            .onLoad(nbPages -> {
-                                                maxPage = nbPages;
-                                                MyLogger.e("loadComplete:max page is +"+nbPages);
-                                                EventBus.getDefault().post(new WebViewLoadEvent());
-                                            })
-                                            .onPageScroll(new OnPageScrollListener() {
-                                                @Override
-                                                public void onPageScrolled(int page, float positionOffset) {
-                                                    if (page == maxPage) {
-
-                                                    }
-                                                }
-                                            })
-                                            .load();
-
-                                }
-
-                            }
-                        });*/
-
                 break;
             case ReadNewsDetailBean.ITEM_HOT_COMMENT:
                 break;

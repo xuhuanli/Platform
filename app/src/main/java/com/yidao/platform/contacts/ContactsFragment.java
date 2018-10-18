@@ -1,4 +1,4 @@
-package com.yidao.platform.Contacts;
+package com.yidao.platform.contacts;
 
 import android.view.Menu;
 import android.view.MenuInflater;
