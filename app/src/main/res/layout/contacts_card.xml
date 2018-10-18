@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/colorWhite"
     android:layout_height="wrap_content"
-    android:layout_marginRight="15dp"
-    android:layout_marginLeft="15dp"
-    android:layout_marginTop="15dp">
+    android:layout_marginStart="@dimen/size_15dp"
+    android:layout_marginTop="@dimen/size_15dp"
+    app:cardCornerRadius="@dimen/size_4dp"
+    android:layout_marginEnd="@dimen/size_15dp">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="183dp">
+        android:layout_height="wrap_content">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_head_portrait"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:layout_marginStart="15dp"
+            android:layout_marginStart="@dimen/size_15dp"
             android:layout_marginTop="20dp"
             android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +55,7 @@
             android:layout_width="60dp"
             android:layout_height="30dp"
             android:layout_marginTop="38dp"
-            android:layout_marginEnd="15dp"
+            android:layout_marginEnd="@dimen/size_15dp"
             android:background="@drawable/shape_stroke_2radius"
             android:gravity="center"
             android:paddingStart="7dp"
@@ -69,11 +70,9 @@
         <TextView
             android:id="@+id/tv_info1"
             style="@style/Tv_Info_Style"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginStart="@dimen/size_15dp"
+            android:layout_marginTop="@dimen/size_15dp"
             android:text="已查看866人"
-            app:layout_constraintEnd_toStartOf="@+id/tv_info2"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_head_portrait" />
@@ -81,14 +80,13 @@
         <TextView
             android:id="@+id/tv_info2"
             style="@style/Tv_Info_Style"
+            android:layout_marginLeft="112dp"
             android:maxWidth="70dp"
             android:maxLines="1"
             android:minWidth="50dp"
             android:text="TextView"
             app:layout_constraintBaseline_toBaselineOf="@+id/tv_info1"
-            app:layout_constraintEnd_toStartOf="@+id/tv_info3"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tv_info1" />
+            app:layout_constraintLeft_toLeftOf="parent" />
 
         <TextView
             android:id="@+id/tv_info3"
@@ -96,33 +94,30 @@
             android:maxWidth="70dp"
             android:maxLines="1"
             android:minWidth="50dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="190dp"
             android:text="TextView"
-            app:layout_constraintBaseline_toBaselineOf="@+id/tv_info2"
-            app:layout_constraintEnd_toStartOf="@+id/tv_info4"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tv_info2" />
+            app:layout_constraintBaseline_toBaselineOf="@+id/tv_info2" />
 
         <TextView
             android:id="@+id/tv_info4"
             style="@style/Tv_Info_Style"
-            android:layout_marginEnd="15dp"
             android:maxWidth="70dp"
             android:maxLines="1"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginRight="15dp"
             android:minWidth="50dp"
             android:text="TextView"
-            app:layout_constraintBaseline_toBaselineOf="@+id/tv_info3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tv_info3" />
+            app:layout_constraintBaseline_toBaselineOf="@+id/tv_info3"/>
 
         <include
             android:id="@+id/divider_line"
             layout="@layout/divider_line"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_1dp"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="@dimen/size_15dp"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginRight="@dimen/size_15dp"
             android:gravity="center_vertical"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -133,9 +128,11 @@
             style="@style/Tv_Label_Style"
             android:layout_marginStart="15dp"
             android:layout_marginTop="15dp"
+            android:layout_marginBottom="@dimen/size_15dp"
             android:paddingLeft="@dimen/size_5dp"
             android:paddingRight="@dimen/size_5dp"
             android:text="转化P10"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider_line" />
 
@@ -159,12 +156,14 @@
             android:id="@+id/textView12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="15dp"
+            android:layout_marginTop="@dimen/size_15dp"
+            android:layout_marginEnd="@dimen/size_15dp"
+            android:layout_marginBottom="@dimen/size_15dp"
             android:drawableRight="@drawable/ic_open_in_new_black_24dp"
             android:gravity="center_vertical"
             android:text="转发"
             android:textColor="@color/ff848e98"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider_line" />
     </android.support.constraint.ConstraintLayout>

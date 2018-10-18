@@ -1,29 +1,52 @@
 package com.yidao.platform.contacts;
 
+import android.content.Intent;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yidao.platform.R;
 import com.yidao.platform.app.base.BaseFragment;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 
-public class ContactsFragment extends BaseFragment {
+public class ContactsFragment extends BaseFragment implements IViewContactsFragment, Toolbar.OnMenuItemClickListener, BaseQuickAdapter.OnItemClickListener {
 
     @BindView(R.id.tb_include)
     Toolbar toolbar;
+    @BindView(R.id.recycleview)
+    RecyclerView mRecyclerView;
+    private ContactsFragmentPresenter mPresenter;
+    private LinearLayoutManager mLayoutManager;
 
     @Override
     protected void initView() {
         initToolbar();
+        mPresenter = new ContactsFragmentPresenter(this);
+        initRecyclerView();
+    }
+
+    private void initRecyclerView() {
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
     }
 
     private void initToolbar() {
         TextView title = toolbar.findViewById(R.id.tb_title);
         toolbar.inflateMenu(R.menu.contacts_menu);
+        toolbar.setOnMenuItemClickListener(this);
     }
 
     @Override
@@ -33,12 +56,42 @@ public class ContactsFragment extends BaseFragment {
 
     @Override
     protected void initData() {
+//        mPresenter.getData();
+        ArrayList<String> list = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            list.add(""+i);
+        }
+        ContactsAdapter contactsAdapter = new ContactsAdapter(R.layout.contacts_card, list);
+        mRecyclerView.setAdapter(contactsAdapter);
+        contactsAdapter.addHeaderView(getHeaderView());
+        contactsAdapter.setOnItemClickListener(this);
+    }
 
+    private View getHeaderView() {
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.contacts_header_view, (ViewGroup) mRecyclerView.getParent(), false);
+        return view;
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.contacts_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.toolbar_contacts:
+                Toast.makeText(getActivity(), "menu", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return false;
+    }
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        Toast.makeText(getActivity(), "position is = "+position, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getActivity(), ContactsListActivity.class);
+        startActivity(intent);
     }
 }
