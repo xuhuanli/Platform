@@ -24,6 +24,7 @@ import com.yidao.platform.login.view.LoginBindingPhoneActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
+@Deprecated
 public class WXEntryActivity2 extends Activity implements IWXAPIEventHandler, IViewWXEntryActivity {
 
     private IWXAPI mWxapi;

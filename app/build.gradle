@@ -65,11 +65,11 @@ android {
             signingConfig signingConfigs.debug
         }
     }
-    sourceSets {
+    /*sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
         }
-    }
+    }*/
     lintOptions {
         disable 'MissingTranslation'
     }
@@ -94,7 +94,6 @@ walle {
     apkFileNameFormat = '${appName}-${channel}.apk'
     //configFile与channelFile两者必须存在一个，否则无法生成渠道包。两者都存在时优先执行configFile
     channelFile = new File("${project.getProjectDir()}/channel")
-    //configFile = new File("${project.getProjectDir()}/config.json")
 }
 repositories {
     flatDir {
@@ -114,117 +113,68 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-
     //RxBinding包含RxJava的内容，无需再添加RxJava的依赖
     implementation 'com.jakewharton.rxbinding2:rxbinding:2.1.1'
     implementation 'com.jakewharton.rxbinding2:rxbinding-support-v4:2.1.1'
     implementation 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.1.1'
     implementation 'com.jakewharton.rxbinding2:rxbinding-design:2.1.1'
     implementation 'com.jakewharton.rxbinding2:rxbinding-recyclerview-v7:2.1.1'
-
     //retrofit包含了okhttp
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.squareup.retrofit2:converter-scalars:2.2.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
-
-    //    implementation "io.reactivex.rxjava2:rxjava:2.1.14"
+    //Rx
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
     implementation 'com.orhanobut:logger:2.2.0'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     implementation 'org.greenrobot:eventbus:3.1.1'
-
     //个人util
     implementation 'com.xuhuanli.utils:code-utils:1.0.6'
-
     //upgrade&hotfix
-    implementation 'com.android.support:multidex:1.0.3'
-
-    // 多dex配置
     implementation 'com.tencent.bugly:crashreport_upgrade:1.3.5'
-
+    // 多dex配置
+    implementation 'com.android.support:multidex:1.0.3'
     // 指定tinker依赖版本（注：应用升级1.3.5版本起，不再内置tinker ,如果<1.3.5 请注释掉下面 否则会重复引入库error）
     implementation 'com.tencent.tinker:tinker-android-lib:1.9.6'
-
     //图片加载glide
     implementation 'com.github.bumptech.glide:glide:4.7.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
-
-    //Glide4自带裁剪圆形function
-
-    //implementation 'jp.wasabeef:glide-transformations:3.3.0'
-
     //圆形imageview
     implementation 'de.hdodenhof:circleimageview:2.2.0'
-
     //权限
     implementation 'pub.devrel:easypermissions:1.2.0'
-
-    //数字进度条 可能会删除
-
-    //implementation 'com.daimajia.numberprogressbar:library:1.4@aar'
-
     //badgeview
     implementation 'cn.bingoogolapple:bga-badgeview-api:1.1.8'
     annotationProcessor "cn.bingoogolapple:bga-badgeview-compiler:1.1.8"
+    //RecyclerView
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
-
-    //implementation 'com.github.anzaizai:EasySwipeMenuLayout:1.1.2'
-
-    //implementation 'com.github.lygttpod:RxHttpUtils:2.1.1'
     implementation 'cn.bingoogolapple:bga-photopicker:1.2.8@aar'
     implementation 'cn.bingoogolapple:bga-baseadapter:1.2.7@aar'
-
     //banner 自己写的效果不怎么好看
     implementation 'com.youth.banner:banner:1.4.10'
-
-    //最新版本
-
-    //implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.1.4'
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:1.1.6'
-
     //聊天记录数据库
-
     //implementation 'org.greenrobot:greendao:3.2.2' // add library
-
     //封装太大提取的library
     implementation project(':httplibrary')
-
-    //implementation project(':xrecyclerview')
     implementation 'com.android.support:cardview-v7:27.1.1'
-
     //oss
     implementation 'com.aliyun.dpa:oss-android-sdk:2.8.4'
-
     //压缩图片
     implementation 'top.zibin:Luban:1.1.8'
-
-    //状态栏
-
-    //implementation 'com.readystatesoftware.systembartint:systembartint:1.0.3'
-
     //分割线
     implementation 'com.yanyusong.y_divideritemdecoration:y_divideritemdecoration:2.0'
-
     //漂流瓶标签选择器 仿iOS
     implementation 'com.contrarywind:Android-PickerView:4.1.6'
-
     //aliyun push
     implementation 'com.aliyun.ams:alicloud-android-push:3.1.3'
     implementation 'cn.bingoogolapple:bga-banner:2.2.4@aar'
-
     //umeng analytics
     implementation 'com.umeng.sdk:common:1.5.3'
     implementation 'com.umeng.sdk:analytics:7.5.3'
     implementation 'com.meituan.android.walle:library:1.1.6'
     implementation(name: 'shujike-android-sdk-3.0.2', ext: 'aar')
-
-    //implementation 'com.github.barteksc:android-pdf-viewer:3.1.0-beta.1'
-
-    //implementation project(':android-pdf-viewer')
-
-    //    implementation files('libs/alipaySdk-20180601.jar')
     implementation project(':IMKit')
-    implementation project(':IMLib')
 }

@@ -11,14 +11,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.allen.library.utils.ToastUtils;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
-import com.tencent.mm.opensdk.modelmsg.SendAuth;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.umeng.socialize.UMShareAPI;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
@@ -67,7 +64,6 @@ public class LoginActivity extends BaseActivity implements IViewLoginActivity {
     TextView tvRegisterProtocol;
     @BindView(R.id.tv_user_protocol)
     TextView tvUserProtocol;
-    private IWXAPI mWxapi;
     private static final long MAX_COUNT_TIME = 60;
     private LoginPresenter mPresenter;
     private boolean isSignIn = true;
@@ -76,7 +72,7 @@ public class LoginActivity extends BaseActivity implements IViewLoginActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         int taskId = getTaskId();
-        MyLogger.e("LoginActivity:所在的任务的id为: " +  taskId);
+        MyLogger.e("LoginActivity:所在的任务的id为: " + taskId);
         EventBus.getDefault().register(this);
         mPresenter = new LoginPresenter(this);
         String userId = IPreference.prefHolder.getPreference(this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
@@ -84,17 +80,11 @@ public class LoginActivity extends BaseActivity implements IViewLoginActivity {
             startActivity(ContainerActivity.class);
             finish();
         }
-        regToWX();
         if (!IPreference.prefHolder.getPreference(this).contains(Constant.STRING_DEVICE_ID)) {
             mBtnLogin.setVisibility(View.INVISIBLE);
             btnOperation.setVisibility(View.INVISIBLE);
         }
         setListener();
-    }
-
-    private void regToWX() {
-        mWxapi = WXAPIFactory.createWXAPI(this, Constant.WX_LOGIN_APP_ID, Constant.IS_DEBUG);
-        mWxapi.registerApp(Constant.WX_LOGIN_APP_ID);
     }
 
     @Override
@@ -103,10 +93,6 @@ public class LoginActivity extends BaseActivity implements IViewLoginActivity {
     }
 
     private void setListener() {
-        //微信登录
-        addDisposable(RxView.clicks(mBtnLogin)
-                .throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS)
-                .subscribe(o -> wxLogin()));
         //验证码发送
         Observable<Long> mObservableCountTime = RxView.clicks(btnVCode)
                 .throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS)
@@ -199,17 +185,6 @@ public class LoginActivity extends BaseActivity implements IViewLoginActivity {
         bold.setTypeface(null, Typeface.BOLD);
         bold.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
         bold.setTextColor(Color.parseColor("#ff333333"));
-    }
-
-    private void wxLogin() {
-        if (!mWxapi.isWXAppInstalled()) {
-            Toast.makeText(this, "您还未安装微信客户端", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        final SendAuth.Req req = new SendAuth.Req();
-        req.scope = "snsapi_userinfo";
-        req.state = "diandi_wx_login";
-        mWxapi.sendReq(req);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

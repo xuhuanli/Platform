@@ -29,12 +29,6 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <!--接受重启通知-->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <!-- GCM 配置开始 < -->
-    <permission
-        android:name="cn.rongcloud.im.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
-    <uses-permission android:name="cn.rongcloud.im.permission.C2D_MESSAGE" />
-    <!-- GCM 配置结束 < -->
 
     <uses-feature
         android:name="android.hardware.camera"
