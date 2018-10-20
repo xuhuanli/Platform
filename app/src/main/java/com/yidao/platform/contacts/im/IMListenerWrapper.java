@@ -1,11 +1,13 @@
 package com.yidao.platform.contacts.im;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.yidao.platform.app.utils.MyLogger;
+import com.yidao.platform.contacts.ContactsMainPageActivity;
 
 import java.util.List;
 
@@ -183,6 +185,8 @@ public class IMListenerWrapper implements RongIM.OnSendMessageListener,
     @Override
     public boolean onUserPortraitClick(Context context, Conversation.ConversationType conversationType, UserInfo userInfo, String s) {
         Toast.makeText(context, "头像单击", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(context, ContactsMainPageActivity.class);
+        context.startActivity(intent);
         return false;
     }
 

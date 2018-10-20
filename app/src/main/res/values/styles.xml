@@ -13,6 +13,16 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorWhite</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/FF007AFF</item>
+        <!--整体的背景颜色为白色-->
+        <!--<item name="android:windowBackground">@color/colorWhite</item>-->
+    </style>
+
+    <style name="UserInfoTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/transparent</item>
+        <item name="colorPrimaryDark">#ff43adff</item>
+        <item name="colorAccent">@color/FF007AFF</item>
         <!--整体的背景颜色为白色-->
         <!--<item name="android:windowBackground">@color/colorWhite</item>-->
     </style>

@@ -243,6 +243,8 @@
         <activity android:name=".contacts.ContactsSearchActivity"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
         <activity android:name=".contacts.ContactsSettingActivity" />
+        <activity android:name=".contacts.ContactsMainPageActivity"
+            android:theme="@style/UserInfoTheme"/>
 
         <receiver
             android:exported="true"
