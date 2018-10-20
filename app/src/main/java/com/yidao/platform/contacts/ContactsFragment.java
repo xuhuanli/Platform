@@ -1,7 +1,5 @@
 package com.yidao.platform.contacts;
 
-import android.content.Intent;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -19,8 +17,11 @@ import com.yidao.platform.R;
 import com.yidao.platform.app.base.BaseFragment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.BindView;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.model.Conversation;
 
 public class ContactsFragment extends BaseFragment implements IViewContactsFragment, Toolbar.OnMenuItemClickListener, BaseQuickAdapter.OnItemClickListener {
 
@@ -59,7 +60,7 @@ public class ContactsFragment extends BaseFragment implements IViewContactsFragm
 //        mPresenter.getData();
         ArrayList<String> list = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            list.add(""+i);
+            list.add("" + i);
         }
         ContactsAdapter contactsAdapter = new ContactsAdapter(R.layout.contacts_card, list);
         mRecyclerView.setAdapter(contactsAdapter);
@@ -82,7 +83,9 @@ public class ContactsFragment extends BaseFragment implements IViewContactsFragm
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.toolbar_contacts:
-                Toast.makeText(getActivity(), "menu", Toast.LENGTH_SHORT).show();
+                HashMap<String, Boolean> map = new HashMap<>();
+                map.put(Conversation.ConversationType.PRIVATE.getName(), false);
+                RongIM.getInstance().startConversationList(getActivity(), map);
                 break;
         }
         return false;
@@ -90,8 +93,8 @@ public class ContactsFragment extends BaseFragment implements IViewContactsFragm
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        Toast.makeText(getActivity(), "position is = "+position, Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(getActivity(), ContactsListActivity.class);
-        startActivity(intent);
+        HashMap<String, Boolean> map = new HashMap<>();
+        map.put(Conversation.ConversationType.PRIVATE.getName(), false);
+        RongIM.getInstance().startPrivateChat(getActivity(), "888888", "cdq");
     }
 }

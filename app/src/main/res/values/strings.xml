@@ -107,4 +107,9 @@
     <string name="recover_user">解除黑名单限制?</string>
     <string name="no_shiled_user">你看这名单它又长又宽</string>
     <string name="contacts">人脉</string>
+    <string name="reward">打赏</string>
+    <string name="friends">好友</string>
+    <string name="search">搜索</string>
+    <string name="key_words">请输入活动关键字</string>
+    <string name="search_history">搜索历史</string>
 </resources>

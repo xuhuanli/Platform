@@ -17,6 +17,10 @@
     <dimen name="size_240dp">240dp</dimen>
 
     <dimen name="app_navigation_height">56dp</dimen>
+    <dimen name="sp_12">12sp</dimen>
+    <dimen name="sp_14">14sp</dimen>
+    <dimen name="sp_15">15sp</dimen>
     <dimen name="sp_16">16sp</dimen>
     <dimen name="sp_17">17sp</dimen>
+    <dimen name="size_6dp">6dp</dimen>
 </resources>

@@ -24,13 +24,18 @@ import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.app.utils.MyLogger;
+import com.yidao.platform.contacts.im.IMListenerWrapper;
 import com.yidao.platform.container.ContainerActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 
+import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
 import okhttp3.OkHttpClient;
+
+import static com.yidao.platform.contacts.im.ConversationActivity.IM_TOKEN;
 
 public class MyApplicationLike extends DefaultApplicationLike {
     private static final String TAG = "Tinker.MyApplicationLike";
@@ -57,8 +62,30 @@ public class MyApplicationLike extends DefaultApplicationLike {
         //initLeakCanary();
         initLogger();
         initUmengAnalytics(appContext);
+        initIM();
         setLabelMap();
         initSjk();
+    }
+
+    private void initIM() {
+        RongIM.init(getAppContext());
+        IMListenerWrapper.init(getAppContext());
+        RongIM.connect(IM_TOKEN, new RongIMClient.ConnectCallback() {
+            @Override
+            public void onTokenIncorrect() {
+                MyLogger.e("onTokenIncorrect");
+            }
+
+            @Override
+            public void onSuccess(String s) {
+                MyLogger.e("onSuccess userId is " + s);
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                MyLogger.e("onError");
+            }
+        });
     }
 
     private void initSjk() {
@@ -87,7 +114,7 @@ public class MyApplicationLike extends DefaultApplicationLike {
         String channel = WalleChannelReader.getChannel(context);
         UMConfigure.init(context, Constant.UMENG_APPKEY, channel, UMConfigure.DEVICE_TYPE_PHONE, "");
         UMConfigure.setLogEnabled(Constant.IS_DEBUG);
-        PlatformConfig.setWeixin(Constant.WX_LOGIN_APP_ID,"d0ec01859e2f3b97f3deff38682cb181");
+        PlatformConfig.setWeixin(Constant.WX_LOGIN_APP_ID, "d0ec01859e2f3b97f3deff38682cb181");
     }
 
     private void initBugly() {

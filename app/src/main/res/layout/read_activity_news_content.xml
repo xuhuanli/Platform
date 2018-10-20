@@ -6,7 +6,7 @@
 
 <!--    <include
         android:id="@+id/toolbar_include"
-        layout="@layout/layout_app_toolbar" />-->
+        layout="@layout/app_toolbar_layout" />-->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_read_content"

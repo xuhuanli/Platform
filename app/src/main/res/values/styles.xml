@@ -200,4 +200,19 @@
         <item name="android:paddingLeft">@dimen/size_5dp</item>
         <item name="android:paddingRight">@dimen/size_5dp</item>
     </style>
+
+    <style name="Search_His_Style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">32dp</item>
+        <item name="android:background">@drawable/shape_his_corner</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">center</item>
+        <item name="android:maxLength">8</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:paddingLeft">@dimen/size_10dp</item>
+        <item name="android:paddingTop">@dimen/size_6dp</item>
+        <item name="android:paddingRight">@dimen/size_10dp</item>
+        <item name="android:paddingBottom">@dimen/size_6dp</item>
+        <item name="android:textColor">@color/FF666666</item>
+    </style>
 </resources>
