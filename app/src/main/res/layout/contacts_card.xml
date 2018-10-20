@@ -33,6 +33,7 @@
             android:text="TextView"
             android:textColor="#ff333333"
             android:textSize="@dimen/sp_17"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/iv_head_portrait"
             app:layout_constraintTop_toTopOf="@+id/iv_head_portrait" />
 

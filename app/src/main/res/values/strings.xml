@@ -112,4 +112,9 @@
     <string name="search">搜索</string>
     <string name="key_words">请输入活动关键字</string>
     <string name="search_history">搜索历史</string>
+    <string name="mute">消息免打扰</string>
+    <string name="clear_record">清空聊天记录</string>
+    <string name="complaint">投诉</string>
+    <string name="share">分享</string>
+    <string name="more_settings">更多设置</string>
 </resources>

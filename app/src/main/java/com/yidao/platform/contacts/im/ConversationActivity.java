@@ -1,5 +1,6 @@
 package com.yidao.platform.contacts.im;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 
 import com.yidao.platform.R;
 import com.yidao.platform.app.utils.MyLogger;
+import com.yidao.platform.contacts.ContactsSettingActivity;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
@@ -65,7 +67,8 @@ public class ConversationActivity extends AppCompatActivity implements Toolbar.O
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.conversation_menu_more:
-                Toast.makeText(this, "更多", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, ContactsSettingActivity.class);
+                startActivity(intent);
                 break;
         }
         return false;

@@ -242,6 +242,7 @@
         </activity>
         <activity android:name=".contacts.ContactsSearchActivity"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
+        <activity android:name=".contacts.ContactsSettingActivity" />
 
         <receiver
             android:exported="true"

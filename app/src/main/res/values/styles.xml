@@ -215,4 +215,11 @@
         <item name="android:paddingBottom">@dimen/size_6dp</item>
         <item name="android:textColor">@color/FF666666</item>
     </style>
+
+    <style name="Style17_F33_24DP_BOLD">
+        <item name="android:textColor">@color/FF333333</item>
+        <item name="android:textSize">@dimen/sp_17</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
 </resources>

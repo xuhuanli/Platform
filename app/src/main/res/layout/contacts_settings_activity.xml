@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/app_toolbar_layout" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleImageView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        tools:src="@drawable/info_head_p" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        style="@style/Style17_F33_24DP_BOLD"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/size_24dp"
+        android:layout_marginStart="10dp"
+        android:text="其仁凤"
+        app:layout_constraintStart_toEndOf="@+id/circleImageView"
+        app:layout_constraintTop_toTopOf="@+id/circleImageView" />
+
+    <TextView
+        android:id="@+id/tv_label"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginTop="1dp"
+        android:gravity="center_vertical"
+        android:text="华为营销总监"
+        app:layout_constraintStart_toStartOf="@+id/tv_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+
+    <TextView
+        android:id="@+id/tv_clear_record"
+        style="@style/Style17_F33_24DP_BOLD"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/size_24dp"
+        android:layout_marginTop="25dp"
+        android:text="@string/clear_record"
+        app:layout_constraintStart_toStartOf="@+id/circleImageView"
+        app:layout_constraintTop_toBottomOf="@+id/circleImageView" />
+
+    <include
+        android:id="@+id/line1"
+        layout="@layout/divider_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_1dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="14dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_clear_record" />
+
+    <TextView
+        android:id="@+id/tv_mute"
+        style="@style/Style17_F33_24DP_BOLD"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/size_24dp"
+        android:layout_marginTop="14dp"
+        android:text="@string/mute"
+        app:layout_constraintStart_toStartOf="@+id/line1"
+        app:layout_constraintTop_toBottomOf="@+id/line1" />
+
+    <Switch
+        android:id="@+id/switch_toggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_mute"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_mute" />
+
+    <include
+        android:id="@+id/line2"
+        layout="@layout/divider_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_1dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="14dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_mute" />
+
+    <TextView
+        android:id="@+id/tv_complaint"
+        style="@style/Style17_F33_24DP_BOLD"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/size_24dp"
+        android:layout_marginTop="14dp"
+        android:drawableRight="@drawable/read_more_arrow"
+        android:paddingRight="@dimen/size_16dp"
+        android:text="@string/complaint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/line2"
+        app:layout_constraintTop_toBottomOf="@+id/line2" />
+
+    <include
+        android:id="@+id/line3"
+        layout="@layout/divider_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_1dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="14dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_complaint" />
+
+    <TextView
+        android:id="@+id/tv_share"
+        style="@style/Style17_F33_24DP_BOLD"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/size_24dp"
+        android:layout_marginTop="14dp"
+        android:text="@string/share"
+        app:layout_constraintStart_toStartOf="@+id/line3"
+        app:layout_constraintTop_toBottomOf="@+id/line3" />
+
+    <include
+        android:id="@+id/line4"
+        layout="@layout/divider_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_1dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="14dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_share" />
+
+</android.support.constraint.ConstraintLayout>
