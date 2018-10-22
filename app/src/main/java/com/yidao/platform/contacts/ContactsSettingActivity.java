@@ -3,7 +3,6 @@ package com.yidao.platform.contacts;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -11,7 +10,6 @@ import com.yidao.platform.R;
 import com.yidao.platform.app.base.BaseActivity;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ContactsSettingActivity extends BaseActivity {
@@ -44,7 +42,7 @@ public class ContactsSettingActivity extends BaseActivity {
 
     private void initToolbar() {
         toolbar.setNavigationOnClickListener(v -> finish());
-        ((TextView)toolbar.findViewById(R.id.tb_title)).setText(R.string.more_settings);
+        tbTitle.setText(R.string.more_settings);
     }
 
     @Override

@@ -4,14 +4,17 @@
     <dimen name="size_1dp">1dp</dimen>
     <dimen name="size_4dp">4dp</dimen>
     <dimen name="size_5dp">5dp</dimen>
+    <dimen name="size_6dp">6dp</dimen>
     <dimen name="size_8dp">8dp</dimen>
     <dimen name="size_10dp">10dp</dimen>
     <dimen name="size_15dp">15dp</dimen>
     <dimen name="size_16dp">16dp</dimen>
+    <dimen name="size_17dp">17dp</dimen>
     <dimen name="size_24dp">24dp</dimen>
     <dimen name="size_32dp">32dp</dimen>
     <dimen name="size_40dp">40dp</dimen>
     <dimen name="size_56dp">56dp</dimen>
+    <dimen name="size_60dp">60dp</dimen>
     <dimen name="size_120dp">120dp</dimen>
     <dimen name="size_160dp">160dp</dimen>
     <dimen name="size_240dp">240dp</dimen>
@@ -22,5 +25,6 @@
     <dimen name="sp_15">15sp</dimen>
     <dimen name="sp_16">16sp</dimen>
     <dimen name="sp_17">17sp</dimen>
-    <dimen name="size_6dp">6dp</dimen>
+    <dimen name="sp_18">18sp</dimen>
+
 </resources>

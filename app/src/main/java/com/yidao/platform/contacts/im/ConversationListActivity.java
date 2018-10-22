@@ -42,6 +42,7 @@ public class ConversationListActivity extends AppCompatActivity implements RongI
         mToolbar = findViewById(R.id.toolbar);
         mToolbar.setNavigationOnClickListener(v -> finish());
         ((TextView)mToolbar.findViewById(R.id.tb_title)).setText(R.string.friends);
+
         mToolbar.inflateMenu(R.menu.conversation_list_menu);
         mToolbar.setOnMenuItemClickListener(this);
     }

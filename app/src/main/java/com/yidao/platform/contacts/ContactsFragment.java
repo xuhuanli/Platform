@@ -29,6 +29,8 @@ public class ContactsFragment extends BaseFragment implements IViewContactsFragm
     Toolbar toolbar;
     @BindView(R.id.recycleview)
     RecyclerView mRecyclerView;
+    @BindView(R.id.tb_title)
+    TextView tbTitle;
     private ContactsFragmentPresenter mPresenter;
     private LinearLayoutManager mLayoutManager;
 
@@ -45,7 +47,7 @@ public class ContactsFragment extends BaseFragment implements IViewContactsFragm
     }
 
     private void initToolbar() {
-        TextView title = toolbar.findViewById(R.id.tb_title);
+        tbTitle.setText(R.string.contacts);
         toolbar.inflateMenu(R.menu.contacts_menu);
         toolbar.setOnMenuItemClickListener(this);
     }

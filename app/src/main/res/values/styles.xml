@@ -23,6 +23,7 @@
         <item name="colorPrimary">@color/transparent</item>
         <item name="colorPrimaryDark">#ff43adff</item>
         <item name="colorAccent">@color/FF007AFF</item>
+        <item name="android:textColorPrimary">@color/colorWhite</item>
         <!--整体的背景颜色为白色-->
         <!--<item name="android:windowBackground">@color/colorWhite</item>-->
     </style>
