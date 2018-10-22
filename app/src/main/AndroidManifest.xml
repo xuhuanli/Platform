@@ -245,6 +245,8 @@
         <activity android:name=".contacts.ContactsSettingActivity" />
         <activity android:name=".contacts.ContactsMainPageActivity"
             android:theme="@style/UserInfoTheme"/>
+        <activity android:name=".info.view.NewSettingsActivity" />
+        <activity android:name=".info.view.NewChangeInfoActivity" />
 
         <receiver
             android:exported="true"

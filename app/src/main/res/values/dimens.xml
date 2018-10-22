@@ -26,5 +26,6 @@
     <dimen name="sp_16">16sp</dimen>
     <dimen name="sp_17">17sp</dimen>
     <dimen name="sp_18">18sp</dimen>
+    <dimen name="size_52dp">52dp</dimen>
 
 </resources>

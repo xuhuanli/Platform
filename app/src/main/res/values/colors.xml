@@ -3,7 +3,7 @@
     <color name="colorPrimary">#FF3F51B5</color>
     <color name="colorPrimaryDark">#FF000000</color>
     <color name="colorAccent">#FFFF4081</color>
-    <color name="colorWhite" >#FFFFFFFF</color>
+    <color name="colorWhite">#FFFFFFFF</color>
     <color name="colorBlack">#FF000000</color>
     <color name="colorRipple">#42000000</color>
     <color name="transparent">#00000000</color>
@@ -19,6 +19,7 @@
     <color name="FFC4C9CE">#ffc4c9ce</color>
     <color name="FF666666">#ff666666</color>
     <color name="FF007AFF">#007aff</color>
+    <color name="FF43ADFF">#ff43adff</color>
 
     <color name="colorLine">#ffeaecf1</color>
     <color name="colorPoint">#ff848e98</color>

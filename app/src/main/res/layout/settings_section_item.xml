@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yidao.platform.info.view.CustomTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/customTextView"
+    style="@style/CustomViewStyle"
+    app:arrowVisible="true"
+    app:keyColor="@color/FF333333"
+    app:keySize="17sp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:valueColor="@color/FF666666"
+    app:valueSize="16sp" />

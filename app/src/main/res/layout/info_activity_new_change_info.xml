@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="@dimen/size_4dp"
+        app:navigationIcon="@drawable/jiantou_black"
+        app:popupTheme="@style/AppTheme.PopupOverlay">
+
+        <TextView
+            android:id="@+id/tb_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="#ff333333"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_gravity="end"
+            android:text="确定"
+            android:textColor="@color/FF007AFF"
+            android:paddingEnd="@dimen/size_15dp"
+            android:textSize="@dimen/sp_17"
+            android:gravity="center_vertical"
+            android:layout_height="match_parent" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/colorWhite"
+        android:ems="10"
+        android:gravity="center_vertical"
+        android:hint="@string/change_nickname"
+        android:inputType="textPersonName"
+        android:paddingLeft="@dimen/size_15dp"
+        android:text="陈代权"
+        android:textColor="@color/FF333333"
+        android:textColorHint="@color/FF999999"
+        android:textSize="@dimen/sp_17"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+</android.support.constraint.ConstraintLayout>

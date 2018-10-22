@@ -134,7 +134,7 @@ public class MyInfoFragment extends Fragment implements IViewMineInfo {
         }));
         //click 设置
         addDisposable(RxView.clicks(tvSettings).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
-            Intent intent = new Intent(getActivity(), SettingsActivity.class);
+            Intent intent = new Intent(getActivity(), NewSettingsActivity.class);
             startActivity(intent);
         }));
         //click 最近阅读

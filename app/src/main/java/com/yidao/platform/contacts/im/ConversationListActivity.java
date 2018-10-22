@@ -2,12 +2,16 @@ package com.yidao.platform.contacts.im;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.yidao.platform.R;
 import com.yidao.platform.app.utils.MyLogger;
@@ -23,13 +27,20 @@ import io.rong.imlib.model.UserInfo;
 /**
  * 会话列表
  */
-public class ConversationListActivity extends AppCompatActivity implements RongIM.UserInfoProvider ,IUnReadMessageObserver, Toolbar.OnMenuItemClickListener {
+public class ConversationListActivity extends AppCompatActivity implements RongIM.UserInfoProvider, IUnReadMessageObserver, Toolbar.OnMenuItemClickListener {
     private static List<Friend> list;
     private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Window window = getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorWhite));
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
         setContentView(R.layout.activity_conversation_list);
         initToolbar();
         list = new ArrayList<>();
@@ -41,7 +52,7 @@ public class ConversationListActivity extends AppCompatActivity implements RongI
     private void initToolbar() {
         mToolbar = findViewById(R.id.toolbar);
         mToolbar.setNavigationOnClickListener(v -> finish());
-        ((TextView)mToolbar.findViewById(R.id.tb_title)).setText(R.string.friends);
+        ((TextView) mToolbar.findViewById(R.id.tb_title)).setText(R.string.friends);
 
         mToolbar.inflateMenu(R.menu.conversation_list_menu);
         mToolbar.setOnMenuItemClickListener(this);
