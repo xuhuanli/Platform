@@ -231,4 +231,14 @@
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center_vertical</item>
     </style>
+
+    <style name="contacts_title_style">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">@dimen/size_8dp</item>
+        <item name="android:textColor">@color/FF999999</item>
+        <item name="android:textSize">@dimen/sp_12</item>
+    </style>
 </resources>

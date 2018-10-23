@@ -6,8 +6,49 @@
     android:layout_height="match_parent"
     tools:context=".contacts.im.ConversationActivity">
 
-    <include layout="@layout/app_toolbar_layout"
-        android:id="@+id/toolbar"/>
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/app_toolbar_layout" />
+
+    <LinearLayout
+        android:id="@+id/ll_list"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/size_60dp"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <TextView
+            android:id="@+id/tv_icon1"
+            style="@style/contacts_title_style"
+            android:drawableTop="@drawable/ic_open_in_new_black_24dp"
+            android:text="换号码" />
+
+        <TextView
+            android:id="@+id/tv_icon2"
+            style="@style/contacts_title_style"
+            android:drawableTop="@drawable/ic_assignment_black_24dp"
+            android:text="换微信" />
+
+        <TextView
+            android:id="@+id/tv_icon3"
+            style="@style/contacts_title_style"
+            android:drawableTop="@drawable/ic_cancel_black_24dp"
+            android:text="收藏" />
+
+        <TextView
+            android:id="@+id/tv_icon4"
+            style="@style/contacts_title_style"
+            android:drawableTop="@drawable/ic_delete_forever_999999_24dp"
+            android:text="好评" />
+
+        <TextView
+            android:id="@+id/tv_icon5"
+            style="@style/contacts_title_style"
+            android:drawableTop="@drawable/ic_location_on_gray_24dp"
+            android:text="差评" />
+    </LinearLayout>
 
     <fragment
         android:id="@+id/conversation"
@@ -17,5 +58,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/ll_list" />
 </android.support.constraint.ConstraintLayout>

@@ -5,9 +5,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
@@ -61,19 +63,18 @@ public class SelectLabelsActivity extends BaseActivity {
         list.add("合作");
         list.add("融资");
         list.add("合伙");
-        LabelAdapter adapter = new LabelAdapter(list);
-        recyclerview.setAdapter(adapter);
-        adapter.setOnItemClickListener((adapter1, view, position) -> {
+        LabelAdapter labelAdapter = new LabelAdapter(list);
+        recyclerview.setAdapter(labelAdapter);
+        labelAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             TextView label = (TextView) view;
-            /*if (isSelected) {
+            boolean selected = label.isSelected();
+            if (!selected) {
                 label.setSelected(true);
                 label.setTextColor(getResources().getColor(R.color.colorWhite));
-                selectCount += 1;
-            } else {
-                label.setBackground(getDrawable(R.drawable.shape_radius_100_gray));
+            }else {
+                label.setSelected(false);
                 label.setTextColor(getResources().getColor(R.color.FF999999));
-                selectCount -= 1;
-            }*/
+            }
         });
     }
 
