@@ -119,4 +119,7 @@
     <string name="more_settings">更多设置</string>
     <string name="album">相册</string>
     <string name="change_nickname">修改昵称</string>
+    <string name="_0_12">0/12</string>
+    <string name="select_label">选择标签</string>
+    <string name="career_label">职业标签</string>
 </resources>

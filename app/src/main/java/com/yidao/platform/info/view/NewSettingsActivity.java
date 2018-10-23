@@ -1,15 +1,12 @@
 package com.yidao.platform.info.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.yidao.platform.R;
 import com.yidao.platform.app.base.BaseActivity;
@@ -65,12 +62,50 @@ public class NewSettingsActivity extends BaseActivity {
 
         SectionAdapter sectionAdapter = new SectionAdapter(R.layout.settings_section_item, R.layout.space_section, list);
         sectionAdapter.setOnItemClickListener((adapter, view, position) -> {
-            SettingsSection section = list.get(position);
+            CustomTextView customTextView = (CustomTextView) view;
+            switch (position) {
+                case 1: //头像
+                    break;
+                case 2:
+                    modifyInfo("昵称修改", customTextView.getValue());
+                    break;
+                case 3:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    modifyInfo("所属公司",customTextView.getValue());
+                    break;
+                case 8:
+                    Intent intent = new Intent(this, SelectLabelsActivity.class);
+                    startActivity(intent);
+                    break;
+                case 10:
+                    break;
+                case 11:
+                    break;
+                case 12:
+                    break;
+                case 14:
+                    break;
+            }
+            /*SettingsSection section = list.get(position);
             if (!section.isHeader) {
                 Toast.makeText(NewSettingsActivity.this, section.t + "  " + position, Toast.LENGTH_SHORT).show();
-            }
+            } else {
+                Toast.makeText(NewSettingsActivity.this, section.t + " isHeader  " + position, Toast.LENGTH_SHORT).show();
+            }*/
         });
         recyclerview.setAdapter(sectionAdapter);
+    }
+
+    private void modifyInfo(String title, String value) {
+        Intent intent = new Intent(this, NewChangeInfoActivity.class);
+        intent.putExtra("title", title);
+        intent.putExtra("value", value);
+        startActivity(intent);
     }
 
     @Override

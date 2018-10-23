@@ -247,6 +247,7 @@
             android:theme="@style/UserInfoTheme"/>
         <activity android:name=".info.view.NewSettingsActivity" />
         <activity android:name=".info.view.NewChangeInfoActivity" />
+        <activity android:name=".info.view.SelectLabelsActivity" />
 
         <receiver
             android:exported="true"

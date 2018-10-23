@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="?attr/colorPrimary"
+    android:elevation="@dimen/size_4dp"
+    app:navigationIcon="@drawable/jiantou_black"
+    app:popupTheme="@style/AppTheme.PopupOverlay"
+    tools:showIn="@layout/info_activity_new_change_info">
+
+    <TextView
+        android:id="@+id/tb_title"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textColor="#ff333333"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tb_ensure"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:gravity="center_vertical"
+        android:paddingEnd="@dimen/size_15dp"
+        android:text="确定"
+        android:textColor="@color/FF007AFF"
+        android:textSize="@dimen/sp_17"
+        android:textStyle="bold" />
+
+</android.support.v7.widget.Toolbar>
