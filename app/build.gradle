@@ -10,7 +10,7 @@ android {
         debug {
             //storeFile file("C:/Users/Administrator/.android/debug.keystore")
             try {
-                storeFile file("C:/Users/Administrator/.android/keystore/yidaotech.keystore")
+                storeFile file("yidaotech.keystore")
                 storePassword "yidaotech"
                 keyAlias "yidaotech"
                 keyPassword "yidaotech"
@@ -22,7 +22,7 @@ android {
         }
         release {
             try {
-                storeFile file("C:/Users/Administrator/.android/keystore/yidaotech.keystore")
+                storeFile file("yidaotech.keystore")
                 storePassword "yidaotech"
                 keyAlias "yidaotech"
                 keyPassword "yidaotech"
@@ -45,7 +45,7 @@ android {
         multiDexEnabled true
         ndk {
             //设置支持的SO库架构
-            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', "x86"  //如果要使用音视频通话功能，需要移除后面两个cpu架构
+//            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', "x86" //如果要使用音视频通话功能，需要移除后面两个cpu架构
         }
     }
     //忽略方法数限制的检查
@@ -176,5 +176,7 @@ dependencies {
     implementation 'com.umeng.sdk:analytics:7.5.3'
     implementation 'com.meituan.android.walle:library:1.1.6'
     implementation(name: 'shujike-android-sdk-3.0.2', ext: 'aar')
+    implementation 'me.jessyan:autosize:1.0.1'
+    implementation 'liji.library.dev:citypickerview:3.1.13'
     implementation project(':IMKit')
 }
