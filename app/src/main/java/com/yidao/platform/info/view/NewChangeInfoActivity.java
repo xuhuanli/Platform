@@ -34,7 +34,7 @@ public class NewChangeInfoActivity extends BaseActivity {
     @BindView(R.id.tv_length)
     TextView tvLength;
 
-    private int maxLengthOfEditText = 12;
+    private int maxLengthOfEditText = 8;
     private String editHint = "";
 
     @Override
@@ -55,7 +55,7 @@ public class NewChangeInfoActivity extends BaseActivity {
             tbTitle.setText(title);
             switch (title) {
                 case "昵称修改":
-                    maxLengthOfEditText = 12;
+                    maxLengthOfEditText = 8;
                     editHint = "修改昵称";
                     break;
                 case "个人简介":

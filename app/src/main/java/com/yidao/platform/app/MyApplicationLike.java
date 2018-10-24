@@ -24,6 +24,7 @@ import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.app.utils.MyLogger;
+import com.yidao.platform.contacts.im.CustomizeMessage;
 import com.yidao.platform.contacts.im.IMListenerWrapper;
 import com.yidao.platform.container.ContainerActivity;
 
@@ -70,7 +71,8 @@ public class MyApplicationLike extends DefaultApplicationLike {
     private void initIM() {
         RongIM.init(getAppContext());
         IMListenerWrapper.init(getAppContext());
-        RongIM.connect(IM_TOKEN, new RongIMClient.ConnectCallback() {
+        RongIM.registerMessageType(CustomizeMessage.class);
+        /*RongIM.connect(IM_TOKEN, new RongIMClient.ConnectCallback() {
             @Override
             public void onTokenIncorrect() {
                 MyLogger.e("onTokenIncorrect");
@@ -85,7 +87,7 @@ public class MyApplicationLike extends DefaultApplicationLike {
             public void onError(RongIMClient.ErrorCode errorCode) {
                 MyLogger.e("onError");
             }
-        });
+        });*/
     }
 
     private void initSjk() {

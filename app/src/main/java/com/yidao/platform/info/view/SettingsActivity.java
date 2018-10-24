@@ -19,7 +19,6 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
-import com.yidao.platform.app.ThreadPoolManager;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.app.utils.FileUtil;
 import com.yidao.platform.app.utils.MyLogger;
@@ -93,22 +92,14 @@ public class SettingsActivity extends BaseActivity implements SettingsViewInterf
 
     @SuppressLint({"DefaultLocale", "SetTextI18n"})
     private void initCacheTextView() {
-        ThreadPoolManager.getInstance().addTask(() -> {
+        new Thread(() -> {
             final double cacheSize = FileUtil.getAppCacheSize(getCacheDir()) + FileUtil.getAppCacheSize(getExternalCacheDir());
             mHandler.post(() -> mTvCache.setText(String.format("%.2f", cacheSize) + "M"));
-        });
+        }).start();
     }
 
     private void clearAppCache() {
-        ThreadPoolManager.getInstance().addTask(new ClearCacheRunnable(getCacheDir(), getExternalCacheDir()) {
-            @Override
-            void onClearCacheStarted() {
-                mHandler.post(() -> {
-                    mTvCache.setVisibility(View.GONE);
-                    mPresenter.showProgressBar(mProgressBar);
-                });
-            }
-
+        new Thread(new ClearCacheRunnable(getCacheDir(), getExternalCacheDir()) {
             @Override
             void onClearCacheFinished() {
                 initCacheTextView();
@@ -117,7 +108,15 @@ public class SettingsActivity extends BaseActivity implements SettingsViewInterf
                     mPresenter.dismissProgressBar(mProgressBar);
                 });
             }
-        });
+
+            @Override
+            void onClearCacheStarted() {
+                mHandler.post(() -> {
+                    mTvCache.setVisibility(View.GONE);
+                    mPresenter.showProgressBar(mProgressBar);
+                });
+            }
+        }).start();
     }
 
     private void initToolbar() {

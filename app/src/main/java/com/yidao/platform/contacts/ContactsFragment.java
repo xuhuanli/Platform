@@ -10,18 +10,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yidao.platform.R;
 import com.yidao.platform.app.base.BaseFragment;
+import com.yidao.platform.app.utils.MyLogger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;
 import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
+
+import static com.yidao.platform.contacts.im.ConversationActivity.IM_TOKEN;
 
 public class ContactsFragment extends BaseFragment implements IViewContactsFragment, Toolbar.OnMenuItemClickListener, BaseQuickAdapter.OnItemClickListener {
 
@@ -68,11 +71,30 @@ public class ContactsFragment extends BaseFragment implements IViewContactsFragm
         mRecyclerView.setAdapter(contactsAdapter);
         contactsAdapter.addHeaderView(getHeaderView());
         contactsAdapter.setOnItemClickListener(this);
+        //在这里链接im server
+        if (RongIM.getInstance().getCurrentConnectionStatus().getValue() != RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED.getValue()) {
+            MyLogger.e("没有连接server");
+            RongIM.connect(IM_TOKEN, new RongIMClient.ConnectCallback() {
+                @Override
+                public void onTokenIncorrect() {
+                    MyLogger.e("onTokenIncorrect");
+                }
+
+                @Override
+                public void onSuccess(String s) {
+                    MyLogger.e("onSuccess userId is " + s);
+                }
+
+                @Override
+                public void onError(RongIMClient.ErrorCode errorCode) {
+
+                }
+            });
+        }
     }
 
     private View getHeaderView() {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.contacts_header_view, (ViewGroup) mRecyclerView.getParent(), false);
-        return view;
+        return LayoutInflater.from(getActivity()).inflate(R.layout.contacts_header_view, (ViewGroup) mRecyclerView.getParent(), false);
     }
 
     @Override

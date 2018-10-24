@@ -1,5 +1,8 @@
 package com.yidao.platform.contacts.im;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -109,10 +112,12 @@ public class ConversationActivity extends BaseActivity implements Toolbar.OnMenu
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_icon1:
-                AlertDialog.Builder builder = creatDialog();
+                AlertDialog.Builder builder = creatDialog("xxx的电话号码","18866668888");
                 builder.show();
                 break;
             case R.id.tv_icon2:
+                AlertDialog.Builder dialog = creatDialog("xxxx的微信号码", "cdq");
+                dialog.show();
                 break;
             case R.id.tv_icon3:
                 break;
@@ -123,23 +128,23 @@ public class ConversationActivity extends BaseActivity implements Toolbar.OnMenu
         }
     }
 
-    private AlertDialog.Builder creatDialog() {
+    private AlertDialog.Builder creatDialog(String title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("xxx的电话号码");
-        builder.setMessage("110");
-        builder.setPositiveButton("复制", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setPositiveButton("复制", (dialog, which) -> {
+            ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clipData = ClipData.newPlainText("", message);
+            assert clipboardManager != null;
+            clipboardManager.setPrimaryClip(clipData);
         });
 
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
+        builder.setNegativeButton("取消", (dialog, which) -> dialog.dismiss());
         return builder;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

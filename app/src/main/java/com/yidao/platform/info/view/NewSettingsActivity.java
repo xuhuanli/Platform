@@ -24,10 +24,12 @@ public class NewSettingsActivity extends BaseActivity {
     TextView tbTitle;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
+    //CityPickerView mPicker=new CityPickerView();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //mPicker.init(this);
         initView();
     }
 
@@ -73,10 +75,41 @@ public class NewSettingsActivity extends BaseActivity {
                     break;
                 case 5:
                     break;
-                case 6:
+                case 6: //地区
+                    /*CityConfig cityConfig = new CityConfig.Builder().build();
+                    mPicker.setConfig(cityConfig);
+                    mPicker.setOnCityItemClickListener(new OnCityItemClickListener() {
+                        @Override
+                        public void onSelected(ProvinceBean province, CityBean city, DistrictBean district) {
+
+                            //省份
+                            if (province != null) {
+
+                            }
+
+                            //城市
+                            if (city != null) {
+
+                            }
+
+                            //地区
+                            if (district != null) {
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            ToastUtils.showLongToast(getApplicationContext(), "已取消");
+                        }
+                    });
+
+                    //显示
+                    mPicker.showCityPicker( );*/
                     break;
                 case 7:
-                    modifyInfo("所属公司",customTextView.getValue());
+                    modifyInfo("所属公司", customTextView.getValue());
                     break;
                 case 8:
                     Intent intent = new Intent(this, SelectLabelsActivity.class);
