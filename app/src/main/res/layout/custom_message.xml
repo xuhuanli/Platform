@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cl_custom_msg"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="244dp"
+    android:layout_height="wrap_content"
+    android:maxHeight="111dp"
+    android:descendantFocusability="afterDescendants"
+    android:background="@drawable/shape_custom_msg_corner">
+
+    <ImageView
+        android:id="@+id/iv_gold"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toTopOf="@+id/cl_buttons"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/anim_bottle" />
+
+    <TextView
+        android:id="@+id/tv_message_content"
+        android:layout_width="141dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="10dp"
+        android:gravity="left|center_vertical"
+        android:text="我向您提供5元诚意金 申请交换手机号码"
+        android:textColor="@color/FF666666"
+        android:textSize="@dimen/sp_14"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_gold"
+        app:layout_constraintStart_toEndOf="@+id/iv_gold"
+        app:layout_constraintTop_toTopOf="@+id/iv_gold" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_40dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_gold">
+
+        <include
+            android:id="@+id/line"
+            layout="@layout/divider_line"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_accept"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="接受"
+            android:textColor="@color/FF007AFF"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/line" />
+
+        <include
+            android:id="@+id/line2"
+            layout="@layout/divider_line"
+            android:layout_width="@dimen/size_1dp"
+            android:layout_height="@dimen/size_20dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintLeft_toRightOf="@+id/tv_accept"
+            app:layout_constraintTop_toBottomOf="@+id/line" />
+
+        <TextView
+            android:id="@+id/tv_refuse"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:clickable="true"
+            android:text="拒绝"
+            android:gravity="center"
+            android:textColor="@color/FF999999"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/line2"
+            app:layout_constraintTop_toBottomOf="@+id/line" />
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.constraint.ConstraintLayout>

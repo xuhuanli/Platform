@@ -3,7 +3,6 @@ package com.yidao.platform.contacts.im;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -22,14 +21,18 @@ import com.yidao.platform.contacts.ContactsSettingActivity;
 import butterknife.BindView;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.Message;
 
 /**
  * 会话界面
  */
 public class ConversationActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener, View.OnClickListener {
-    //    public static final String IM_TOKEN = "pqGbqEDBlbzfuLOQ65dubKHE8cj6DC6fvsLruSyjeJf7Xxd2EkTV4F4bx3cmRlXQCWPjtPql/xhiHuQ9oW64lA=="; //xuhuanli 666666
-    public static final String IM_TOKEN = "ogj/f7uqNuileVQQwp6cN65gJP9dw5UXqOdf15NyuAhFZphMr71MOrTcQLVeYki3c1U/ryEACiYU6Ptin/yhWw=="; //徐焕利 888888
+//    public static final String IM_TOKEN = "pqGbqEDBlbzfuLOQ65dubKHE8cj6DC6fvsLruSyjeJf7Xxd2EkTV4F4bx3cmRlXQCWPjtPql/xhiHuQ9oW64lA=="; //xuhuanli 666666
+        public static final String IM_TOKEN = "ogj/f7uqNuileVQQwp6cN65gJP9dw5UXqOdf15NyuAhFZphMr71MOrTcQLVeYki3c1U/ryEACiYU6Ptin/yhWw=="; //徐焕利 888888
     private static final String TAG = "ConversationActivity";
+    public static final String MY_ID = "888888";  //me
+    public static final String HE_ID = "666666";  //daka
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.tb_title)
@@ -112,14 +115,35 @@ public class ConversationActivity extends BaseActivity implements Toolbar.OnMenu
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_icon1:
-                AlertDialog.Builder builder = creatDialog("xxx的电话号码","18866668888");
+                AlertDialog.Builder builder = creatDialog("xxx的电话号码", "18866668888");
                 builder.show();
                 break;
             case R.id.tv_icon2:
                 AlertDialog.Builder dialog = creatDialog("xxxx的微信号码", "cdq");
                 dialog.show();
                 break;
-            case R.id.tv_icon3:
+            case R.id.tv_icon3: //测试自定义消息
+                RongIM.getInstance().sendMessage(Conversation.ConversationType.PRIVATE, "888888", new CustomizeMessage(), "这是自定义消息", "", new RongIMClient.SendImageMessageCallback() {
+                    @Override
+                    public void onAttached(Message message) {
+
+                    }
+
+                    @Override
+                    public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(Message message) {
+
+                    }
+
+                    @Override
+                    public void onProgress(Message message, int i) {
+
+                    }
+                });
                 break;
             case R.id.tv_icon4:
                 break;

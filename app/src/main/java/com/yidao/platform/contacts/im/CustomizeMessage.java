@@ -16,6 +16,9 @@ import io.rong.imlib.model.MessageContent;
 public class CustomizeMessage extends MessageContent {
     private String content;//消息属性，可随意定义
 
+    public CustomizeMessage() {
+    }
+
     public CustomizeMessage(byte[] data) {
         String jsonStr = null;
 

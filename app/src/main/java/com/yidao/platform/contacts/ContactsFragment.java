@@ -109,6 +109,8 @@ public class ContactsFragment extends BaseFragment implements IViewContactsFragm
             case R.id.toolbar_contacts:
                 HashMap<String, Boolean> map = new HashMap<>();
                 map.put(Conversation.ConversationType.PRIVATE.getName(), false);
+                map.put(Conversation.ConversationType.SYSTEM.getName(), false);
+                map.put(Conversation.ConversationType.APP_PUBLIC_SERVICE.getName(), false);
                 RongIM.getInstance().startConversationList(getActivity(), map);
                 break;
         }
@@ -119,6 +121,6 @@ public class ContactsFragment extends BaseFragment implements IViewContactsFragm
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         HashMap<String, Boolean> map = new HashMap<>();
         map.put(Conversation.ConversationType.PRIVATE.getName(), false);
-        RongIM.getInstance().startPrivateChat(getActivity(), "888888", "cdq");
+        //RongIM.getInstance().startPrivateChat(getActivity(), "888888", "his name");
     }
 }

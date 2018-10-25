@@ -2,7 +2,6 @@ package com.yidao.platform.contacts.im;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -150,7 +149,7 @@ public class IMListenerWrapper implements RongIM.OnSendMessageListener,
 
     @Override
     public boolean onReceived(Message message, int i) {
-        MyLogger.e( " 收到消息的处理。");
+        MyLogger.e(" 收到消息的处理。");
         return false;
     }
 
@@ -198,7 +197,7 @@ public class IMListenerWrapper implements RongIM.OnSendMessageListener,
 
     @Override
     public boolean onMessageClick(Context context, View view, Message message) {
-        Toast.makeText(context, "消息点击", Toast.LENGTH_SHORT).show();
+        MyLogger.e("message clicked!");
         return false;
     }
 
