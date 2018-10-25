@@ -38,7 +38,7 @@ public class ConversationListActivity extends BaseActivity implements RongIM.Use
         list = new ArrayList<>();
         list.add(new Friend("666666", "xuhuanli", "http://www.51zxw.net/bbs/UploadFile/2013-4/201341122335711220.jpg"));
         list.add(new Friend("888888", "徐焕利", "http://img02.tooopen.com/Download/2010/5/22/20100522103223994012.jpg"));
-        RongIM.setUserInfoProvider(this, true);
+        //RongIM.setUserInfoProvider(this, true);
     }
 
     @Override

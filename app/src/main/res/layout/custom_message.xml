@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:maxHeight="111dp"
     android:descendantFocusability="afterDescendants"
-    android:background="@drawable/shape_custom_msg_corner">
+    android:background="@drawable/shape_custom_msg_corner_white">
 
     <ImageView
         android:id="@+id/iv_gold"

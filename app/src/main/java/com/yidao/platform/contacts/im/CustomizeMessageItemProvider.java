@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.view.LayoutInflater;
@@ -100,8 +101,7 @@ public class CustomizeMessageItemProvider extends IContainerItemProvider.Message
         if (uiMessage.getMessageDirection() == Message.MessageDirection.SEND) {//消息方向，自己发送的
             holder.clButtons.setVisibility(View.GONE);
             holder.message.setText("已向对方支付5元诚意金,申请交换手机号码");
-            GradientDrawable background = (GradientDrawable) holder.clCustomMsg.getBackground();
-            background.setColor(Color.parseColor("#ffc7e2ff"));
+            holder.clCustomMsg.setBackground(ContextCompat.getDrawable(view.getContext(),R.drawable.shape_custom_msg_corner_blue));
         } else {
             holder.clButtons.setVisibility(View.VISIBLE);
             holder.message.setText("对方向您提供5元诚意金 申请交换手机号码");
