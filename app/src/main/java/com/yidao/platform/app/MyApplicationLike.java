@@ -163,7 +163,7 @@ public class MyApplicationLike extends DefaultApplicationLike {
 
     private OkHttpClient initOkHttpClient() {
         return new OkHttpConfig
-                .Builder()
+                .Builder(getAppContext())
                 //.setHeaders(headerMaps)
                 //.setCachePath(FileUtil.getDiskCacheDir(getAppContext(), "http_cache").getPath())
                 //开启缓存策略(默认false)
@@ -171,8 +171,6 @@ public class MyApplicationLike extends DefaultApplicationLike {
                 //2、在没有网络的时候，去读缓存中的数据。
                 .setCache(false)
                 //.setHeaders(headers)
-                //全局持久话cookie,保存本地每次都会携带在header中（默认false）
-                .setSaveCookie(false)
                 .setAddInterceptor(new TokenInterceptor())
                 //全局ssl证书认证
                 //1、信任所有证书,不安全有风险（默认信任所有证书）

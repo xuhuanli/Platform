@@ -68,7 +68,7 @@ public abstract class BaseFragment extends Fragment {
         super.onDestroy();
         isViewCreated = isUIVisible = false;
         clearDisposable();
-        RxHttpUtils.clearAllCompositeDisposable();
+        RxHttpUtils.cancelAll();
         mUnbinder.unbind();
     }
 

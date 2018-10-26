@@ -78,7 +78,7 @@ public class WXEntryActivity2 extends Activity implements IWXAPIEventHandler, IV
     protected void onDestroy() {
         super.onDestroy();
         mWxapi.unregisterApp();
-        RxHttpUtils.clearAllCompositeDisposable();
+        RxHttpUtils.cancelAll();
     }
 
     @Override

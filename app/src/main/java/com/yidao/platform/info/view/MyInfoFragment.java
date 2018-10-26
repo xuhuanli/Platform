@@ -227,7 +227,7 @@ public class MyInfoFragment extends Fragment implements IViewMineInfo {
         EventBus.getDefault().unregister(this);
         isViewCreated = isUIVisible = false;
         clearDisposable();
-        RxHttpUtils.clearAllCompositeDisposable();
+        RxHttpUtils.cancelAll();
         mUnbinder.unbind();
     }
 }
