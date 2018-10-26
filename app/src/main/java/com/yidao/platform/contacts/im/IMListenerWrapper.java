@@ -2,6 +2,7 @@ package com.yidao.platform.contacts.im;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.View;
 import android.widget.Toast;
 
@@ -29,7 +30,7 @@ public class IMListenerWrapper implements RongIM.OnSendMessageListener,
         RongIMClient.OnReceiveMessageListener,
         RongIMClient.ConnectionStatusListener,
         RongIM.ConversationClickListener,
-        RongIM.ConversationListBehaviorListener {
+        RongIM.ConversationListBehaviorListener, RongIM.UserInfoProvider {
     private static final String TAG = "IMListenerWrapper";
 
     private static List<Friend> list;
@@ -42,6 +43,7 @@ public class IMListenerWrapper implements RongIM.OnSendMessageListener,
         RongIM.setConversationClickListener(this);
         RongIM.setConversationListBehaviorListener(this);
         RongIM.setConnectionStatusListener(this);
+        RongIM.setUserInfoProvider(this, true);
         setInputProvider();
     }
 
@@ -92,11 +94,11 @@ public class IMListenerWrapper implements RongIM.OnSendMessageListener,
     //---------------用户信息提供者---------------------//
 /*
     @Override
-    public UserInfo getUserInfo(String id) {
+    public UserData getUserData(String id) {
         for (Friend i : list) {
             if (i.getUserId().equals(id)) {
                 Log.e("TAG", i.getPortraitUri());
-                return new UserInfo(i.getUserId(), i.getUserName(), Uri.parse(i.getPortraitUri()));
+                return new UserData(i.getUserId(), i.getUserName(), Uri.parse(i.getPortraitUri()));
             }
         }
         Log.e("MainActivity", "UserId is ：" + id);
@@ -233,5 +235,13 @@ public class IMListenerWrapper implements RongIM.OnSendMessageListener,
     @Override
     public boolean onConversationClick(Context context, View view, UIConversation uiConversation) {
         return false;
+    }
+
+    @Override
+    public UserInfo getUserInfo(String s) {
+        UserInfoManager.getInstance().getUserData(s);
+//        UserData userData = UserInfoManager.getInstance().getUserData(s);
+//        return new UserInfo(userData.getUserId(), userData.getUserName(), Uri.parse(userData.getUserName()));
+        return null;
     }
 }

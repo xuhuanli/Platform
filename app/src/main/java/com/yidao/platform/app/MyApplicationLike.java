@@ -27,22 +27,23 @@ import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.contacts.im.CustomizeMessage;
 import com.yidao.platform.contacts.im.CustomizeMessageItemProvider;
 import com.yidao.platform.contacts.im.IMListenerWrapper;
+import com.yidao.platform.contacts.im.MyObjectBox;
 import com.yidao.platform.container.ContainerActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 
+import io.objectbox.BoxStore;
+import io.objectbox.android.AndroidObjectBrowser;
 import io.rong.imkit.RongIM;
-import io.rong.imlib.RongIMClient;
 import okhttp3.OkHttpClient;
-
-import static com.yidao.platform.contacts.im.ConversationActivity.IM_TOKEN;
 
 public class MyApplicationLike extends DefaultApplicationLike {
     private static final String TAG = "Tinker.MyApplicationLike";
     private static Context appContext;
     private static HashMap<String, Integer> labelMap = new HashMap<>();
+    private static BoxStore boxStore;
 
     public MyApplicationLike(Application application, int tinkerFlags,
                              boolean tinkerLoadVerifyFlag, long applicationStartElapsedTime,
@@ -66,7 +67,16 @@ public class MyApplicationLike extends DefaultApplicationLike {
         initUmengAnalytics(appContext);
         initIM();
         setLabelMap();
+        initBox();
         initSjk();
+    }
+
+    private void initBox() {
+        boxStore = MyObjectBox.builder().androidContext(getAppContext()).build();
+    }
+
+    public static BoxStore getBoxStore() {
+        return boxStore;
     }
 
     private void initIM() {
