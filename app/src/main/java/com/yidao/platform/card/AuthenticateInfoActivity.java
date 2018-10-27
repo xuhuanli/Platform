@@ -4,13 +4,22 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.otaliastudios.cameraview.CameraView;
 import com.yidao.platform.R;
 import com.yidao.platform.app.base.BaseActivity;
+import com.yidao.platform.app.utils.UIUtil;
+import com.yidao.platform.info.adapter.LabelAdapter;
+import com.yidao.platform.info.model.TagBean;
 
+import java.util.ArrayList;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -19,12 +28,20 @@ import butterknife.ButterKnife;
  */
 
 public class AuthenticateInfoActivity extends BaseActivity {
-
+    @BindView(R.id.recyclerview)
+    RecyclerView recyclerview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initToolbar();
+        initView();
+    }
+
+    private void initView() {
+        ArrayList<TagBean> list = new ArrayList<>();
+        list.add(new TagBean("社交", true));
+        UIUtil.initRecyclerView(recyclerview, this, list);
     }
 
     private void initToolbar() {
