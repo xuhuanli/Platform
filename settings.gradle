@@ -1,1 +1,1 @@
-include ':app',  ':ocr',":IMKit",":IMLib"
+include ':app',  ':ocr', ":IMKit", ":IMLib", ':cameraviews'
