@@ -257,6 +257,13 @@
         <activity
             android:name=".card.AuthenticationActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".card.AuthenticatingActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".card.AuthenticateFailActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".card.AuthenticateSuccessActivity"
+            android:screenOrientation="portrait"/>
 
 
         <receiver

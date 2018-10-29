@@ -19,14 +19,10 @@ import butterknife.BindView;
 
 /**
  * @author huyimin
- * 身份 信息页
+ * 身份 验证中
  */
 
-public class AuthenticateInfoActivity extends BaseActivity {
-    @BindView(R.id.recyclerview)
-    RecyclerView recyclerview;
-    @BindView(R.id.tv_count)
-    TextView tv_count;
+public class AuthenticatingActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +32,6 @@ public class AuthenticateInfoActivity extends BaseActivity {
     }
 
     private void initView() {
-        ArrayList<TagBean> list = new ArrayList<>();
-        list.add(new TagBean("社交", true));
-        UIUtil.initRecyclerView(recyclerview, this, list, tv_count);
     }
 
     private void initToolbar() {
@@ -50,7 +43,7 @@ public class AuthenticateInfoActivity extends BaseActivity {
     }
 
     public static void startAuthenticateInfoActivity(Context context) {
-        Intent intent = new Intent(context, AuthenticateInfoActivity.class);
+        Intent intent = new Intent(context, AuthenticatingActivity.class);
         context.startActivity(intent);
     }
 
@@ -73,7 +66,7 @@ public class AuthenticateInfoActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_authenticateinfo;
+        return R.layout.activity_authenticating;
     }
 
     public void takePick(View view) {

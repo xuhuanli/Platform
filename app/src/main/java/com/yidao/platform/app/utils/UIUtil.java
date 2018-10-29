@@ -23,7 +23,7 @@ public class UIUtil {
      * @param recyclerview
      * @param context
      */
-    public static void initRecyclerView(RecyclerView recyclerview, Context context, ArrayList<TagBean> seleteds, OnTagItemClickListener mOnTagItemClickListener) {
+    public static void initRecyclerView(RecyclerView recyclerview, Context context, ArrayList<TagBean> seleteds, TextView tv_count) {
 
         recyclerview.setLayoutManager(new GridLayoutManager(context, 5));
         ArrayList<TagBean> list = new ArrayList<>();
@@ -33,7 +33,7 @@ public class UIUtil {
         hashMap.put("合作", false);
         hashMap.put("融资", false);
         hashMap.put("合伙", false);
-        int seletedsize = 0;
+        beginNumber = 0;
         if (seleteds != null) {
             for (int i = 0; i < seleteds.size(); i++) {
                 hashMap.put(seleteds.get(i).getName(), seleteds.get(i).getIsselected());
@@ -42,38 +42,32 @@ public class UIUtil {
         for (String key : hashMap.keySet()) {
             list.add(new TagBean(key, hashMap.get(key)));
             if (hashMap.get(key)) {
-                seletedsize++;
+                beginNumber++;
             }
         }
         LabelAdapter labelAdapter = new LabelAdapter(list, context);
         recyclerview.setAdapter(labelAdapter);
 
-        if (mOnTagItemClickListener != null) {
-            mOnTagItemClickListener.onItemClick(list.size(), seletedsize);
+        if (tv_count != null) {
+            tv_count.setText(beginNumber + "/" + list.size());
         }
-        int finalSeletedsize = seletedsize;
         labelAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             TextView label = (TextView) view;
-            int seletedsize1 = finalSeletedsize;
             boolean selected = label.isSelected();
             if (!selected) {
                 label.setSelected(true);
                 label.setTextColor(context.getResources().getColor(R.color.colorWhite));
-                seletedsize1++;
+                beginNumber++;
             } else {
                 label.setSelected(false);
                 label.setTextColor(context.getResources().getColor(R.color.FF999999));
-                seletedsize1--;
+                beginNumber--;
             }
-            if (mOnTagItemClickListener != null) {
-                mOnTagItemClickListener.onItemClick(list.size(), seletedsize1);
+            if (tv_count != null) {
+                tv_count.setText(beginNumber + "/" + list.size());
             }
-
         });
     }
 
-
-    public interface OnTagItemClickListener {
-        void onItemClick(int totalsize, int seletedsize);
-    }
+    public static int beginNumber = 0;
 }

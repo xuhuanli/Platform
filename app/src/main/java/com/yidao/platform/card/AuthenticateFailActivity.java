@@ -3,30 +3,19 @@ package com.yidao.platform.card;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
 import com.yidao.platform.R;
 import com.yidao.platform.app.base.BaseActivity;
-import com.yidao.platform.app.utils.UIUtil;
-import com.yidao.platform.info.model.TagBean;
-
-import java.util.ArrayList;
-
-import butterknife.BindView;
 
 /**
  * @author huyimin
- * 身份 信息页
+ * 身份 验证失败
  */
 
-public class AuthenticateInfoActivity extends BaseActivity {
-    @BindView(R.id.recyclerview)
-    RecyclerView recyclerview;
-    @BindView(R.id.tv_count)
-    TextView tv_count;
+public class AuthenticateFailActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +25,6 @@ public class AuthenticateInfoActivity extends BaseActivity {
     }
 
     private void initView() {
-        ArrayList<TagBean> list = new ArrayList<>();
-        list.add(new TagBean("社交", true));
-        UIUtil.initRecyclerView(recyclerview, this, list, tv_count);
     }
 
     private void initToolbar() {
@@ -50,7 +36,7 @@ public class AuthenticateInfoActivity extends BaseActivity {
     }
 
     public static void startAuthenticateInfoActivity(Context context) {
-        Intent intent = new Intent(context, AuthenticateInfoActivity.class);
+        Intent intent = new Intent(context, AuthenticateFailActivity.class);
         context.startActivity(intent);
     }
 
@@ -73,7 +59,7 @@ public class AuthenticateInfoActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_authenticateinfo;
+        return R.layout.activity_authenticatefail;
     }
 
     public void takePick(View view) {
