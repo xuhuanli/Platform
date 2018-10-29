@@ -11,7 +11,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="70dp"
-        android:background="@drawable/shape_btn_blue_corner_5dp"
+        android:background="@drawable/shape_btn_blue_corner_36dp"
         android:padding="8dp"
         android:gravity="center"
         android:text="@string/instant_open"

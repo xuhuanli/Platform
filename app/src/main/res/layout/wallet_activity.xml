@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/app_toolbar_layout" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_bord"
+        android:layout_width="0dp"
+        android:layout_height="139dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/shape_btn_blue_corner_3dp"
+        android:elevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <TextView
+            android:id="@+id/tv_wallet_label_1"
+            android:layout_width="wrap_content"
+            android:layout_height="18dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="40dp"
+            android:text="当前余额"
+            android:textColor="#ffffffff"
+            android:textSize="13sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_wallet_sum"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="3dp"
+            android:text="￥767.23"
+            android:textColor="#ffffffff"
+            android:textSize="32sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_wallet_label_1" />
+
+        <TextView
+            android:id="@+id/tv_wallet_withdraw"
+            android:layout_width="56dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="56dp"
+            android:layout_marginEnd="26dp"
+            android:background="@drawable/shape_corner_3_white"
+            android:gravity="center"
+            android:text="提现"
+            android:textColor="#ffffffff"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <View
+        android:id="@+id/wallet_divider_line"
+        android:layout_width="@dimen/size_4dp"
+        android:layout_height="@dimen/size_20dp"
+        android:background="@drawable/shape_radius_100_blue"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="26dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl_bord" />
+
+    <TextView
+        android:id="@+id/tv_wallet_bill"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginStart="8dp"
+        android:gravity="center"
+        android:layout_marginTop="24dp"
+        android:text="账单明细"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/FF333333"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/wallet_divider_line"
+        app:layout_constraintTop_toBottomOf="@+id/cl_bord" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wallet_divider_line" />
+</android.support.constraint.ConstraintLayout>

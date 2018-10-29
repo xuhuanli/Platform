@@ -248,6 +248,8 @@
         <activity android:name=".info.view.NewSettingsActivity" />
         <activity android:name=".info.view.NewChangeInfoActivity" />
         <activity android:name=".info.view.SelectLabelsActivity" />
+        <activity android:name=".wallet.WithdrawActivity" />
+        <activity android:name=".wallet.WalletActivity" />
 
         <receiver
             android:exported="true"

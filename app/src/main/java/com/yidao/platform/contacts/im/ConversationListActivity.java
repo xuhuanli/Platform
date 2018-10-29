@@ -27,17 +27,17 @@ import io.rong.imlib.model.UserInfo;
 /**
  * 会话列表
  */
-public class ConversationListActivity extends BaseActivity implements RongIM.UserInfoProvider, IUnReadMessageObserver, Toolbar.OnMenuItemClickListener {
-    private static List<Friend> list;
+public class ConversationListActivity extends BaseActivity implements IUnReadMessageObserver, Toolbar.OnMenuItemClickListener {
+//    private static List<Friend> list;
     private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initToolbar();
-        list = new ArrayList<>();
-        list.add(new Friend("666666", "xuhuanli", "http://www.51zxw.net/bbs/UploadFile/2013-4/201341122335711220.jpg"));
-        list.add(new Friend("888888", "徐焕利", "http://img02.tooopen.com/Download/2010/5/22/20100522103223994012.jpg"));
+//        list = new ArrayList<>();
+//        list.add(new Friend("666666", "xuhuanli", "http://www.51zxw.net/bbs/UploadFile/2013-4/201341122335711220.jpg"));
+//        list.add(new Friend("888888", "徐焕利", "http://img02.tooopen.com/Download/2010/5/22/20100522103223994012.jpg"));
         //RongIM.setUserInfoProvider(this, true);
     }
 
@@ -55,7 +55,7 @@ public class ConversationListActivity extends BaseActivity implements RongIM.Use
         mToolbar.setOnMenuItemClickListener(this);
     }
 
-    @Override
+ /*   @Override
     public UserInfo getUserInfo(String id) {
         for (Friend i : list) {
             if (i.getUserId().equals(id)) {
@@ -64,7 +64,7 @@ public class ConversationListActivity extends BaseActivity implements RongIM.Use
             }
         }
         return null;
-    }
+    }*/
 
     @Override
     public void onCountChanged(int i) {

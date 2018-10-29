@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 import com.allen.library.RxHttpUtils;
+import com.yidao.platform.app.ApiService;
 import com.yidao.platform.app.MyApplicationLike;
 
 import io.objectbox.query.Query;
@@ -32,6 +33,7 @@ public class UserInfoManager {
             RongIM.getInstance().refreshUserInfoCache(userInfo);
             return ;
         }
+        // TODO: 2018/10/26 0026 去获取用户信息
         return ;
     }
 
