@@ -21,6 +21,9 @@ import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.XHLToolbar;
 import com.yidao.platform.app.base.BaseFragment;
 import com.yidao.platform.app.utils.MyLogger;
+import com.yidao.platform.card.AuthenticateInfoActivity;
+import com.yidao.platform.card.AuthenticationActivity;
+import com.yidao.platform.card.CameraActivity;
 import com.yidao.platform.read.adapter.ErrorAdapter;
 import com.yidao.platform.read.adapter.MultipleReadAdapter;
 import com.yidao.platform.read.bean.ChannelBean;
@@ -74,8 +77,12 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
     private void initToolbar() {
         addDisposable(RxView.clicks(mSelectItem).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> showChannelUI()));
         addDisposable(RxView.clicks(mIvSearch).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
-            Intent intent = new Intent(getActivity(), SearchArticleActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(getActivity(), SearchArticleActivity.class);
+//            startActivity(intent);
+//            AuthenticationActivity.startAuthenticationActivity(getActivity());
+            AuthenticateInfoActivity.startAuthenticateInfoActivity(getActivity());
+
+
         }));
         mToolbar.setOnTwoTapListener(() -> {
             if (!isScrolling) {

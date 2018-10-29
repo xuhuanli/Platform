@@ -168,7 +168,7 @@
             android:name="com.umeng.socialize.media.WBShareCallBackActivity"
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name="com.sina.weibo.sdk.web.WeiboSdkWebActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -199,15 +199,13 @@
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:exported="false"
             android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
-        </activity>
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
         <activity
             android:name="com.alipay.sdk.app.H5AuthActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
             android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
-        </activity>
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
 
         <!--IMActivity-->
         <activity
@@ -240,20 +238,39 @@
                     android:scheme="rong" />
             </intent-filter>
         </activity>
-        <activity android:name=".contacts.ContactsSearchActivity"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
+        <activity
+            android:name=".contacts.ContactsSearchActivity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <activity android:name=".contacts.ContactsSettingActivity" />
-        <activity android:name=".contacts.ContactsMainPageActivity"
-            android:theme="@style/UserInfoTheme"/>
+        <activity
+            android:name=".contacts.ContactsMainPageActivity"
+            android:theme="@style/UserInfoTheme" />
         <activity android:name=".info.view.NewSettingsActivity" />
         <activity android:name=".info.view.NewChangeInfoActivity" />
         <activity android:name=".info.view.SelectLabelsActivity" />
+        <activity
+            android:name="com.yidao.platform.card.CameraActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".card.AuthenticateInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".card.AuthenticationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".card.AuthenticatingActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".card.AuthenticateFailActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".card.AuthenticateSuccessActivity"
+            android:screenOrientation="portrait"/>
+
         <activity android:name=".wallet.WithdrawActivity" />
         <activity android:name=".wallet.WalletActivity" />
 
         <receiver
-            android:exported="true"
-            android:name=".contacts.im.IMNotificationReceiver">
+            android:name=".contacts.im.IMNotificationReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="io.rong.push.intent.MESSAGE_ARRIVED" />
                 <action android:name="io.rong.push.intent.MI_MESSAGE_ARRIVED" />
@@ -272,11 +289,12 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/rc_file_path" />
         </provider>
+
         <meta-data
             android:name="design_width_in_dp"
-            android:value="375"/>
+            android:value="375" />
         <meta-data
             android:name="design_height_in_dp"
-            android:value="667"/>
+            android:value="667" />
     </application>
 </manifest>

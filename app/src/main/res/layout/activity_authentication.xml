@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/app_toolbar_layout" />
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="216dp"
+            android:layout_height="216dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="51dp"
+            android:src="@mipmap/ic_launcher" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:text="请上传您的名片"
+            android:textColor="#ff333333"
+            android:textSize="23sp" />
+
+
+        <TextView
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:text="本应用需要绑定名片后才可使用， 绑定成功可获得查看BP、找人脉、 漂流瓶等功能。"
+            android:textColor="#ff999999"
+            android:textSize="15sp" />
+
+        <Button
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="262dp"
+            android:layout_height="49dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/btn2corner"
+            android:onClick="toAuthenticate"
+            android:text="马上认证"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:text="认证仅需2分钟"
+            android:textColor="#ff999999"
+            android:textSize="12sp" />
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

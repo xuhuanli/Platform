@@ -8,9 +8,11 @@ buildscript {
         //mavenCentral() // add repository
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.3'
+        classpath 'com.android.tools.build:gradle:3.2.1'
         classpath "com.tencent.bugly:tinker-support:1.1.2"
         classpath 'com.meituan.android.walle:plugin:1.1.6'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
         classpath fileTree(dir: 'plugin', include: '*.jar')
         classpath "io.objectbox:objectbox-gradle-plugin:$objectboxVersion"
         //classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2' // add plugin
@@ -30,4 +32,10 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+ext{
+    COMPILE_SDK_VERSION = 27
+    TARGET_SDK_VERSION = 27
+    MIN_SDK_VERSION = 21
+    support_version = '27.1.1'
 }

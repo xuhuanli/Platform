@@ -14,6 +14,7 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
+import com.yidao.platform.app.utils.UIUtil;
 import com.yidao.platform.info.adapter.LabelAdapter;
 
 import java.util.ArrayList;
@@ -56,26 +57,7 @@ public class SelectLabelsActivity extends BaseActivity {
     }
 
     private void initRecyclerView() {
-        recyclerview.setLayoutManager(new GridLayoutManager(this, 5));
-        ArrayList<String> list = new ArrayList<>();
-        list.add("应聘");
-        list.add("社交");
-        list.add("合作");
-        list.add("融资");
-        list.add("合伙");
-        LabelAdapter labelAdapter = new LabelAdapter(list);
-        recyclerview.setAdapter(labelAdapter);
-        labelAdapter.setOnItemChildClickListener((adapter, view, position) -> {
-            TextView label = (TextView) view;
-            boolean selected = label.isSelected();
-            if (!selected) {
-                label.setSelected(true);
-                label.setTextColor(getResources().getColor(R.color.colorWhite));
-            }else {
-                label.setSelected(false);
-                label.setTextColor(getResources().getColor(R.color.FF999999));
-            }
-        });
+        UIUtil.initRecyclerView(recyclerview,this,null,null);
     }
 
     @Override

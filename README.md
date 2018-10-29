@@ -59,6 +59,8 @@
 
 #如果涉及到修改包名，注意修改清单文件下ContainerActivity的任务栈
 
+#UI适配方案
+https://github.com/JessYanCoding/AndroidAutoSize
 
 
 

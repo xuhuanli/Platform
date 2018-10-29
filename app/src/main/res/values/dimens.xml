@@ -30,5 +30,6 @@
     <dimen name="sp_13">13sp</dimen>
     <dimen name="size_11dp">11dp</dimen>
     <dimen name="size_20dp">20dp</dimen>
+    <dimen name="sp_20">20sp</dimen>
 
 </resources>
