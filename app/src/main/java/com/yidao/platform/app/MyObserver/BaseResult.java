@@ -1,4 +1,4 @@
-package com.yidao.platform.app.base;
+package com.yidao.platform.app.MyObserver;
 
 /**
  * @Describe 返回数据基类

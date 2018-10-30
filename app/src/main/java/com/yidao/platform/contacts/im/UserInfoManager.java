@@ -9,7 +9,7 @@ import com.allen.library.interceptor.Transformer;
 import com.allen.library.observer.CommonObserver;
 import com.yidao.platform.app.ApiService;
 import com.yidao.platform.app.MyApplicationLike;
-import com.yidao.platform.app.base.BaseResult;
+import com.yidao.platform.app.MyObserver.BaseResult;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.contacts.bean.IMTokenInfo;
 

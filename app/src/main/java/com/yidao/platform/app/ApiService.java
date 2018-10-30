@@ -1,6 +1,6 @@
 package com.yidao.platform.app;
 
-import com.yidao.platform.app.base.BaseResult;
+import com.yidao.platform.app.MyObserver.BaseResult;
 import com.yidao.platform.contacts.bean.IMTokenInfo;
 import com.yidao.platform.discovery.bean.BottleDtlBean;
 import com.yidao.platform.discovery.bean.FindContentBean;
