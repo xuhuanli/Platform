@@ -5,7 +5,7 @@
         <item name="colorPrimary">@color/colorWhite</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <!--驿道背景-->
-        <item name="android:windowBackground">@drawable/splash_normal</item>
+        <!--<item name="android:windowBackground">@drawable/splash_normal</item>-->
     </style>
 
     <!-- Base application theme. -->
@@ -15,7 +15,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/FF007AFF</item>
         <!--整体的背景颜色为白色-->
-        <!--<item name="android:windowBackground">@color/colorWhite</item>-->
+        <item name="android:windowBackground">@color/AppBGColor</item>
     </style>
 
     <style name="UserInfoTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -64,7 +64,6 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center_horizontal</item>
-        <item name="android:layout_marginBottom">@dimen/size_8dp</item>
         <item name="android:textColor">@color/FF333333</item>
         <item name="android:textSize">22sp</item>
         <item name="android:textStyle">bold</item>
@@ -85,14 +84,12 @@
 
     <style name="Style_Info_TextView">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">@dimen/size_52dp</item>
         <item name="android:textColor">@color/FF333333</item>
         <item name="android:textSize">17sp</item>
         <item name="android:drawablePadding">12dp</item>
-        <item name="android:background">?attr/selectableItemBackground</item>
-        <item name="android:layout_marginTop">10dp</item>
-        <item name="android:paddingTop">10dp</item>
-        <item name="android:paddingBottom">10dp</item>
+        <item name="android:background">@color/colorWhite</item>
+        <item name="android:padding">@dimen/size_16dp</item>
     </style>
 
     <style name="ToolBarMenuIcon">
@@ -256,5 +253,14 @@
     <!-- 自定义CheckBox 样式 -->
     <style name="CustomCheckboxTheme" parent="@android:style/Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/custom_checkbox_selector</item>
+    </style>
+
+    <style name="Style_LL_Item">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@color/colorWhite</item>
+        <item name="android:orientation">vertical</item>
     </style>
 </resources>

@@ -15,14 +15,15 @@ import android.widget.TextView;
 import com.allen.library.utils.ToastUtils;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
-import com.umeng.socialize.UMShareAPI;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.DeviceIdEvent;
+import com.yidao.platform.app.MyApplicationLike;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.app.utils.PhoneRegUtil;
+import com.yidao.platform.contacts.im.UserData;
 import com.yidao.platform.container.ContainerActivity;
 import com.yidao.platform.events.HasBindEvent;
 import com.yidao.platform.events.WxSignInEvent;
@@ -37,6 +38,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
+import io.objectbox.Box;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -224,6 +226,13 @@ public class LoginActivity extends BaseActivity implements IViewLoginActivity {
         IPreference.prefHolder.getPreference(this).put(Constant.STRING_USER_REFRESHTOKEN, result.getRefreshToken());
         //已绑定，需要写入userId
         IPreference.prefHolder.getPreference(this).put(Constant.STRING_USER_ID, result.getUserId());
+        //个人信息入库
+        Box<UserData> box = MyApplicationLike.getBoxStore().boxFor(UserData.class);
+        UserData data = new UserData();
+        data.setUserId(result.getUserId());
+        data.setUserName(result.getNickname());
+        data.setPortraitUri(result.getHeadImgUrl());
+        box.put(data);
         startActivity(new Intent(this, ContainerActivity.class));
         finish();
     }

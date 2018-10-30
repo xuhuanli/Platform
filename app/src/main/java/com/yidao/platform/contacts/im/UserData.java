@@ -1,7 +1,5 @@
 package com.yidao.platform.contacts.im;
 
-import android.support.annotation.NonNull;
-
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
 import io.objectbox.annotation.Unique;
@@ -15,7 +13,7 @@ public class UserData {
     String userId;
     String portraitUri;
 
-    public UserData(@NonNull long id, String userId, String userName, String portraitUri) {
+    public UserData(long id, String userId, String userName, String portraitUri) {
         this.id = id;
         this.userId = userId;
         this.userName = userName;

@@ -12,7 +12,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
+import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseFragment;
 import com.yidao.platform.app.utils.MyLogger;
 
@@ -24,9 +26,9 @@ import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 
-import static com.yidao.platform.contacts.im.ConversationActivity.IM_TOKEN;
-
-public class ContactsFragment extends BaseFragment implements IViewContactsFragment, Toolbar.OnMenuItemClickListener, BaseQuickAdapter.OnItemClickListener {
+public class ContactsFragment extends BaseFragment implements IViewContactsFragment,
+        Toolbar.OnMenuItemClickListener,
+        BaseQuickAdapter.OnItemClickListener {
 
     @BindView(R.id.tb_include)
     Toolbar toolbar;
@@ -36,10 +38,14 @@ public class ContactsFragment extends BaseFragment implements IViewContactsFragm
     TextView tbTitle;
     private ContactsFragmentPresenter mPresenter;
     private LinearLayoutManager mLayoutManager;
+    private String userId;
+    private String imToken;
 
     @Override
     protected void initView() {
         initToolbar();
+        userId = IPreference.prefHolder.getPreference(getContext()).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
+        imToken = IPreference.prefHolder.getPreference(getContext()).get(Constant.IM_TOKEN, IPreference.DataType.STRING);
         mPresenter = new ContactsFragmentPresenter(this);
         initRecyclerView();
     }
@@ -74,23 +80,28 @@ public class ContactsFragment extends BaseFragment implements IViewContactsFragm
         //在这里链接im server
         if (RongIM.getInstance().getCurrentConnectionStatus().getValue() != RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED.getValue()) {
             MyLogger.e("没有连接server");
-            RongIM.connect(IM_TOKEN, new RongIMClient.ConnectCallback() {
-                @Override
-                public void onTokenIncorrect() {
-                    MyLogger.e("onTokenIncorrect");
-                }
-
-                @Override
-                public void onSuccess(String s) {
-                    MyLogger.e("onSuccess userId is " + s);
-                }
-
-                @Override
-                public void onError(RongIMClient.ErrorCode errorCode) {
-
-                }
-            });
+            connectToIM(imToken, userId);
         }
+    }
+
+    private void connectToIM(String token, String id) {
+        RongIM.connect(token, new RongIMClient.ConnectCallback() {
+            @Override
+            public void onTokenIncorrect() {
+                //request new token from app server
+                mPresenter.requestIMToken(id,1);
+            }
+
+            @Override
+            public void onSuccess(String s) {
+                //s equals userId
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+
+            }
+        });
     }
 
     private View getHeaderView() {
@@ -122,5 +133,17 @@ public class ContactsFragment extends BaseFragment implements IViewContactsFragm
         HashMap<String, Boolean> map = new HashMap<>();
         map.put(Conversation.ConversationType.PRIVATE.getName(), false);
         //RongIM.getInstance().startPrivateChat(getActivity(), "888888", "his name");
+    }
+
+    @Override
+    public void requestIMTokenSuccess(String s) {
+        //save token
+        IPreference.prefHolder.getPreference(getContext()).put(Constant.IM_TOKEN, s);
+        connectToIM(s, userId);
+    }
+
+    @Override
+    public void requestIMTokenError(String s) {
+        //app server connection failed
     }
 }

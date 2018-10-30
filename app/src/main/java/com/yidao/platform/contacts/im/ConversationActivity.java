@@ -13,7 +13,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
+import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
 import com.yidao.platform.app.utils.MyLogger;
 import com.yidao.platform.contacts.ContactsSettingActivity;
@@ -27,12 +29,10 @@ import io.rong.imlib.model.Message;
 /**
  * 会话界面
  */
-public class ConversationActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener, View.OnClickListener {
-//    public static final String IM_TOKEN = "pqGbqEDBlbzfuLOQ65dubKHE8cj6DC6fvsLruSyjeJf7Xxd2EkTV4F4bx3cmRlXQCWPjtPql/xhiHuQ9oW64lA=="; //xuhuanli 666666
-        public static final String IM_TOKEN = "ogj/f7uqNuileVQQwp6cN65gJP9dw5UXqOdf15NyuAhFZphMr71MOrTcQLVeYki3c1U/ryEACiYU6Ptin/yhWw=="; //徐焕利 888888
+public class ConversationActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener,
+        View.OnClickListener,
+        IViewConversation {
     private static final String TAG = "ConversationActivity";
-    public static final String MY_ID = "888888";  //me
-    public static final String HE_ID = "666666";  //daka
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.tb_title)
@@ -49,33 +49,42 @@ public class ConversationActivity extends BaseActivity implements Toolbar.OnMenu
     TextView tvIcon4;
     @BindView(R.id.tv_icon5)
     TextView tvIcon5;
-    private boolean isConnect = false;
+    private String imToken;
+    private String userId;
+    private ConversationPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        imToken = IPreference.prefHolder.getPreference(this).get(Constant.IM_TOKEN, IPreference.DataType.STRING);
+        userId = IPreference.prefHolder.getPreference(this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
+        mPresenter = new ConversationPresenter(this);
         initToolbar();
         initListener();
         if (RongIM.getInstance().getCurrentConnectionStatus().getValue() != RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED.getValue()) {
             MyLogger.e("没有连接server");
-            RongIM.connect(IM_TOKEN, new RongIMClient.ConnectCallback() {
-                @Override
-                public void onTokenIncorrect() {
-                    MyLogger.e("onTokenIncorrect");
-                }
-
-                @Override
-                public void onSuccess(String s) {
-                    isConnect = true;
-                    MyLogger.e("onSuccess userId is " + s);
-                }
-
-                @Override
-                public void onError(RongIMClient.ErrorCode errorCode) {
-
-                }
-            });
+            connectToIM(imToken, userId);
         }
+    }
+
+    private void connectToIM(String token, String id) {
+        RongIM.connect(token, new RongIMClient.ConnectCallback() {
+            @Override
+            public void onTokenIncorrect() {
+                //request new token from app server
+                mPresenter.requestIMToken(id, 1);
+            }
+
+            @Override
+            public void onSuccess(String s) {
+                //s equals userId
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+
+            }
+        });
     }
 
     private void initListener() {
@@ -170,5 +179,12 @@ public class ConversationActivity extends BaseActivity implements Toolbar.OnMenu
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void requestIMTokenSuccess(String token) {
+        //save token
+        IPreference.prefHolder.getPreference(this).put(Constant.IM_TOKEN, token);
+        connectToIM(token, userId);
     }
 }

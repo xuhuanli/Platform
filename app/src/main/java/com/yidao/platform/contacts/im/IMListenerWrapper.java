@@ -2,7 +2,6 @@ package com.yidao.platform.contacts.im;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.view.View;
 import android.widget.Toast;
 
@@ -30,14 +29,14 @@ public class IMListenerWrapper implements RongIM.OnSendMessageListener,
         RongIMClient.OnReceiveMessageListener,
         RongIMClient.ConnectionStatusListener,
         RongIM.ConversationClickListener,
-        RongIM.ConversationListBehaviorListener, RongIM.UserInfoProvider {
+        RongIM.ConversationListBehaviorListener,
+        RongIM.UserInfoProvider {
     private static final String TAG = "IMListenerWrapper";
-
-    private static List<Friend> list;
+    private Context context;
     private static IMListenerWrapper sInstance;
 
     private IMListenerWrapper(Context context) {
-        //initListener();
+        this.context = context;
         RongIM.getInstance().setSendMessageListener(this);
         RongIM.setOnReceiveMessageListener(this);
         RongIM.setConversationClickListener(this);
@@ -45,13 +44,6 @@ public class IMListenerWrapper implements RongIM.OnSendMessageListener,
         RongIM.setConnectionStatusListener(this);
         RongIM.setUserInfoProvider(this, true);
         setInputProvider();
-    }
-
-    private void initListener() {
-        /*list = new ArrayList<>();
-        list.add(new Friend("10001", "xuhuanli", "http://www.51zxw.net/bbs/UploadFile/2013-4/201341122335711220.jpg"));
-        list.add(new Friend("123456789", "cdq", "http://img02.tooopen.com/Download/2010/5/22/20100522103223994012.jpg"));
-        RongIM.setUserInfoProvider(this, true);*/
     }
 
     public static void init(Context context) {
@@ -90,20 +82,6 @@ public class IMListenerWrapper implements RongIM.OnSendMessageListener,
             }
         }
     }
-
-    //---------------用户信息提供者---------------------//
-/*
-    @Override
-    public UserData getUserData(String id) {
-        for (Friend i : list) {
-            if (i.getUserId().equals(id)) {
-                Log.e("TAG", i.getPortraitUri());
-                return new UserData(i.getUserId(), i.getUserName(), Uri.parse(i.getPortraitUri()));
-            }
-        }
-        Log.e("MainActivity", "UserId is ：" + id);
-        return null;
-    }*/
 
     //------------------消息发送监听--------------------//
 
@@ -239,9 +217,8 @@ public class IMListenerWrapper implements RongIM.OnSendMessageListener,
 
     @Override
     public UserInfo getUserInfo(String s) {
-        UserInfoManager.getInstance().getUserData(s);
-//        UserData userData = UserInfoManager.getInstance().getUserData(s);
-//        return new UserInfo(userData.getUserId(), userData.getUserName(), Uri.parse(userData.getUserName()));
+        MyLogger.e("回调到获取UserInfo,id is : "+s);
+        UserInfoManager.getInstance().getUserData(context,s);
         return null;
     }
 }

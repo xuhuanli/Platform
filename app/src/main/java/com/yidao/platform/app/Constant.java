@@ -1,8 +1,8 @@
 package com.yidao.platform.app;
 
 public class Constant {
-    //后台
-    //public static final String BASE_URL = "http://10.10.20.3:8080/platform-pc-web/";
+    //cdq
+    public static final String BASE_URL = "http://10.10.20.9:8080/";
     //xly
 //    public static final String BASE_URL = "http://10.10.20.6:8080/";
     //wp
@@ -10,7 +10,7 @@ public class Constant {
     //debug ip
 //    public static final String BASE_URL = "http://10.10.20.200:8082/";
 //    release ip
-    public static final String BASE_URL = "http://47.96.122.73:8082/";
+//    public static final String BASE_URL = "http://47.96.122.73:8082/";
 
     /**
      * 全局debug模式开关 在release时候设置为false
@@ -85,4 +85,5 @@ public class Constant {
     public static final String STRING_LIKE_AMOUNT = "likeAmount";
     public static final String STRING_ISLIKE = "isLike";
     public static final String STRING_RECENT = "刚刚";
+    public static final String IM_TOKEN = "im_token";
 }

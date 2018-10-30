@@ -84,22 +84,6 @@ public class MyApplicationLike extends DefaultApplicationLike {
         IMListenerWrapper.init(getAppContext());
         RongIM.registerMessageType(CustomizeMessage.class);
         RongIM.registerMessageTemplate(new CustomizeMessageItemProvider());
-        /*RongIM.connect(IM_TOKEN, new RongIMClient.ConnectCallback() {
-            @Override
-            public void onTokenIncorrect() {
-                MyLogger.e("onTokenIncorrect");
-            }
-
-            @Override
-            public void onSuccess(String s) {
-                MyLogger.e("onSuccess userId is " + s);
-            }
-
-            @Override
-            public void onError(RongIMClient.ErrorCode errorCode) {
-                MyLogger.e("onError");
-            }
-        });*/
     }
 
     private void initSjk() {

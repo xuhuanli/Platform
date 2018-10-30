@@ -8,12 +8,20 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
+import com.jakewharton.rxbinding2.view.RxView;
+import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
+import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
+import com.yidao.platform.events.SignUpEvent;
 import com.yidao.platform.info.adapter.SectionAdapter;
 import com.yidao.platform.info.model.SettingsSection;
+import com.yidao.platform.login.view.LoginActivity;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 
@@ -41,6 +49,11 @@ public class NewSettingsActivity extends BaseActivity {
     private void initToolbar() {
         mToolbar.setNavigationOnClickListener(v -> finish());
         tbTitle.setText(R.string.settings);
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.info_activity_new_settings;
     }
 
     private void initRecyclerView() {
@@ -121,7 +134,11 @@ public class NewSettingsActivity extends BaseActivity {
                     break;
                 case 12:
                     break;
-                case 14:
+                case 14:  //退出登录
+                    IPreference.prefHolder.getPreference(this).remove(Constant.STRING_USER_ID);
+                    EventBus.getDefault().post(new SignUpEvent());
+                    startActivity(new Intent(this, LoginActivity.class));
+                    finish();
                     break;
             }
             /*SettingsSection section = list.get(position);
@@ -139,10 +156,5 @@ public class NewSettingsActivity extends BaseActivity {
         intent.putExtra("title", title);
         intent.putExtra("value", value);
         startActivity(intent);
-    }
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.info_activity_new_settings;
     }
 }

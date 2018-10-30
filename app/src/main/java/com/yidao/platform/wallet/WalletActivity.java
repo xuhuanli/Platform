@@ -9,11 +9,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.jakewharton.rxbinding2.view.RxView;
 import com.yidao.platform.R;
+import com.yidao.platform.app.Constant;
 import com.yidao.platform.app.base.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 
@@ -42,6 +45,7 @@ public class WalletActivity extends BaseActivity {
     private void initView() {
         initToolbar();
         initRecyclerView();
+        addDisposable(RxView.clicks(tvWalletWithdraw).throttleFirst(Constant.THROTTLE_TIME,TimeUnit.MILLISECONDS).subscribe(o ->startActivity(WithdrawActivity.class)));
     }
 
     private void initToolbar() {

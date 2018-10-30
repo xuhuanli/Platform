@@ -28,6 +28,7 @@ import com.yidao.platform.info.model.EventTouXiangInfo;
 import com.yidao.platform.info.model.MineInfoBean;
 import com.yidao.platform.info.model.UserInfoBean;
 import com.yidao.platform.info.presenter.MyInfoFragmentPresenter;
+import com.yidao.platform.wallet.WalletActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -70,6 +71,9 @@ public class MyInfoFragment extends Fragment implements IViewMineInfo {
     TextView tvPublishCount;
     @BindView(R.id.tv_msg_count)
     TextView tvMsgCount;
+    //钱包
+    @BindView(R.id.tv_wallet)
+    TextView tvWallet;
     private MyInfoFragmentPresenter mPresenter;
     private String userId;
 
@@ -128,35 +132,24 @@ public class MyInfoFragment extends Fragment implements IViewMineInfo {
         mPresenter = new MyInfoFragmentPresenter(this);
         userId = IPreference.prefHolder.getPreference(getActivity()).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
         //click 个人属性
-        addDisposable(RxView.clicks(cl_container).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
-            Intent intent = new Intent(getActivity(), PersonInfomationActivity.class);
-            startActivity(intent);
-        }));
+        addDisposable(RxView.clicks(cl_container).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> startNewActivity(PersonInfomationActivity.class)));
         //click 设置
-        addDisposable(RxView.clicks(tvSettings).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
-            Intent intent = new Intent(getActivity(), NewSettingsActivity.class);
-            startActivity(intent);
-        }));
+        addDisposable(RxView.clicks(tvSettings).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> startNewActivity(NewSettingsActivity.class)));
         //click 最近阅读
-        addDisposable(RxView.clicks(tvRecentlyRead).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
-            Intent intent = new Intent(getActivity(), RecentlyReadActivity.class);
-            startActivity(intent);
-        }));
+        addDisposable(RxView.clicks(tvRecentlyRead).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> startNewActivity(RecentlyReadActivity.class)));
         //click 我的收藏
-        addDisposable(RxView.clicks(mCollectionItem).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
-            Intent intent = new Intent(getActivity(), InfoMyCollectionActivity.class);
-            startActivity(intent);
-        }));
+        addDisposable(RxView.clicks(mCollectionItem).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> startNewActivity(InfoMyCollectionActivity.class)));
         //click 我的发布
-        addDisposable(RxView.clicks(mPublishItem).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
-            Intent intent = new Intent(getActivity(), InfoMyPublishActivity.class);
-            startActivity(intent);
-        }));
+        addDisposable(RxView.clicks(mPublishItem).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> startNewActivity(InfoMyPublishActivity.class)));
         //click 我的消息
-        addDisposable(RxView.clicks(mMessageItem).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
-            Intent intent = new Intent(getActivity(), InfoMyMessageActivity.class);
-            startActivity(intent);
-        }));
+        addDisposable(RxView.clicks(mMessageItem).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> startNewActivity(InfoMyMessageActivity.class)));
+        //钱包
+        addDisposable(RxView.clicks(tvWallet).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> startNewActivity(WalletActivity.class)));
+    }
+
+    private void startNewActivity(Class<?> clz) {
+        Intent intent = new Intent(getActivity(), clz);
+        startActivity(intent);
     }
 
     private int getLayoutId() {

@@ -1,5 +1,7 @@
 package com.yidao.platform.app;
 
+import com.yidao.platform.app.base.BaseResult;
+import com.yidao.platform.contacts.bean.IMTokenInfo;
 import com.yidao.platform.discovery.bean.BottleDtlBean;
 import com.yidao.platform.discovery.bean.FindContentBean;
 import com.yidao.platform.discovery.bean.FriendsListBean;
@@ -32,7 +34,6 @@ import com.yidao.platform.read.bean.CommonArticleBean;
 import com.yidao.platform.read.bean.HotCommentsBean;
 import com.yidao.platform.read.bean.LastCommentsBean;
 import com.yidao.platform.read.bean.PushCommBean;
-import com.yidao.platform.read.bean.RefreshTokenObj;
 import com.yidao.platform.read.bean.SearchBean;
 import com.yidao.platform.read.bean.ShareBean;
 import com.yidao.platform.service.model.BpObj;
@@ -511,4 +512,16 @@ public interface ApiService {
      */
     @GET("app/bottle/qryBottleDtl")
     Observable<BottleDtlBean> qryBottleDtl(@Query("bottleId") String bottleId, @Query("sessionId") String sessionId);
+
+    //------------------IM Module---------------------//
+
+    /**
+     * 申请IM Token
+     *
+     * @param userId   String type
+     * @param hasToken 0 不需要返回token,1 需要返回token
+     * @return IMToken
+     */
+    @GET("app/user/getUserAndIMToken")
+    Observable<BaseResult<IMTokenInfo>> requestIMToken(@Query("userId") String userId, @Query("hasToken") int hasToken);
 }
