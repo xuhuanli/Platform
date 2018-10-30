@@ -11,12 +11,14 @@
 
     <include
         android:id="@+id/toolbar"
-        layout="@layout/app_toolbar_layout" />
+        layout="@layout/app_toolbar_layout"
+        android:background="#FFFFFF" />
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/nested_scrollview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,6 +27,7 @@
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#FFFFFF"
             android:paddingBottom="@dimen/size_10dp">
 
             <ImageView
@@ -53,12 +56,12 @@
 
             <!--注意 自定义控件里面没有对资源id进行解析处理，所以这里只能硬编码;-->
             <com.yidao.platform.card.CustomBpItemView
-                android:id="@+id/tv_name"
+                android:id="@+id/cb_name"
                 style="@style/BP_Item_Style2"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_base_info"
-                app:leftText="姓名:"
+                app:leftText="姓名："
                 app:rightHint="请输入您的名称"
                 app:setImportantIcon="@drawable/ic_star_red_6dp" />
 
@@ -69,15 +72,16 @@
                 android:background="@color/colorLine"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+                app:layout_constraintTop_toBottomOf="@+id/cb_name" />
 
             <com.yidao.platform.card.CustomBpItemView
-                android:id="@+id/tv_city"
+                android:id="@+id/cb_company"
                 style="@style/BP_Item_Style2"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/line1"
                 app:leftText="公司："
+                app:setImportantIcon="@drawable/ic_star_red_6dp"
                 app:rightHint="请输入您的联系方式" />
 
             <View
@@ -87,16 +91,17 @@
                 android:background="@color/colorLine"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_city" />
+                app:layout_constraintTop_toBottomOf="@+id/cb_company" />
 
 
             <com.yidao.platform.card.CustomBpItemView
-                android:id="@+id/tv_occupation"
+                android:id="@+id/cb_post"
                 style="@style/BP_Item_Style2"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/line2"
                 app:leftText="职位："
+                app:setImportantIcon="@drawable/ic_star_red_6dp"
                 app:rightHint="请输入你的职位/称号" />
 
             <View
@@ -106,10 +111,10 @@
                 android:background="@color/colorLine"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_occupation" />
+                app:layout_constraintTop_toBottomOf="@+id/cb_post" />
 
             <com.yidao.platform.card.CustomBpItemView
-                android:id="@+id/tv_phone"
+                android:id="@+id/cb_phone"
                 style="@style/BP_Item_Style2"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -125,14 +130,32 @@
                 android:background="@color/colorLine"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_phone" />
+                app:layout_constraintTop_toBottomOf="@+id/cb_phone" />
+            <com.yidao.platform.card.CustomBpItemView
+                android:id="@+id/cb_wechat"
+                style="@style/BP_Item_Style2"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line5"
+                app:leftText="微信："
+                app:rightHint="请输入您的微信号"
+                app:setImportantIcon="@drawable/ic_star_red_6dp" />
+
+            <View
+                android:id="@+id/linecb_wechat"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/colorLine"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cb_wechat" />
 
             <com.yidao.platform.card.CustomBpItemView
                 android:id="@+id/cb_email"
                 style="@style/BP_Item_Style2"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/line5"
+                app:layout_constraintTop_toBottomOf="@+id/linecb_wechat"
                 app:leftText="邮箱："
                 app:rightHint="请输入您的邮箱" />
 
@@ -145,26 +168,10 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cb_email" />
 
-            <com.yidao.platform.card.CustomBpItemView
-                android:id="@+id/tv_valuation"
-                style="@style/BP_Item_Style2"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/line6"
-                app:leftText="邮箱："
-                app:rightHint="请输入您的邮箱" />
 
-            <View
-                android:id="@+id/line7"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:background="@color/colorLine"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_valuation" />
 
             <com.yidao.platform.card.CustomBpItemView
-                android:id="@+id/tv_email"
+                android:id="@+id/cb_companyaddr"
                 style="@style/BP_Item_Style2"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -179,7 +186,7 @@
                 android:background="@color/colorLine"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_email" />
+                app:layout_constraintTop_toBottomOf="@+id/cb_companyaddr" />
 
             <com.yidao.platform.card.CustomBpItemView
                 android:id="@+id/cb_number"
@@ -233,7 +240,7 @@
                     android:background="#FFFFFF" />
 
                 <CheckBox
-                    android:id="@+id/cb"
+                    android:id="@+id/cb_ismaster"
                     style="@style/CustomCheckboxTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -246,11 +253,12 @@
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="49dp"
-                    android:layout_below="@+id/cb"
+                    android:layout_below="@+id/cb_ismaster"
                     android:layout_marginTop="@dimen/size_10dp"
                     android:layout_marginRight="@dimen/size_15dp"
                     android:layout_marginBottom="@dimen/size_10dp"
                     android:background="@drawable/buttoncorner"
+                    android:onClick="submit"
                     android:text="提交申请"
                     android:textColor="#ffffff"
                     android:textSize="18sp" />

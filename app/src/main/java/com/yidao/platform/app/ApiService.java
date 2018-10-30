@@ -2,6 +2,9 @@ package com.yidao.platform.app;
 
 import com.yidao.platform.app.MyObserver.BaseResult;
 import com.yidao.platform.contacts.bean.IMTokenInfo;
+import com.yidao.platform.card.bean.AuthenticateInfo;
+import com.yidao.platform.card.bean.UploadCardBean;
+import com.yidao.platform.card.model.UploadCardObj;
 import com.yidao.platform.discovery.bean.BottleDtlBean;
 import com.yidao.platform.discovery.bean.FindContentBean;
 import com.yidao.platform.discovery.bean.FriendsListBean;
@@ -41,13 +44,17 @@ import com.yidao.platform.service.model.BpObj;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
@@ -524,4 +531,37 @@ public interface ApiService {
      */
     @GET("app/user/getUserAndIMToken")
     Observable<BaseResult<IMTokenInfo>> requestIMToken(@Query("userId") String userId, @Query("hasToken") int hasToken);
+
+    /**
+     * 名片认证 信息上传接口
+     */
+    @Headers({"Content-Type: application/json;charset=UTF-8"})
+    @POST("test/app/card/attestation")
+    Observable<UploadCardBean> attestation(@Body UploadCardObj mUploadCardObj);
+
+
+
+    /**
+     * 获取鉴权
+     */
+    @GET("app/user/getTXOCRAuth")
+    Observable<String> getAuthorization();
+
+
+    /**
+     * 腾讯 名片识别
+     * @param appid
+     * @param bucket
+     * @param ret_image
+     * @param file
+     * @return
+     */
+    @Multipart
+    @POST("ocr/businesscard")
+    Observable<AuthenticateInfo> uploadFileToTencent(@Part("appid") RequestBody appid, @Part("bucket") RequestBody bucket, @Part("ret_image") RequestBody ret_image, @Part MultipartBody.Part file);
+//    @Multipart
+//    @Headers({"Host:recognition.image.myqcloud.com", "Authorization:OVnWfUmh0FGlNiXsuDSldp6rPaBhPTEyNTc3MzYyODAmYj1vcmMtMjAxODA5MjktMTI1NzczNjI4MCZrPUFLSURWdUp0TGJ5cGpTelFna25jT0h3UmtzcWhOd0tZcVlPNCZ0PTE1MzgyMTA4MzkmZT0xNTQxODEwODM5JnI9NDQ3MTcyNTM0"})
+//    @POST("ocr/businesscard")
+//    Observable<String> uploadFileToTencent(@Part("appid") RequestBody appid, @Part("bucket") RequestBody bucket, @Part("ret_image") RequestBody ret_image, @Part MultipartBody.Part file);
+
 }

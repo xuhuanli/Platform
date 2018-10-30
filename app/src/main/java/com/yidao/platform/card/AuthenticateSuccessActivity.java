@@ -30,12 +30,12 @@ public class AuthenticateSuccessActivity extends BaseActivity {
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         TextView title = toolbar.findViewById(R.id.tb_title);
-        title.setText("请填写您的认证信息");
+        title.setText("身份认证");
         toolbar.setNavigationOnClickListener(v -> finish());
         toolbar.setElevation(0);
     }
 
-    public static void startAuthenticateInfoActivity(Context context) {
+    public static void startAuthenticateSuccActivity(Context context) {
         Intent intent = new Intent(context, AuthenticateSuccessActivity.class);
         context.startActivity(intent);
     }
@@ -62,7 +62,8 @@ public class AuthenticateSuccessActivity extends BaseActivity {
         return R.layout.activity_authenticatesuccess;
     }
 
-    public void takePick(View view) {
+    public void complete(View view) {
+        AuthenticateFailActivity.startAuthenticateFailActivity(this);
     }
 
     /**

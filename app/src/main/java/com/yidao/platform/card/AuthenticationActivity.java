@@ -15,7 +15,7 @@ import butterknife.ButterKnife;
 
 /**
  * @author huyimin
- * 身份认证
+ * 身份认证  开始页
  *
  */
 
@@ -58,6 +58,9 @@ public class AuthenticationActivity  extends BaseActivity {
     }
 
     public void takePick(View view) {
+
+
+
     }
 
     public static void startAuthenticationActivity(Context context) {
