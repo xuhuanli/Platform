@@ -13,6 +13,7 @@ import com.yidao.platform.info.model.TagBean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UIUtil {
@@ -23,28 +24,18 @@ public class UIUtil {
      * @param recyclerview
      * @param context
      */
-    public static void initRecyclerView(RecyclerView recyclerview, Context context, ArrayList<TagBean> seleteds, TextView tv_count) {
+    public static void initRecyclerView(RecyclerView recyclerview, Context context, List selec, TextView tv_count) {
 
         recyclerview.setLayoutManager(new GridLayoutManager(context, 5));
         ArrayList<TagBean> list = new ArrayList<>();
+        ArrayList<TagBean> localList = new ArrayList<>();
         Map<String, Boolean> hashMap = new HashMap<String, Boolean>();
-        hashMap.put("应聘", false);
-        hashMap.put("社交", false);
-        hashMap.put("合作", false);
-        hashMap.put("融资", false);
-        hashMap.put("合伙", false);
+        localList.add(new TagBean("应聘", false,1));
+        localList.add(new TagBean("社交", false,2));
+        localList.add(new TagBean("合作", false,3));
+        localList.add(new TagBean("融资", false,4));
+        localList.add(new TagBean("合伙", false,4));
         beginNumber = 0;
-        if (seleteds != null) {
-            for (int i = 0; i < seleteds.size(); i++) {
-                hashMap.put(seleteds.get(i).getName(), seleteds.get(i).getIsselected());
-            }
-        }
-        for (String key : hashMap.keySet()) {
-            list.add(new TagBean(key, hashMap.get(key)));
-            if (hashMap.get(key)) {
-                beginNumber++;
-            }
-        }
         LabelAdapter labelAdapter = new LabelAdapter(list, context);
         recyclerview.setAdapter(labelAdapter);
 
@@ -58,10 +49,14 @@ public class UIUtil {
                 label.setSelected(true);
                 label.setTextColor(context.getResources().getColor(R.color.colorWhite));
                 beginNumber++;
+                if (selec != null) {
+                    selec.add(localList.get(position).getId());
+                }
             } else {
                 label.setSelected(false);
                 label.setTextColor(context.getResources().getColor(R.color.FF999999));
                 beginNumber--;
+                selec.remove(localList.get(position).getId());
             }
             if (tv_count != null) {
                 tv_count.setText(beginNumber + "/" + list.size());
@@ -70,4 +65,40 @@ public class UIUtil {
     }
 
     public static int beginNumber = 0;
+
+
+    /**
+     * 将px值转换为dip或dp值，保证尺寸大小不变
+     *
+     * @param pxValue
+     * @param （DisplayMetrics类中属性density）
+     * @return
+     */
+    public static int px2dip(Context context, float pxValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (pxValue / scale + 0.5f);
+    }
+
+    /**
+     * 将dip或dp值转换为px值，保证尺寸大小不变
+     *
+     * @param dipValue
+     * @param （DisplayMetrics类中属性density）
+     * @return
+     */
+    public static int dip2px(Context context, float dipValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dipValue * scale + 0.5f);
+    }
+
+    /**
+     * 屏幕的高
+     *
+     * @param context
+     * @return
+     */
+    public static final int getHeightInPx(Context context) {
+        final int height = context.getResources().getDisplayMetrics().heightPixels;
+        return height;
+    }
 }

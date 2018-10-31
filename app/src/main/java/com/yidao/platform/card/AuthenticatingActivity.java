@@ -3,19 +3,12 @@ package com.yidao.platform.card;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
 import com.yidao.platform.R;
 import com.yidao.platform.app.base.BaseActivity;
-import com.yidao.platform.app.utils.UIUtil;
-import com.yidao.platform.info.model.TagBean;
-
-import java.util.ArrayList;
-
-import butterknife.BindView;
 
 /**
  * @author huyimin
@@ -37,12 +30,12 @@ public class AuthenticatingActivity extends BaseActivity {
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         TextView title = toolbar.findViewById(R.id.tb_title);
-        title.setText("请填写您的认证信息");
+        title.setText("身份认证");
         toolbar.setNavigationOnClickListener(v -> finish());
         toolbar.setElevation(0);
     }
 
-    public static void startAuthenticateInfoActivity(Context context) {
+    public static void startAuthenticatingActivity(Context context) {
         Intent intent = new Intent(context, AuthenticatingActivity.class);
         context.startActivity(intent);
     }
@@ -69,7 +62,10 @@ public class AuthenticatingActivity extends BaseActivity {
         return R.layout.activity_authenticating;
     }
 
-    public void takePick(View view) {
+    public void complete(View view) {
+
+
+
     }
 
     /**

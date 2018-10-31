@@ -33,6 +33,7 @@ public abstract class BaseDataObserver<T> implements Observer<BaseData<T>>, IDat
 
     @Override
     public void onNext(BaseData<T> baseData) {
+
         doOnNext(baseData);
     }
 

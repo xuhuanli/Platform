@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -131,7 +132,12 @@ public class CustomBpItemView extends ConstraintLayout {
     }
 
     public String getValue() {
-        return etValue.getText().toString().trim();
+        if (TextUtils.isEmpty(etValue.getText().toString().trim())) {
+            return "";
+        } else {
+            return etValue.getText().toString().trim();
+        }
+
     }
 
     public void setValue(String value) {

@@ -79,8 +79,8 @@ public class ReadFragment extends BaseFragment implements IViewReadFragment {
         addDisposable(RxView.clicks(mIvSearch).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> {
 //            Intent intent = new Intent(getActivity(), SearchArticleActivity.class);
 //            startActivity(intent);
-//            AuthenticationActivity.startAuthenticationActivity(getActivity());
-            AuthenticateInfoActivity.startAuthenticateInfoActivity(getActivity());
+            AuthenticationActivity.startAuthenticationActivity(getActivity());
+//            AuthenticateInfoActivity.startAuthenticateInfoActivity(getActivity());
 
 
         }));
