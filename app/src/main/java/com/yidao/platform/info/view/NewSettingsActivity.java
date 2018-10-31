@@ -9,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.view.RxView;
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.beta.Beta;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
 import com.yidao.platform.R;
 import com.yidao.platform.app.Constant;
@@ -133,6 +135,7 @@ public class NewSettingsActivity extends BaseActivity {
                 case 11:
                     break;
                 case 12:
+                    Beta.checkUpgrade();
                     break;
                 case 14:  //退出登录
                     IPreference.prefHolder.getPreference(this).remove(Constant.STRING_USER_ID);

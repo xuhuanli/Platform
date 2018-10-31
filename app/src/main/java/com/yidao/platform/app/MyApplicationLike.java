@@ -1,12 +1,8 @@
 package com.yidao.platform.app;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
-import android.support.multidex.MultiDex;
 import android.util.Log;
 
 import com.alibaba.sdk.android.push.CloudPushService;
@@ -19,7 +15,6 @@ import com.shujike.analysis.SjkAgent;
 import com.squareup.leakcanary.LeakCanary;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
-import com.tencent.tinker.loader.app.DefaultApplicationLike;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 import com.xuhuanli.androidutils.sharedpreference.IPreference;
@@ -35,29 +30,21 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.HashMap;
 
 import io.objectbox.BoxStore;
-import io.objectbox.android.AndroidObjectBrowser;
 import io.rong.imkit.RongIM;
 import okhttp3.OkHttpClient;
 
-public class MyApplicationLike extends DefaultApplicationLike {
+public class MyApplicationLike extends Application {
     private static final String TAG = "Tinker.MyApplicationLike";
     private static Context appContext;
     private static HashMap<String, Integer> labelMap = new HashMap<>();
     private static BoxStore boxStore;
-
-    public MyApplicationLike(Application application, int tinkerFlags,
-                             boolean tinkerLoadVerifyFlag, long applicationStartElapsedTime,
-                             long applicationStartMillisTime, Intent tinkerResultIntent) {
-        super(application, tinkerFlags, tinkerLoadVerifyFlag, applicationStartElapsedTime, applicationStartMillisTime, tinkerResultIntent);
-    }
-
 
     @Override
     public void onCreate() {
         super.onCreate();
         // 这里实现SDK初始化，appId替换成你的在Bugly平台申请的appId
         // 调试时，将第三个参数改为true
-        appContext = getApplication();
+        appContext = this;
         //为了尽快拿到设备ID回调，请把阿里云推送放到最前面
         initRetrofit();
         initCloudChannel(appContext);
@@ -116,7 +103,7 @@ public class MyApplicationLike extends DefaultApplicationLike {
     }
 
     private void initBugly() {
-        Bugly.init(getApplication(), Constant.BUGLY_ID, Constant.IS_DEBUG);
+        Bugly.init(this, Constant.BUGLY_ID, Constant.IS_DEBUG);
         Beta.canShowUpgradeActs.add(ContainerActivity.class);
     }
 
@@ -125,19 +112,19 @@ public class MyApplicationLike extends DefaultApplicationLike {
     }
 
     private void initLeakCanary() {
-        if (LeakCanary.isInAnalyzerProcess(getApplication())) {
+        if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
             // You should not init your app in this process.
             return;
         }
-        LeakCanary.install(getApplication());
+        LeakCanary.install(this);
     }
 
     private void initRetrofit() {
         OkHttpClient okHttpClient = initOkHttpClient();
         RxHttpUtils
                 .getInstance()
-                .init(getApplication())
+                .init(this)
                 .config()
                 //配置全局baseUrl
                 .setBaseUrl(Constant.BASE_URL)
@@ -200,20 +187,6 @@ public class MyApplicationLike extends DefaultApplicationLike {
                 Log.i(TAG, "init cloudchannel failed -- errorcode:" + errorCode + " -- errorMessage:" + errorMessage);
             }
         });
-    }
-
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-    @Override
-    public void onBaseContextAttached(Context base) {
-        super.onBaseContextAttached(base);
-        // you must install multiDex whatever tinker is installed!
-        MultiDex.install(base);
-        Beta.installTinker(this);
-    }
-
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-    public void registerActivityLifecycleCallback(Application.ActivityLifecycleCallbacks callbacks) {
-        getApplication().registerActivityLifecycleCallbacks(callbacks);
     }
 
     public static Context getAppContext() {

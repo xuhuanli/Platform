@@ -36,7 +36,7 @@
 
     <!--hardwareAccelerated问题-->
     <application
-        android:name=".app.MyApplication"
+        android:name=".app.MyApplicationLike"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -267,6 +267,7 @@
 
         <activity android:name=".wallet.WithdrawActivity" />
         <activity android:name=".wallet.WalletActivity" />
+        <activity android:name=".login.view.NewLoginActivity" />
 
         <receiver
             android:name=".contacts.im.IMNotificationReceiver"

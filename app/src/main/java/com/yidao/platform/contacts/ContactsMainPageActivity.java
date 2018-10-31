@@ -70,6 +70,7 @@ public class ContactsMainPageActivity extends BaseActivity {
             window.setStatusBarColor(ContextCompat.getColor(this, R.color.FF007AFF));
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
+        // TODO: 2018/10/30 0030 用户点击头像后刷新数据库信息
         initView();
     }
 

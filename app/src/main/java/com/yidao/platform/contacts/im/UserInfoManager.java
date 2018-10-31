@@ -44,7 +44,6 @@ public class UserInfoManager {
             return;
         }
         MyLogger.e("userData 不在表里");
-        // TODO: 2018/10/26 0026 去获取用户信息
         RxHttpUtils
                 .createApi(ApiService.class)
                 .requestIMToken(s, 0)
