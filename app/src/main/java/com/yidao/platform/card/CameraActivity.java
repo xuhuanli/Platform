@@ -116,6 +116,11 @@ public class CameraActivity extends BaseActivity {
         rectBitmap = Bitmap.createBitmap(bitmap, 0, 0, rectBitmap.getWidth(), rectBitmap.getHeight(), matrix, false);
         try {
             path = "yidao" + File.separator + System.currentTimeMillis() + "photoCut.jpeg";
+            String filepath=Environment.getExternalStorageDirectory()+"/yidao";
+            File file=new File(filepath);
+            if (!file.exists()) {
+                file.mkdir();
+            }
             File photoCut = new File(Environment.getExternalStorageDirectory(), path);
             FileOutputStream outputStreamCut = new FileOutputStream(photoCut);
             rectBitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStreamCut);

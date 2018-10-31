@@ -1,5 +1,7 @@
 package com.yidao.platform.info.view;
 
+import android.os.Environment;
+
 import com.yidao.platform.app.utils.FileUtil;
 
 import java.io.File;
@@ -28,6 +30,7 @@ abstract class ClearCacheRunnable implements Runnable {
         onClearCacheStarted();
         FileUtil.clearAppCache(cacheDir);
         FileUtil.clearAppCache(externalCacheDir);
+        FileUtil.clearAppCache(new File(Environment.getExternalStorageDirectory()+"/yidao"));
         onClearCacheFinished();
     }
 }

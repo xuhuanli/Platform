@@ -89,14 +89,6 @@ android {
     }
     buildToolsVersion '28.0.3'
 }
-ext {
-    /**
-     * 出于某种原因，你可能想要忽略修改构建，例如即时运行调试构建
-     * for some reason, you may want to ignore tinkerBuild, such as instant run debug build?
-     */
-    tinkerEnabled = false
-
-}
 walle {
     apkOutputFolder = new File("${project.buildDir}/outputs/channels")
     apkFileNameFormat = '${appName}-${channel}.apk'
