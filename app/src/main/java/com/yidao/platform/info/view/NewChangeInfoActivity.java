@@ -82,7 +82,6 @@ public class NewChangeInfoActivity extends BaseActivity {
         etEditor.setHint(editHint);
         etEditor.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLengthOfEditText)});
         etEditor.setText(value);
-        etEditor.setSelection(value.length());
         addDisposable(RxTextView.textChanges(etEditor).subscribe(charSequence -> tvLength.setText(String.format("%d/%d", charSequence.length(), maxLengthOfEditText))));
     }
 

@@ -267,7 +267,6 @@
 
         <activity android:name=".wallet.WithdrawActivity" />
         <activity android:name=".wallet.WalletActivity" />
-        <activity android:name=".login.view.NewLoginActivity" />
 
         <receiver
             android:name=".contacts.im.IMNotificationReceiver"
