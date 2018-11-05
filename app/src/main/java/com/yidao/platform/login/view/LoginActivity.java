@@ -48,9 +48,6 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class LoginActivity extends BaseActivity implements IViewLoginActivity {
-
-    @BindView(R.id.btn_login_by_wechat)
-    ImageView mBtnLogin; //微信登录
     @BindView(R.id.et_phone)
     EditText etPhone; //手机号
     @BindView(R.id.btn_v_code)
@@ -59,10 +56,6 @@ public class LoginActivity extends BaseActivity implements IViewLoginActivity {
     EditText etVCode; //验证码
     @BindView(R.id.btn_operation)
     Button btnOperation;
-    @BindView(R.id.tv_sign_in)
-    TextView tvSignIn;
-    @BindView(R.id.tv_register)
-    TextView tvRegister;
     @BindView(R.id.tv_register_protocol)
     TextView tvRegisterProtocol;
     @BindView(R.id.tv_user_protocol)
@@ -76,23 +69,18 @@ public class LoginActivity extends BaseActivity implements IViewLoginActivity {
         super.onCreate(savedInstanceState);
         int taskId = getTaskId();
         MyLogger.e("LoginActivity:所在的任务的id为: " + taskId);
-        EventBus.getDefault().register(this);
         mPresenter = new LoginPresenter(this);
         String userId = IPreference.prefHolder.getPreference(this).get(Constant.STRING_USER_ID, IPreference.DataType.STRING);
         if (!TextUtils.isEmpty(userId)) {
             startActivity(ContainerActivity.class);
             finish();
         }
-        if (!IPreference.prefHolder.getPreference(this).contains(Constant.STRING_DEVICE_ID)) {
-            mBtnLogin.setVisibility(View.INVISIBLE);
-            btnOperation.setVisibility(View.INVISIBLE);
-        }
         setListener();
     }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.login_activity_splash_new;
+        return R.layout.new_login_activity;
     }
 
     private void setListener() {
@@ -163,21 +151,6 @@ public class LoginActivity extends BaseActivity implements IViewLoginActivity {
                 mPresenter.registerAccount(obj);
             }
         }));
-        //切换label
-        addDisposable(RxView.clicks(tvRegister).subscribe(o -> {
-            isSignIn = false;
-            changeTextDisplay(tvSignIn, tvRegister);
-            tvRegisterProtocol.setVisibility(View.VISIBLE);
-            tvUserProtocol.setVisibility(View.VISIBLE);
-            btnOperation.setText(R.string.register);
-        }));
-        addDisposable(RxView.clicks(tvSignIn).subscribe(o -> {
-            isSignIn = true;
-            changeTextDisplay(tvRegister, tvSignIn);
-            tvRegisterProtocol.setVisibility(View.INVISIBLE);
-            tvUserProtocol.setVisibility(View.INVISIBLE);
-            btnOperation.setText(R.string.sign_in);
-        }));
         addDisposable(RxView.clicks(tvUserProtocol).throttleFirst(Constant.THROTTLE_TIME, TimeUnit.MILLISECONDS).subscribe(o -> startActivity(new Intent(LoginActivity.this, ProtocolActivity.class))));
     }
 
@@ -190,29 +163,9 @@ public class LoginActivity extends BaseActivity implements IViewLoginActivity {
         bold.setTextColor(Color.parseColor("#ff333333"));
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(DeviceIdEvent event) {
-        mBtnLogin.setVisibility(View.VISIBLE);
-        btnOperation.setVisibility(View.VISIBLE);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onLoginEvent(WxSignInEvent event) {
-        finish();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onHasBindEvent(HasBindEvent event) {
-        String phoneNum = event.getPhoneNum();
-        String vCode = event.getvCode();
-        etPhone.setText(phoneNum);
-        etVCode.setText(vCode);
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -245,7 +198,7 @@ public class LoginActivity extends BaseActivity implements IViewLoginActivity {
     public void needRegister() {
         ToastUtils.showToast("手机号暂未注册，已为您跳到注册页");
         isSignIn = false;
-        changeTextDisplay(tvSignIn, tvRegister);
+        //changeTextDisplay(tvSignIn, tvRegister);
         tvRegisterProtocol.setVisibility(View.VISIBLE);
         tvUserProtocol.setVisibility(View.VISIBLE);
         btnOperation.setText(R.string.register);

@@ -34,7 +34,7 @@ public class UIUtil {
         localList.add(new TagBean("社交", false,2));
         localList.add(new TagBean("合作", false,3));
         localList.add(new TagBean("融资", false,4));
-        localList.add(new TagBean("合伙", false,4));
+        localList.add(new TagBean("合伙", false,5));
         beginNumber = 0;
         LabelAdapter labelAdapter = new LabelAdapter(list, context);
         recyclerview.setAdapter(labelAdapter);
